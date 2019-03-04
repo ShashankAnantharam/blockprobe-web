@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import { timingSafeEqual } from 'crypto';
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
+// /view/d2160725641bbdbcc2d46bb0a278b44e6176e977c61b53fcde4299dcf1ac1184
 
 class ViewBlockprobePublicComponent extends React.Component {
 
@@ -89,7 +90,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         const mapItems = Object.keys(this.state.blockTree).map((key, index) => 
         <li>{key}</li>);
 
-        const timelineItems = this.state.timeline.map((item) => <li>{item.key}</li>);
+        const timelineItems = this.state.timeline.map((item) => <li>{item.title}</li>);
         return (
             <div>
           <div>{this.props.match.params.bId}</div>
