@@ -11,7 +11,9 @@ class ViewBlockprobePublicComponent extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            blockTree: {}
+            genesisBlockId: "",
+            blockTree: {},
+            timeline: []
         }
     }
 
@@ -21,12 +23,59 @@ class ViewBlockprobePublicComponent extends React.Component {
              tempState[block.key] = block;
              this.setState({
                  blockTree:tempState
-             })
+             });
+             if(block.actionType == "genesis"){
+                 this.setState({
+                     genesisBlockId: block.key
+                 })
+             }
          });
     }
 
+    traverseBlockTree(nodeId, timelineList, timelineBlockStatus){
+        var currBlock = this.state.blockTree[nodeId];
+
+        console.log(nodeId);
+
+        if(currBlock.blockDate!=null || currBlock.blockTime!=null){
+            if(currBlock.actionType!="REMOVE"){
+                timelineList.push(currBlock.key);
+                timelineBlockStatus[currBlock.key]=true;
+                console.log("ADD "+ nodeId);
+            }
+            else{
+                timelineBlockStatus[currBlock.referenceBlock]=false;
+                console.log("REM "+ nodeId);
+            }
+        }
+        this.setState({
+            timeline:timelineList
+        });
+        currBlock.children.forEach((childBlockId) => {
+            this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus);
+        });
+    }
+
     createBlockprobe(snapshot){
-        snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));
+        snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
+        var timelineList = [];
+        var timelineBlockStatus = {};
+        this.traverseBlockTree(this.state.genesisBlockId, timelineList, timelineBlockStatus);
+
+        console.log(timelineList);
+        console.log(timelineBlockStatus);
+        
+        var finalTimelineList = [];
+        timelineList.forEach((id) => {
+            if(timelineBlockStatus[id]==true)
+            {
+                finalTimelineList.push(this.state.blockTree[id]);
+            }
+        })
+        this.setState({
+            timeline:[...finalTimelineList]
+        });
+        console.log(this.state.timeline);
     }
 
     componentDidMount(){
@@ -39,11 +88,16 @@ class ViewBlockprobePublicComponent extends React.Component {
     render(){
         const mapItems = Object.keys(this.state.blockTree).map((key, index) => 
         <li>{key}</li>);
+
+        const timelineItems = this.state.timeline.map((item) => <li>{item.key}</li>);
         return (
             <div>
           <div>{this.props.match.params.bId}</div>
+          <div>Genesis: {this.state.genesisBlockId}</div>
             <div>{Object.keys(this.state.blockTree).length}</div>           
             <div>{mapItems}</div>
+            <div> Timeline</div>
+            <div>{timelineItems}</div>
             </div>
             );
     }
