@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { timingSafeEqual } from 'crypto';
+import TimelineComponent from '../viso/TimelineComponent';
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
 // /view/d2160725641bbdbcc2d46bb0a278b44e6176e977c61b53fcde4299dcf1ac1184
@@ -14,7 +15,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.state={
             genesisBlockId: "",
             blockTree: {},
-            timeline: []
+            timeline: [],
+            testList: []
         }
     }
 
@@ -93,12 +95,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         const timelineItems = this.state.timeline.map((item) => <li>{item.title}</li>);
         return (
             <div>
-          <div>{this.props.match.params.bId}</div>
-          <div>Genesis: {this.state.genesisBlockId}</div>
-            <div>{Object.keys(this.state.blockTree).length}</div>           
-            <div>{mapItems}</div>
             <div> Timeline</div>
-            <div>{timelineItems}</div>
+            <TimelineComponent timeline={this.state.timeline} />
             </div>
             );
     }

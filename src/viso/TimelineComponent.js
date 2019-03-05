@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-import {ArrayObj} from './arrayObj';
+import './TimelineComponent.css';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
@@ -34,10 +30,12 @@ class TimelineComponent extends React.Component {
          /*
          Create render template for the entities
          */
-        var blockEntitiesList = [...timelineBlock.entities];       
-        const renderBlockEntities = blockEntitiesList.map((blockEntity) => 
-         this.BlockEntity(blockEntity)
-       );
+       // var blockEntitiesList = [...timelineBlock.entities];       
+       // const renderBlockEntities = blockEntitiesList.map((blockEntity) => 
+       //  this.BlockEntity(blockEntity)
+       //);
+
+       console.log(timelineBlock);
 
        //TODO add function here to get DateTime
        const blockDateTime = "2019";
@@ -54,9 +52,6 @@ class TimelineComponent extends React.Component {
                  borderTopColor:'red'}}
         >
             <h3 className="vertical-timeline-element-title">{timelineBlock.title}</h3>
-            <div>
-            {renderBlockEntities}
-            </div>
             <p>
             {timelineBlock.summary}
             </p>
