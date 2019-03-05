@@ -11,16 +11,8 @@ class TimelineComponent extends React.Component {
 
     BlockEntity(entity){
       return(
-      <span 
-            style={{
-               borderRadius: '20px', 
-               padding: '10px',
-               backgroundColor: 'rgb(140, 180, 250)',
-               marginLeft: '10px',
-               marginTop: '10px',
-               display:'inline-block',
-               color:'white'}}>
-            {entity.title}
+      <span className="timeline-block-entity">
+          {entity.title}
       </span>
       );  
      }
@@ -30,12 +22,12 @@ class TimelineComponent extends React.Component {
          /*
          Create render template for the entities
          */
-       // var blockEntitiesList = [...timelineBlock.entities];       
-       // const renderBlockEntities = blockEntitiesList.map((blockEntity) => 
-       //  this.BlockEntity(blockEntity)
-       //);
-
-       console.log(timelineBlock);
+        var renderBlockEntities = '';
+        if(timelineBlock.entities!=null && timelineBlock.entities.length>0){            
+             renderBlockEntities = timelineBlock.entities.map((blockEntity) => 
+                this.BlockEntity(blockEntity)
+            );            
+        }        
 
        //TODO add function here to get DateTime
        const blockDateTime = "2019";
@@ -52,6 +44,9 @@ class TimelineComponent extends React.Component {
                  borderTopColor:'red'}}
         >
             <h3 className="vertical-timeline-element-title">{timelineBlock.title}</h3>
+            <div>
+                {renderBlockEntities}
+            </div>
             <p>
             {timelineBlock.summary}
             </p>
