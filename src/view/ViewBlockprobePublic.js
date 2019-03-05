@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-import { timingSafeEqual } from 'crypto';
 import TimelineComponent from '../viso/TimelineComponent';
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -14,6 +13,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         super(props);
         this.state={
             genesisBlockId: "",
+            blockprobeTitle: "",
+            blockprobeSummary: "", 
             blockTree: {},
             timeline: [],
             testList: []
@@ -29,7 +30,9 @@ class ViewBlockprobePublicComponent extends React.Component {
              });
              if(block.actionType == "genesis"){
                  this.setState({
-                     genesisBlockId: block.key
+                     genesisBlockId: block.key,
+                     blockprobeTitle: block.title,
+                     blockprobeSummary: block.summary
                  })
              }
          });
@@ -59,6 +62,36 @@ class ViewBlockprobePublicComponent extends React.Component {
         });
     }
 
+    sortTimeline(timelineList){
+        timelineList.sort(function(a,b){
+            if(a.blockDate.year!==b.blockDate.year)
+            return a.blockDate.year - b.blockDate.year;        
+
+        if(a.blockDate.month!==b.blockDate.month)
+            return a.blockDate.month - b.blockDate.month;        
+
+        if(a.blockDate.date!==b.blockDate.date)
+            return a.blockDate.date - b.blockDate.date;
+         
+         if(b.blockTime == null){
+             return 1;
+             //a is greater than or equal to if b has no time
+         }
+         
+         if(a.blockTime!==null){
+             if(a.blockTime.hours!==b.blockTime.hours){
+                 return a.blockTime.hours - b.blockTime.hours;
+             }
+             if(a.blockTime.minutes!==b.blockTime.minutes){
+                return a.blockTime.minutes - b.blockTime.minutes;
+            }
+         }
+
+         //a is null but b is not null OR both are fully equal, a is less than equal to b
+         return -1;
+        });
+    }
+
     createBlockprobe(snapshot){
         snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
         var timelineList = [];
@@ -74,7 +107,8 @@ class ViewBlockprobePublicComponent extends React.Component {
             {
                 finalTimelineList.push(this.state.blockTree[id]);
             }
-        })
+        });
+        this.sortTimeline(finalTimelineList);
         this.setState({
             timeline:[...finalTimelineList]
         });
@@ -89,13 +123,12 @@ class ViewBlockprobePublicComponent extends React.Component {
     }
 
     render(){
-        const mapItems = Object.keys(this.state.blockTree).map((key, index) => 
-        <li>{key}</li>);
-
-        const timelineItems = this.state.timeline.map((item) => <li>{item.title}</li>);
         return (
             <div>
-            <div> Timeline</div>
+            <div> 
+                <h2>{this.state.blockprobeTitle}</h2>
+                <h4>{this.state.blockprobeSummary}</h4>
+            </div>
             <TimelineComponent timeline={this.state.timeline} />
             </div>
             );

@@ -64,11 +64,11 @@ class TimelineComponent extends React.Component {
        const blockDateTime = this.getDateTimeString(timelineBlock);
        var backgroundColor = 'rgb(33, 150, 243)';
    
-       if(index%3==1)
+       if(index%3===1)
        {
             backgroundColor = 'rgb(243, 33, 150)';
        }
-       else if(index%3==2)
+       else if(index%3===2)
        {
             backgroundColor = 'rgb(243, 33, 25)';
        }

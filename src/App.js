@@ -9,8 +9,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div> Blockprobe</div>
-
         <Router>
           <Route path="/view/:bId"  
                       component={ViewBlockprobePublicComponent}
