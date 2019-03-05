@@ -38,19 +38,13 @@ class TimelineComponent extends React.Component {
          date={blockDateTime}
          iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
        >
-        <div     
-                style={{ 
-                 borderTopWidth:'6px', 
-                 borderTopColor:'red'}}
-        >
-            <h3 className="vertical-timeline-element-title">{timelineBlock.title}</h3>
-            <div>
-                {renderBlockEntities}
-            </div>
-            <p>
+        <h3 className="vertical-timeline-element-title">{timelineBlock.title}</h3>
+        <div>
+            {renderBlockEntities}
+        </div>
+        <p>
             {timelineBlock.summary}
-            </p>
-         </div>
+        </p>
        </VerticalTimelineElement>
        );
      }
