@@ -18,7 +18,7 @@ class TimelineComponent extends React.Component {
      }
    
      
-     renderTimeline(timelineBlock){
+     renderTimeline(timelineBlock, index){
          /*
          Create render template for the entities
          */
@@ -31,12 +31,22 @@ class TimelineComponent extends React.Component {
 
        //TODO add function here to get DateTime
        const blockDateTime = "2019";
+       var backgroundColor = 'rgb(33, 150, 243)';
    
+       if(index%3==1)
+       {
+            backgroundColor = 'rgb(243, 33, 150)';
+       }
+       else if(index%3==2)
+       {
+            backgroundColor = 'rgb(243, 33, 25)';
+       }
+
        return (
          <VerticalTimelineElement
          className="vertical-timeline-element--work"
          date={blockDateTime}
-         iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+         iconStyle={{ background: backgroundColor, color: '#fff' }}
        >
         <h3 className="vertical-timeline-element-title">{timelineBlock.title}</h3>
         <div>
@@ -51,8 +61,8 @@ class TimelineComponent extends React.Component {
 
     render() {
 
-      const timelineView = this.props.timeline.map((timelineBlock) => 
-      this.renderTimeline(timelineBlock)
+      const timelineView = this.props.timeline.map((timelineBlock, index) => 
+      this.renderTimeline(timelineBlock, index)
     );
       return (
         <div style={{background:'lightblue'}}>
