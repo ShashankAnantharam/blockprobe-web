@@ -17,6 +17,37 @@ class TimelineComponent extends React.Component {
       );  
      }
    
+     getDateTimeString(timelineBlock){
+         var ans = "";
+         if(timelineBlock.blockDate!=null){
+             ans = ans + timelineBlock.blockDate.date + "-";
+             ans = ans + (timelineBlock.blockDate.month+1) + "-";
+             ans = ans + timelineBlock.blockDate.year + "  ";
+
+
+             console.log(timelineBlock.blockDate);
+             console.log(ans);
+
+             if(timelineBlock.blockTime!=null){
+                 var temp = "";
+                 if(timelineBlock.blockTime.hours < 10){
+                     temp = "0"; 
+                 }
+                 temp = temp + timelineBlock.blockTime.hours;
+                 ans = ans + temp + ":";
+
+                 temp = "";
+                 if(timelineBlock.blockTime.minutes < 10){
+                     temp = "0"; 
+                 }
+                 temp = temp + timelineBlock.blockTime.minutes;
+                 ans = ans + temp;
+
+
+             }
+         }
+         return ans;
+     }
      
      renderTimeline(timelineBlock, index){
          /*
@@ -30,7 +61,7 @@ class TimelineComponent extends React.Component {
         }        
 
        //TODO add function here to get DateTime
-       const blockDateTime = "2019";
+       const blockDateTime = this.getDateTimeString(timelineBlock);
        var backgroundColor = 'rgb(33, 150, 243)';
    
        if(index%3==1)
