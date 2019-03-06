@@ -79,11 +79,11 @@ class TimelineComponent extends React.Component {
          date={blockDateTime}
          iconStyle={{ background: backgroundColor, color: '#fff' }}
        >
-        <h4 className="vertical-timeline-element-title timeline-block-title">{timelineBlock.title}</h4>
-        <p>
+        <h4 className="vertical-timeline-element-title timeline-block-title timeline-block-text">{timelineBlock.title}</h4>
+        <p className="timeline-block-text">
             {timelineBlock.summary}
         </p>
-        <div>
+        <div className="timeline-block-text">
             {renderBlockEntities}
         </div>
        </VerticalTimelineElement>

@@ -8,8 +8,13 @@
     font-size:0.75em;
     font-weight: bold;
     color:white;
+    text-align: center;
 }
 
 .timeline-block-title{
     color:darkcyan;
+}
+
+.timeline-block-text{
+    text-align: center;
 }

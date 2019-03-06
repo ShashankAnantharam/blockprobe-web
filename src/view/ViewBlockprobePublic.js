@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import './ViewBlockprobePublic.css';
 import TimelineComponent from '../viso/TimelineComponent';
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -90,6 +91,7 @@ class ViewBlockprobePublicComponent extends React.Component {
          //a is null but b is not null OR both are fully equal, a is less than equal to b
          return -1;
         });
+        timelineList.reverse();
     }
 
     createBlockprobe(snapshot){
@@ -125,7 +127,7 @@ class ViewBlockprobePublicComponent extends React.Component {
     render(){
         return (
             <div>
-            <div> 
+            <div className="blockprobe-header"> 
                 <h2>{this.state.blockprobeTitle}</h2>
                 <h4>{this.state.blockprobeSummary}</h4>
             </div>
