@@ -91,12 +91,13 @@ class TimelineComponent extends React.Component {
         <p className="timeline-block-text">
             {timelineBlock.summary}
         </p>
-        <button onClick={() => { this.selectTimelineBlock(timelineBlock)}}>
-            View More
-        </button>
         <div className="timeline-block-text">
             {renderBlockEntities}
         </div>
+        <button onClick={() => { this.selectTimelineBlock(timelineBlock)}}>
+            View Block
+        </button>    
+          
        </VerticalTimelineElement>
        );
      }

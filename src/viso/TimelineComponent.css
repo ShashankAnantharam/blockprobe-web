@@ -18,3 +18,13 @@
 .timeline-block-text{
     text-align: center;
 }
+
+button {
+    margin-top: 10px;
+    font-size: 12px;
+    padding: 8px;
+    border-radius: 10px;
+    border-color: rgb(204, 203, 203);
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+   }
