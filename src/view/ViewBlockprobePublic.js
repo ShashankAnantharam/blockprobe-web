@@ -8,6 +8,7 @@ import Sidebar from "react-sidebar";
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
 // /view/d2160725641bbdbcc2d46bb0a278b44e6176e977c61b53fcde4299dcf1ac1184
+// /view/ad9e355e747a6a11741fdfdd62b2c040aa8d985afddc43fbfa8202d21d7d986e
 
 class ViewBlockprobePublicComponent extends React.Component {
 
@@ -20,9 +21,15 @@ class ViewBlockprobePublicComponent extends React.Component {
             selectedBlock:"", 
             blockTree: {},
             timeline: [],
+            selectedBlockSidebarOpen: false,
             testList: []
         }
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
+        this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
+    }
+
+    onSetSelectedBlockSidebarOpen(open) {
+        this.setState({ selectedBlockSidebarOpen: open });
     }
 
     addBlocksToProbe(doc){      
@@ -125,6 +132,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setState({
             selectedBlock:block
         }); 
+        this.onSetSelectedBlockSidebarOpen(true);
     }
 
     componentDidMount(){
@@ -140,8 +148,18 @@ class ViewBlockprobePublicComponent extends React.Component {
             <div className="blockprobe-header"> 
                 <h2>{this.state.blockprobeTitle}</h2>
                 <h4>{this.state.blockprobeSummary}</h4>
-                <h5>{this.state.selectedBlock.title}</h5>
             </div>
+            <Sidebar
+                sidebar={<div style={{width:'30vw'}}><h5>{this.state.selectedBlock.title}</h5></div>}
+                open={this.state.selectedBlockSidebarOpen}
+                onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                pullRight={true}
+                defaultSidebarWidth='200px'
+                styles={{ sidebar: { background: "white", position:'fixed' } }}
+            >
+
+
+            </Sidebar>
             <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
             </div>
             );
