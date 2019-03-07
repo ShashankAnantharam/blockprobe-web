@@ -15,11 +15,13 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.state={
             genesisBlockId: "",
             blockprobeTitle: "",
-            blockprobeSummary: "", 
+            blockprobeSummary: "",
+            selectedBlock:"", 
             blockTree: {},
             timeline: [],
             testList: []
         }
+        this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
     }
 
     addBlocksToProbe(doc){      
@@ -42,17 +44,17 @@ class ViewBlockprobePublicComponent extends React.Component {
     traverseBlockTree(nodeId, timelineList, timelineBlockStatus){
         var currBlock = this.state.blockTree[nodeId];
 
-        console.log(nodeId);
+        // console.log(nodeId);
 
         if(currBlock.blockDate!=null || currBlock.blockTime!=null){
             if(currBlock.actionType!="REMOVE"){
                 timelineList.push(currBlock.key);
                 timelineBlockStatus[currBlock.key]=true;
-                console.log("ADD "+ nodeId);
+                // console.log("ADD "+ nodeId);
             }
             else{
                 timelineBlockStatus[currBlock.referenceBlock]=false;
-                console.log("REM "+ nodeId);
+                // console.log("REM "+ nodeId);
             }
         }
         this.setState({
@@ -100,8 +102,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         var timelineBlockStatus = {};
         this.traverseBlockTree(this.state.genesisBlockId, timelineList, timelineBlockStatus);
 
-        console.log(timelineList);
-        console.log(timelineBlockStatus);
+       // console.log(timelineList);
+       // console.log(timelineBlockStatus);
         
         var finalTimelineList = [];
         timelineList.forEach((id) => {
@@ -114,7 +116,14 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setState({
             timeline:[...finalTimelineList]
         });
-        console.log(this.state.timeline);
+        // console.log(this.state.timeline);
+    }
+
+    changeSelectedBlock = (block) =>{
+        console.log(block);
+        this.setState({
+            selectedBlock:block
+        }); 
     }
 
     componentDidMount(){
@@ -130,8 +139,9 @@ class ViewBlockprobePublicComponent extends React.Component {
             <div className="blockprobe-header"> 
                 <h2>{this.state.blockprobeTitle}</h2>
                 <h4>{this.state.blockprobeSummary}</h4>
+                <h5>{this.state.selectedBlock.title}</h5>
             </div>
-            <TimelineComponent timeline={this.state.timeline} />
+            <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
             </div>
             );
     }

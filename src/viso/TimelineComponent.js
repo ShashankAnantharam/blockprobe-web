@@ -6,7 +6,9 @@ import 'react-vertical-timeline-component/style.min.css';
 class TimelineComponent extends React.Component {
 
     constructor(props){
-      super(props);        
+      super(props);
+      
+      this.selectTimelineBlock = this.selectTimelineBlock.bind(this);
     }
 
     BlockEntity(entity){
@@ -25,8 +27,8 @@ class TimelineComponent extends React.Component {
              ans = ans + timelineBlock.blockDate.year + "  ";
 
 
-             console.log(timelineBlock.blockDate);
-             console.log(ans);
+             // console.log(timelineBlock.blockDate);
+             // console.log(ans);
 
              if(timelineBlock.blockTime!=null){
                  var temp = "";
@@ -47,6 +49,12 @@ class TimelineComponent extends React.Component {
              }
          }
          return ans;
+     }
+
+     selectTimelineBlock(block){
+        console.log(block);
+        this.props.selectBlock(block);
+
      }
      
      renderTimeline(timelineBlock, index){
@@ -83,6 +91,9 @@ class TimelineComponent extends React.Component {
         <p className="timeline-block-text">
             {timelineBlock.summary}
         </p>
+        <button onClick={() => { this.selectTimelineBlock(timelineBlock)}}>
+            View More
+        </button>
         <div className="timeline-block-text">
             {renderBlockEntities}
         </div>
