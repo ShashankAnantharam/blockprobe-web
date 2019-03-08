@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
 import TimelineComponent from '../viso/TimelineComponent';
+import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -150,12 +151,14 @@ class ViewBlockprobePublicComponent extends React.Component {
                 <h4>{this.state.blockprobeSummary}</h4>
             </div>
             <Sidebar
-                sidebar={<div style={{width:'30vw'}}><h5>{this.state.selectedBlock.title}</h5></div>}
+                sidebar={<div style={{width:'30vw'}}>
+                <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                </div>}
                 open={this.state.selectedBlockSidebarOpen}
                 onSetOpen={this.onSetSelectedBlockSidebarOpen}
                 pullRight={true}
                 defaultSidebarWidth='200px'
-                styles={{ sidebar: { background: "white", position:'fixed' } }}
+                styles={{ sidebar: { background: "lightgreen", position:'fixed' } }}
             >
 
 
