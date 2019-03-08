@@ -14,8 +14,7 @@ class ViewBlockComponent extends React.Component {
                 maxHeight:'100%',
                 overflow:'auto',
                 textAlign:'center',
-                padding:'5px',
-                background: 'lightgreen'            
+                padding:'5px'
                 }}>
             <h2>{this.props.selectedBlock.title}</h2>
             <h5>{this.props.selectedBlock.summary}</h5>
