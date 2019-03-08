@@ -1,0 +1,43 @@
+.block-entity{
+    border-radius: 20px; 
+    padding: 10px;
+    background-color: rgb(117, 106, 214);
+    margin-left: 10px;
+    margin-top: 10px;
+    display:inline-block;
+    font-size:0.75em;
+    font-weight: bold;
+    color:white;
+    text-align: center;
+}
+
+.block-datetime{
+    border-radius: 10px; 
+    padding: 10px;
+    background-color: rgb(221, 52, 193);
+    margin-bottom:10px;
+    margin-left: 10px;
+    display:inline-block;
+    font-size:0.85em;
+    font-weight: bold;
+    color:white;
+    text-align: center;
+}
+.block-text{
+    margin-left: 12px;
+}
+
+.block-title{
+    text-align: center;
+}
+
+.block-summary{
+    text-align: justify;
+    font-family: sans-serif;
+}
+
+.block-div{
+    max-height: 100%;
+    overflow: auto;
+    padding: 5px;
+}
