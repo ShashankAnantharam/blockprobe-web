@@ -16,11 +16,11 @@
 }
 
 .block-evidence{
-    border: 1px solid rgb(241, 161, 40);
+    border: 1px solid rgb(67, 248, 218);
     padding: 10px;
-    box-shadow: 5px 10px #888888;
+    box-shadow: 5px 10px darkcyan;
     border-radius:10px;
-    background: rgb(241, 161, 40);
+    background: rgb(67, 248, 218);
 }
 
 .block-evidence-title{
@@ -50,6 +50,7 @@
 
 .block-title{
     text-align: center;
+    color: darkcyan;
 }
 
 .block-summary{

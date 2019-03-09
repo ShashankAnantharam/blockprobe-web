@@ -158,7 +158,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                 onSetOpen={this.onSetSelectedBlockSidebarOpen}
                 pullRight={true}
                 defaultSidebarWidth='200px'
-                styles={{ sidebar: { background: "lightgreen", position:'fixed' } }}
+                styles={{ sidebar: { background: "lightcyan", position:'fixed' } }}
             >
 
 
