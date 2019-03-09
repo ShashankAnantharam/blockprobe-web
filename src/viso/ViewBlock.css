@@ -11,6 +11,27 @@
     text-align: center;
 }
 
+.block-evidence-list{
+    margin-top:20px;
+}
+
+.block-evidence{
+    border: 1px solid rgb(241, 161, 40);
+    padding: 10px;
+    box-shadow: 5px 10px #888888;
+    border-radius:10px;
+    background: rgb(241, 161, 40);
+}
+
+.block-evidence-title{
+    font-size:0.8em;
+}
+
+.block-evidence-subtitle{
+    font-size:0.7em;
+    margin-top:4px;
+}
+
 .block-datetime{
     border-radius: 10px; 
     padding: 10px;

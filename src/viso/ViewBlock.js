@@ -48,9 +48,13 @@ class ViewBlockComponent extends React.Component {
         );  
        }
 
-    BlockEvidence(evidence){
+    BlockEvidence(evidence, index){
+        const WebView = require('react-electron-web-view');
         return(
-            <div>{evidence.supportingDetails}</div>
+            <div className="block-evidence">
+                <a href={evidence.evidenceLink} target="_blank" className="block-evidence-title">Evidence {index+1}</a>
+                <div className="block-evidence-subtitle">{evidence.supportingDetails}</div>
+            </div>
         );
     }   
 
@@ -69,8 +73,8 @@ class ViewBlockComponent extends React.Component {
 
        if(this.props.selectedBlock.evidences!=null && 
         this.props.selectedBlock.evidences.length>0){            
-        renderBlockEvidences = this.props.selectedBlock.evidences.map((blockEvidence) => 
-           this.BlockEvidence(blockEvidence)
+        renderBlockEvidences = this.props.selectedBlock.evidences.map((blockEvidence, index) => 
+           this.BlockEvidence(blockEvidence, index)
        );            
        }
        
@@ -87,7 +91,9 @@ class ViewBlockComponent extends React.Component {
             
             <div class="block-datetime">{dateTimeString}</div>
             <div>{renderBlockEntities}</div>
-            <div style={{marginTop:'10px'}}>{renderBlockEvidences}</div>
+            <div className="block-evidence-list">
+                {renderBlockEvidences}
+            </div>
 
             
             </div>
