@@ -5,6 +5,7 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
+        console.log(this.props.selectedBlock);
     }
 
     getDateTimeString(timelineBlock){
@@ -47,9 +48,16 @@ class ViewBlockComponent extends React.Component {
         );  
        }
 
+    BlockEvidence(evidence){
+        return(
+            <div>{evidence.supportingDetails}</div>
+        );
+    }   
+
     render(){
 
         var renderBlockEntities="";
+        var renderBlockEvidences="";
         var dateTimeString = "";
 
         if(this.props.selectedBlock.entities!=null && 
@@ -57,6 +65,13 @@ class ViewBlockComponent extends React.Component {
             renderBlockEntities = this.props.selectedBlock.entities.map((blockEntity) => 
                this.BlockEntity(blockEntity)
            );            
+       }
+
+       if(this.props.selectedBlock.evidences!=null && 
+        this.props.selectedBlock.evidences.length>0){            
+        renderBlockEvidences = this.props.selectedBlock.evidences.map((blockEvidence) => 
+           this.BlockEvidence(blockEvidence)
+       );            
        }
        
        if(this.props.selectedBlock.blockDate!=null){
@@ -72,6 +87,7 @@ class ViewBlockComponent extends React.Component {
             
             <div class="block-datetime">{dateTimeString}</div>
             <div>{renderBlockEntities}</div>
+            <div style={{marginTop:'10px'}}>{renderBlockEvidences}</div>
 
             
             </div>
