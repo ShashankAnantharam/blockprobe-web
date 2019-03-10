@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
 import './ViewBlock.css';
 
 class ViewBlockComponent extends React.Component {
@@ -89,13 +90,16 @@ class ViewBlockComponent extends React.Component {
                 <p class="block-summary">{this.props.selectedBlock.summary}</p>
             </div>
             
-            <div class="block-datetime">{dateTimeString}</div>
+            <div class="block-datetime" data-tip data-for='dateTime'>{dateTimeString}</div>
             <div>{renderBlockEntities}</div>
             <div className="block-evidence-list">
                 {renderBlockEvidences}
             </div>
 
-            
+            <ReactTooltip id='dateTime' type='error' place="left" className="hover-template">
+                <span>Date and Time associated with the event described by this block.</span>
+            </ReactTooltip>
+
             </div>
         );
     }

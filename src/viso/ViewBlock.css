@@ -63,3 +63,7 @@
     overflow: auto;
     padding: 5px;
 }
+
+.hover-template{
+    left: 0px !important;
+}
