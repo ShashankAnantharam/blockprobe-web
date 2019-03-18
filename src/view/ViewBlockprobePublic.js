@@ -7,7 +7,6 @@ import TimelineComponent from '../viso/TimelineComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
-import HeaderComponent from './HeaderComponent';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -157,31 +156,6 @@ class ViewBlockprobePublicComponent extends React.Component {
     render(){
         return (
             <div>
-                <HeaderComponent/>
-
-                <div>
-                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
-                        <MenuIcon/>
-                    </button>
-                </div>
-
-                <div className="blockprobe-header"> 
-                    <h2>{this.state.blockprobeTitle}</h2>
-                    <h4>{this.state.blockprobeSummary}</h4>
-                </div>
-
-            <Sidebar
-                sidebar={<div style={{width:'40vw'}}>
-                    Menu
-                </div>}
-                open={this.state.menuBarOpen}
-                onSetOpen={this.onSetMenuBlockSidebarOpen}
-                pullRight={false}
-                defaultSidebarWidth='200px'
-                styles={{ sidebar: { background:"white", position:'fixed' } }}
-            >
-
-            </Sidebar>
 
             <Sidebar
                 sidebar={<div style={{width:'30vw'}}>
@@ -194,9 +168,35 @@ class ViewBlockprobePublicComponent extends React.Component {
                 styles={{ sidebar: { background: "lightcyan", position:'fixed' } }}
             >
 
+            </Sidebar>
+
+            <Sidebar
+                sidebar={<div style={{width:'40vw'}}>
+                    Menu
+                </div>}
+                open={this.state.menuBarOpen}
+                onSetOpen={this.onSetMenuBlockSidebarOpen}
+                pullRight={false}
+                defaultSidebarWidth='200px'
+                styles={{ sidebar: { background:"white", position:'fixed' } }}
+            >
+
+                <div>
+                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
+                        <MenuIcon/>
+                    </button>
+                </div>
 
             </Sidebar>
-            <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
+
+                <div className="blockprobe-header"> 
+                    <h2>{this.state.blockprobeTitle}</h2>
+                    <h4>{this.state.blockprobeSummary}</h4>
+                </div>
+
+            <div className="blockprobe-body">
+                 <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
+            </div>
             </div>
             );
     }
