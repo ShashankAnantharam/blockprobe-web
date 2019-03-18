@@ -6,6 +6,9 @@ import './ViewBlockprobePublic.css';
 import TimelineComponent from '../viso/TimelineComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
+import MenuIcon from '@material-ui/icons/Menu';
+import HeaderComponent from './HeaderComponent';
+
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
 // /view/d2160725641bbdbcc2d46bb0a278b44e6176e977c61b53fcde4299dcf1ac1184
@@ -151,14 +154,17 @@ class ViewBlockprobePublicComponent extends React.Component {
          ));
     }
 
-    menuButtonClick(){
-        
-    }
-
     render(){
         return (
             <div>
-                
+                <HeaderComponent/>
+
+                <div>
+                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
+                        <MenuIcon/>
+                    </button>
+                </div>
+
                 <div className="blockprobe-header"> 
                     <h2>{this.state.blockprobeTitle}</h2>
                     <h4>{this.state.blockprobeSummary}</h4>
@@ -174,9 +180,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                 defaultSidebarWidth='200px'
                 styles={{ sidebar: { background:"white", position:'fixed' } }}
             >
-                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
-                        Menu
-                </button>
+
             </Sidebar>
 
             <Sidebar
