@@ -23,14 +23,22 @@ class ViewBlockprobePublicComponent extends React.Component {
             blockTree: {},
             timeline: [],
             selectedBlockSidebarOpen: false,
+            menuBarOpen: false,
             testList: []
         }
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
+        this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
+
     }
 
     onSetSelectedBlockSidebarOpen(open) {
         this.setState({ selectedBlockSidebarOpen: open });
+    }
+
+    onSetMenuBlockSidebarOpen(open) {
+        this.setState({ menuBarOpen: open });
+        console.log(this.state.menuBarOpen);
     }
 
     addBlocksToProbe(doc){      
@@ -143,13 +151,34 @@ class ViewBlockprobePublicComponent extends React.Component {
          ));
     }
 
+    menuButtonClick(){
+        
+    }
+
     render(){
         return (
             <div>
-            <div className="blockprobe-header"> 
-                <h2>{this.state.blockprobeTitle}</h2>
-                <h4>{this.state.blockprobeSummary}</h4>
-            </div>
+                
+                <div className="blockprobe-header"> 
+                    <h2>{this.state.blockprobeTitle}</h2>
+                    <h4>{this.state.blockprobeSummary}</h4>
+                </div>
+
+            <Sidebar
+                sidebar={<div style={{width:'40vw'}}>
+                    Menu
+                </div>}
+                open={this.state.menuBarOpen}
+                onSetOpen={this.onSetMenuBlockSidebarOpen}
+                pullRight={false}
+                defaultSidebarWidth='200px'
+                styles={{ sidebar: { background:"white", position:'fixed' } }}
+            >
+                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
+                        Menu
+                </button>
+            </Sidebar>
+
             <Sidebar
                 sidebar={<div style={{width:'30vw'}}>
                 <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
