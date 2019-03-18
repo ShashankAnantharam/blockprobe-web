@@ -17,7 +17,7 @@ class HeaderComponent extends React.Component {
     render(){
         return(
             <div>
-            <button onClick={() => { this.openMenuBar()}}>
+            <button onClick={() => { return this.openMenuBar()}}>
                     <MenuIcon/>
                 </button>
             </div>
