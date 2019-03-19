@@ -7,8 +7,10 @@ import TimelineComponent from '../viso/TimelineComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
+import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
 import VisualizeOptionsListComponent from '../viso/VisoList';
+import { red } from '@material-ui/core/colors';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -184,8 +186,9 @@ class ViewBlockprobePublicComponent extends React.Component {
             >
 
                 <div>
-                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}>
-                        <MenuIcon/>
+                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
+                className="menu-button">
+                        <MoreIcon/>
                     </button>
                 </div>
 

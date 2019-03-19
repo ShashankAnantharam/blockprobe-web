@@ -17,6 +17,7 @@ class VisualizeOptionsListComponent extends React.Component {
     render(){
         return(
             <div>
+                <h3 style={{textAlign:"center"}}>VISUALISE</h3>
                 <List className="">
                     <ListItem button selected={true}>
                     <Avatar>
