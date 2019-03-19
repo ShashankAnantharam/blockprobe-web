@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
 import TimelineComponent from '../viso/TimelineComponent';
+import GraphComponent from '../viso/GraphComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -177,6 +178,13 @@ class ViewBlockprobePublicComponent extends React.Component {
                 </div>
             );
         }
+        else if(this.state.selectedVisualisation == "graph"){
+            return(
+                <div>
+                    <GraphComponent />
+                </div>
+            );
+        }
 
         return (
             <div style={{textAlign:"center"}}>
@@ -221,15 +229,15 @@ class ViewBlockprobePublicComponent extends React.Component {
                         <MoreIcon/>
                     </button>
                 </div>
-
-            </Sidebar>
-
                 <div className="blockprobe-header"> 
                     <h2>{this.state.blockprobeTitle}</h2>
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 
                 {this.renderVisualisation()}
+            </Sidebar>
+
+
             </div>
             );
     }

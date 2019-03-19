@@ -1,0 +1,18 @@
+.rowC{
+    display:flex; 
+    flex-direction:row;
+    margin-top:4em;
+}
+
+.dropdown-container{
+    width:45%; 
+    height:3.5em; 
+    font-size:1.4em; 
+    margin-left:1em;
+}
+
+.filterButton{
+    margin-left:6em;
+    margin-top:0px;
+    height:3.6em;
+}
