@@ -7,6 +7,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import AcUnitIcon from '@material-ui/icons/AcUnit'; 
 import GroupIcon from '@material-ui/icons/Group'; 
 import ListIcon from '@material-ui/icons/List';
+import './VisoList.css';
 
 class VisualizeOptionsListComponent extends React.Component {
 
