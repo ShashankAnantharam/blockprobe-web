@@ -30,12 +30,23 @@ class ViewBlockprobePublicComponent extends React.Component {
             timeline: [],
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
+            selectedVisualisation: "timeline",
             testList: []
         }
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
         this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
+        this.renderVisualisation = this.renderVisualisation.bind(this);
+        this.setNewVisualisation = this.setNewVisualisation.bind(this);
+    }
 
+    setNewVisualisation(newVisualisation){
+        if(this.state.visualisation != newVisualisation){
+            this.setState({
+                selectedVisualisation: newVisualisation
+            });
+            console.log(newVisualisation);
+        }
     }
 
     onSetSelectedBlockSidebarOpen(open) {
@@ -157,6 +168,23 @@ class ViewBlockprobePublicComponent extends React.Component {
          ));
     }
 
+    renderVisualisation(){
+        if(this.state.selectedVisualisation == "timeline")
+        {
+            return (
+                <div className="blockprobe-body">
+                    <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
+                </div>
+            );
+        }
+
+        return (
+            <div style={{textAlign:"center"}}>
+                FEATURE TO BE IMPLEMENTED
+            </div>
+        );
+    }
+
     render(){
         return (
             <div>
@@ -176,7 +204,9 @@ class ViewBlockprobePublicComponent extends React.Component {
 
             <Sidebar
                 sidebar={<div style={{width:'40vw'}}>
-                    <VisualizeOptionsListComponent/>
+                    <VisualizeOptionsListComponent 
+                    selectVisualisation={this.setNewVisualisation}
+                    selectedVisualisation={this.state.selectedVisualisation}/>
                 </div>}
                 open={this.state.menuBarOpen}
                 onSetOpen={this.onSetMenuBlockSidebarOpen}
@@ -199,9 +229,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 
-            <div className="blockprobe-body">
-                 <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
-            </div>
+                {this.renderVisualisation()}
             </div>
             );
     }

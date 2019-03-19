@@ -14,33 +14,49 @@ class VisualizeOptionsListComponent extends React.Component {
       super(props);
     }
 
+    selectNewVisualisation(newVisualisation){
+        this.props.selectVisualisation(newVisualisation);
+    }
+
     render(){
         return(
             <div>
                 <h3 style={{textAlign:"center"}}>VISUALISE</h3>
                 <List className="">
-                    <ListItem button selected={true}>
+                    <ListItem button 
+                    selected={this.props.selectedVisualisation == "timeline"}
+                    onClick={() => { this.selectNewVisualisation("timeline")}}
+                    >
                     <Avatar>
                         <TimelineIcon />
                         </Avatar>
                         <ListItemText primary="Timeline"/>
                     </ListItem>
                     
-                    <ListItem button>
+                    <ListItem button
+                    selected={this.props.selectedVisualisation == "list"}
+                    onClick={() => { this.selectNewVisualisation("list")}}                    
+                    >
                     <Avatar>
                         <ListIcon />
                         </Avatar>
                         <ListItemText primary="List" />
                     </ListItem>
                     
-                    <ListItem button>
+                    <ListItem button
+                    selected={this.props.selectedVisualisation == "graph"}
+                    onClick={() => { this.selectNewVisualisation("graph")}}
+                    >
                     <Avatar>
                         <AcUnitIcon />
                         </Avatar>
                         <ListItemText primary="Graph" />
                     </ListItem>
                     
-                    <ListItem button>      
+                    <ListItem button
+                    selected={this.props.selectedVisualisation == "find_connections"}
+                    onClick={() => { this.selectNewVisualisation("find_connections")}}
+                    >      
                     <Avatar>
                         <GroupIcon />
                         </Avatar>
