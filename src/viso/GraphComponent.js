@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
 import { Button } from '@material-ui/core';
+import Graph from "react-graph-vis";
 import './GraphComponent.css';
 
 class GraphComponent extends React.Component {
@@ -8,8 +9,44 @@ class GraphComponent extends React.Component {
     constructor(props){
       super(props);
       this.state={
-        graph: {},
-        options: {},
+        graph: {
+            nodes: [
+                {id: 1, label: 'Node 1'},
+                {id: 2, label: 'Node 2'},
+                {id: 3, label: 'Node 3'},
+                {id: 4, label: 'Node 4'},
+                {id: 5, label: 'Node 5'}
+              ],
+            edges: [
+                {from: 1, to: 2},
+                {from: 1, to: 3},
+                {from: 2, to: 4},
+                {from: 2, to: 5}
+              ]
+          },
+        graphOptions: {
+            layout: {
+                hierarchical: false
+            },
+            edges: {
+                arrows: {
+                    to:     {enabled: false, scaleFactor:1, type:'arrow'},
+                    middle: {enabled: false, scaleFactor:1, type:'arrow'},
+                    from:   {enabled: false, scaleFactor:1, type:'arrow'}
+                  },
+                color: "#000000"
+            }        
+        },
+        graphEvents: {
+            select: function(event) {
+                var { nodes, edges } = event;
+                console.log("Selected nodes:");
+                console.log(nodes);
+                console.log("Selected edges:");
+                console.log(edges);
+            }
+    
+        },
         multiSelectEntityList: [
             {
                 value: true, 
@@ -58,6 +95,8 @@ class GraphComponent extends React.Component {
         this.setState({ multiSelectEntityList: entityList });
     }
 
+
+
     render(){
 
         const selectedOptionsStyles = {
@@ -76,7 +115,7 @@ class GraphComponent extends React.Component {
         
         return (
             <div>
-                <div className='rowC'>                
+                <div className='filter-container'>                
                 
                     <div className="dropdown-container">
                         <MultiSelectReact 
@@ -90,6 +129,14 @@ class GraphComponent extends React.Component {
                     </div>
 
                     <button className="filterButton">Filter Graph</button>
+                </div>
+                <div className='graph-container'>
+                    <Graph 
+                        graph={this.state.graph} 
+                        options={this.state.graphOptions} 
+                        events={this.state.graphEvents} 
+                        style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
+                        />
                 </div>
             </div>
         );
