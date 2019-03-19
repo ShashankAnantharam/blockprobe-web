@@ -7,6 +7,8 @@ import TimelineComponent from '../viso/TimelineComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
+import VisualizeOptionsList from '../viso/VisoList';
+import VisualizeOptionsListComponent from '../viso/VisoList';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -172,7 +174,7 @@ class ViewBlockprobePublicComponent extends React.Component {
 
             <Sidebar
                 sidebar={<div style={{width:'40vw'}}>
-                    Menu
+                    <VisualizeOptionsListComponent/>
                 </div>}
                 open={this.state.menuBarOpen}
                 onSetOpen={this.onSetMenuBlockSidebarOpen}
