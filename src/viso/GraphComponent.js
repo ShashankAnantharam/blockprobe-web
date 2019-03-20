@@ -58,32 +58,7 @@ class GraphComponent extends React.Component {
                 value: false, 
                 label: "None", 
                 id: -1
-            },
-          {
-            value: false, 
-            label: "aaa", 
-            id: 1
-          },
-        {
-            value: false, 
-            label: "bbb", 
-            id: 2
-          },
-          {
-              value: false, 
-              label: "ccc", 
-              id: 3
-            },
-            {
-              value: false, 
-              label: "bbb", 
-              id: 4
-            },
-            {
-                value: false, 
-                label: "ccc", 
-                id: 5
-              }
+            }
         ],
         currentSelectedBlocks: [
             {
@@ -110,6 +85,23 @@ class GraphComponent extends React.Component {
         }
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
+        this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+    }
+
+    generateMultiSelectEntityList(){
+        var count = 1;
+        var entityList = this.state.multiSelectEntityList;
+        Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
+            entityList.push({                
+                    value: false, 
+                    label: entityLabel, 
+                    id: count             
+            });
+            count++;
+        });
+        this.setState({
+            multiSelectEntityList: entityList
+        });
     }
 
     BlockEntity(entity){
@@ -217,8 +209,12 @@ class GraphComponent extends React.Component {
     }
 
 
+    componentDidMount(){
+        this.generateMultiSelectEntityList();
+    }
 
     render(){
+
 
         const selectedOptionsStyles = {
             color: "white",
