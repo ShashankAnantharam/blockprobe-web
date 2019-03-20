@@ -28,6 +28,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             blockprobeSummary: "",
             selectedBlock:"", 
             blockTree: {},
+            investigationGraph: {},
             timeline: [],
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
@@ -39,6 +40,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
         this.renderVisualisation = this.renderVisualisation.bind(this);
         this.setNewVisualisation = this.setNewVisualisation.bind(this);
+        this.addEdge = this.addEdge.bind(this);
+        this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -76,10 +79,19 @@ class ViewBlockprobePublicComponent extends React.Component {
          });
     }
 
-    traverseBlockTree(nodeId, timelineList, timelineBlockStatus){
+    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus){
         var currBlock = this.state.blockTree[nodeId];
 
         // console.log(nodeId);
+
+        //Generic block
+        if(currBlock.actionType!="REMOVE"){
+            blockList.push(currBlock.key);
+            blockStatus[currBlock.key]=true;
+        }
+        else{
+            blockStatus[currBlock.referenceBlock]=false;
+        }
 
         if(currBlock.blockDate!=null || currBlock.blockTime!=null){
             if(currBlock.actionType!="REMOVE"){
@@ -96,7 +108,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             timeline:timelineList
         });
         currBlock.children.forEach((childBlockId) => {
-            this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus);
+            this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus);
         });
     }
 
@@ -131,14 +143,73 @@ class ViewBlockprobePublicComponent extends React.Component {
         timelineList.reverse();
     }
 
+    addEdge(graph, block, entity_i, entity_j){
+
+        // edge from i to j
+        if(!(entity_j in graph[entity_i].edges)){
+            graph[entity_i].edges[entity_j]=[];
+        }
+        graph[entity_i].edges[entity_j].push(block.key);
+    }
+
+    createInvestigationGraph(blockList){
+        var graph = {};
+
+        blockList.forEach((blockKey) => {
+            var block = this.state.blockTree[blockKey];
+            if(block.entities!=null){
+
+                for(var i=0;i<block.entities.length;i++){
+                    var entityKey = block.entities[i].title;
+                    if(!(entityKey in graph)){
+                        graph[entityKey]={
+                            char: [],
+                            edges: {}
+                        }
+                    }
+                }
+
+                if(block.entities.length == 1){
+
+                    var entityKey = block.entities[0].title;
+                    graph[entityKey].char.push(block.key);
+                }
+                else if(block.entities.length > 1){
+
+                    for(var i=0;i<block.entities.length;i++){
+                        for(var j=i+1;j<block.entities.length;j++){
+                            this.addEdge(graph, block, 
+                                block.entities[i].title, block.entities[j].title);
+                            this.addEdge(graph, block, 
+                                block.entities[j].title, block.entities[i].title);
+                        }
+                    }
+                    
+                }
+            }
+        });
+ 
+        this.setState({
+            investigationGraph: graph
+        });
+        console.log(this.state.investigationGraph);
+    }
+
     createBlockprobe(snapshot){
         snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
         var timelineList = [];
         var timelineBlockStatus = {};
-        this.traverseBlockTree(this.state.genesisBlockId, timelineList, timelineBlockStatus);
+        var blockList = [];
+        var blockStatus = {};
+        this.traverseBlockTree(
+            this.state.genesisBlockId, 
+            timelineList, 
+            timelineBlockStatus,
+            blockList,
+            blockStatus);
 
-       // console.log(timelineList);
-       // console.log(timelineBlockStatus);
+        // console.log(blockList);
+        // console.log(blockStatus);
         
         var finalTimelineList = [];
         timelineList.forEach((id) => {
@@ -151,7 +222,18 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setState({
             timeline:[...finalTimelineList]
         });
-        // console.log(this.state.timeline);
+
+        var finalBlockList = [];
+        blockList.forEach((id) => {
+            if(blockStatus[id])
+            {
+                finalBlockList.push(this.state.blockTree[id]);
+            }
+        });
+
+        this.createInvestigationGraph(blockList);
+
+        // console.log(finalBlockList);
     }
 
     changeSelectedBlock = (block) =>{
