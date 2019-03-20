@@ -4,6 +4,8 @@ import { Button } from '@material-ui/core';
 import Graph from "react-graph-vis";
 import './GraphComponent.css';
 import { timingSafeEqual } from 'crypto';
+import { isNullOrUndefined } from 'util';
+import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 
 class GraphComponent extends React.Component {
 
@@ -12,18 +14,17 @@ class GraphComponent extends React.Component {
       this.state={
         graph: {
             nodes: [
-                {id: 1, label: 'Node 1'},
-                {id: 2, label: 'Node 2'},
-                {id: 3, label: 'Node 3'},
-                {id: 4, label: 'Node 4'},
-                {id: 5, label: 'Node 5'}
               ],
             edges: [
-                {from: 1, to: 2},
-                {from: 1, to: 3},
-                {from: 2, to: 4},
-                {from: 2, to: 5}
               ]
+          },
+        graphHelperMap: {
+            nodes:{
+
+            },
+            edges:{
+
+            }
           },
         graphOptions: {
             layout: {
@@ -39,14 +40,6 @@ class GraphComponent extends React.Component {
             }        
         },
         graphEvents: {
-            select: function(event) {
-                var { nodes, edges } = event;
-                console.log("Selected nodes:");
-                console.log(nodes);
-                console.log("Selected edges:");
-                console.log(edges);
-            }
-    
         },
         multiSelectEntityList: [
             {
@@ -61,40 +54,79 @@ class GraphComponent extends React.Component {
             }
         ],
         currentSelectedBlocks: [
-            {
-                title:'Test title',
-                entities:[
-                    {
-                        title:'Trump',
-                        type:'test'
-                    }
-                ]
-            },
-            {
-                title:'Test title',
-                entities:[
-                    {
-                        title:'Trump',
-                        type:'test'
-                    }
-                ]
-            }
         ],
         wasAllOptionSelected: true,
-        wasNoneOptionSelected:false
+        wasNoneOptionSelected:false,
+        testVar: -1
         }
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
+        this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
+        this.onSelectGraph = this.onSelectGraph.bind(this);
+        this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
     }
 
-    generateGraph(){
+    addBlocksForEdge(edge, blocksToBeSelected){
+        var edgeBlockList = this.props.investigationGraph[edge.from].edges[edge.to];
+
+        for(var i=0;i<edgeBlockList.length;i++){
+            const blockKey = edgeBlockList[i];
+            // console.log(blockKey);
+            const newBlock = this.props.blockTree[blockKey];
+            // console.log(newBlock);
+            blocksToBeSelected.push(newBlock);
+        }
+
+    }
+
+    onSelectGraph(event){
+        var { nodes, edges } = event;
+        
+        /*
+        console.log("Selected nodes:");
+        console.log(nodes);        
+        console.log("Selected edges:");
+        console.log(edges);
+        */
+        var blocksToBeSelected = [];
+
+        if(!isNullOrUndefined(edges)){
+            for(var i=0;i<edges.length;i++){
+                var edgeKey = edges[i];
+                var edge = this.state.graphHelperMap.edges[edgeKey];
+                this.addBlocksForEdge(edge, blocksToBeSelected);
+            }
+        }
+        this.setState({
+            currentSelectedBlocks: blocksToBeSelected
+        });
+    }
+
+    initializeGraphEvents(){
+        const context = this;
+        var events = {
+            
+            select: function(event) {
+                context.onSelectGraph(event);
+            }
+    
+        }
+
+        this.setState({
+            graphEvents: events
+        })
+    }
+
+    async generateGraph(){
         var isAllSelected = this.state.multiSelectEntityList[0].value;
         var newGraph = {
             nodes: [],
             edges: []
         };
+        var nodesMap = {};
+
         if(!this.state.multiSelectEntityList[1].value)
         {
             //If None is not selected only display graph
@@ -112,6 +144,7 @@ class GraphComponent extends React.Component {
                         id:count,
                         label:currEntity.label
                     });
+                    nodesMap[count] = currEntity.label;
 
                     //Add edge
                     var currEntityKey = currEntity.label;
@@ -121,7 +154,8 @@ class GraphComponent extends React.Component {
                             //edge is a selection, add it
                             newGraph.edges.push({
                                 from: selectedEntityLabels[edgeKey],
-                                to: count 
+                                to: count,
+                                id: selectedEntityLabels[edgeKey]+'-'+count
                             });
                         }
                     });
@@ -130,9 +164,24 @@ class GraphComponent extends React.Component {
             }
         }
 
-        this.setState({
-            graph: newGraph
+        var newGraphHelper = {
+            nodes: nodesMap,
+            edges: {}
+        }
+
+        for(var i=0;i<newGraph.edges.length;i++){
+            var edge = newGraph.edges[i];
+            var to_id = nodesMap[edge.to];
+            var from_id = nodesMap[edge.from];
+            newGraphHelper.edges[edge.id] = {from:from_id, to:to_id};
+        }
+
+        await this.setState({
+            graph: newGraph,
+            graphHelperMap: newGraphHelper 
         });
+        console.log(this.state.graphHelperMap);
+
     }
 
     generateMultiSelectEntityList(){
@@ -152,7 +201,6 @@ class GraphComponent extends React.Component {
     }
 
     BlockEntity(entity){
-        console.log(entity);
         return(
         <span className="graph-block-entity">
             {entity.title}
@@ -166,8 +214,6 @@ class GraphComponent extends React.Component {
          Create render template for the entities
          */
         var renderBlockEntities = '';
-        console.log("Entities");
-        console.log(singleBlock.entities);
         if(singleBlock.entities!=null && singleBlock.entities.length>0){            
             renderBlockEntities = singleBlock.entities.map((blockEntity) => 
                this.BlockEntity(blockEntity)
@@ -179,6 +225,9 @@ class GraphComponent extends React.Component {
         return(
         <div className="graph-block-div">
             <h4 className="graph-block-title">{singleBlock.title}</h4>
+            <p className="graph-block-text">
+                {singleBlock.summary}
+            </p>
             <div>
                 {renderBlockEntities}
             </div>
@@ -257,8 +306,10 @@ class GraphComponent extends React.Component {
 
 
     componentDidMount(){
+        this.initializeGraphEvents();
         this.generateMultiSelectEntityList();
         this.generateGraph();
+
     }
 
     render(){
@@ -309,6 +360,7 @@ class GraphComponent extends React.Component {
                       <div className="graph-block-list" style={{width:'45%'}}>
                             {renderBlocks}
                       </div>  
+                      
                 </div>
             </div>
         );

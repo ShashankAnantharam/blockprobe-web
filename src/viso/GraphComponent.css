@@ -45,10 +45,12 @@
     margin-left: 9px; 
     margin-top: 9px;
     margin-bottom: 15px;
+    font-weight: bold;
 }
 
 .graph-block-text{
-    text-align: center;
+    text-align: justify;
+    margin-left: 9px; 
 }
 
 .graph-block-div{
