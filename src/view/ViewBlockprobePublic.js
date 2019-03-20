@@ -228,11 +228,11 @@ class ViewBlockprobePublicComponent extends React.Component {
         blockList.forEach((id) => {
             if(blockStatus[id])
             {
-                finalBlockList.push(this.state.blockTree[id]);
+                finalBlockList.push(id);
             }
         });
 
-        this.createInvestigationGraph(blockList);
+        this.createInvestigationGraph(finalBlockList);
 
         // console.log(finalBlockList);
     }
