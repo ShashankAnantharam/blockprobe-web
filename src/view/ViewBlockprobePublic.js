@@ -12,6 +12,7 @@ import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
 import VisualizeOptionsListComponent from '../viso/VisoList';
 import { red } from '@material-ui/core/colors';
+import { timingSafeEqual } from 'crypto';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -263,7 +264,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         else if(this.state.selectedVisualisation == "graph"){
             return(
                 <div>
-                    <GraphComponent />
+                    <GraphComponent blockTree={this.state.blockTree} 
+                        investigationGraph={this.state.investigationGraph}/>
                 </div>
             );
         }
