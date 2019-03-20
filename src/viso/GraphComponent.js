@@ -86,6 +86,53 @@ class GraphComponent extends React.Component {
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+        this.generateGraph = this.generateGraph.bind(this);
+    }
+
+    generateGraph(){
+        var isAllSelected = this.state.multiSelectEntityList[0].value;
+        var newGraph = {
+            nodes: [],
+            edges: []
+        };
+        if(!this.state.multiSelectEntityList[1].value)
+        {
+            //If None is not selected only display graph
+            var selectedEntityLabels = {};
+
+            var count=0;
+            for(var i=2; i<this.state.multiSelectEntityList.length;i++){
+                var currEntity = this.state.multiSelectEntityList[i];
+                if(currEntity.value || isAllSelected){
+                    //selected Node
+                    selectedEntityLabels[currEntity.label]=count;
+                    
+                    //Add Node
+                    newGraph.nodes.push({
+                        id:count,
+                        label:currEntity.label
+                    });
+
+                    //Add edge
+                    var currEntityKey = currEntity.label;
+                    var edgeMap = this.props.investigationGraph[currEntityKey].edges;
+                    Object.keys(edgeMap).forEach(function(edgeKey) {
+                        if(edgeKey in selectedEntityLabels){
+                            //edge is a selection, add it
+                            newGraph.edges.push({
+                                from: selectedEntityLabels[edgeKey],
+                                to: count 
+                            });
+                        }
+                    });
+                    count++;
+                }
+            }
+        }
+
+        this.setState({
+            graph: newGraph
+        });
     }
 
     generateMultiSelectEntityList(){
@@ -211,6 +258,7 @@ class GraphComponent extends React.Component {
 
     componentDidMount(){
         this.generateMultiSelectEntityList();
+        this.generateGraph();
     }
 
     render(){
@@ -248,7 +296,7 @@ class GraphComponent extends React.Component {
                         />
                     </div>
 
-                    <button className="filterButton">Filter Graph</button>
+                    <button className="filterButton" onClick={this.generateGraph}>Filter Graph</button>
                 </div>
                 <div className='graph-container'>
                     <Graph 
