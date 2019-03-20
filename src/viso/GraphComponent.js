@@ -65,6 +65,7 @@ class GraphComponent extends React.Component {
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
+        this.addBlocksForNodeCharacteristic = this.addBlocksForNodeCharacteristic.bind(this);
         this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
         this.isValidBlock = this.isValidBlock.bind(this);
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
@@ -97,6 +98,26 @@ class GraphComponent extends React.Component {
 
     }
 
+    addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
+        var charBlockList = this.props.investigationGraph[node].char;
+
+        for(var i=0;i<charBlockList.length;i++){
+            const blockKey = charBlockList[i];
+
+            if(!(blockKey in blocksAdded)){
+
+                // Add block if it is not already in list
+                const newBlock = this.props.blockTree[blockKey];
+
+                if(this.isValidBlock(newBlock))
+                {
+                    blocksToBeSelected.push(newBlock);
+                }
+                blocksAdded[blockKey]=true;
+            }
+        }
+    }
+
     onSelectGraph(event){
         var { nodes, edges } = event;
         
@@ -116,6 +137,15 @@ class GraphComponent extends React.Component {
                 this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
             }
         }
+
+        if(!isNullOrUndefined(nodes)){
+            for(var i=0;i<nodes.length;i++){
+                var nodeKey = nodes[i];
+                var node = this.state.graphHelperMap.nodes[nodeKey];
+                this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
+            }
+        }
+
         this.setState({
             currentSelectedBlocks: blocksToBeSelected
         });
