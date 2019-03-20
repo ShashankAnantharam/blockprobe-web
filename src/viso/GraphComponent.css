@@ -25,3 +25,41 @@
     margin-top:0.5em;
     height:3.6em;
 }
+
+.graph-block-entity{
+    border-radius: 20px; 
+    padding: 10px;
+    background-color: rgb(117, 106, 214);
+    margin-left: 10px;
+    margin-top: 3px;
+    margin-bottom: 5px;
+    display:inline-block;
+    font-size:0.75em;
+    font-weight: bold;
+    color:white;
+    text-align: center;
+}
+
+.graph-block-title{
+    color:darkcyan;
+    margin-left: 9px; 
+    margin-top: 9px;
+    margin-bottom: 15px;
+}
+
+.graph-block-text{
+    text-align: center;
+}
+
+.graph-block-div{
+    border: 1px solid rgb(204, 234, 236);
+    margin-bottom: 8px;
+    box-shadow: 5px 10px darkcyan;
+    border-radius:10px;
+    background: rgb(204, 234, 236);
+}
+
+.graph-block-list{
+    margin-left:2%;
+    width:45%;
+}

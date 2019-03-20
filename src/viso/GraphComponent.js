@@ -85,11 +85,67 @@ class GraphComponent extends React.Component {
                 id: 5
               }
         ],
+        currentSelectedBlocks: [
+            {
+                title:'Test title',
+                entities:[
+                    {
+                        title:'Trump',
+                        type:'test'
+                    }
+                ]
+            },
+            {
+                title:'Test title',
+                entities:[
+                    {
+                        title:'Trump',
+                        type:'test'
+                    }
+                ]
+            }
+        ],
         wasAllOptionSelected: true,
         wasNoneOptionSelected:false
         }
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
+    }
+
+    BlockEntity(entity){
+        console.log(entity);
+        return(
+        <span className="graph-block-entity">
+            {entity.title}
+        </span>
+        );  
+    }
+
+    SingleBlock(singleBlock){
+        
+        /*
+         Create render template for the entities
+         */
+        var renderBlockEntities = '';
+        console.log("Entities");
+        console.log(singleBlock.entities);
+        if(singleBlock.entities!=null && singleBlock.entities.length>0){            
+            renderBlockEntities = singleBlock.entities.map((blockEntity) => 
+               this.BlockEntity(blockEntity)
+           );            
+       }
+       /*
+       */
+
+        return(
+        <div className="graph-block-div">
+            <h4 className="graph-block-title">{singleBlock.title}</h4>
+            <div>
+                {renderBlockEntities}
+            </div>
+            
+        </div>
+        );
     }
 
     handleAllAndNoneOptions(){
@@ -177,6 +233,9 @@ class GraphComponent extends React.Component {
 
         };
 
+        var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
+               this.SingleBlock(selectedBlock)
+           );            
         
         return (
             <div>
@@ -202,6 +261,10 @@ class GraphComponent extends React.Component {
                         events={this.state.graphEvents} 
                         style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
                         />
+
+                      <div className="graph-block-list" style={{width:'45%'}}>
+                            {renderBlocks}
+                      </div>  
                 </div>
             </div>
         );
