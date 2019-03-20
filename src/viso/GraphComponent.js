@@ -66,17 +66,33 @@ class GraphComponent extends React.Component {
         this.generateGraph = this.generateGraph.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
         this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
+        this.isValidBlock = this.isValidBlock.bind(this);
+        this.clickBlockFromList = this.clickBlockFromList.bind(this);
     }
 
-    addBlocksForEdge(edge, blocksToBeSelected){
+    isValidBlock(block){
+        if(isNullOrUndefined(block.title) || block.title=='')
+            return false;
+        return true;
+    }
+
+    addBlocksForEdge(edge, blocksToBeSelected, blocksAdded){
         var edgeBlockList = this.props.investigationGraph[edge.from].edges[edge.to];
 
         for(var i=0;i<edgeBlockList.length;i++){
             const blockKey = edgeBlockList[i];
             // console.log(blockKey);
-            const newBlock = this.props.blockTree[blockKey];
-            // console.log(newBlock);
-            blocksToBeSelected.push(newBlock);
+            if(!(blockKey in blocksAdded)){
+
+                // Add block if it is not already in list
+                const newBlock = this.props.blockTree[blockKey];
+
+                if(this.isValidBlock(newBlock))
+                {
+                    blocksToBeSelected.push(newBlock);
+                }
+                blocksAdded[blockKey]=true;
+            }
         }
 
     }
@@ -91,12 +107,13 @@ class GraphComponent extends React.Component {
         console.log(edges);
         */
         var blocksToBeSelected = [];
+        var blocksAdded = {};
 
         if(!isNullOrUndefined(edges)){
             for(var i=0;i<edges.length;i++){
                 var edgeKey = edges[i];
                 var edge = this.state.graphHelperMap.edges[edgeKey];
-                this.addBlocksForEdge(edge, blocksToBeSelected);
+                this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
             }
         }
         this.setState({
@@ -223,7 +240,8 @@ class GraphComponent extends React.Component {
        */
 
         return(
-        <div className="graph-block-div">
+        <div className="graph-block-div"
+        onClick={() => { this.clickBlockFromList(singleBlock)}}>
             <h4 className="graph-block-title">{singleBlock.title}</h4>
             <p className="graph-block-text">
                 {singleBlock.summary}
@@ -304,6 +322,9 @@ class GraphComponent extends React.Component {
         this.handleAllAndNoneOptions();
     }
 
+    clickBlockFromList(block){
+        this.props.selectBlock(block);
+    }
 
     componentDidMount(){
         this.initializeGraphEvents();

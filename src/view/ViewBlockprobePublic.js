@@ -257,7 +257,9 @@ class ViewBlockprobePublicComponent extends React.Component {
         {
             return (
                 <div className="blockprobe-body">
-                    <TimelineComponent timeline={this.state.timeline} selectBlock={this.changeSelectedBlock}/>
+                    <TimelineComponent 
+                    timeline={this.state.timeline} 
+                    selectBlock={this.changeSelectedBlock}/>
                 </div>
             );
         }
@@ -265,7 +267,8 @@ class ViewBlockprobePublicComponent extends React.Component {
             return(
                 <div>
                     <GraphComponent blockTree={this.state.blockTree} 
-                        investigationGraph={this.state.investigationGraph}/>
+                        investigationGraph={this.state.investigationGraph}
+                        selectBlock={this.changeSelectedBlock}/>
                 </div>
             );
         }
