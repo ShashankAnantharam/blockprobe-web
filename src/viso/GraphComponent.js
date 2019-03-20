@@ -3,6 +3,7 @@ import  MultiSelectReact  from 'multi-select-react';
 import { Button } from '@material-ui/core';
 import Graph from "react-graph-vis";
 import './GraphComponent.css';
+import { timingSafeEqual } from 'crypto';
 
 class GraphComponent extends React.Component {
 
@@ -83,16 +84,80 @@ class GraphComponent extends React.Component {
                 label: "ccc", 
                 id: 5
               }
-        ]
+        ],
+        wasAllOptionSelected: true,
+        wasNoneOptionSelected:false
         }
+
+        this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
+    }
+
+    handleAllAndNoneOptions(){
+        var prevAllOption = this.state.wasAllOptionSelected;
+        var prevNoneOption = this.state.wasNoneOptionSelected;
+        var showAll = false;
+        var showNone = false;
+        var someOptionIsEnabled = false;
+        var tempList = this.state.multiSelectEntityList;
+
+        for(var i=0; i<tempList.length; i++){
+            if(tempList[i].value==true){
+                if(tempList[i].id == 0){
+                    // All
+                    showAll = true;
+                }
+                else if(tempList[i].id == -1){
+                    //None
+                    showNone = true;
+                }
+                else{
+                    //Other element
+                    someOptionIsEnabled = true;
+
+                    if((showAll && prevAllOption) || (showNone && prevNoneOption)){
+                        //All/None option selected before, so no need now
+                        showAll = false;
+                        showNone = false;
+                        break;
+                    }
+                    else if(showNone || showAll){
+                        //All/None option not selected before but selected now, 
+                        // remove all other values
+                        tempList[i].value=false;                        
+                    }
+                }
+            }
+        }
+
+        if(showAll && !prevAllOption){
+            showNone = false;
+        }
+        if(showNone && !prevNoneOption){
+            showAll = false;
+        }
+        if(!showAll && !showNone && !someOptionIsEnabled){
+            
+            //No option is clicked
+            showNone = true;
+        }
+
+        tempList[0].value = showAll;
+        tempList[1].value = showNone;
+        this.setState({
+            multiSelectEntityList: tempList,
+            wasAllOptionSelected: showAll,
+            wasNoneOptionSelected: showNone
+        });
     }
 
     entityClicked(entityList) {
         this.setState({ multiSelectEntityList: entityList });
+        this.handleAllAndNoneOptions();
     }
     
     selectedBadgeClicked(entityList) {
         this.setState({ multiSelectEntityList: entityList });
+        this.handleAllAndNoneOptions();
     }
 
 
