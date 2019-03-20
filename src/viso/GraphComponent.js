@@ -357,7 +357,7 @@ class GraphComponent extends React.Component {
                         style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
                         />
 
-                      <div className="graph-block-list" style={{width:'45%'}}>
+                      <div className="graph-block-list"  id="graph-selected-block-list">
                             {renderBlocks}
                       </div>  
                       
