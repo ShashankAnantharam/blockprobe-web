@@ -59,6 +59,15 @@ class ViewBlockComponent extends React.Component {
         );
     }   
 
+    renderDateTime(dateTimeString){
+        if(dateTimeString!=""){
+            return (
+                <div class="block-datetime" data-tip data-for='dateTime'>{dateTimeString}</div>
+            );
+        }
+        return null;
+    }
+
     render(){
 
         var renderBlockEntities="";
@@ -90,7 +99,8 @@ class ViewBlockComponent extends React.Component {
                 <p class="block-summary">{this.props.selectedBlock.summary}</p>
             </div>
             
-            <div class="block-datetime" data-tip data-for='dateTime'>{dateTimeString}</div>
+            {this.renderDateTime(dateTimeString)}
+
             <div>{renderBlockEntities}</div>
             <div className="block-evidence-list">
                 {renderBlockEvidences}
