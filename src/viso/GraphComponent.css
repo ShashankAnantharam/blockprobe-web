@@ -9,7 +9,8 @@
 .graph-container{
     display:flex; 
     flex-direction:row;
-    margin-left:1em
+    margin-left:1em;
+    cursor: pointer;
 }
 
 .dropdown-container{
@@ -60,6 +61,7 @@
     box-shadow: 5px 10px darkcyan;
     border-radius:10px;
     background: rgb(204, 234, 236);
+    cursor: pointer;
 }
 
 .graph-block-list{
