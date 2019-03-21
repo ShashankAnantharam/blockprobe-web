@@ -9,9 +9,10 @@
 }
 
 .menu-button{
-    background:rgb(255, 255, 255);
+    background:rgb(2, 1, 54);
     border: none;
-    border-radius: 2em;
+    border-radius: 10px;
+    margin-left: 6px;
     size:4em;
-    color:rgb(3, 95, 91);
+    color:rgb(219, 243, 242);
 }

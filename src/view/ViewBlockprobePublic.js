@@ -313,7 +313,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                 <div>
                 <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
                 className="menu-button">
-                        <MoreIcon/>
+                        <MenuIcon/>
                     </button>
                 </div>
                 <div className="blockprobe-header"> 
