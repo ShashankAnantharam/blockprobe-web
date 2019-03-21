@@ -33,6 +33,16 @@ class VisualizeOptionsListComponent extends React.Component {
                         </Avatar>
                         <ListItemText primary="Timeline"/>
                     </ListItem>
+
+                    <ListItem button
+                    selected={this.props.selectedVisualisation == "graph"}
+                    onClick={() => { this.selectNewVisualisation("graph")}}
+                    >
+                    <Avatar>
+                        <AcUnitIcon />
+                        </Avatar>
+                        <ListItemText primary="Graph" />
+                    </ListItem>
                     
                     <ListItem button
                     selected={this.props.selectedVisualisation == "list"}
@@ -42,16 +52,6 @@ class VisualizeOptionsListComponent extends React.Component {
                         <ListIcon />
                         </Avatar>
                         <ListItemText primary="List" />
-                    </ListItem>
-                    
-                    <ListItem button
-                    selected={this.props.selectedVisualisation == "graph"}
-                    onClick={() => { this.selectNewVisualisation("graph")}}
-                    >
-                    <Avatar>
-                        <AcUnitIcon />
-                        </Avatar>
-                        <ListItemText primary="Graph" />
                     </ListItem>
                     
                     <ListItem button
