@@ -41,18 +41,22 @@ class FindConnectionsComponent extends React.Component {
         },
         graphEvents: {
         },
-        multiSelectEntityList: [
+        firstEntitySelectList: [
             {
                 value: true, 
-                label: "All", 
-                id: 0
-            },
-            {
-                value: false, 
                 label: "None", 
                 id: -1
             }
         ],
+        secondEntitySelectList: [
+            {
+                value: true, 
+                label: "None", 
+                id: -1
+            }
+        ],
+        firstSelected:'',
+        secondSelected:'',
         currentSelectedBlocks: [
         ],
         wasAllOptionSelected: true,
@@ -60,9 +64,8 @@ class FindConnectionsComponent extends React.Component {
         testVar: -1
         }
 
-        this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
-        this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+        this.generateEntityLists = this.generateEntityLists.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
         this.addBlocksForNodeCharacteristic = this.addBlocksForNodeCharacteristic.bind(this);
@@ -167,21 +170,21 @@ class FindConnectionsComponent extends React.Component {
     }
 
     async generateGraph(){
-        var isAllSelected = this.state.multiSelectEntityList[0].value;
+        var isAllSelected = this.state.firstEntitySelectList[0].value;
         var newGraph = {
             nodes: [],
             edges: []
         };
         var nodesMap = {};
 
-        if(!this.state.multiSelectEntityList[1].value)
+        if(!this.state.firstEntitySelectList[1].value)
         {
             //If None is not selected only display graph
             var selectedEntityLabels = {};
 
             var count=0;
-            for(var i=2; i<this.state.multiSelectEntityList.length;i++){
-                var currEntity = this.state.multiSelectEntityList[i];
+            for(var i=2; i<this.state.firstEntitySelectList.length;i++){
+                var currEntity = this.state.firstEntitySelectList[i];
                 if(currEntity.value || isAllSelected){
                     //selected Node
                     selectedEntityLabels[currEntity.label]=count;
@@ -231,19 +234,26 @@ class FindConnectionsComponent extends React.Component {
 
     }
 
-    generateMultiSelectEntityList(){
+    generateEntityLists(){
         var count = 1;
-        var entityList = this.state.multiSelectEntityList;
+        var firstEntityList = this.state.firstEntitySelectList;
+        var secondEntityList = this.state.secondEntitySelectList;
         Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
-            entityList.push({                
+            firstEntityList.push({                
                     value: false, 
                     label: entityLabel, 
                     id: count             
             });
+            secondEntityList.push({                
+                value: false, 
+                label: entityLabel, 
+                id: count             
+            });
             count++;
         });
         this.setState({
-            multiSelectEntityList: entityList
+            firstEntitySelectList: firstEntityList,
+            secondEntitySelectList: secondEntityList
         });
     }
 
@@ -284,72 +294,22 @@ class FindConnectionsComponent extends React.Component {
         );
     }
 
-    handleAllAndNoneOptions(){
-        var prevAllOption = this.state.wasAllOptionSelected;
-        var prevNoneOption = this.state.wasNoneOptionSelected;
-        var showAll = false;
-        var showNone = false;
-        var someOptionIsEnabled = false;
-        var tempList = this.state.multiSelectEntityList;
 
-        for(var i=0; i<tempList.length; i++){
-            if(tempList[i].value==true){
-                if(tempList[i].id == 0){
-                    // All
-                    showAll = true;
-                }
-                else if(tempList[i].id == -1){
-                    //None
-                    showNone = true;
-                }
-                else{
-                    //Other element
-                    someOptionIsEnabled = true;
 
-                    if((showAll && prevAllOption) || (showNone && prevNoneOption)){
-                        //All/None option selected before, so no need now
-                        showAll = false;
-                        showNone = false;
-                        break;
-                    }
-                    else if(showNone || showAll){
-                        //All/None option not selected before but selected now, 
-                        // remove all other values
-                        tempList[i].value=false;                        
-                    }
-                }
-            }
-        }
-
-        if(showAll && !prevAllOption){
-            showNone = false;
-        }
-        if(showNone && !prevNoneOption){
-            showAll = false;
-        }
-        if(!showAll && !showNone && !someOptionIsEnabled){
-            
-            //No option is clicked
-            showNone = true;
-        }
-
-        tempList[0].value = showAll;
-        tempList[1].value = showNone;
-        this.setState({
-            multiSelectEntityList: tempList,
-            wasAllOptionSelected: showAll,
-            wasNoneOptionSelected: showNone
-        });
-    }
-
-    entityClicked(entityList) {
-        this.setState({ multiSelectEntityList: entityList });
-        this.handleAllAndNoneOptions();
+    firstEntityClicked(entityList) {
+        this.setState({ firstEntitySelectList: entityList });
     }
     
-    selectedBadgeClicked(entityList) {
-        this.setState({ multiSelectEntityList: entityList });
-        this.handleAllAndNoneOptions();
+    firstSelectedBadgeClicked(entityList) {
+        this.setState({ firstEntitySelectList: entityList });
+    }
+
+    secondEntityClicked(entityList) {
+        this.setState({ secondEntitySelectList: entityList });
+    }
+    
+    secondSelectedBadgeClicked(entityList) {
+        this.setState({ secondEntitySelectList: entityList });
     }
 
     clickBlockFromList(block){
@@ -358,7 +318,7 @@ class FindConnectionsComponent extends React.Component {
 
     componentDidMount(){
         this.initializeGraphEvents();
-        this.generateMultiSelectEntityList();
+        this.generateEntityLists();
         this.generateGraph();
 
     }
@@ -389,13 +349,27 @@ class FindConnectionsComponent extends React.Component {
                 
                     <div className="find-connections-dropdown-container">
                         <MultiSelectReact 
-                        options={this.state.multiSelectEntityList}
-                        optionClicked={this.entityClicked.bind(this)}
-                        selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
+                        options={this.state.firstEntitySelectList}
+                        optionClicked={this.firstEntityClicked.bind(this)}
+                        selectedBadgeClicked={this.firstSelectedBadgeClicked.bind(this)}
                         selectedOptionsStyles={selectedOptionsStyles}
                         optionsListStyles={optionsListStyles} 
+                        isSingleSelect={true}
                         isTextWrap={false} 
                         />
+                        
+                    </div>
+
+                    <div className="find-connections-dropdown-container">
+                        <MultiSelectReact 
+                        options={this.state.secondEntitySelectList}
+                        optionClicked={this.secondEntityClicked.bind(this)}
+                        selectedBadgeClicked={this.secondSelectedBadgeClicked.bind(this)}
+                        selectedOptionsStyles={selectedOptionsStyles}
+                        optionsListStyles={optionsListStyles} 
+                        isSingleSelect={true}
+                        isTextWrap={false} 
+                        />    
                     </div>
 
                     <button className="filterButton" onClick={this.generateGraph}>Filter Graph</button>
