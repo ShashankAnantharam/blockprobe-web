@@ -55,8 +55,6 @@ class FindConnectionsComponent extends React.Component {
                 id: -1
             }
         ],
-        firstSelected:'',
-        secondSelected:'',
         currentSelectedBlocks: [
         ],
         wasAllOptionSelected: true,
@@ -67,6 +65,7 @@ class FindConnectionsComponent extends React.Component {
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
         this.generateEntityLists = this.generateEntityLists.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
+        this.findConnections = this.findConnections.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
         this.addBlocksForNodeCharacteristic = this.addBlocksForNodeCharacteristic.bind(this);
         this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
@@ -169,23 +168,51 @@ class FindConnectionsComponent extends React.Component {
         })
     }
 
+    findConnections(){
+
+        var rootElement = {};
+        var destElement = {};
+        var list = [];
+        for(var i=2; i<this.state.firstEntitySelectList.length;i++){
+            if(this.state.firstEntitySelectList[i].value){
+                rootElement = this.state.firstEntitySelectList[i];
+            }
+        }
+
+        for(var i=2; i<this.state.secondEntitySelectList.length;i++){
+            if(this.state.secondEntitySelectList[i].value){
+                destElement = this.state.secondEntitySelectList[i];
+            }
+        }
+
+        //do bfs here
+
+        list.push(rootElement);
+        list.push(destElement);
+
+        return list;
+
+    }
+
     async generateGraph(){
-        var isAllSelected = this.state.firstEntitySelectList[0].value;
         var newGraph = {
             nodes: [],
             edges: []
         };
         var nodesMap = {};
 
-        if(!this.state.firstEntitySelectList[1].value)
+        var selectedEntityList = this.findConnections();
+        console.log(selectedEntityList);
+
+        if(selectedEntityList.length >= 2)
         {
             //If None is not selected only display graph
             var selectedEntityLabels = {};
 
             var count=0;
-            for(var i=2; i<this.state.firstEntitySelectList.length;i++){
-                var currEntity = this.state.firstEntitySelectList[i];
-                if(currEntity.value || isAllSelected){
+            for(var i=0; i<selectedEntityList.length;i++){
+                var currEntity = selectedEntityList[i];
+                if(currEntity.value){
                     //selected Node
                     selectedEntityLabels[currEntity.label]=count;
                     
