@@ -21,6 +21,14 @@
     margin-top:0.5em;
 }
 
+.find-connections-dropdown-container{
+    width:35%; 
+    height:auto; 
+    font-size:1.4em; 
+    margin-left:1em;
+    margin-top:0.5em;
+}
+
 .filterButton{
     margin-left:6em;
     margin-top:0.5em;

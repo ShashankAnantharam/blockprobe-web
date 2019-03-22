@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
+import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -269,6 +270,16 @@ class ViewBlockprobePublicComponent extends React.Component {
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}/>
+                </div>
+            );
+        }
+        else if(this.state.selectedVisualisation == "find_connections"){
+            return(
+                <div>
+                    <FindConnectionsComponent blockTree={this.state.blockTree} 
+                        investigationGraph={this.state.investigationGraph}
+                        selectBlock={this.changeSelectedBlock}
+                    />
                 </div>
             );
         }
