@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
-import { Button } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 import Graph from "react-graph-vis";
 import './GraphComponent.css';
 import { timingSafeEqual } from 'crypto';
@@ -65,6 +65,7 @@ class FindConnectionsComponent extends React.Component {
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
         this.generateEntityLists = this.generateEntityLists.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
+        this.getPathViaBfs = this.getPathViaBfs.bind(this);
         this.findConnections = this.findConnections.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
         this.addBlocksForNodeCharacteristic = this.addBlocksForNodeCharacteristic.bind(this);
@@ -84,7 +85,6 @@ class FindConnectionsComponent extends React.Component {
 
         for(var i=0;i<edgeBlockList.length;i++){
             const blockKey = edgeBlockList[i];
-            // console.log(blockKey);
             if(!(blockKey in blocksAdded)){
 
                 // Add block if it is not already in list
@@ -122,13 +122,6 @@ class FindConnectionsComponent extends React.Component {
 
     onSelectGraph(event){
         var { nodes, edges } = event;
-        
-        /*
-        console.log("Selected nodes:");
-        console.log(nodes);        
-        console.log("Selected edges:");
-        console.log(edges);
-        */
         var blocksToBeSelected = [];
         var blocksAdded = {};
 
@@ -168,27 +161,136 @@ class FindConnectionsComponent extends React.Component {
         })
     }
 
+    getPathViaBfs(startNode, destNode){
+        
+        //st has attributes 
+        var st=[];
+
+        //blocksVisited has detail here such as blockCount, hops and prevDetail
+        var blocksVisited = {};
+
+        //init map and st
+        blocksVisited[startNode]={
+            id: startNode,
+            blockCount: 0,
+            hops: 0,
+            prevNode: ''
+        };
+        st.push(startNode);
+
+        var invGraph = this.props.investigationGraph;
+        var i =0;
+        while(1){
+            if(i >= st.length || st[i]==destNode)
+                break;
+
+            
+            var currNodeKey = st[i];
+            var currNode = blocksVisited[currNodeKey];
+            var currHops = currNode.hops;
+            var currblockCount = currNode.blockCount;
+
+            //get edges
+            var edgeMap = invGraph[currNodeKey].edges;
+            Object.keys(edgeMap).forEach(function(edgeKey) {
+
+                var shouldUpdateEdgeNode = false;
+
+                if(!(edgeKey in blocksVisited)){
+                    shouldUpdateEdgeNode = true;
+
+                    //first time visiting Node. push to stack 
+                    st.push(edgeKey);
+                }
+                else{
+                    if( (
+                        //New hops is lesser than existing
+                        blocksVisited[edgeKey].hops > currHops+1
+                        ) || 
+                        (
+                            //Hops equal but new block count more than existing
+                            (blocksVisited[edgeKey].hops == currHops+1)
+                            &&
+                            (currblockCount + 
+                                invGraph[currNodeKey].edges[edgeKey].length 
+                                > blocksVisited[edgeKey].blockCount) 
+                        )
+                    ){
+                        shouldUpdateEdgeNode = true;
+                    }
+                }
+
+                if(shouldUpdateEdgeNode){
+                    blocksVisited[edgeKey] = {
+                        id: edgeKey,
+                        blockCount: currblockCount + invGraph[currNodeKey].edges[edgeKey].length,
+                        hops: currHops + 1,
+                        prevNode: currNodeKey
+                    };
+                }
+                
+            });
+            
+            i++;
+        }
+
+        var pathNodeKeys = {};;
+        var curr = destNode;
+        while((curr in blocksVisited) && (curr!=startNode)){
+            pathNodeKeys[curr]=true;
+            curr = blocksVisited[curr].prevNode;
+        }
+
+        //console.log("PathNodeKeys");
+        //console.log(pathNodeKeys);
+
+        var list=[];
+        if(curr==startNode){
+            //path found
+
+            pathNodeKeys[startNode]=true;
+
+            for(var i=1; i<this.state.firstEntitySelectList.length;i++){
+                if(this.state.firstEntitySelectList[i].label in pathNodeKeys){
+                    //Entity in path
+                    var pathEntity = {
+                        value: true,
+                        label: this.state.firstEntitySelectList[i].label,
+                        id: this.state.firstEntitySelectList[i].id
+                    };
+                    list.push(pathEntity);
+                }
+            }
+        }
+
+        return list;
+
+    }
+
     findConnections(){
 
         var rootElement = {};
         var destElement = {};
         var list = [];
-        for(var i=2; i<this.state.firstEntitySelectList.length;i++){
+        for(var i=1; i<this.state.firstEntitySelectList.length;i++){
             if(this.state.firstEntitySelectList[i].value){
                 rootElement = this.state.firstEntitySelectList[i];
             }
         }
 
-        for(var i=2; i<this.state.secondEntitySelectList.length;i++){
+        for(var i=1; i<this.state.secondEntitySelectList.length;i++){
             if(this.state.secondEntitySelectList[i].value){
                 destElement = this.state.secondEntitySelectList[i];
             }
         }
 
         //do bfs here
+        list = this.getPathViaBfs(rootElement.label, destElement.label);
 
-        list.push(rootElement);
-        list.push(destElement);
+        if(list.length == 0){
+            list.push(rootElement);
+            list.push(destElement);
+        }
 
         return list;
 
@@ -202,7 +304,6 @@ class FindConnectionsComponent extends React.Component {
         var nodesMap = {};
 
         var selectedEntityList = this.findConnections();
-        console.log(selectedEntityList);
 
         if(selectedEntityList.length >= 2)
         {
@@ -257,7 +358,6 @@ class FindConnectionsComponent extends React.Component {
             graph: newGraph,
             graphHelperMap: newGraphHelper 
         });
-        console.log(this.state.graphHelperMap);
 
     }
 
