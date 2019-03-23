@@ -499,7 +499,7 @@ class FindConnectionsComponent extends React.Component {
                         />    
                     </div>
 
-                    <button className="filterButton" onClick={this.generateGraph}>Filter Graph</button>
+                    <button className="filterButton" onClick={this.generateGraph}>Find Connection</button>
                 </div>
                 <div className='graph-container'>
                     <Graph 
