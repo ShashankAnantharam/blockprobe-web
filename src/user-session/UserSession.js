@@ -36,12 +36,12 @@ class UserSession extends React.Component {
             this.setState({
                 isUserSignedIn: !!user
             });
-            
+
             var providerId = '';
             var uId = '';
             
-            if(isNullOrUndefined(firebase.auth().currentUser) && 
-            isNullOrUndefined(firebase.auth().currentUser.providerData) &&
+            if(!isNullOrUndefined(firebase.auth().currentUser) && 
+            !isNullOrUndefined(firebase.auth().currentUser.providerData) &&
             firebase.auth().currentUser.providerData.length>0){
                 providerId = firebase.auth().currentUser.providerData[0].providerId;
             }
