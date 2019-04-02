@@ -13,6 +13,18 @@ class VisualizeOptionsListComponent extends React.Component {
 
     constructor(props){
       super(props);
+
+      /* Add later if needed
+      <ListItem button
+                    selected={this.props.selectedVisualisation == "list"}
+                    onClick={() => { this.selectNewVisualisation("list")}}                    
+                    >
+                    <Avatar>
+                        <ListIcon />
+                        </Avatar>
+                        <ListItemText primary="List" />
+                    </ListItem>
+                    */
     }
 
     selectNewVisualisation(newVisualisation){
@@ -52,16 +64,6 @@ class VisualizeOptionsListComponent extends React.Component {
                         <GroupIcon />
                         </Avatar>
                         <ListItemText primary="Find Connections" />
-                    </ListItem>
-
-                    <ListItem button
-                    selected={this.props.selectedVisualisation == "list"}
-                    onClick={() => { this.selectNewVisualisation("list")}}                    
-                    >
-                    <Avatar>
-                        <ListIcon />
-                        </Avatar>
-                        <ListItemText primary="List" />
                     </ListItem>
 
                     </List>
