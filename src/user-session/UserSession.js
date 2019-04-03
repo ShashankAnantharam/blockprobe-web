@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { isNullOrUndefined } from 'util';
-
+import './UserSession.css';
 
 class UserSession extends React.Component {
 
@@ -10,9 +10,13 @@ class UserSession extends React.Component {
         super(props);
         this.state={
             isUserSignedIn: false,
+            showLogin: false,
             userId: '',
             providerId: ''
         }
+        this.loggedInView = this.loggedInView.bind(this);
+        this.loggedOutView = this.loggedOutView.bind(this);
+        this.clickLoginOption = this.clickLoginOption.bind(this);
     }
 
     uiConfig = {
@@ -28,6 +32,12 @@ class UserSession extends React.Component {
             //...
           }      
         }
+      }
+
+      clickLoginOption(){
+          this.setState({
+              showLogin: true
+          });
       }
 
       componentDidMount(){
@@ -56,25 +66,65 @@ class UserSession extends React.Component {
             console.log(firebase.auth().currentUser);
           })
       }
+
+
+
+      loggedInView(){
+          return (
+            <div>
+                <header className="toolbar">
+                    <nav className="toolbar__navigation">
+                        <div></div>
+                        <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
+                        <div className="spacer" />
+                        <div className="toolbar__navigation-items">
+                            <ul>
+                                <li><a href="/">{this.state.userId}</a></li>
+                                <li><a onClick={() => firebase.auth().signOut()}>Logout</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+                <main style={{marginTop:'80px'}}>
+                        Content
+                </main>
+            </div>
+          );
+      }
+
+      loggedOutView(){
+          return (
+              <div>
+                <header className="toolbar">
+                    <nav className="toolbar__navigation">
+                        <div></div>
+                        <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
+                        <div className="spacer" />
+                        <div className="toolbar__navigation-items">
+                            <ul>
+                                <li><a onClick={() => this.clickLoginOption()}>Login</a></li>
+                            </ul>
+                        </div>
+                    </nav>                 
+                </header>
+                <main style={{marginTop:'80px'}}>
+                        {this.state.showLogin?
+                            <StyleFirebaseAuth
+                            uiConfig={this.uiConfig}
+                            firebaseAuth={firebase.auth()}
+                            /> : null 
+                        }
+                </main>
+              </div>
+          );
+      }
     render(){
         return (
             <div>
                 {this.state.isUserSignedIn?
-                    <div>
-                        <button onClick={() => firebase.auth().signOut()}>
-                        Log Out
-                        </button>
-                        <h1>{firebase.auth().currentUser.phoneNumber}</h1>
-                        <span>{firebase.auth().currentUser.providerData[0].providerId}</span>
-                    </div>
+                    this.loggedInView()
                         :
-                    <div>
-                            <StyleFirebaseAuth
-                            uiConfig={this.uiConfig}
-                            firebaseAuth={firebase.auth()}
-                            />
-      
-                    </div>
+                    this.loggedOutView()
                 }
             </div>
         );
