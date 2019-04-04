@@ -25,6 +25,7 @@ class UserSession extends React.Component {
         this.selectBlockprobe = this.selectBlockprobe.bind(this);
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
+        this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
     }
 
     uiConfig = {
@@ -64,6 +65,17 @@ class UserSession extends React.Component {
         });
       }
 
+      removeBlockprobeFromList(doc){
+        var blockprobeDic = this.state.blockprobes;
+        if(doc.id in blockprobeDic)
+        {
+            delete blockprobeDic[doc.id];
+        }
+        this.setState({
+            blockprobes:blockprobeDic
+        });
+      }
+
       createBlockprobeList(snapshot){
           snapshot.forEach((doc) => ( this.addBlockprobeToList(doc))); 
       }
@@ -73,11 +85,25 @@ class UserSession extends React.Component {
 
             var arr= [];
 
-            //change to listener
-            firebase.firestore().collection("Users").doc(this.state.userId)
-                .collection("blockprobes").get().then((snapshot) => (
-                    this.createBlockprobeList(snapshot)
-                ));
+                firebase.firestore().collection("Users").doc(this.state.userId)
+                .collection("blockprobes").onSnapshot(
+                    querySnapshot => {
+                        querySnapshot.docChanges().forEach(change => {
+                            if (change.type === 'added') {
+                                console.log('New block: ', change.doc.data());
+                                this.addBlockprobeToList(change.doc);
+                              }
+                              if (change.type === 'modified') {
+                                console.log('Modified block: ', change.doc.data());
+                                this.addBlockprobeToList(change.doc);
+                              }
+                              if (change.type === 'removed') {
+                                console.log('Removed block: ', change.doc.data());
+                                this.removeBlockprobeFromList(change.doc);
+                              }
+                        })
+                    }
+                );    
             
 
         }
@@ -111,7 +137,7 @@ class UserSession extends React.Component {
 
             this.setState({
                 providerId: providerId,
-                userId: uId,
+                userId: uId
               });
            // console.log(firebase.auth().currentUser);
 
