@@ -37,6 +37,19 @@
     padding-left: 1.5rem;
 }
 
+.logged-in-content{
+    margin-top:66px; 
+    position:fixed; 
+    height:93%; 
+    width: 100%;
+}
+
+.blockprobe-list-container{
+    width:100%; 
+    height:inherit; 
+    overflow-y:scroll;
+}
+
 .spacer {
     flex: 1;
 }

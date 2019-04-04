@@ -126,7 +126,7 @@ class UserSession extends React.Component {
          // console.log(this.state.blockprobes);
          
         return (
-            <div style={{width: '100%'}}>
+            <div className="blockprobe-list-container">
                 {this.state.blockprobes?
             <UserBlockprobesComponent 
             blockprobes={this.state.blockprobes}
@@ -143,6 +143,7 @@ class UserSession extends React.Component {
       loggedInView(){
           return (
             <div>
+                <div style={{display: 'block'}}>
                 <header className="toolbar">
                     <nav className="toolbar__navigation">
                         <div></div>
@@ -156,13 +157,16 @@ class UserSession extends React.Component {
                         </div>
                     </nav>
                 </header>
-                <main style={{marginTop:'80px'}}>
+                </div>
+                <div>
+                <div className="logged-in-content">
                     {this.state.selectedBlockprobeId == ''?
                         this.loggedInContent()
                         :
                         <div>{this.state.selectedBlockprobeId}</div>    
                     }
-                </main>
+                </div>
+                </div>
             </div>
           );
       }
