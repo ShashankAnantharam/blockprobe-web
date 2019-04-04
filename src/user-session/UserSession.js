@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { isNullOrUndefined } from 'util';
 import './UserSession.css';
+import UserBlockprobesComponent from './UserBlockprobes';
 
 class UserSession extends React.Component {
 
@@ -11,12 +12,19 @@ class UserSession extends React.Component {
         this.state={
             isUserSignedIn: false,
             showLogin: false,
+            selectedBlockprobeId: '',
             userId: '',
-            providerId: ''
+            providerId: '',
+            blockprobes: {}
         }
         this.loggedInView = this.loggedInView.bind(this);
+        this.loggedInContent = this.loggedInContent.bind(this);
         this.loggedOutView = this.loggedOutView.bind(this);
         this.clickLoginOption = this.clickLoginOption.bind(this);
+        this.getBlockprobes = this.getBlockprobes.bind(this);
+        this.selectBlockprobe = this.selectBlockprobe.bind(this);
+        this.createBlockprobeList = this.createBlockprobeList.bind(this);
+        this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
     }
 
     uiConfig = {
@@ -28,7 +36,6 @@ class UserSession extends React.Component {
           signInSuccess: () => false,
           signInSuccessWithAuthResult: function(authResult, redirectUrl) {
             
-            console.log("Here");
             //...
           }      
         }
@@ -38,6 +45,49 @@ class UserSession extends React.Component {
           this.setState({
               showLogin: true
           });
+      }
+
+      addBlockprobeToList(doc){
+        var blockprobeDic = this.state.blockprobes;
+        var newBlockprobe = {
+            id: doc.data().id,
+            title: doc.data().title,
+            summary: doc.data().summary,
+            timestamp: doc.data().timestamp,
+            isActive: doc.data().isActive,
+            active: doc.data().active,
+            permit: doc.data().permit
+        };
+        blockprobeDic[doc.id]=newBlockprobe;
+        this.setState({
+            blockprobes:blockprobeDic
+        });
+      }
+
+      createBlockprobeList(snapshot){
+          snapshot.forEach((doc) => ( this.addBlockprobeToList(doc))); 
+      }
+
+      getBlockprobes(){
+        if(this.state.isUserSignedIn && (this.state.selectedBlockprobeId == '')){
+
+            var arr= [];
+
+            //change to listener
+            firebase.firestore().collection("Users").doc(this.state.userId)
+                .collection("blockprobes").get().then((snapshot) => (
+                    this.createBlockprobeList(snapshot)
+                ));
+            
+
+        }
+      }
+
+      selectBlockprobe(blockprobeId){
+          this.setState({
+              selectedBlockprobeId: blockprobeId
+          })
+
       }
 
       componentDidMount(){
@@ -63,10 +113,31 @@ class UserSession extends React.Component {
                 providerId: providerId,
                 userId: uId,
               });
-            console.log(firebase.auth().currentUser);
+           // console.log(firebase.auth().currentUser);
+
+            if(!!user && !isNullOrUndefined(firebase.auth().currentUser)){
+                this.getBlockprobes();
+            }
           })
       }
 
+
+      loggedInContent(){
+         // console.log(this.state.blockprobes);
+         
+        return (
+            <div style={{width: '100%'}}>
+                {this.state.blockprobes?
+            <UserBlockprobesComponent 
+            blockprobes={this.state.blockprobes}
+            selectedBlockprobe = {this.state.selectedBlockprobeId}
+            selectBlockprobe = {this.selectBlockprobe}
+            />:
+            null
+            }
+            </div>
+        );
+      }
 
 
       loggedInView(){
@@ -86,7 +157,11 @@ class UserSession extends React.Component {
                     </nav>
                 </header>
                 <main style={{marginTop:'80px'}}>
-                        Content
+                    {this.state.selectedBlockprobeId == ''?
+                        this.loggedInContent()
+                        :
+                        <div>{this.state.selectedBlockprobeId}</div>    
+                    }
                 </main>
             </div>
           );
