@@ -4,6 +4,7 @@ import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { isNullOrUndefined } from 'util';
 import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
+import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 
 class UserSession extends React.Component {
 
@@ -189,7 +190,9 @@ class UserSession extends React.Component {
                     {this.state.selectedBlockprobeId == ''?
                         this.loggedInContent()
                         :
-                        <div>{this.state.selectedBlockprobeId}</div>    
+                        <div className="blockprobe-list-container">
+                        <ViewBlockprobePrivateComponent bId={this.state.selectedBlockprobeId} />
+                        </div>    
                     }
                 </div>
                 </div>
