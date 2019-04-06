@@ -6,6 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import AcUnitIcon from '@material-ui/icons/AcUnit'; 
 import GroupIcon from '@material-ui/icons/Group'; 
+import BuildIcon from '@material-ui/icons/Build'; 
+import CreateIcon from '@material-ui/icons/Create'; 
 import ListIcon from '@material-ui/icons/List';
 import './VisoList.css';
 
@@ -13,6 +15,19 @@ class VisualizeOptionsListComponent extends React.Component {
 
     constructor(props){
       super(props);
+
+      this.state={
+          shouldShowOptions:false
+      }
+
+      this.renderOptions = this.renderOptions.bind(this);
+
+      if(!props.isViewOnly){
+          //View only
+            this.setState({
+                shouldShowOptions:true
+            })
+      }
 
       /* Add later if needed
       <ListItem button
@@ -31,6 +46,35 @@ class VisualizeOptionsListComponent extends React.Component {
         this.props.selectVisualisation(newVisualisation);
     }
 
+    renderOptions(){
+        return(
+            <div>
+                <h3 style={{textAlign:"center"}}>OPTIONS</h3>
+                <List className="">
+                    <ListItem button 
+                    selected={this.props.selectedVisualisation == "contributions"}
+                    onClick={() => { this.selectNewVisualisation("contributions")}}
+                    >
+                    <Avatar>
+                        <CreateIcon />
+                    </Avatar>
+                        <ListItemText primary="My Contributions"/>
+                    </ListItem>
+
+                    <ListItem button 
+                    selected={this.props.selectedVisualisation == "manage_blockprobe"}
+                    onClick={() => { this.selectNewVisualisation("manage_blockprobe")}}
+                    >
+                    <Avatar>
+                        <BuildIcon />
+                    </Avatar>
+                        <ListItemText primary="Manage Blockprobe"/>
+                    </ListItem>
+                </List>
+            </div>
+        )
+    }
+
     render(){
         return(
             <div>
@@ -42,7 +86,7 @@ class VisualizeOptionsListComponent extends React.Component {
                     >
                     <Avatar>
                         <TimelineIcon />
-                        </Avatar>
+                    </Avatar>
                         <ListItemText primary="Timeline"/>
                     </ListItem>
 
@@ -52,7 +96,7 @@ class VisualizeOptionsListComponent extends React.Component {
                     >
                     <Avatar>
                         <AcUnitIcon />
-                        </Avatar>
+                    </Avatar>
                         <ListItemText primary="Graph" />
                     </ListItem>
                     
@@ -62,11 +106,16 @@ class VisualizeOptionsListComponent extends React.Component {
                     >      
                     <Avatar>
                         <GroupIcon />
-                        </Avatar>
+                    </Avatar>
                         <ListItemText primary="Find Connections" />
                     </ListItem>
 
                     </List>
+                    {!this.props.isViewOnly? 
+                        this.renderOptions()
+                        :
+                        null    
+                    }
             </div>
         );
     }

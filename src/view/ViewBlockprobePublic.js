@@ -312,7 +312,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                 sidebar={<div style={{width:'40vw'}}>
                     <VisualizeOptionsListComponent 
                     selectVisualisation={this.setNewVisualisation}
-                    selectedVisualisation={this.state.selectedVisualisation}/>
+                    selectedVisualisation={this.state.selectedVisualisation}
+                    isViewOnly={true}/>
                 </div>}
                 open={this.state.menuBarOpen}
                 onSetOpen={this.onSetMenuBlockSidebarOpen}

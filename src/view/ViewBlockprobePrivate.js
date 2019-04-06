@@ -326,9 +326,51 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     render(){
-        return(
+        return (
             <div>
-            {this.renderVisualisation()}
+
+            <Sidebar
+                sidebar={<div style={{width:'30vw'}}>
+                <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                </div>}
+                open={this.state.selectedBlockSidebarOpen}
+                onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                pullRight={true}
+                defaultSidebarWidth='200px'
+                styles={{ sidebar: { background: "lightcyan", position:'fixed' } }}
+            >
+
+            </Sidebar>
+
+            <Sidebar
+                sidebar={<div style={{width:'40vw'}}>
+                    <VisualizeOptionsListComponent 
+                    selectVisualisation={this.setNewVisualisation}
+                    selectedVisualisation={this.state.selectedVisualisation}
+                    isViewOnly={false}/>
+                </div>}
+                open={this.state.menuBarOpen}
+                onSetOpen={this.onSetMenuBlockSidebarOpen}
+                pullRight={false}
+                defaultSidebarWidth='200px'
+                styles={{ sidebar: { background:"white", position:'fixed' } }}
+            >
+
+                <div>
+                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
+                className="menu-button">
+                        <MenuIcon/>
+                    </button>
+                </div>
+                <div className="blockprobe-header"> 
+                    <h2>{this.state.blockprobeTitle}</h2>
+                    <h4>{this.state.blockprobeSummary}</h4>
+                </div>
+
+                {this.renderVisualisation()}
+            </Sidebar>
+
+
             </div>
         );
     }

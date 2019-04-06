@@ -1,0 +1,18 @@
+.blockprobe-header{
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top:-20px;
+}
+
+.blockprobe-body{
+    margin-top: 4em;
+}
+
+.menu-button{
+    background:rgb(2, 1, 54);
+    border: none;
+    border-radius: 10px;
+    margin-left: 6px;
+    size:4em;
+    color:rgb(219, 243, 242);
+}
