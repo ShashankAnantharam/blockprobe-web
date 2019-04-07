@@ -62,8 +62,19 @@ class SingleUserBlock extends React.Component {
         return(
             <div onClick={this.clickBlockInDraft}>
                 {this.state.isBlockClicked?
-                    <div>Clicked</div>:
-                    <div>NotClicked</div>}
+                    <div>Clicked</div>                    
+                    :
+                    <div>
+                        <ListItem button 
+                            onClick={() => { this.clickBlockInDraft()}}
+                            style={{width:'100%'}}
+                            >
+                            <ListItemText 
+                            primary={this.props.block.title} 
+                            secondary={this.props.block.summary}/>
+                        </ListItem>
+                    </div>
+                }
             </div>
         )
     }
