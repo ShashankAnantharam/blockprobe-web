@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import './ViewBlock.css';
+import { isNullOrUndefined } from 'util';
+
 
 class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        console.log(this.props.selectedBlock);
+        this.state={
+            chatList: []
+        }
+        // console.log(this.props.selectedBlock);
+
     }
 
     getDateTimeString(timelineBlock){
@@ -68,6 +74,7 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
+
     render(){
 
         var renderBlockEntities="";
@@ -109,7 +116,6 @@ class ViewBlockComponent extends React.Component {
             <ReactTooltip id='dateTime' type='error' place="left" className="hover-template">
                 <span>Date and Time associated with the event described by this block.</span>
             </ReactTooltip>
-
             </div>
         );
     }
