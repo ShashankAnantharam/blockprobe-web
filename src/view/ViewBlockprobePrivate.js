@@ -15,6 +15,7 @@ import VisualizeOptionsListComponent from '../viso/VisoList';
 import { red } from '@material-ui/core/colors';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
+import UserBlocksComponent from '../user-session/UserBlocksComponent';
 
 class ViewBlockprobePrivateComponent extends React.Component {
 
@@ -313,6 +314,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <FindConnectionsComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
+                    />
+                </div>
+            );
+        }
+        else if(this.state.selectedVisualisation == "contributions"){
+            return(
+                <div>
+                    <UserBlocksComponent 
+                    uId={this.props.uId}
+                    bId={this.props.bId}
                     />
                 </div>
             );

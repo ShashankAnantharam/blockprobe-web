@@ -18,7 +18,8 @@
     "react-scripts": "^2.1.8",
     "react-sidebar": "^3.0.2",
     "react-tooltip": "^3.10.0",
-    "react-vertical-timeline-component": "^2.3.1"
+    "react-vertical-timeline-component": "^2.3.1",
+    "sha.js": "^2.4.11"
   },
   "scripts": {
     "start": "react-scripts start",

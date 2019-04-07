@@ -6,6 +6,8 @@ import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 
+
+
 class UserSession extends React.Component {
 
     constructor(props){
@@ -191,7 +193,9 @@ class UserSession extends React.Component {
                         this.loggedInContent()
                         :
                         <div className="blockprobe-list-container">
-                        <ViewBlockprobePrivateComponent bId={this.state.selectedBlockprobeId} />
+                        <ViewBlockprobePrivateComponent 
+                        bId={this.state.selectedBlockprobeId} 
+                        uId={this.state.userId}/>
                         </div>    
                     }
                 </div>
