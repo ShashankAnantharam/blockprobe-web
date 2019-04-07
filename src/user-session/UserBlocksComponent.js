@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import SingleBlock from '../view/SingleBlock';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -163,7 +165,9 @@ class UserBlocksComponent extends React.Component {
                 <div>TO REVIEW</div>
 
                 <div>SUCCESSFUL</div>
-                <div>{successBlocksListRender}</div>
+                <div>
+                    <List>{successBlocksListRender}</List>
+                </div>
 
             </div>
         );

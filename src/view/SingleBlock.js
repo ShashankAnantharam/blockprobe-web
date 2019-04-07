@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import './SingleBlock.css';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 class SingleUserBlock extends React.Component {
 
@@ -37,17 +40,14 @@ class SingleUserBlock extends React.Component {
        }
 
        return(
-        <div className="user-block-div"
-        onClick={() => { this.clickBlockNotInDraft(this.props.block)}}>
-            <h4 className="user-block-title">{this.props.block.title}</h4>
-            <p className="user-block-text">
-                {this.props.block.summary}
-            </p>
-            <div>
-                {renderBlockEntities}
-            </div>
-            
-        </div>
+            <ListItem button 
+                    onClick={() => { this.clickBlockNotInDraft(this.props.block)}}
+                    style={{width:'100%'}}
+                    >
+                    <ListItemText 
+                    primary={this.props.block.title} 
+                    secondary={this.props.block.summary}/>
+                </ListItem>        
         );
         
     }
