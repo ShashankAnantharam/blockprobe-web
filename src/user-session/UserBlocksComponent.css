@@ -1,0 +1,11 @@
+.block-list-title{
+    text-align: left;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: rgb(33, 171, 226);
+    font: bold;
+}
+
+.block-list-content{
+    margin-bottom: 30px;   
+}

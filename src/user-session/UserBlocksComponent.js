@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 import SingleBlock from '../view/SingleBlock';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import './UserBlocksComponent.css';
+import { isNullOrUndefined } from 'util';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -135,6 +137,11 @@ class UserBlocksComponent extends React.Component {
     }
 
     renderSingleBlock(block, scope){
+
+        if(isNullOrUndefined(block)){
+            return null;
+        }
+
         return(
             <SingleBlock 
             block={block} 
@@ -155,19 +162,67 @@ class UserBlocksComponent extends React.Component {
             scope.renderSingleBlock(scope.state.successBlocks[blockId], scope)
         ));
 
+        const toReviewBlocksListRender = Object.keys(this.state.toReviewBlocks).
+        map((blockId) => (
+            scope.renderSingleBlock(scope.state.toReviewBlocks[blockId], scope)
+        ));
+
+        const inReviewBlocksListRender = Object.keys(this.state.inReviewBlocks).
+        map((blockId) => (
+            scope.renderSingleBlock(scope.state.inReviewBlocks[blockId], scope)
+        ));
+
+        const draftBlocksListRender = Object.keys(this.state.draftBlocks).
+        map((blockId) => (
+            scope.renderSingleBlock(scope.state.draftBlocks[blockId], scope)
+        ));
+
 
         return(
             <div>
-                <div>DRAFT</div>
-
-                <div>IN REVIEW</div>
-
-                <div>TO REVIEW</div>
-
-                <div>SUCCESSFUL</div>
+                {Object.keys(this.state.draftBlocks).length>0?
                 <div>
-                    <List>{successBlocksListRender}</List>
+                    <h4 className="block-list-title">DRAFT</h4>
+                    <div className="block-list-content">
+                        <List>{draftBlocksListRender}</List>
+                    </div>
                 </div>
+                :
+                null
+                }
+
+                {Object.keys(this.state.inReviewBlocks).length>0?
+                <div>
+                    <h4 className="block-list-title">IN REVIEW</h4>
+                    <div className="block-list-content">
+                        <List>{inReviewBlocksListRender}</List>
+                    </div>
+                </div>
+                :
+                null
+                }
+
+                {Object.keys(this.state.toReviewBlocks).length>0?
+                <div>
+                    <h4 className="block-list-title">TO REVIEW</h4>
+                    <div className="block-list-content">
+                        <List>{toReviewBlocksListRender}</List>
+                    </div>
+                </div>
+                :
+                null
+                }
+
+                {Object.keys(this.state.successBlocks).length>0?
+                <div>
+                    <h4 className="block-list-title">SUCCESSFUL</h4>
+                    <div className="block-list-content">
+                        <List>{successBlocksListRender}</List>
+                    </div>
+                </div>
+                :
+                null
+                }
 
             </div>
         );
