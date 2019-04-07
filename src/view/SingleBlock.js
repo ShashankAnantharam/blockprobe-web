@@ -17,7 +17,7 @@ class SingleUserBlock extends React.Component {
 
     BlockEntity(entity){
         return(
-        <span className="graph-block-entity">
+        <span className="user-block-entity">
             {entity.title}
         </span>
         );  
@@ -37,10 +37,10 @@ class SingleUserBlock extends React.Component {
        }
 
        return(
-        <div className="block-div"
+        <div className="user-block-div"
         onClick={() => { this.clickBlockNotInDraft(this.props.block)}}>
-            <h4 className="block-title">{this.props.block.title}</h4>
-            <p className="block-text">
+            <h4 className="user-block-title">{this.props.block.title}</h4>
+            <p className="user-block-text">
                 {this.props.block.summary}
             </p>
             <div>
@@ -54,13 +54,13 @@ class SingleUserBlock extends React.Component {
 
     clickBlockInDraft(){
         this.setState({
-            isBlockClicked: !isBlockClicked
+            isBlockClicked: !this.state.isBlockClicked
         });
     }
 
     renderDraftBlock(){
         return(
-            <div onClick={clickBlockInDraft}>
+            <div onClick={this.clickBlockInDraft}>
                 {this.state.isBlockClicked?
                     <div>Clicked</div>:
                     <div>NotClicked</div>}
@@ -73,8 +73,8 @@ class SingleUserBlock extends React.Component {
         return(
             <div>
                 {this.props.block.blockState=="DRAFT"?
-                this.renderViewOnlyBlock():
-                this.renderDraftBlock()
+                this.renderDraftBlock():
+                this.renderViewOnlyBlock()
                 }
             </div>
         )

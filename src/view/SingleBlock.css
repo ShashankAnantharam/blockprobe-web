@@ -1,4 +1,4 @@
-.block-entity{
+.user-block-entity{
     border-radius: 20px; 
     padding: 10px;
     background-color: rgb(117, 106, 214);
@@ -12,7 +12,7 @@
     text-align: center;
 }
 
-.block-title{
+.user-block-title{
     color:darkcyan;
     margin-left: 9px; 
     margin-top: 9px;
@@ -20,12 +20,12 @@
     font-weight: bold;
 }
 
-.block-text{
+.user-block-text{
     text-align: justify;
     margin-left: 9px; 
 }
 
-.block-div{
+.user-block-div{
     border: 1px solid rgb(204, 234, 236);
     margin-bottom: 11px;
     margin-right:8px;

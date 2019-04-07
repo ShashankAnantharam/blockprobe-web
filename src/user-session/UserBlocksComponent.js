@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-
+import SingleBlock from '../view/SingleBlock';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -25,7 +25,8 @@ class UserBlocksComponent extends React.Component {
 
         this.modifyBlockList = this.modifyBlockList.bind(this);
         this.modifyBlockListWrapper = this.modifyBlockListWrapper.bind(this);
-
+        this.selectBlock = this.selectBlock.bind(this);
+        this.renderSingleBlock = this.renderSingleBlock.bind(this);
     }
 
 
@@ -131,10 +132,39 @@ class UserBlocksComponent extends React.Component {
         );    
     }
 
+    renderSingleBlock(block, scope){
+        return(
+            <SingleBlock 
+            block={block} 
+            selectBlock={this.selectBlock}/>
+        );
+    }
+
+    selectBlock(block){
+        this.props.selectBlock(block);
+    }
+
     render(){
+
+        const scope = this;
+        //console.log(this.props.blockprobes)
+        const successBlocksListRender = Object.keys(this.state.successBlocks).
+        map((blockId) => (
+            scope.renderSingleBlock(scope.state.successBlocks[blockId], scope)
+        ));
+
+
         return(
             <div>
-                {this.state.uIdHash}
+                <div>DRAFT</div>
+
+                <div>IN REVIEW</div>
+
+                <div>TO REVIEW</div>
+
+                <div>SUCCESSFUL</div>
+                <div>{successBlocksListRender}</div>
+
             </div>
         );
     }
