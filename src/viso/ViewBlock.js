@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
+import ChatBox from './ChatBox';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 
@@ -12,7 +13,7 @@ class ViewBlockComponent extends React.Component {
             chatList: []
         }
         // console.log(this.props.selectedBlock);
-
+        this.renderChat = this.renderChat.bind(this);
     }
 
     getDateTimeString(timelineBlock){
@@ -74,6 +75,20 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
+    renderChat(){
+        if(!isNullOrUndefined(this.props.selectedBlock.blockState) &&
+        (this.props.selectedBlock.blockState =="TO REVIEW" || this.props.selectedBlock.blockState =="UNDER REVIEW"))
+        {
+            return (
+                <div>
+                    <h4 style={{marginBottom:'5px'}}>CHAT</h4>
+                    <ChatBox />
+                </div>
+            );
+        } 
+        return null;
+    }
+
 
     render(){
 
@@ -112,6 +127,8 @@ class ViewBlockComponent extends React.Component {
             <div className="block-evidence-list">
                 {renderBlockEvidences}
             </div>
+
+            {this.renderChat()}
 
             <ReactTooltip id='dateTime' type='error' place="left" className="hover-template">
                 <span>Date and Time associated with the event described by this block.</span>
