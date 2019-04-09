@@ -54,9 +54,6 @@ class UserBlocksComponent extends React.Component {
             this.setState({
                 inReviewBlocks:currMap
             });
-            console.log(block.blockState);
-            console.log(block);
-            console.log(add);
         }
         else if(block.blockState=="TO REVIEW"){
             var currMap = this.state.toReviewBlocks;
@@ -115,23 +112,17 @@ class UserBlocksComponent extends React.Component {
             querySnapshot => {
                 querySnapshot.docChanges().forEach(change => {
                     if (change.type === 'added') {
-                        //console.log('New block: ', change.doc.data());
                         this.modifyBlockListWrapper(change.doc,true);
                       }
                       if (change.type === 'modified') {
-                        //console.log('Modified block: ', change.doc.data());
                         this.modifyBlockListWrapper(change.doc,true);
                       }
                       if (change.type === 'removed') {
-                        //console.log('Removed block: ', change.doc.data());
                         this.modifyBlockListWrapper(change.doc,false);
                       }
                 });
 
-                console.log(this.state.successBlocks);
-                console.log(this.state.inReviewBlocks);
-                console.log(this.state.toReviewBlocks);
-                console.log(this.state.draftBlocks);
+            
             }
         );    
     }
@@ -145,7 +136,9 @@ class UserBlocksComponent extends React.Component {
         return(
             <SingleBlock 
             block={block} 
-            selectBlock={this.selectBlock}/>
+            selectBlock={this.selectBlock}
+            investigationGraph={this.props.investigationGraph}
+            />
         );
     }
 
@@ -156,7 +149,6 @@ class UserBlocksComponent extends React.Component {
     render(){
 
         const scope = this;
-        //console.log(this.props.blockprobes)
         const successBlocksListRender = Object.keys(this.state.successBlocks).
         map((blockId) => (
             scope.renderSingleBlock(scope.state.successBlocks[blockId], scope)

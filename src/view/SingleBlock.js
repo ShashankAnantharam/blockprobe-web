@@ -75,7 +75,10 @@ class SingleUserBlock extends React.Component {
             <div onClick={this.clickBlockInDraft}>
                 {this.state.isBlockClicked?
                     <div>
-                        <DraftBlockComponent draftBlock={this.props.block}/>
+                        <DraftBlockComponent 
+                        draftBlock={this.props.block}
+                        investigationGraph = {this.props.investigationGraph}
+                        />
                     </div>                    
                     :
                     <div>
