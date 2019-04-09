@@ -4,6 +4,7 @@ import './SingleBlock.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import DraftBlockComponent from './DraftBlock';
 
 class SingleUserBlock extends React.Component {
 
@@ -15,6 +16,7 @@ class SingleUserBlock extends React.Component {
         }
         this.BlockEntity = this.BlockEntity.bind(this);
         this.clickBlockInDraft = this.clickBlockInDraft.bind(this);
+        this.revertBlockInDraft = this.revertBlockInDraft.bind(this);
         this.clickBlockNotInDraft = this.clickBlockNotInDraft.bind(this);
     }
 
@@ -53,16 +55,28 @@ class SingleUserBlock extends React.Component {
     }
 
     clickBlockInDraft(){
-        this.setState({
-            isBlockClicked: !this.state.isBlockClicked
-        });
+            if(!this.state.isBlockClicked){
+            this.setState({
+                isBlockClicked: true
+            });
+        }
+    }
+
+    revertBlockInDraft(){
+        if(this.state.isBlockClicked){
+            this.setState({
+                isBlockClicked: false
+            });
+        }
     }
 
     renderDraftBlock(){
         return(
             <div onClick={this.clickBlockInDraft}>
                 {this.state.isBlockClicked?
-                    <div>Clicked</div>                    
+                    <div>
+                        <DraftBlockComponent draftBlock={this.props.block}/>
+                    </div>                    
                     :
                     <div>
                         <ListItem button 
