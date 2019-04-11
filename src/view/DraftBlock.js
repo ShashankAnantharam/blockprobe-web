@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
+import AddIcon from '@material-ui/icons/Add'
 import { isNullOrUndefined } from 'util';
 
 class DraftBlockComponent extends React.Component {
@@ -259,7 +260,7 @@ class DraftBlockComponent extends React.Component {
                         <button 
                         className="addEntityButton" 
                         onClick={this.addEntityToList}>
-                        Add New Entity
+                            <AddIcon/>
                         </button>            
                     </div>       
                 </div>
@@ -271,8 +272,9 @@ class DraftBlockComponent extends React.Component {
                     </div>
                     <button 
                         className="addEvidenceButton" 
-                        onClick={this.addEvidence}>
-                        Add New Evidence
+                        onClick={this.addEvidence}
+                        >
+                            <AddIcon />
                         </button>   
                 </div>
             </div>

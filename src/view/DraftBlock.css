@@ -22,15 +22,21 @@
 }
 
 .addEntityButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
     margin-left:6em;
     margin-top:0;
-    height:2.6em;
+    size:2.6em;
+    border:none;
 }
 
 .addEvidenceButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
-    height:2.6em;
+    size:2.6em;
+    border:none;
 }
 
 .draft-add-new-entity-container{

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DoneIcon from '@material-ui/icons/Done'
 import Textarea from 'react-textarea-autosize';
+import './DraftBlockEvidenceView.css';
 
 class DraftBlockEvidenceView extends React.Component {
 
@@ -108,13 +111,14 @@ class DraftBlockEvidenceView extends React.Component {
 
                 <div className='draft-evidence-button-container'>
                     <button
+                    className="updateEvidenceButton"
                     onClick={this.updateEvidence}>
-                        Update
+                        <DoneIcon/>
                     </button>
                     <button
-                    style={{marginLeft:'2em'}}
+                    className="removeEvidenceButton"
                     onClick={this.removeEvidence}>
-                        Remove
+                        <DeleteIcon/>
                     </button>
                 </div>
 
