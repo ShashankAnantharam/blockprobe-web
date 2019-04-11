@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
+import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
 import { isNullOrUndefined } from 'util';
 
 class DraftBlockComponent extends React.Component {
@@ -37,6 +38,9 @@ class DraftBlockComponent extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.addEntityToList = this.addEntityToList.bind(this);
+        this.updateEvidence = this.updateEvidence.bind(this);
+        this.addEvidence = this.addEvidence.bind(this);
+        this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
     }
 
     entityClicked(entityList) {
@@ -123,8 +127,66 @@ class DraftBlockComponent extends React.Component {
         }
       }
 
+    updateEvidence(oldEvidence, newEvidence, isUpdate, isDelete){
+          var block = this.state.newBlock;
+
+          if(isNullOrUndefined(block.evidences)){
+              block.evidences=[];
+          }
+          if(isDelete){
+                block.evidences = block.evidences.filter(
+                    ev => ((ev.evidenceLink != oldEvidence.evidenceLink) ||
+                    (ev.supportingDetails != oldEvidence.supportingDetails))
+                )
+          }
+          else if(isUpdate){
+          for(var i=0;i<block.evidences.length;i++){
+              if(block.evidences[i].supportingDetails == oldEvidence.supportingDetails
+                 && block.evidences[i].evidenceLink == oldEvidence.evidenceLink){
+                    
+                    block.evidences[i] = newEvidence;
+                 }
+          }
+        }
+
+        this.setState({newBlock: block});
+      }
+
+    addEvidence(){
+        var block = this.state.newBlock;
+        var newEvidence={
+            evidenceLink:'',
+            evidenceType:'',
+            supportingDetails:''
+        }
+
+        if(isNullOrUndefined(block.evidences))
+            block.evidences = [];
+        block.evidences.push(newEvidence);
+        this.setState({newBlock: block});
+      }
+
+    singleBlockEvidence(blockEvidence){
+        var isClicked = (blockEvidence.supportingDetails =='' && blockEvidence.evidenceLink == '');
+        return(
+                <DraftBlockEvidenceView
+                    isClicked={isClicked}
+                    evidence={blockEvidence}
+                    updateEvidence = {this.updateEvidence} 
+                />
+        );
+    }
       
     EditSingleBlock(listItem, index){
+
+        var renderEvidenceList = "";
+        if(!isNullOrUndefined(this.state.newBlock.evidences)){
+            console.log(this.state.newBlock.evidences);
+            renderEvidenceList = this.state.newBlock.evidences.map((blockEvidence, index) => 
+                this.singleBlockEvidence(blockEvidence)
+            );            
+        }
+
         return(
 
             <div className="draft-block-container">
@@ -132,6 +194,7 @@ class DraftBlockComponent extends React.Component {
                 <label>
                     <Textarea 
                         type="text"
+                        placeholder = "Title of your contribution."
                         value={this.state.newBlock.title}
                         onChange={(e) => { this.handleChange(e,"title")}}
                         maxRows="2"
@@ -140,7 +203,7 @@ class DraftBlockComponent extends React.Component {
                             background: 'white',
                             borderWidth:'2px', 
                             borderStyle:'solid', 
-                            borderColor:'lightgrey',
+                            borderColor:'darkgrey',
                             borderBottomWidth:'0px',
                             paddingTop:'6px',
                             paddingBottom:'6px',
@@ -148,6 +211,7 @@ class DraftBlockComponent extends React.Component {
                             }}/>
                     <Textarea 
                     type="text"
+                    placeholder = "Summary of your contribution."
                     value={this.state.newBlock.summary}
                     onChange={(e) => { this.handleChange(e,"summary")}}
                     maxRows="13"
@@ -156,7 +220,7 @@ class DraftBlockComponent extends React.Component {
                         background: 'white',
                         borderWidth:'2px', 
                         borderStyle:'solid', 
-                        borderColor:'lightgrey',
+                        borderColor:'darkgrey',
                         borderTopWidth:'0px',
                         paddingTop:'6px',
                         paddingBottom:'6px',
@@ -187,8 +251,7 @@ class DraftBlockComponent extends React.Component {
                                     background: 'white',
                                     borderWidth:'2px', 
                                     borderStyle:'solid', 
-                                    borderColor:'lightgrey',
-                                    borderBottomWidth:'0px',
+                                    borderColor:'darkgrey',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
                                     width:'40%'
@@ -199,6 +262,18 @@ class DraftBlockComponent extends React.Component {
                         Add New Entity
                         </button>            
                     </div>       
+                </div>
+
+                <div className="draft-box-evidence-container">
+                    <h6 style={{marginBottom:'3px'}}>Evidences</h6>
+                    <div>
+                        {renderEvidenceList}
+                    </div>
+                    <button 
+                        className="addEvidenceButton" 
+                        onClick={this.addEvidence}>
+                        Add New Evidence
+                        </button>   
                 </div>
             </div>
 
