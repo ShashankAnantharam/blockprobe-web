@@ -1,7 +1,7 @@
 .block-list-title{
     text-align: left;
     margin-bottom: 0px;
-    margin-top: 0px;
+    margin-top: 7px;
     margin-left: 10px;
     color: rgb(33, 171, 226);
     font: bold;
@@ -9,4 +9,13 @@
 
 .block-list-content{
     margin-bottom: 30px;   
+}
+
+.addBlockButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-bottom:1em;
+    size:2.6em;
+    border:none;
 }

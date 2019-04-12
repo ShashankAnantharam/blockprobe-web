@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import SingleBlock from '../view/SingleBlock';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import AddIcon from '@material-ui/icons/Add'
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 
@@ -20,7 +21,14 @@ class UserBlocksComponent extends React.Component {
             successBlocks:{},
             toReviewBlocks:{},
             inReviewBlocks:{},
-            blockStateMap:{}
+            blockStateMap:{},
+            newBlock: {
+                title:'',
+                summary:'',
+                blockState:'DRAFT',
+                entities:[]
+            },
+            isCreateBlockClicked:false
         }
         //props include bpId, uId
         var shajs = require('sha.js');
@@ -31,6 +39,7 @@ class UserBlocksComponent extends React.Component {
         this.modifyBlockListWrapper = this.modifyBlockListWrapper.bind(this);
         this.selectBlock = this.selectBlock.bind(this);
         this.renderSingleBlock = this.renderSingleBlock.bind(this);
+        this.createBlock = this.createBlock.bind(this);
     }
 
 
@@ -127,7 +136,7 @@ class UserBlocksComponent extends React.Component {
         );    
     }
 
-    renderSingleBlock(block, scope){
+    renderSingleBlock(block, scope, isNewBlock){
 
         if(isNullOrUndefined(block)){
             return null;
@@ -138,6 +147,7 @@ class UserBlocksComponent extends React.Component {
             block={block} 
             selectBlock={this.selectBlock}
             investigationGraph={this.props.investigationGraph}
+            isNewBlock={isNewBlock}
             />
         );
     }
@@ -146,32 +156,49 @@ class UserBlocksComponent extends React.Component {
         this.props.selectBlock(block);
     }
 
+    createBlock(){
+        // var newDraftBlockId = this.state.shajs('sha256').update(this.props.uId+String(Date.now())).digest('hex');
+        this.setState({isCreateBlockClicked:true});
+    }
+
     render(){
 
         const scope = this;
         const successBlocksListRender = Object.keys(this.state.successBlocks).
         map((blockId) => (
-            scope.renderSingleBlock(scope.state.successBlocks[blockId], scope)
+            scope.renderSingleBlock(scope.state.successBlocks[blockId], scope, false)
         ));
 
         const toReviewBlocksListRender = Object.keys(this.state.toReviewBlocks).
         map((blockId) => (
-            scope.renderSingleBlock(scope.state.toReviewBlocks[blockId], scope)
+            scope.renderSingleBlock(scope.state.toReviewBlocks[blockId], scope, false)
         ));
 
         const inReviewBlocksListRender = Object.keys(this.state.inReviewBlocks).
         map((blockId) => (
-            scope.renderSingleBlock(scope.state.inReviewBlocks[blockId], scope)
+            scope.renderSingleBlock(scope.state.inReviewBlocks[blockId], scope, false)
         ));
 
         const draftBlocksListRender = Object.keys(this.state.draftBlocks).
         map((blockId) => (
-            scope.renderSingleBlock(scope.state.draftBlocks[blockId], scope)
+            scope.renderSingleBlock(scope.state.draftBlocks[blockId], scope, false)
         ));
 
 
         return(
             <div>
+                {!this.state.isCreateBlockClicked?
+                    <button 
+                    className="addBlockButton" 
+                    onClick={this.createBlock}>
+                        <AddIcon/>
+                    </button>
+                    :
+                    <div>
+                        {this.renderSingleBlock(this.state.newBlock,this, true)}
+                    </div> 
+                }
+                                
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
                     <h4 className="block-list-title">DRAFT</h4>

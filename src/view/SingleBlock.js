@@ -10,6 +10,7 @@ class SingleUserBlock extends React.Component {
 
     constructor(props){
         super(props);
+        //props: isNewBlock
 
         this.state={
             isBlockClicked: false
@@ -18,6 +19,10 @@ class SingleUserBlock extends React.Component {
         this.clickBlockInDraft = this.clickBlockInDraft.bind(this);
         this.revertBlockInDraft = this.revertBlockInDraft.bind(this);
         this.clickBlockNotInDraft = this.clickBlockNotInDraft.bind(this);
+
+        if(props.block.title=='' && props.block.summary==''){
+            this.state.isBlockClicked = true;
+        }
     }
 
     BlockEntity(entity){
