@@ -10,7 +10,7 @@ class SingleUserBlock extends React.Component {
 
     constructor(props){
         super(props);
-        //props: isNewBlock
+        //props: isNewBlock, deleteNewBlcok
 
         this.state={
             isBlockClicked: false
@@ -19,6 +19,7 @@ class SingleUserBlock extends React.Component {
         this.clickBlockInDraft = this.clickBlockInDraft.bind(this);
         this.revertBlockInDraft = this.revertBlockInDraft.bind(this);
         this.clickBlockNotInDraft = this.clickBlockNotInDraft.bind(this);
+        this.updateDraftBlock = this.updateDraftBlock.bind(this);
 
         if(props.block.title=='' && props.block.summary==''){
             this.state.isBlockClicked = true;
@@ -83,6 +84,7 @@ class SingleUserBlock extends React.Component {
                         <DraftBlockComponent 
                         draftBlock={this.props.block}
                         investigationGraph = {this.props.investigationGraph}
+                        updateBlock = {this.updateDraftBlock}
                         />
                     </div>                    
                     :
@@ -99,6 +101,33 @@ class SingleUserBlock extends React.Component {
                 }
             </div>
         )
+    }
+
+    updateDraftBlock(newBlock, oldBlock, updateType){
+        if(updateType=='SAVE'){
+            //SAVE
+        }
+        else if(updateType=='SUBMIT'){
+            //SUBMIT
+        }
+        else if(updateType=='CANCEL'){
+            //CANCEL CHANGES
+            if(!this.props.isNewBlock){
+                
+                //If block is an existing draft, then just revert to view state if changes cancelled
+                this.setState({
+                    isBlockClicked: false
+                });
+            }
+            else{
+                
+                //If block is a new block, then delete it
+                this.props.deleteNewBlock();
+            }
+        }
+        else if(updateType=='DELETE'){
+            //DELETE CHANGES
+        }
     }
 
     render(){

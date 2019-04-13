@@ -40,6 +40,7 @@ class UserBlocksComponent extends React.Component {
         this.selectBlock = this.selectBlock.bind(this);
         this.renderSingleBlock = this.renderSingleBlock.bind(this);
         this.createBlock = this.createBlock.bind(this);
+        this.deleteNewBlock = this.deleteNewBlock.bind(this);
     }
 
 
@@ -148,6 +149,7 @@ class UserBlocksComponent extends React.Component {
             selectBlock={this.selectBlock}
             investigationGraph={this.props.investigationGraph}
             isNewBlock={isNewBlock}
+            deleteNewBlock={this.deleteNewBlock}
             />
         );
     }
@@ -159,6 +161,10 @@ class UserBlocksComponent extends React.Component {
     createBlock(){
         // var newDraftBlockId = this.state.shajs('sha256').update(this.props.uId+String(Date.now())).digest('hex');
         this.setState({isCreateBlockClicked:true});
+    }
+
+    deleteNewBlock(){
+        this.setState({isCreateBlockClicked:false});
     }
 
     render(){

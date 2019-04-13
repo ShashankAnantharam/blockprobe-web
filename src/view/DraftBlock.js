@@ -7,7 +7,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import ClearIcon from '@material-ui/icons/Clear';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
 
 class DraftBlockComponent extends React.Component {
@@ -31,7 +35,7 @@ class DraftBlockComponent extends React.Component {
 
         //props:draftBlock, bpId, uId 
         this.state={
-            newBlock: this.props.draftBlock,
+            newBlock: {},
             newEntity: '',
             multiSelectEntityList: []
         }
@@ -42,7 +46,12 @@ class DraftBlockComponent extends React.Component {
         this.updateEvidence = this.updateEvidence.bind(this);
         this.addEvidence = this.addEvidence.bind(this);
         this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
+        this.saveDraftBlock = this.saveDraftBlock.bind(this);
+        this.submitDraftBlock = this.submitDraftBlock.bind(this);
+        this.cancelDraftBlock = this.cancelDraftBlock.bind(this);
+        this.removeDraftBlock = this.removeDraftBlock.bind(this);
     }
+    
 
     entityClicked(entityList) {
         this.setState({ multiSelectEntityList: entityList });
@@ -66,6 +75,8 @@ class DraftBlockComponent extends React.Component {
         this.setState({
             multiSelectEntityList: entityList
         });
+
+        
     }
 
     addEntityToList(){
@@ -177,6 +188,24 @@ class DraftBlockComponent extends React.Component {
                 />
         );
     }
+
+    saveDraftBlock(){
+        this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SAVE');
+    }
+
+    submitDraftBlock(){
+        this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SUBMIT');
+    }
+
+    cancelDraftBlock(){
+        console.log(this.state.newBlock);
+        console.log(this.props.draftBlock);
+        this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'CANCEL');
+    }
+
+    removeDraftBlock(){
+        this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'DELETE');
+    }
       
     EditSingleBlock(listItem, index){
 
@@ -191,6 +220,28 @@ class DraftBlockComponent extends React.Component {
         return(
 
             <div className="draft-block-container">
+                <div className="draft-options-container">
+                    <button 
+                        className="saveBlockButton" 
+                        onClick={this.saveDraftBlock}>
+                            <SaveIcon/>
+                    </button>
+                    <button 
+                        className="submitBlockButton" 
+                        onClick={this.submitDraftBlock}>
+                            <DoneAllIcon/>
+                    </button>
+                    <button 
+                        className="cancelBlockButton" 
+                        onClick={this.cancelDraftBlock}>
+                            <ClearIcon/>
+                    </button>
+                    <button 
+                        className="deleteBlockButton" 
+                        onClick={this.removeDraftBlock}>
+                            <DeleteIcon/>
+                    </button>    
+                </div>
                 <form>
                 <label>
                     <Textarea 
@@ -266,7 +317,7 @@ class DraftBlockComponent extends React.Component {
                 </div>
 
                 <div className="draft-box-evidence-container">
-                    <h6 style={{marginBottom:'3px'}}>Evidences</h6>
+                    <h6 style={{marginBottom:'3px',marginTop:'3px'}}>Evidences</h6>
                     <div>
                         {renderEvidenceList}
                     </div>
@@ -284,6 +335,10 @@ class DraftBlockComponent extends React.Component {
 
     componentDidMount(){
         this.generateMultiSelectEntityList();
+
+        //Deepcopy props to state
+        const blockStr = JSON.stringify(this.props.draftBlock);
+        this.setState({newBlock:JSON.parse(blockStr)});
     }
 
     render(){
