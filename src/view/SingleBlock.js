@@ -120,13 +120,25 @@ class SingleUserBlock extends React.Component {
                 });
             }
             else{
-                
+
                 //If block is a new block, then delete it
                 this.props.deleteNewBlock();
             }
         }
         else if(updateType=='DELETE'){
             //DELETE CHANGES
+
+            if(this.props.newBlock){
+
+                //If block is a new block, then delete it
+                this.props.deleteNewBlock();
+            }
+            else{
+                this.props.deleteDraftBlock(newBlock.key)
+                this.setState({
+                    isBlockClicked: false
+                });
+            }
         }
     }
 

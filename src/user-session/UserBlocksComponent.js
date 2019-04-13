@@ -41,6 +41,7 @@ class UserBlocksComponent extends React.Component {
         this.renderSingleBlock = this.renderSingleBlock.bind(this);
         this.createBlock = this.createBlock.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
+        this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
     }
 
 
@@ -116,6 +117,12 @@ class UserBlocksComponent extends React.Component {
         }
     }
 
+    deleteDraftBlock(blockKey){
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.state.uIdHash).collection("userBlocks").
+        doc(blockKey).delete();
+    }
+
     componentDidMount(){
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("users").doc(this.state.uIdHash).collection("userBlocks").onSnapshot(
@@ -150,6 +157,7 @@ class UserBlocksComponent extends React.Component {
             investigationGraph={this.props.investigationGraph}
             isNewBlock={isNewBlock}
             deleteNewBlock={this.deleteNewBlock}
+            deleteDraftBlock = {this.deleteDraftBlock}
             />
         );
     }
