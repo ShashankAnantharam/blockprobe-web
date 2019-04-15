@@ -10,7 +10,7 @@ class SingleUserBlock extends React.Component {
 
     constructor(props){
         super(props);
-        //props: isNewBlock, deleteNewBlcok
+        //props: isNewBlock, deleteNewBlcok, addDraftBlock
 
         this.state={
             isBlockClicked: false
@@ -106,6 +106,13 @@ class SingleUserBlock extends React.Component {
     updateDraftBlock(newBlock, oldBlock, updateType){
         if(updateType=='SAVE'){
             //SAVE
+            if(this.props.isNewBlock){
+                this.props.addDraftBlock(newBlock);
+            }
+
+            this.setState({
+                isBlockClicked: false
+            });
         }
         else if(updateType=='SUBMIT'){
             //SUBMIT
