@@ -216,7 +216,8 @@ class DraftBlockComponent extends React.Component {
         for(var i=0; i<list.length; i++){
             if(list[i].value){
                 block.entities.push({
-                    title: list[i].label
+                    title: list[i].label,
+                    type:"None"
                 });
             }
         } 
