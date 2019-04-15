@@ -43,6 +43,7 @@ class UserBlocksComponent extends React.Component {
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
+        this.updateDraftBlock = this.updateDraftBlock.bind(this);
     }
 
 
@@ -124,6 +125,13 @@ class UserBlocksComponent extends React.Component {
         doc(blockKey).delete();
     }
 
+    updateDraftBlock(blockKey, newBlock){
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.state.uIdHash).collection("userBlocks").
+        doc(blockKey).set(newBlock);
+
+    }
+
     addDraftBlock(block){
         block.timestamp = Date.now();
         var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(block.timestamp)).digest('hex');
@@ -173,6 +181,7 @@ class UserBlocksComponent extends React.Component {
             deleteNewBlock={this.deleteNewBlock}
             deleteDraftBlock = {this.deleteDraftBlock}
             addDraftBlock = {this.addDraftBlock}
+            updateDraftBlock = {this.updateDraftBlock}
             />
         );
     }

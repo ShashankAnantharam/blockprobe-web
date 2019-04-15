@@ -109,6 +109,9 @@ class SingleUserBlock extends React.Component {
             if(this.props.isNewBlock){
                 this.props.addDraftBlock(newBlock);
             }
+            else{
+                this.props.updateDraftBlock(newBlock.key, newBlock);
+            }
 
             this.setState({
                 isBlockClicked: false
