@@ -220,7 +220,7 @@ class DraftBlockComponent extends React.Component {
                     type:"None"
                 });
             }
-        } 
+        }  
         this.setState({
             newBlock: block
         });
