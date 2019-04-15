@@ -221,6 +221,9 @@ class DraftBlockComponent extends React.Component {
                 });
             }
         } 
+        this.setState({
+            newBlock: block
+        });
     }
 
     saveDraftBlock(){
