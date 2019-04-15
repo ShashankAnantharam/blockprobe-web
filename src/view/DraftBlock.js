@@ -50,6 +50,7 @@ class DraftBlockComponent extends React.Component {
         this.submitDraftBlock = this.submitDraftBlock.bind(this);
         this.cancelDraftBlock = this.cancelDraftBlock.bind(this);
         this.removeDraftBlock = this.removeDraftBlock.bind(this);
+        this.populateEntitiesToBlock = this.populateEntitiesToBlock.bind(this);
     }
     
 
@@ -64,9 +65,28 @@ class DraftBlockComponent extends React.Component {
     generateMultiSelectEntityList(){
         var count = 1;
         var entityList = this.state.multiSelectEntityList;
+        var oldEntities = this.props.draftBlock.entities;
+        var oldEntitiesDict = {};
+
+        for(var i=0;i<oldEntities.length;i++){
+            if(!(oldEntities[i].title in this.props.investigationGraph)){
+                entityList.push({
+                    value: true,
+                    label: oldEntities[i].title,
+                    id: count
+                });
+                count++;
+            }
+            oldEntitiesDict[oldEntities[i].title]="";
+        }
+
         Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
+            var val = false;
+            if(entityLabel in oldEntitiesDict){
+                val = true;
+            }
             entityList.push({                
-                    value: false, 
+                    value: val, 
                     label: entityLabel, 
                     id: count             
             });
@@ -189,7 +209,21 @@ class DraftBlockComponent extends React.Component {
         );
     }
 
+    populateEntitiesToBlock(){
+        var block = this.state.newBlock;
+        block.entities = [];
+        var list = this.state.multiSelectEntityList;
+        for(var i=0; i<list.length; i++){
+            if(list[i].value){
+                block.entities.push({
+                    title: list[i].label
+                });
+            }
+        } 
+    }
+
     saveDraftBlock(){
+        this.populateEntitiesToBlock();
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SAVE');
     }
 
