@@ -274,7 +274,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     changeSelectedBlock = (block) =>{
-        console.log(block);
+        // console.log(block);        
         this.setState({
             selectedBlock:block
         }); 
@@ -344,7 +344,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
             <Sidebar
                 sidebar={<div style={{width:'30vw'}}>
-                <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                <ViewBlockComponent 
+                selectedBlock={this.state.selectedBlock}
+                uId={this.props.uId}
+                bpId={this.props.bId}
+                />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}
                 onSetOpen={this.onSetSelectedBlockSidebarOpen}

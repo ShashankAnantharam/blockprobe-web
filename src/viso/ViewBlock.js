@@ -3,6 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import ChatBox from './ChatBox';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
+import * as firebase from 'firebase';
 
 
 class ViewBlockComponent extends React.Component {
@@ -12,7 +13,6 @@ class ViewBlockComponent extends React.Component {
         this.state={
             chatList: []
         }
-        // console.log(this.props.selectedBlock);
         this.renderChat = this.renderChat.bind(this);
     }
 
@@ -79,16 +79,28 @@ class ViewBlockComponent extends React.Component {
         if(!isNullOrUndefined(this.props.selectedBlock.blockState) &&
         (this.props.selectedBlock.blockState =="TO REVIEW" || this.props.selectedBlock.blockState =="UNDER REVIEW"))
         {
+            var isReviewer = true;
+            if(this.props.selectedBlock.blockState == "UNDER REVIEW"){
+                isReviewer = false;
+            }         
+
+           
+            
             return (
                 <div>
                     <h4 style={{marginBottom:'5px'}}>CHAT</h4>
-                    <ChatBox />
+                    <ChatBox selectedBlock={this.props.selectedBlock} 
+                    uId={this.props.uId}
+                    bpId = {this.props.bpId}/>
                 </div>
             );
         } 
         return null;
     }
 
+    componentDidMount(){
+        
+    }
 
     render(){
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import { ChatFeed, ChatBubble, BubbleGroup, Message } from 'react-chat-ui';
 import './ChatBox.css';
+import { isNullOrUndefined } from 'util';
 
 const styles = {
     button: {
@@ -27,8 +28,8 @@ const styles = {
   
   const users = {
     0: 'You',
-    Mark: 'Mark',
-    2: 'Evan',
+    1: 'Submitter',
+    2: 'Reviewer',
   };
 
   const customBubble = props => (
@@ -45,16 +46,17 @@ class ChatBox extends React.Component {
         super(props);
 
         this.state={
-            messages: [
-                new Message({
-                  id: 1,
-                  message: "I'm the recipient! (The person you're talking to)",
-                }), // Gray bubble
-                new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-              ],
+              messages: [],
               useCustomBubble: false,
-              curr_user: 0 
+              curr_user: 0,
+              shajs: '',
+              uIdHash: ''
         }
+
+        var shajs = require('sha.js');
+        this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
+        this.state.shajs = shajs;
+        this.getChatFeedFromDb = this.getChatFeedFromDb.bind(this);
     }
 
 
@@ -78,16 +80,88 @@ class ChatBox extends React.Component {
         const newMessage = new Message({
           id: recipient,
           message,
-          senderName: users[recipient],
+          senderName: users[recipient]
         });
         prevState.messages.push(newMessage);
         this.setState(this.state);
       }
+ 
+        /* new Message({
+                  id: 1,
+                  message: "I'm the recipient! (The person you're talking to)",
+                }), // Gray bubble
+                new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+                */
+          //author
+          //blockSubmitter true/false
+          //message
+          
 
+      componentDidMount(){
+        this.getChatFeedFromDb();
+      }
+
+      getChatFeedFromDb(){
+
+        if(!isNullOrUndefined(this.props.selectedBlock)){
+
+          firebase.database().ref("Blockprobes/"+this.props.bpId
+          +"/chts/"+this.props.selectedBlock.key).
+          on('child_added', dataSnapshot => {
+
+            var items = this.state.messages;
+            var chatData = dataSnapshot.val();
+            
+            var currId = 0;
+            if(this.state.uIdHash == chatData.author){
+              if(this.props.selectedBlock.blockState =="TO REVIEW"
+               && chatData.blockSubmitter){
+
+                //Chat is in submitter profile but user is reveiwing
+                currId = 1;
+              }
+              else if(this.props.selectedBlock.blockState =="UNDER REVIEW"
+              && !chatData.blockSubmitter){
+
+                //Chat is in reviewer profile but user is submitter
+                currId = 2;
+              }
+              else{
+
+                //Chat and user in same profile
+                currId = 0;
+              }
+          }
+          else{
+            if(chatData.blockSubmitter){
+              currId = 1;
+            }
+            else{
+              currId = 2;
+            }
+          }
+
+
+          items.push(new Message({
+                  id: currId,
+                  message: chatData.message,
+                  senderName: users[currId]
+                }));
+
+          this.setState({
+              messages: items
+            }); 
+
+        });
+
+        return null;
+      }
+    }
 
     render(){
         return(
             <div className="chat-box-container">
+                
                 <ChatFeed
                   chatBubble={this.state.useCustomBubble && customBubble}
                   maxHeight={250}
