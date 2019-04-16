@@ -75,7 +75,7 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
-    renderChat(){
+    renderChat(id){
         if(!isNullOrUndefined(this.props.selectedBlock.blockState) &&
         (this.props.selectedBlock.blockState =="TO REVIEW" || this.props.selectedBlock.blockState =="UNDER REVIEW"))
         {
@@ -91,7 +91,8 @@ class ViewBlockComponent extends React.Component {
                     <h4 style={{marginBottom:'5px'}}>CHAT</h4>
                     <ChatBox selectedBlock={this.props.selectedBlock} 
                     uId={this.props.uId}
-                    bpId = {this.props.bpId}/>
+                    bpId = {this.props.bpId}
+                    blId={id}/>
                 </div>
             );
         } 
@@ -140,7 +141,7 @@ class ViewBlockComponent extends React.Component {
                 {renderBlockEvidences}
             </div>
 
-            {this.renderChat()}
+            {this.renderChat(this.props.selectedBlock.key)}
 
             <ReactTooltip id='dateTime' type='error' place="left" className="hover-template">
                 <span>Date and Time associated with the event described by this block.</span>

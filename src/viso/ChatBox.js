@@ -50,8 +50,12 @@ class ChatBox extends React.Component {
               useCustomBubble: false,
               curr_user: 0,
               shajs: '',
-              uIdHash: ''
+              uIdHash: '',
+             
         }
+
+        this.prevBlockId = '';
+        this.prevBlockState = '';
 
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
@@ -96,6 +100,21 @@ class ChatBox extends React.Component {
           //blockSubmitter true/false
           //message
           
+      async componentDidUpdate(){
+        if(this.prevBlockId != this.props.selectedBlock.key ||
+           (this.prevBlockId == this.props.selectedBlock.key &&
+            this.prevBlockState != this.props.selectedBlock.blockState)){
+          console.log('Here');
+          this.prevBlockId= this.props.selectedBlock.key;
+          this.prevBlockState= this.props.selectedBlock.blockState;
+          await this.setState({
+            messages:[],
+          },
+          function() { this.getChatFeedFromDb()}
+          );
+
+        }
+      }
 
       componentDidMount(){
         this.getChatFeedFromDb();
@@ -104,6 +123,9 @@ class ChatBox extends React.Component {
       getChatFeedFromDb(){
 
         if(!isNullOrUndefined(this.props.selectedBlock)){
+
+          this.prevBlockId= this.props.selectedBlock.key;
+          this.prevBlockState= this.props.selectedBlock.blockState;
 
           firebase.database().ref("Blockprobes/"+this.props.bpId
           +"/chts/"+this.props.selectedBlock.key).
