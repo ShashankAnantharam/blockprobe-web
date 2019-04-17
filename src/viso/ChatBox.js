@@ -56,6 +56,7 @@ class ChatBox extends React.Component {
 
         this.prevBlockId = '';
         this.prevBlockState = '';
+        this.currRef = null;
 
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
@@ -80,7 +81,25 @@ class ChatBox extends React.Component {
       }
     
       pushMessage(recipient, message) {
-        const prevState = this.state;
+        
+        var blockSubmitter = null;
+        if(this.props.selectedBlock.blockState == 'UNDER REVIEW'){
+          blockSubmitter = true;
+        }
+        else if(this.props.selectedBlock.blockState == 'TO REVIEW')
+        {
+          blockSubmitter = false;
+        }
+        if(this.currRef!=null){
+          this.currRef.push({
+            author:this.state.uIdHash,
+            blockSubmitter: blockSubmitter,
+            message: message
+          });
+        }
+      }
+
+      /*const prevState = this.state;
         const newMessage = new Message({
           id: recipient,
           message,
@@ -88,7 +107,7 @@ class ChatBox extends React.Component {
         });
         prevState.messages.push(newMessage);
         this.setState(this.state);
-      }
+      */
  
         /* new Message({
                   id: 1,
@@ -127,8 +146,12 @@ class ChatBox extends React.Component {
           this.prevBlockId= this.props.selectedBlock.key;
           this.prevBlockState= this.props.selectedBlock.blockState;
 
-          firebase.database().ref("Blockprobes/"+this.props.bpId
-          +"/chts/"+this.props.selectedBlock.key).
+          if(this.currRef!=null){
+            this.currRef.off();
+          }
+          this.currRef = firebase.database().ref("Blockprobes/"+this.props.bpId
+          +"/chts/"+this.props.selectedBlock.key);
+          this.currRef.
           on('child_added', dataSnapshot => {
 
             var items = this.state.messages;
