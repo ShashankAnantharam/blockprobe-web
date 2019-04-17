@@ -138,7 +138,7 @@ class SingleUserBlock extends React.Component {
         else if(updateType=='DELETE'){
             //DELETE CHANGES
 
-            if(this.props.newBlock){
+            if(this.props.isNewBlock){
 
                 //If block is a new block, then delete it
                 this.props.deleteNewBlock();

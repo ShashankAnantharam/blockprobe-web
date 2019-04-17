@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import ChatBox from './ChatBox';
+import ViewBlockListComponent from './ViewBlockOptionList';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
@@ -11,9 +12,11 @@ class ViewBlockComponent extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            chatList: []
+            chatList: [],
+            canCommit: true
         }
         this.renderChat = this.renderChat.bind(this);
+        this.renderOptions = this.renderOptions.bind(this);
     }
 
     getDateTimeString(timelineBlock){
@@ -88,7 +91,7 @@ class ViewBlockComponent extends React.Component {
             
             return (
                 <div>
-                    <h4 style={{marginBottom:'5px'}}>CHAT</h4>
+                    <h3 style={{marginBottom:'5px',textAlign:"center"}}>CHAT</h3>
                     <ChatBox selectedBlock={this.props.selectedBlock} 
                     uId={this.props.uId}
                     bpId = {this.props.bpId}
@@ -101,6 +104,19 @@ class ViewBlockComponent extends React.Component {
 
     componentDidMount(){
         
+    }
+
+    renderOptions(){
+
+        if(!isNullOrUndefined(this.props.selectedBlock.blockState)){
+            return(
+                <ViewBlockListComponent 
+                blockState={this.props.selectedBlock.blockState}
+                canCommit={this.state.canCommit}
+                />
+            )
+        }
+        return null;
     }
 
     render(){
@@ -140,6 +156,8 @@ class ViewBlockComponent extends React.Component {
             <div className="block-evidence-list">
                 {renderBlockEvidences}
             </div>
+
+            {this.renderOptions()}
 
             {this.renderChat(this.props.selectedBlock.key)}
 

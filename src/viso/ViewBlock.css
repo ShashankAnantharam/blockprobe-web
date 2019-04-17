@@ -68,3 +68,9 @@
 .hover-template{
     left: 0px !important;
 }
+
+.view-block-option-list{
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}

@@ -99,6 +99,7 @@ class ChatBox extends React.Component {
         }
       }
 
+      //people, undo, thumb_up
       /*const prevState = this.state;
         const newMessage = new Message({
           id: recipient,
