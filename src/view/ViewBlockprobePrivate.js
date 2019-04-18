@@ -43,6 +43,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.setNewVisualisation = this.setNewVisualisation.bind(this);
         this.addEdge = this.addEdge.bind(this);
         this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
+        this.closeSelectedBlockSidebar = this.closeSelectedBlockSidebar.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -338,6 +339,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
         );
     }
 
+    closeSelectedBlockSidebar(){
+        this.onSetSelectedBlockSidebarOpen(false)
+    }
+
     render(){
         return (
             <div>
@@ -348,6 +353,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 selectedBlock={this.state.selectedBlock}
                 uId={this.props.uId}
                 bpId={this.props.bId}
+                closeSideBar = {this.closeSelectedBlockSidebar}
                 />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}

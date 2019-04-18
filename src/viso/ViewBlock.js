@@ -11,12 +11,15 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
+        //closeSideBar
+
         this.state={
             chatList: [],
             canCommit: true
         }
         this.renderChat = this.renderChat.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
+        this.selectOption = this.selectOption.bind(this);
     }
 
     getDateTimeString(timelineBlock){
@@ -106,6 +109,12 @@ class ViewBlockComponent extends React.Component {
         
     }
 
+    selectOption(option){
+        if(option == "revert"){            
+            this.props.closeSideBar();
+        }
+    }
+
     renderOptions(){
 
         if(!isNullOrUndefined(this.props.selectedBlock.blockState)){
@@ -113,6 +122,9 @@ class ViewBlockComponent extends React.Component {
                 <ViewBlockListComponent 
                 blockState={this.props.selectedBlock.blockState}
                 canCommit={this.state.canCommit}
+                selectOption = {this.selectOption}
+                uId={this.props.uId}
+                selectedBlock={this.props.selectedBlock}
                 />
             )
         }

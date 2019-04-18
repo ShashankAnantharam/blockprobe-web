@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -13,7 +14,17 @@ class ViewBlockListComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //props: blockState, clickOption, canCommit
+        //props: blockState, selectOption, canCommit, uId, selectedBlock
+
+        this.state={
+            shajs: '',
+            uIdHash: '',
+        };
+
+        var shajs = require('sha.js');
+        this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
+        this.state.shajs = shajs;
+
         this.selectOption = this.selectOption.bind(this);
         this.renderReviewOptionList = this.renderReviewOptionList.bind(this);
         this.renderSubmitterOptionList = this.renderSubmitterOptionList.bind(this);
@@ -21,6 +32,27 @@ class ViewBlockListComponent extends React.Component {
 
     selectOption(option){
 
+        if(option == "revert"){
+
+            //Deepcopy props to var
+            const blockStr = JSON.stringify(this.props.selectedBlock);
+            var newBlock = JSON.parse(blockStr);
+            newBlock.blockState = "DRAFT";
+
+           // console.log(newBlock);
+           // console.log("Blockprobes/"+newBlock.bpID);
+
+            firebase.firestore().collection("Blockprobes").doc(newBlock.bpID)
+            .collection("users").doc(this.state.uIdHash).collection("userBlocks").
+            doc(newBlock.key).set(newBlock);
+            
+            firebase.database().ref("Blockprobes/"+newBlock.bpID
+                        +"/reviewBlocks/"+newBlock.key).remove();
+
+            
+        }
+
+        this.props.selectOption(option);
     }
 
     renderReviewOptionList(){
