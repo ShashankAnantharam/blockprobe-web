@@ -51,6 +51,24 @@ class ViewBlockListComponent extends React.Component {
 
             
         }
+        else if(option == "upvote"){
+            
+            /*
+            firebase.database().ref("Blockprobes/"+this.props.selectedBlock.bpID
+                        +"/reviewBlocks/"+this.props.selectedBlock.key 
+                        +"/reviewers/"+this.state.uIdHash).set("1");
+
+                //TODO
+                giveBlockToNextReviewer(block);
+
+                firebase.firestore().collection("Blockprobes").
+                doc(this.props.selectedBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(this.props.selectedBlock.key+"_r").delete();
+
+                        */
+        }
 
         this.props.selectOption(option);
     }
