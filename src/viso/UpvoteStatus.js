@@ -6,7 +6,7 @@ class UpvoteStatusComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //reviewersMap
+        //reviewersMap, bpDetails
 
     
 
@@ -18,7 +18,7 @@ class UpvoteStatusComponent extends React.Component {
 
         const scope = this;
         var upVotes = 0;
-        var total = Object.keys(this.props.reviewersMap).length;
+        var total = this.props.bpDetails.criterion;
         
         Object.keys(this.props.reviewersMap).map((reviewerId)=> {
             if(this.props.reviewersMap[reviewerId]=="1"){

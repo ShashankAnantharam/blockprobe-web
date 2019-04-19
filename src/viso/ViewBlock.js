@@ -175,7 +175,9 @@ class ViewBlockComponent extends React.Component {
         if(!isNullOrUndefined(this.props.selectedBlock.blockState) && 
         this.props.selectedBlock.blockState=="UNDER REVIEW"){
             return (
-                <UpvoteStatusComponent reviewersMap={this.state.reviewersMap}/>
+                <UpvoteStatusComponent 
+                reviewersMap={this.state.reviewersMap}
+                bpDetails = {this.props.bpDetails}/>
             );
         }
         return null;
