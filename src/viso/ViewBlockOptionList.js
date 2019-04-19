@@ -61,7 +61,7 @@ class ViewBlockListComponent extends React.Component {
                         +"/reviewers/"+this.state.uIdHash).set("1");
 
                 //TODO
-                giveBlockToNextReviewer(block);
+                this.giveBlockToNextReviewer(block);
 
                 firebase.firestore().collection("Blockprobes").
                 doc(this.props.selectedBlock.bpID).
@@ -70,6 +70,9 @@ class ViewBlockListComponent extends React.Component {
                 doc(this.props.selectedBlock.key+"_r").delete();
 
                         */
+        }
+        else if(option == "reassign_reviewer"){
+            //this.giveBlockToNextReviewer(block)
         }
 
         this.props.selectOption(option);
