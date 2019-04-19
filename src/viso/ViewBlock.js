@@ -122,7 +122,7 @@ class ViewBlockComponent extends React.Component {
         rMap[dataSnapshot.key] = dataSnapshot.val();
         this.setState({
             reviewersMap: rMap
-        })
+        });
     }
 
     getReviewersStatusForBlock(){

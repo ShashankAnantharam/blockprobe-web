@@ -337,6 +337,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <UserBlocksComponent 
                     uId={this.props.uId}
                     bId={this.props.bId}
+                    bpDetails = {this.state.bpDetails}    
                     selectBlock={this.changeSelectedBlock}
                     investigationGraph = {this.state.investigationGraph}
                     />

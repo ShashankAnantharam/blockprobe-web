@@ -44,6 +44,71 @@ class UserBlocksComponent extends React.Component {
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
         this.updateDraftBlock = this.updateDraftBlock.bind(this);
+        this.getRandomReviewer = this.getRandomReviewer.bind(this);
+        this.giveBlockToFirstReviewer = this.giveBlockToFirstReviewer.bind(this);
+        this.submitDraftBlock = this.submitDraftBlock.bind(this);        
+    }
+
+    getRandomReviewer(reviewerList, revMap)
+    {
+        if(!isNullOrUndefined(reviewerList)){
+            var val = (Date.now()%reviewerList.length);
+            
+            for(var i=0;i<reviewerList.length;i++)
+            {
+                var curr=(val+i)%(reviewerList.length);
+                // console.log(reviewerList[i]);
+                if(!(reviewerList[curr].id in revMap))
+                {
+                    return reviewerList[curr];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    giveBlockToFirstReviewer(block)
+    {
+        var revMap={};
+
+        //Deepcopy of reviewerList
+        const reviewersStr = JSON.stringify(this.props.bpDetails.reviewers);
+        var reviewersList = JSON.parse(reviewersStr);
+        var randomReviewer = this.getRandomReviewer(reviewersList, revMap);
+
+        if(randomReviewer!=null) {
+
+            block.blockState = "TO REVIEW";
+
+            revMap[randomReviewer.id]="-";
+            firebase.firestore().collection("Blockprobes").
+                doc(block.bpID).
+                collection("users").doc(randomReviewer.id).
+                collection("userBlocks").
+                doc(block.key+"_r").set(block);
+
+        }
+        else{
+            console.log("No other reviewers left!");
+        }
+
+
+
+        var newBlock = {
+            actionType: block.actionType,
+            blockAuthor: this.state.uIdHash,
+            entities: isNullOrUndefined(block.entities)?[]:block.entities,
+            evidences: isNullOrUndefined(block.evidences)?[]:block.evidences,
+            reviewers:revMap,
+            summary: block.summary,
+            timestamp: block.timestamp,
+            title: block.title,
+        }
+
+        firebase.database().ref("Blockprobes/"+block.bpID
+                        +"/reviewBlocks/"+block.key).set(newBlock);
+
     }
 
 
@@ -108,7 +173,7 @@ class UserBlocksComponent extends React.Component {
                 //add new block
                 this.modifyBlockList(block,true);
 
-                //Update blockstate
+                 //Update blockstate
                blockStateMap[blockId] = block.blockState;
             }
         }
@@ -139,10 +204,30 @@ class UserBlocksComponent extends React.Component {
         //(uidHash + time)
         block.key = newDraftBlockId;
         block.actionType = "ADD";
-        block.bpId = this.props.bId;       
+        block.bpID = this.props.bId;       
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("users").doc(this.state.uIdHash).collection("userBlocks").
         doc(block.key).set(block);
+    }
+
+    submitDraftBlock(block){
+        if(isNullOrUndefined(block.key)){
+            block.timestamp = Date.now();
+           var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(block.timestamp)).digest('hex');
+
+            //(uidHash + time)
+            block.key = newDraftBlockId;
+            block.actionType = "ADD";
+        }
+        block.bpID = this.props.bId;
+
+        block.blockState = "UNDER REVIEW";
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.state.uIdHash).collection("userBlocks").
+        doc(block.key).set(block);
+
+        this.giveBlockToFirstReviewer(block)
+
     }
 
     componentDidMount(){
@@ -182,6 +267,7 @@ class UserBlocksComponent extends React.Component {
             deleteDraftBlock = {this.deleteDraftBlock}
             addDraftBlock = {this.addDraftBlock}
             updateDraftBlock = {this.updateDraftBlock}
+            submitDraftBlock = {this.submitDraftBlock}
             />
         );
     }

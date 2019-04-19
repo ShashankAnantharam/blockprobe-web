@@ -232,6 +232,7 @@ class DraftBlockComponent extends React.Component {
     }
 
     submitDraftBlock(){
+        this.populateEntitiesToBlock();
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SUBMIT');
     }
 
