@@ -29,6 +29,7 @@ class ViewBlockComponent extends React.Component {
         this.renderUpvoteStatus = this.renderUpvoteStatus.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.getReviewersStatusForBlock = this.getReviewersStatusForBlock.bind(this);
+        this.modifyReviewerMap = this.modifyReviewerMap.bind(this);
     }
 
     getDateTimeString(timelineBlock){
@@ -115,21 +116,27 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
+
+    modifyReviewerMap(dataSnapshot){
+        var rMap = this.state.reviewersMap;
+        rMap[dataSnapshot.key] = dataSnapshot.val();
+        this.setState({
+            reviewersMap: rMap
+        })
+    }
+
     getReviewersStatusForBlock(){
         // reviewers
         this.reviewerRef =
             firebase.database().ref("Blockprobes/"+this.props.selectedBlock.bpID
                         +"/reviewBlocks/"+this.props.selectedBlock.key 
-                        +"/reviewers").on('child_added', dataSnapshot => {
-                            
-                            var rMap = this.state.reviewersMap;
-                            rMap[dataSnapshot.key] = dataSnapshot.val();
-                            this.setState({
-                                reviewersMap: rMap
-                            })
-                            console.log(rMap);
-
+                        +"/reviewers");
+        this.reviewerRef.on('child_added', dataSnapshot => {
+                            this.modifyReviewerMap(dataSnapshot)
                         });
+        this.reviewerRef.on('child_changed', dataSnapshot => {
+                            this.modifyReviewerMap(dataSnapshot)
+                        });                
         this.prevBlockId = this.props.selectedBlock.key;
         this.prevBlockState = this.props.selectedBlock.blockState;                
         
