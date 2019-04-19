@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import ChatBox from './ChatBox';
 import ViewBlockListComponent from './ViewBlockOptionList';
+import UpvoteStatusComponent from './UpvoteStatus';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
@@ -25,6 +26,7 @@ class ViewBlockComponent extends React.Component {
 
         this.renderChat = this.renderChat.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
+        this.renderUpvoteStatus = this.renderUpvoteStatus.bind(this);
         this.selectOption = this.selectOption.bind(this);
         this.getReviewersStatusForBlock = this.getReviewersStatusForBlock.bind(this);
     }
@@ -169,6 +171,16 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
+    renderUpvoteStatus(){
+        if(!isNullOrUndefined(this.props.selectedBlock.blockState) && 
+        this.props.selectedBlock.blockState=="UNDER REVIEW"){
+            return (
+                <UpvoteStatusComponent reviewersMap={this.state.reviewersMap}/>
+            );
+        }
+        return null;
+    }
+
     render(){
 
         var renderBlockEntities="";
@@ -206,6 +218,8 @@ class ViewBlockComponent extends React.Component {
             <div className="block-evidence-list">
                 {renderBlockEvidences}
             </div>
+
+            {this.renderUpvoteStatus()}
 
             {this.renderOptions()}
 

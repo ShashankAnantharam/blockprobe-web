@@ -1,0 +1,13 @@
+.upvoteIcon{
+    color:rgb(2, 1, 54);
+    margin-left: 0.1em;
+    margin-right: 0.2em;
+    margin-top: 0.7em;
+    margin-bottom: -0.2em;
+    size:1.6em;
+    border:none;
+}
+
+.upvote-span{
+    margin: 0;
+}
