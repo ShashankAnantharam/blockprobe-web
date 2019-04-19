@@ -149,7 +149,7 @@ class ViewBlockComponent extends React.Component {
     }
 
     selectOption(option){
-        if(option == "revert"){            
+        if(option == "revert" || option == "upvote"){            
             this.props.closeSideBar();
         }
     }
@@ -165,6 +165,7 @@ class ViewBlockComponent extends React.Component {
                 uId={this.props.uId}
                 selectedBlock={this.props.selectedBlock}
                 bpDetails={this.props.bpDetails}
+                reviewersMap={this.state.reviewersMap}
                 />
             )
         }

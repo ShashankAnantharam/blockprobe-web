@@ -9,12 +9,13 @@ import UndoIcon from '@material-ui/icons/Undo';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'; 
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import './ViewBlock.css';
+import { isNullOrUndefined } from 'util';
 
 class ViewBlockListComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //props: blockState, selectOption, canCommit, uId, selectedBlock
+        //props: blockState, selectOption, canCommit, uId, selectedBlock, reviewersMap
 
         this.state={
             shajs: '',
@@ -55,24 +56,31 @@ class ViewBlockListComponent extends React.Component {
         }
         else if(option == "upvote"){
             
-            /*
+
+            //Deepcopy of block
+            const blockStr = JSON.stringify(this.props.selectedBlock);
+            var newBlock = JSON.parse(blockStr);
+            this.giveBlockToNextReviewer(newBlock);
+
+            
             firebase.database().ref("Blockprobes/"+this.props.selectedBlock.bpID
                         +"/reviewBlocks/"+this.props.selectedBlock.key 
                         +"/reviewers/"+this.state.uIdHash).set("1");
 
-                //TODO
-                this.giveBlockToNextReviewer(block);
-
-                firebase.firestore().collection("Blockprobes").
+            firebase.firestore().collection("Blockprobes").
                 doc(this.props.selectedBlock.bpID).
                 collection("users").doc(this.state.uIdHash).
                 collection("userBlocks").
                 doc(this.props.selectedBlock.key+"_r").delete();
 
-                        */
+                        
         }
         else if(option == "reassign_reviewer"){
-            //this.giveBlockToNextReviewer(block)
+
+            //Deepcopy of block
+            const blockStr = JSON.stringify(this.props.selectedBlock);
+            var newBlock = JSON.parse(blockStr);
+            this.giveBlockToNextReviewer(newBlock);
         }
 
         this.props.selectOption(option);
@@ -80,14 +88,17 @@ class ViewBlockListComponent extends React.Component {
 
     getRandomReviewer(reviewerList, revMap)
     {
-        var val = (Date.now()%reviewerList.length);
-        
-        for(var i=0;i<reviewerList.length;i++)
-        {
-            var curr=(val+i)%(reviewerList.length);
-            if(!(reviewerList[curr].id in revMap))
+        if(!isNullOrUndefined(reviewerList)){
+            var val = (Date.now()%reviewerList.length);
+            
+            for(var i=0;i<reviewerList.length;i++)
             {
-                return reviewerList[curr];
+                var curr=(val+i)%(reviewerList.length);
+                // console.log(reviewerList[i]);
+                if(!(reviewerList[curr].id in revMap))
+                {
+                    return reviewerList[curr];
+                }
             }
         }
 
@@ -96,8 +107,10 @@ class ViewBlockListComponent extends React.Component {
 
     giveBlockToNextReviewer(block)
     {
-        var randomReviewer = this.getRandomReviewer(this.props.bpDetails.reviewers, this.state.reviewersMap);
-        var blckHash = block.key;
+        //Deepcopy of reviewerList
+        const reviewersStr = JSON.stringify(this.props.bpDetails.reviewers);
+        var reviewersList = JSON.parse(reviewersStr);
+        var randomReviewer = this.getRandomReviewer(reviewersList, this.props.reviewersMap);
 
         if(randomReviewer!=null) {
 
@@ -113,6 +126,9 @@ class ViewBlockListComponent extends React.Component {
                         +"/reviewBlocks/"+block.key 
                         +"/reviewers/"+randomReviewer.id).set("-");
 
+        }
+        else{
+            console.log("No other reviewers left!");
         }
 
     }
