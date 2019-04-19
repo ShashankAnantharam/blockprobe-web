@@ -16,11 +16,17 @@ class ViewBlockComponent extends React.Component {
 
         this.state={
             chatList: [],
-            canCommit: true
+            canCommit: true,
+            reviewersMap: {}
         }
+        this.prevBlockId = null;
+        this.prevBlockState = null;
+        this.reviewerRef = null;
+
         this.renderChat = this.renderChat.bind(this);
         this.renderOptions = this.renderOptions.bind(this);
         this.selectOption = this.selectOption.bind(this);
+        this.getReviewersStatusForBlock = this.getReviewersStatusForBlock.bind(this);
     }
 
     getDateTimeString(timelineBlock){
@@ -107,8 +113,37 @@ class ViewBlockComponent extends React.Component {
         return null;
     }
 
-    componentDidMount(){
+    getReviewersStatusForBlock(){
+        // reviewers
+        this.reviewerRef =
+            firebase.database().ref("Blockprobes/"+this.props.selectedBlock.bpID
+                        +"/reviewBlocks/"+this.props.selectedBlock.key 
+                        +"/reviewers").on('child_added', dataSnapshot => {
+                            
+                            var rMap = this.state.reviewersMap;
+                            rMap[dataSnapshot.key] = dataSnapshot.val();
+                            this.setState({
+                                reviewersMap: rMap
+                            })
+                            console.log(rMap);
 
+                        });
+        this.prevBlockId = this.props.selectedBlock.key;
+        this.prevBlockState = this.props.selectedBlock.blockState;                
+        
+    }
+
+    componentDidUpdate(){
+        if(this.prevBlockId!=this.props.selectedBlock.key){
+            this.setState({
+                reviewersMap: {}
+            });
+            this.getReviewersStatusForBlock();
+        }
+    }
+
+    componentDidMount(){
+        this.getReviewersStatusForBlock();
     }
 
     selectOption(option){
@@ -127,6 +162,7 @@ class ViewBlockComponent extends React.Component {
                 selectOption = {this.selectOption}
                 uId={this.props.uId}
                 selectedBlock={this.props.selectedBlock}
+                bpDetails={this.props.bpDetails}
                 />
             )
         }
