@@ -26,6 +26,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             genesisBlockId: "",
             blockprobeTitle: "",
             blockprobeSummary: "",
+            bpDetails: {},
             selectedBlock:"", 
             blockTree: {},
             investigationGraph: {},
@@ -51,7 +52,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             this.setState({
                 selectedVisualisation: newVisualisation
             });
-            console.log(newVisualisation);
+            // console.log(newVisualisation);
         }
     }
 
@@ -61,7 +62,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     onSetMenuBlockSidebarOpen(open) {
         this.setState({ menuBarOpen: open });
-        console.log(this.state.menuBarOpen);
+        // console.log(this.state.menuBarOpen);
     }
 
     addBlocksToProbe(doc){      
@@ -227,7 +228,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.setState({
             investigationGraph: graph
         });
-        console.log(this.state.investigationGraph);
+        // console.log(this.state.investigationGraph);
     }
 
     createBlockprobe(snapshot){
@@ -237,7 +238,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var blockList = [];
         var blockStatus = {};
 
-        console.log(this.state.blockTree);
+        // console.log(this.state.blockTree);
         this.traverseBlockTree(
             this.state.genesisBlockId, 
             timelineList, 
@@ -282,7 +283,18 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.onSetSelectedBlockSidebarOpen(true);
     }
 
+
+
     componentDidMount(){
+        
+        firebase.firestore().collection("Blockprobes").
+        doc(this.props.bId).onSnapshot((snapshot) => (
+            this.setState({
+                bpDetails: snapshot.data()
+            })
+           // console.log(snapshot.data())
+        ));
+
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("fullBlocks").get().then((snapshot) => (
             this.createBlockprobe(snapshot)
@@ -354,6 +366,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 uId={this.props.uId}
                 bpId={this.props.bId}
                 closeSideBar = {this.closeSelectedBlockSidebar}
+                bpDetails = {this.state.bpDetails}
                 />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}

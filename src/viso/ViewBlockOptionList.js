@@ -96,7 +96,7 @@ class ViewBlockListComponent extends React.Component {
 
     giveBlockToNextReviewer(block)
     {
-        var randomReviewer = getRandomReviewer(details.reviewers, reviewersMap);
+        var randomReviewer = this.getRandomReviewer(this.props.details.reviewers, this.state.reviewersMap);
         var blckHash = block.key;
 
         if(randomReviewer!=null) {

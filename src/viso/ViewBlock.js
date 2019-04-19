@@ -11,7 +11,8 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //closeSideBar
+        //closeSideBar, bpDetails
+
 
         this.state={
             chatList: [],
@@ -73,6 +74,7 @@ class ViewBlockComponent extends React.Component {
     }   
 
     renderDateTime(dateTimeString){
+
         if(dateTimeString!=""){
             return (
                 <div class="block-datetime" data-tip data-for='dateTime'>{dateTimeString}</div>
@@ -106,7 +108,7 @@ class ViewBlockComponent extends React.Component {
     }
 
     componentDidMount(){
-        
+
     }
 
     selectOption(option){
