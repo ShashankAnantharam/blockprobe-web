@@ -28,6 +28,8 @@ class ViewBlockListComponent extends React.Component {
         this.selectOption = this.selectOption.bind(this);
         this.renderReviewOptionList = this.renderReviewOptionList.bind(this);
         this.renderSubmitterOptionList = this.renderSubmitterOptionList.bind(this);
+        this.getRandomReviewer = this.getRandomReviewer.bind(this);
+        this.giveBlockToNextReviewer = this.giveBlockToNextReviewer.bind(this);
     }
 
     selectOption(option){
@@ -71,6 +73,45 @@ class ViewBlockListComponent extends React.Component {
         }
 
         this.props.selectOption(option);
+    }
+
+    getRandomReviewer(reviewerList, revMap)
+    {
+        var val = (Date.now()%reviewerList.length);
+        
+        for(var i=0;i<reviewerList.length;i++)
+        {
+            var curr=(val+i)%(reviewerList.length);
+            if(!(reviewerList[curr].id in revMap))
+            {
+                return reviewerList[curr];
+            }
+        }
+
+        return null;
+    }
+
+    giveBlockToNextReviewer(block)
+    {
+        var randomReviewer = getRandomReviewer(details.reviewers, reviewersMap);
+        var blckHash = block.key;
+
+        if(randomReviewer!=null) {
+
+            block.blockState = "TO REVIEW";
+
+            firebase.firestore().collection("Blockprobes").
+                doc(block.bpID).
+                collection("users").doc(randomReviewer.id).
+                collection("userBlocks").
+                doc(block.key+"_r").set(block);
+
+            firebase.database().ref("Blockprobes/"+block.bpID
+                        +"/reviewBlocks/"+block.key 
+                        +"/reviewers/"+randomReviewer.id).set("-");
+
+        }
+
     }
 
     renderReviewOptionList(){
