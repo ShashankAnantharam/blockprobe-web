@@ -17,8 +17,9 @@ class ViewBlockComponent extends React.Component {
 
         this.state={
             chatList: [],
-            canCommit: true,
-            reviewersMap: {}
+            reviewersMap: {},
+            upVotes: 0,
+            canCommit: false
         }
         this.prevBlockId = null;
         this.prevBlockState = null;
@@ -120,8 +121,22 @@ class ViewBlockComponent extends React.Component {
     modifyReviewerMap(dataSnapshot){
         var rMap = this.state.reviewersMap;
         rMap[dataSnapshot.key] = dataSnapshot.val();
+
+        var upVotes = 0;
+        var total = this.props.bpDetails.criterion;
+        var canCommit = false;
+        Object.keys(rMap).map((reviewerId)=> {
+            if(rMap[reviewerId]=="1"){
+                upVotes++;
+            }
+        });
+        if(total - upVotes <= 0){
+            canCommit = true;
+        }
         this.setState({
-            reviewersMap: rMap
+            reviewersMap: rMap,
+            upVotes: upVotes,
+            canCommit: canCommit
         });
     }
 
