@@ -208,6 +208,8 @@ class UserBlocksComponent extends React.Component {
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("users").doc(this.state.uIdHash).collection("userBlocks").
         doc(block.key).set(block);
+
+        this.setState({isCreateBlockClicked:false});
     }
 
     submitDraftBlock(block){
@@ -226,7 +228,9 @@ class UserBlocksComponent extends React.Component {
         .collection("users").doc(this.state.uIdHash).collection("userBlocks").
         doc(block.key).set(block);
 
-        this.giveBlockToFirstReviewer(block)
+        this.giveBlockToFirstReviewer(block);
+
+        this.setState({isCreateBlockClicked:false});
 
     }
 
