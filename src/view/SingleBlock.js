@@ -121,6 +121,10 @@ class SingleUserBlock extends React.Component {
             //SUBMIT
 
             this.props.submitDraftBlock(newBlock);
+
+            this.setState({
+                isBlockClicked: false
+            });
         }
         else if(updateType=='CANCEL'){
             //CANCEL CHANGES

@@ -50,7 +50,7 @@ class DraftBlockComponent extends React.Component {
         this.submitDraftBlock = this.submitDraftBlock.bind(this);
         this.cancelDraftBlock = this.cancelDraftBlock.bind(this);
         this.removeDraftBlock = this.removeDraftBlock.bind(this);
-        this.populateEntitiesToBlock = this.populateEntitiesToBlock.bind(this);
+        this.populateEntitiesAndEvidencesToBlock = this.populateEntitiesAndEvidencesToBlock.bind(this);
     }
     
 
@@ -209,7 +209,7 @@ class DraftBlockComponent extends React.Component {
         );
     }
 
-    populateEntitiesToBlock(){
+    populateEntitiesAndEvidencesToBlock(){
         var block = this.state.newBlock;
         block.entities = [];
         var list = this.state.multiSelectEntityList;
@@ -221,18 +221,23 @@ class DraftBlockComponent extends React.Component {
                 });
             }
         }  
+
+        if(isNullOrUndefined(block.evidences)){
+            block.evidences=[];
+        }
+        
         this.setState({
             newBlock: block
         });
     }
 
     saveDraftBlock(){
-        this.populateEntitiesToBlock();
+        this.populateEntitiesAndEvidencesToBlock();
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SAVE');
     }
 
     submitDraftBlock(){
-        this.populateEntitiesToBlock();
+        this.populateEntitiesAndEvidencesToBlock();
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SUBMIT');
     }
 

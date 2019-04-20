@@ -98,8 +98,8 @@ class UserBlocksComponent extends React.Component {
         var newBlock = {
             actionType: block.actionType,
             blockAuthor: this.state.uIdHash,
-            entities: isNullOrUndefined(block.entities)?[]:block.entities,
-            evidences: isNullOrUndefined(block.evidences)?[]:block.evidences,
+            entities: isNullOrUndefined(block.entities)?null:block.entities,
+            evidences: isNullOrUndefined(block.evidences)?null:block.evidences,
             reviewers:revMap,
             summary: block.summary,
             timestamp: block.timestamp,
