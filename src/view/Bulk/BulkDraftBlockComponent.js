@@ -20,7 +20,7 @@ class BulkDraftBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //cancelBulkDraftBlock
+        //cancelBulkDraftBlock, addDraftBlock
 
         this.state ={
             display:'',
@@ -38,9 +38,7 @@ class BulkDraftBlockComponent extends React.Component {
 
     formatParas(currentPara, allParas){
         var newPara={};
-        console.log("Curr New");
-        console.log(currentPara);
-        console.log(newPara);
+ 
         if(currentPara.length==1){
 
             //one long para body, put as summary
@@ -56,8 +54,6 @@ class BulkDraftBlockComponent extends React.Component {
                 paraBody = paraBody + currentPara[j];
             }
             newPara.body = paraBody;
-            console.log("New Para");
-            console.log(newPara);
         }
         allParas.push(newPara);
     
@@ -131,9 +127,22 @@ class BulkDraftBlockComponent extends React.Component {
       }
 
      saveDraftInBulk(){
-        var currVal = this.state.value;
-         currVal = this.getParas(currVal);
-         console.log(currVal);
+        var bulkBlocks = [];
+        bulkBlocks = this.getParas(this.state.value);
+         console.log(bulkBlocks);
+
+         var draftBlocks=[];
+         for(var i=0;i<bulkBlocks.length;i++){
+             var newDraftBlock = {
+                 entities:[],
+                 evidences:[],
+                 summary: bulkBlocks[i].body,
+                 title: bulkBlocks[i].title
+             }
+             draftBlocks.push(newDraftBlock);
+         }
+
+         this.props.addDraftBlocksInBulk(draftBlocks);
      } 
 
     render(){

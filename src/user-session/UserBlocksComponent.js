@@ -49,6 +49,7 @@ class UserBlocksComponent extends React.Component {
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
+        this.addDraftBlocksInBulk = this.addDraftBlocksInBulk.bind(this);
         this.updateDraftBlock = this.updateDraftBlock.bind(this);
         this.getRandomReviewer = this.getRandomReviewer.bind(this);
         this.giveBlockToFirstReviewer = this.giveBlockToFirstReviewer.bind(this);
@@ -203,9 +204,22 @@ class UserBlocksComponent extends React.Component {
 
     }
 
+    addDraftBlocksInBulk(blocks){
+
+        for(var i =0;i<blocks.length; i++){
+            this.addDraftBlock(blocks[i]);
+        }
+
+        this.setState({isCreateBulkBlockClicked: false});
+    }
+
     addDraftBlock(block){
         block.timestamp = Date.now();
         var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(block.timestamp)).digest('hex');
+
+        if(isNullOrUndefined(block.blockState)){
+            block.blockState = "DRAFT";
+        }
 
         //(uidHash + time)
         block.key = newDraftBlockId;
@@ -317,6 +331,7 @@ class UserBlocksComponent extends React.Component {
                 <div>
                     <BulkDraftBlockComponent
                         cancelBulkDraftBlock = {this.cancelBulkBlock}
+                        addDraftBlocksInBulk = {this.addDraftBlocksInBulk}
                     />
                 </div>
             )
