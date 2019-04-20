@@ -3,7 +3,8 @@ import * as firebase from 'firebase';
 import SingleBlock from '../view/SingleBlock';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add';
+import BookIcon from '@material-ui/icons/Book';
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 
@@ -28,7 +29,8 @@ class UserBlocksComponent extends React.Component {
                 blockState:'DRAFT',
                 entities:[]
             },
-            isCreateBlockClicked:false
+            isCreateBlockClicked:false,
+            isCreateBulkBlockClicked: false
         }
         //props include bpId, uId
         var shajs = require('sha.js');
@@ -39,7 +41,9 @@ class UserBlocksComponent extends React.Component {
         this.modifyBlockListWrapper = this.modifyBlockListWrapper.bind(this);
         this.selectBlock = this.selectBlock.bind(this);
         this.renderSingleBlock = this.renderSingleBlock.bind(this);
+        this.renderBlockOptions = this.renderBlockOptions.bind(this);
         this.createBlock = this.createBlock.bind(this);
+        this.createBulkBlock = this.createBulkBlock.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
@@ -285,8 +289,43 @@ class UserBlocksComponent extends React.Component {
         this.setState({isCreateBlockClicked:true});
     }
 
+    createBulkBlock(){
+        this.setState({isCreateBulkBlockClicked:true});
+    }
+
     deleteNewBlock(){
         this.setState({isCreateBlockClicked:false});
+    }
+
+    renderBlockOptions(){
+
+        if(this.state.isCreateBlockClicked){
+            return(
+                <div>
+                    {this.renderSingleBlock(this.state.newBlock,this, true)}
+                </div>
+            );
+        }
+        if(this.state.isCreateBulkBlockClicked){
+            return(
+                <div>
+
+                </div>
+            )
+        }
+
+        return (<div className="userblocks-options-container">
+                    <button 
+                    className="addBlockButton" 
+                    onClick={this.createBlock}>
+                        <AddIcon/>
+                    </button>
+                    <button 
+                    className="addBulkBlockButton" 
+                    onClick={this.createBulkBlock}>
+                        <BookIcon/>
+                    </button>
+                </div>)
     }
 
     render(){
@@ -315,17 +354,7 @@ class UserBlocksComponent extends React.Component {
 
         return(
             <div>
-                {!this.state.isCreateBlockClicked?
-                    <button 
-                    className="addBlockButton" 
-                    onClick={this.createBlock}>
-                        <AddIcon/>
-                    </button>
-                    :
-                    <div>
-                        {this.renderSingleBlock(this.state.newBlock,this, true)}
-                    </div> 
-                }
+                {this.renderBlockOptions()}
                                 
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
