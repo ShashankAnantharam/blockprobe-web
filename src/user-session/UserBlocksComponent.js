@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import SingleBlock from '../view/SingleBlock';
+import BulkDraftBlockComponent from '../view/Bulk/BulkDraftBlockComponent';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import AddIcon from '@material-ui/icons/Add';
@@ -44,6 +45,7 @@ class UserBlocksComponent extends React.Component {
         this.renderBlockOptions = this.renderBlockOptions.bind(this);
         this.createBlock = this.createBlock.bind(this);
         this.createBulkBlock = this.createBulkBlock.bind(this);
+        this.cancelBulkBlock = this.cancelBulkBlock.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
@@ -293,6 +295,10 @@ class UserBlocksComponent extends React.Component {
         this.setState({isCreateBulkBlockClicked:true});
     }
 
+    cancelBulkBlock(){
+        this.setState({isCreateBulkBlockClicked:false});
+    }
+
     deleteNewBlock(){
         this.setState({isCreateBlockClicked:false});
     }
@@ -309,7 +315,9 @@ class UserBlocksComponent extends React.Component {
         if(this.state.isCreateBulkBlockClicked){
             return(
                 <div>
-
+                    <BulkDraftBlockComponent
+                        cancelBulkDraftBlock = {this.cancelBulkBlock}
+                    />
                 </div>
             )
         }
