@@ -199,8 +199,8 @@ class ViewBlockComponent extends React.Component {
         this.props.selectedBlock.blockState=="UNDER REVIEW"){
             return (
                 <UpvoteStatusComponent 
-                reviewersMap={this.state.reviewersMap}
-                bpDetails = {this.props.bpDetails}/>
+                upVotes = {this.state.upVotes}
+                bpDetails = {this.props.bpDetails}/>            
             );
         }
         return null;
