@@ -130,7 +130,8 @@ class DraftBlockComponent extends React.Component {
             console.log(block);
             this.setState({
                 multiSelectEntityList: entityList,
-                newBlock: block
+                newBlock: block,
+                newEntity: ''
             });
         }       
     }
