@@ -18,14 +18,6 @@ class GraphComponent extends React.Component {
             edges: [
               ]
           },
-        graphHelperMap: {
-            nodes:{
-
-            },
-            edges:{
-
-            }
-          },
         graphOptions: {
             layout: {
                 hierarchical: false
@@ -59,6 +51,15 @@ class GraphComponent extends React.Component {
         wasNoneOptionSelected:false,
         testVar: -1
         }
+
+        this.graphHelperMap= {
+            nodes:{
+
+            },
+            edges:{
+
+            }
+          };
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
@@ -133,7 +134,7 @@ class GraphComponent extends React.Component {
         if(!isNullOrUndefined(edges)){
             for(var i=0;i<edges.length;i++){
                 var edgeKey = edges[i];
-                var edge = this.state.graphHelperMap.edges[edgeKey];
+                var edge = this.graphHelperMap.edges[edgeKey];
                 this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
             }
         }
@@ -141,7 +142,7 @@ class GraphComponent extends React.Component {
         if(!isNullOrUndefined(nodes)){
             for(var i=0;i<nodes.length;i++){
                 var nodeKey = nodes[i];
-                var node = this.state.graphHelperMap.nodes[nodeKey];
+                var node = this.graphHelperMap.nodes[nodeKey];
                 this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
             }
         }
@@ -166,7 +167,7 @@ class GraphComponent extends React.Component {
         })
     }
 
-    async generateGraph(){
+    generateGraph(){
         var isAllSelected = this.state.multiSelectEntityList[0].value;
         var newGraph = {
             nodes: [],
@@ -223,12 +224,17 @@ class GraphComponent extends React.Component {
             newGraphHelper.edges[edge.id] = {from:from_id, to:to_id};
         }
 
-        await this.setState({
-            graph: newGraph,
-            graphHelperMap: newGraphHelper 
-        });
-        console.log(this.state.graphHelperMap);
+        this.graphHelperMap= newGraphHelper 
+        //console.log(this.state.graphHelperMap);
 
+        return(
+            <Graph 
+                        graph={newGraph} 
+                        options={this.state.graphOptions} 
+                        events={this.state.graphEvents} 
+                        style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
+                        />
+        );
     }
 
     generateMultiSelectEntityList(){
@@ -359,7 +365,7 @@ class GraphComponent extends React.Component {
     componentDidMount(){
         this.initializeGraphEvents();
         this.generateMultiSelectEntityList();
-        this.generateGraph();
+        //this.generateGraph();
 
     }
 
@@ -401,12 +407,7 @@ class GraphComponent extends React.Component {
                     <button className="filterButton" onClick={this.generateGraph}>Filter Graph</button>
                 </div>
                 <div className='graph-container'>
-                    <Graph 
-                        graph={this.state.graph} 
-                        options={this.state.graphOptions} 
-                        events={this.state.graphEvents} 
-                        style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
-                        />
+                       {this.generateGraph()}
 
                       <div className="graph-block-list"  id="graph-selected-block-list">
                             {renderBlocks}
