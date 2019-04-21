@@ -46,6 +46,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.addEdge = this.addEdge.bind(this);
         this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
         this.closeSelectedBlockSidebar = this.closeSelectedBlockSidebar.bind(this);
+        this.refreshBlockprobe = this.refreshBlockprobe.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -284,6 +285,19 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.onSetSelectedBlockSidebarOpen(true);
     }
 
+    refreshBlockprobe(){
+
+        this.setState({
+            blockTree: {},
+            investigationGraph: {},
+            timeline: []
+        });
+
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("fullBlocks").get().then((snapshot) => (
+            this.createBlockprobe(snapshot)
+         ));
+    }
 
 
     componentDidMount(){
@@ -399,7 +413,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     className="menu-button">
                             <MenuIcon/>
                     </button>
-                    <button onClick={() => { this.getValue()}}
+                    <button onClick={() => { this.refreshBlockprobe()}}
                     className="sync-button">
                             <SyncIcon/>
                     </button>
