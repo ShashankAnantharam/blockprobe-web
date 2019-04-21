@@ -36,6 +36,18 @@ class ViewBlockprobePrivateComponent extends React.Component {
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
             selectedVisualisation: "timeline",
+            multiSelectEntityList: [
+                {
+                    value: true, 
+                    label: "All", 
+                    id: 0
+                },
+                {
+                    value: false, 
+                    label: "None", 
+                    id: -1
+                }
+            ],
             testList: []
         }
 
@@ -48,6 +60,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
         this.closeSelectedBlockSidebar = this.closeSelectedBlockSidebar.bind(this);
         this.refreshBlockprobe = this.refreshBlockprobe.bind(this);
+
+        this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -237,7 +251,37 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.setState({
             investigationGraph: graph
         });
+        this.generateMultiSelectEntityList();
         // console.log(this.state.investigationGraph);
+    }
+
+    generateMultiSelectEntityList(){
+        var count = 1;
+        var entityList = this.state.multiSelectEntityList;
+
+        var existingEntities = {};
+        for(var i=2;i<entityList.length; i++){
+            existingEntities[entityList[i].label] = true;
+            if(entityList[i].id >= count)
+                count = entityList[i].id + 1;
+        }
+
+        Object.keys(this.state.investigationGraph).forEach(function(entityLabel) {
+            if(!(entityLabel in existingEntities)){
+                entityList.push({                
+                        value: false, 
+                        label: entityLabel, 
+                        id: count             
+                });
+                count++;
+            }
+        });
+
+        console.log(entityList);
+
+        this.setState({
+            multiSelectEntityList: entityList
+        });
     }
 
     createBlockprobe(snapshot){
@@ -339,7 +383,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 <div>
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
-                        selectBlock={this.changeSelectedBlock}/>
+                        selectBlock={this.changeSelectedBlock}
+                        multiSelectEntityList = {this.state.multiSelectEntityList}/>
                 </div>
             );
         }

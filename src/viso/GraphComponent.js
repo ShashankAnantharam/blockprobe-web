@@ -63,7 +63,6 @@ class GraphComponent extends React.Component {
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
-        this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.generateGraph = this.generateGraph.bind(this);
         this.onSelectGraph = this.onSelectGraph.bind(this);
         this.addBlocksForNodeCharacteristic = this.addBlocksForNodeCharacteristic.bind(this);
@@ -168,21 +167,21 @@ class GraphComponent extends React.Component {
     }
 
     generateGraph(){
-        var isAllSelected = this.state.multiSelectEntityList[0].value;
+        var isAllSelected = this.props.multiSelectEntityList[0].value;
         var newGraph = {
             nodes: [],
             edges: []
         };
         var nodesMap = {};
 
-        if(!this.state.multiSelectEntityList[1].value)
+        if(!this.props.multiSelectEntityList[1].value)
         {
             //If None is not selected only display graph
             var selectedEntityLabels = {};
 
             var count=0;
-            for(var i=2; i<this.state.multiSelectEntityList.length;i++){
-                var currEntity = this.state.multiSelectEntityList[i];
+            for(var i=2; i<this.props.multiSelectEntityList.length;i++){
+                var currEntity = this.props.multiSelectEntityList[i];
                 if(currEntity.value || isAllSelected){
                     //selected Node
                     selectedEntityLabels[currEntity.label]=count;
@@ -241,28 +240,14 @@ class GraphComponent extends React.Component {
         );
     }
 
-    generateMultiSelectEntityList(){
-        var count = 1;
-        var entityList = this.state.multiSelectEntityList;
-        Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
-            entityList.push({                
-                    value: false, 
-                    label: entityLabel, 
-                    id: count             
-            });
-            count++;
-        });
-        this.setState({
-            multiSelectEntityList: entityList
-        });
-    }
+  
 
     BlockEntity(entity){
         return(
         <span className="graph-block-entity">
             {entity.title}
         </span>
-        );  
+        );   
     }
 
     SingleBlock(singleBlock){
@@ -300,7 +285,7 @@ class GraphComponent extends React.Component {
         var showAll = false;
         var showNone = false;
         var someOptionIsEnabled = false;
-        var tempList = this.state.multiSelectEntityList;
+        var tempList = this.props.multiSelectEntityList;
 
         for(var i=0; i<tempList.length; i++){
             if(tempList[i].value==true){
@@ -368,7 +353,6 @@ class GraphComponent extends React.Component {
 
     componentDidMount(){
         this.initializeGraphEvents();
-        this.generateMultiSelectEntityList();
         //this.generateGraph();
 
     }
@@ -399,7 +383,7 @@ class GraphComponent extends React.Component {
                 
                     <div className="dropdown-container">
                         <MultiSelectReact 
-                        options={this.state.multiSelectEntityList}
+                        options={this.props.multiSelectEntityList}
                         optionClicked={this.entityClicked.bind(this)}
                         selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
                         selectedOptionsStyles={selectedOptionsStyles}
