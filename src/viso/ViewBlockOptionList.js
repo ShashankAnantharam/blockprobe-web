@@ -84,29 +84,56 @@ class ViewBlockListComponent extends React.Component {
         }
         else if(option == "can_commit"){
             console.log(this.props.latestBlock);
-/*
+
+            const oldKey = this.props.selectedBlock.key;
+            
+
             //Deepcopy of block
             const blockStr = JSON.stringify(this.props.selectedBlock);
             var newBlock = JSON.parse(blockStr);
-
-            firebase.database().ref("Blockprobes/"+newBlock.bpID
-            +"/reviewBlocks/"+newBlock.key).remove();
-
-            var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
-
+            var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
             newBlock.timestamp = Date.now();
-
-            
-            //TODO Finish this
-            newBlock.verificationHash = newDraftBlockId;
-            newBlock.prevBlock = ;
-            newBlock.key = ;
-            
-
+            newBlock.verificationHash = newBlockId;
+            newBlock.previousKey = this.props.latestBlock.key;
+            if(newBlock.actionType == "ADD"){
+                newBlock.referenceBlock = null;
+            }
+            newBlock.key = this.state.shajs('sha256').update(newBlockId + newBlock.previousKey).digest('hex');            
+            if(isNullOrUndefined(newBlock.blockDate)){
+                newBlock.blockDate = null;
+            }
+            if(isNullOrUndefined(newBlock.blockTime)){
+                newBlock.blockTime = null;
+            }
             newBlock.blockState = "SUCCESSFUL";
 
-  
-            */
+            var committedBlock = JSON.parse(JSON.stringify(newBlock));
+            delete committedBlock["blockState"];
+            delete committedBlock["bpID"];
+            console.log(newBlock);
+            console.log(committedBlock);
+
+            firebase.database().ref("Blockprobes/"+newBlock.bpID
+            +"/reviewBlocks/"+oldKey).remove();
+
+            firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(oldKey).delete();
+            
+            firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(newBlock.key).set(newBlock);
+            
+            firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("fullBlocks").
+                doc(committedBlock.key).set(committedBlock);
+
+            
         }
 
         this.props.selectOption(option);
