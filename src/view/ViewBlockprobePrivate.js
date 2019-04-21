@@ -9,6 +9,7 @@ import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
+import SyncIcon from '@material-ui/icons/Sync';
 import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
 import VisualizeOptionsListComponent from '../viso/VisoList';
@@ -393,10 +394,14 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 styles={{ sidebar: { background:"white", position:'fixed' } }}
             >
 
-                <div>
-                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
-                className="menu-button">
-                        <MenuIcon/>
+                <div className="blockprobe-options-container">
+                    <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
+                    className="menu-button">
+                            <MenuIcon/>
+                    </button>
+                    <button onClick={() => { this.getValue()}}
+                    className="sync-button">
+                            <SyncIcon/>
                     </button>
                 </div>
                 <div className="blockprobe-header"> 

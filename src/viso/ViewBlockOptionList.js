@@ -82,6 +82,31 @@ class ViewBlockListComponent extends React.Component {
             var newBlock = JSON.parse(blockStr);
             this.giveBlockToNextReviewer(newBlock);
         }
+        else if(option == "can_commit"){
+/*
+            //Deepcopy of block
+            const blockStr = JSON.stringify(this.props.selectedBlock);
+            var newBlock = JSON.parse(blockStr);
+
+            firebase.database().ref("Blockprobes/"+newBlock.bpID
+            +"/reviewBlocks/"+newBlock.key).remove();
+
+            var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
+
+            newBlock.timestamp = Date.now();
+
+            
+            //TODO Finish this
+            newBlock.verificationHash = newDraftBlockId;
+            newBlock.prevBlock = ;
+            newBlock.key = ;
+            
+
+            newBlock.blockState = "SUCCESSFUL";
+
+  
+            */
+        }
 
         this.props.selectOption(option);
     }
