@@ -15,7 +15,7 @@ class ViewBlockListComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //props: blockState, selectOption, canCommit, uId, selectedBlock, reviewersMap
+        //props: blockState, selectOption, canCommit, uId, selectedBlock, latestBlock, reviewersMap
 
         this.state={
             shajs: '',
@@ -83,6 +83,7 @@ class ViewBlockListComponent extends React.Component {
             this.giveBlockToNextReviewer(newBlock);
         }
         else if(option == "can_commit"){
+            console.log(this.props.latestBlock);
 /*
             //Deepcopy of block
             const blockStr = JSON.stringify(this.props.selectedBlock);

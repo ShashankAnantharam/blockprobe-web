@@ -32,6 +32,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             blockTree: {},
             investigationGraph: {},
             timeline: [],
+            latestBlock: null,
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
             selectedVisualisation: "timeline",
@@ -101,9 +102,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
         tempState[prevBlockId].children.push(block.key);
 
+        var latestBlock = this.state.latestBlock;
+        if(isNullOrUndefined(latestBlock) || 
+        (latestBlock.timestamp < block.timestamp )){
+            latestBlock = block;
+        }
 
         this.setState({
-                 blockTree:tempState
+                 blockTree:tempState,
+                 latestBlock: latestBlock
              });
         if(block.actionType == "genesis"){
             this.setState({
@@ -383,6 +390,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 bpId={this.props.bId}
                 closeSideBar = {this.closeSelectedBlockSidebar}
                 bpDetails = {this.state.bpDetails}
+                latestBlock ={this.state.latestBlock}
                 />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}

@@ -188,6 +188,7 @@ class ViewBlockComponent extends React.Component {
                 selectedBlock={this.props.selectedBlock}
                 bpDetails={this.props.bpDetails}
                 reviewersMap={this.state.reviewersMap}
+                latestBlock ={this.props.latestBlock}
                 />
             )
         }
