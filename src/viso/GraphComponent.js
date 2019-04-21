@@ -392,7 +392,6 @@ class GraphComponent extends React.Component {
                         />
                     </div>
 
-                    <button className="filterButton" onClick={this.generateGraph}>Filter Graph</button>
                 </div>
                 <div className='graph-container'>
                        {this.generateGraph()}
