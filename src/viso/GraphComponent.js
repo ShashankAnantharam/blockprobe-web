@@ -196,17 +196,21 @@ class GraphComponent extends React.Component {
 
                     //Add edge
                     var currEntityKey = currEntity.label;
-                    var edgeMap = this.props.investigationGraph[currEntityKey].edges;
-                    Object.keys(edgeMap).forEach(function(edgeKey) {
-                        if(edgeKey in selectedEntityLabels){
-                            //edge is a selection, add it
-                            newGraph.edges.push({
-                                from: selectedEntityLabels[edgeKey],
-                                to: count,
-                                id: selectedEntityLabels[edgeKey]+'-'+count
-                            });
-                        }
-                    });
+
+                    if(!isNullOrUndefined(this.props.investigationGraph)
+                    && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
+                        var edgeMap = this.props.investigationGraph[currEntityKey].edges;
+                        Object.keys(edgeMap).forEach(function(edgeKey) {
+                            if(edgeKey in selectedEntityLabels){
+                                //edge is a selection, add it
+                                newGraph.edges.push({
+                                    from: selectedEntityLabels[edgeKey],
+                                    to: count,
+                                    id: selectedEntityLabels[edgeKey]+'-'+count
+                                });
+                            }
+                        });
+                    }
                     count++;
                 }
             }
