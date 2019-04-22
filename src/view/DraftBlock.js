@@ -13,6 +13,8 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class DraftBlockComponent extends React.Component {
 
@@ -37,10 +39,17 @@ class DraftBlockComponent extends React.Component {
         this.state={
             newBlock: {},
             newEntity: '',
-            multiSelectEntityList: []
+            multiSelectEntityList: [],
+            addDate: false,
+            addTime: false,
+            date: new Date()
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.changeDateStatus = this.changeDateStatus.bind(this);
+        this.changeTimeStatus = this.changeTimeStatus.bind(this);
+        this.renderDate = this.renderDate.bind(this);
+        this.renderTime = this.renderTime.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.addEntityToList = this.addEntityToList.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
@@ -53,6 +62,16 @@ class DraftBlockComponent extends React.Component {
         this.populateEntitiesAndEvidencesToBlock = this.populateEntitiesAndEvidencesToBlock.bind(this);
     }
     
+
+    changeDateStatus(){
+        var addDate = this.state.addDate;
+        this.setState({addDate: !addDate});
+    }
+
+    changeTimeStatus(){
+        var addTime = this.state.addTime;
+        this.setState({addTime: !addTime});
+    }
 
     entityClicked(entityList) {
         this.setState({ multiSelectEntityList: entityList });
@@ -137,10 +156,13 @@ class DraftBlockComponent extends React.Component {
     }
     
     handleChange(event, type) {
+
         var shouldUpdate = true;
-        var lastChar = event.target.value[event.target.value.length-1];
-        if(lastChar=='\n' || lastChar=='\t'){
-            shouldUpdate=false;
+        if(type!="date"){
+            var lastChar = event.target.value[event.target.value.length-1];
+            if(lastChar=='\n' || lastChar=='\t'){
+                shouldUpdate=false;
+            }
         }
 
         if(shouldUpdate){
@@ -155,6 +177,11 @@ class DraftBlockComponent extends React.Component {
             }
             else if(type=="new-entity"){
                 this.setState({newEntity: event.target.value});
+            }
+            else if(type == "date"){
+                block.blockDate = event.valueOf();
+                console.log(block.blockDate);
+                this.setState({date: event});
             }
 
         }
@@ -251,6 +278,33 @@ class DraftBlockComponent extends React.Component {
     removeDraftBlock(){
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'DELETE');
     }
+
+    renderDate(){
+        return (
+            <div>
+                {this.state.addDate?
+                    <DatePicker
+                    selected={this.state.date}
+                    onChange={(date) => {this.handleChange(date,"date")}}
+                    />
+                    :
+                    null
+                }
+            </div>
+        );
+    }
+
+    renderTime(){
+        return (
+            <div>
+                {this.state.addTime?
+                    <div></div>
+                    :
+                    null
+                }
+            </div>
+        )
+    }
       
     EditSingleBlock(listItem, index){
 
@@ -325,6 +379,37 @@ class DraftBlockComponent extends React.Component {
                         }}/>
                 </label>
                 </form>
+
+                <div className="draft-box-datetime-container"> 
+                    <h6 style={{marginBottom:'3px'}}>When did the event described here happen? (Only if your block describes an event)</h6>
+                    <div style={{marginTop:'5px', marginBottom:'5px'}}>
+                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Date: </span>
+                        <button 
+                            className="addDateTimeButton" 
+                            onClick={this.changeDateStatus}>
+                            {!this.state.addDate?
+                            <AddIcon/>
+                            :
+                            <ClearIcon/>
+                            }
+                        </button>
+                        {this.renderDate()}  
+                    </div>
+                    <div style={{marginTop:'5px', marginBottom:'5px'}}>
+                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Time: </span>
+                        <button 
+                            className="addDateTimeButton" 
+                            onClick={this.changeTimeStatus}>
+                            {!this.state.addTime?
+                            <AddIcon/>
+                            :
+                            <ClearIcon/>
+                            }
+                        </button>
+                        {this.renderTime()}  
+                    </div>
+                                       
+                </div>
 
                 <div className="draft-box-entity-dropdown-container">
                     <h6 style={{marginBottom:'3px'}}>Entities (Who all are involved?)</h6>

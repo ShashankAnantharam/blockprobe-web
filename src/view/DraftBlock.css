@@ -5,6 +5,14 @@
     padding-left: 10px;
 }
 
+.draft-box-datetime-container{
+    width:75%; 
+    height:auto; 
+    font-size:1.4em; 
+    margin-left:1em;
+    margin-top:0.5em;
+}
+
 .draft-box-entity-dropdown-container{
     width:75%; 
     height:auto; 
@@ -20,6 +28,15 @@
     margin-left:1em;
     margin-top:0.5em;
     border: solid 1px darkgrey;
+}
+
+.addDateTimeButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left:3em;
+    margin-top:0;
+    size:0.6em;
+    border:none;
 }
 
 .addEntityButton{

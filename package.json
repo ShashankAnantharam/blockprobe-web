@@ -11,6 +11,7 @@
     "react-bootstrap": "^1.0.0-beta.5",
     "react-chat-ui": "^0.3.2",
     "react-chat-window": "^1.2.1",
+    "react-datepicker": "^2.4.0",
     "react-dom": "^16.8.3",
     "react-electron-web-view": "^2.0.1",
     "react-firebaseui": "^3.1.2",
