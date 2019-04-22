@@ -31,6 +31,7 @@ class DraftBlockComponent extends React.Component {
 
     };
 
+    DAY = 24*60*60*1000;
 
     constructor(props){
         super(props);
@@ -50,6 +51,7 @@ class DraftBlockComponent extends React.Component {
         this.changeTimeStatus = this.changeTimeStatus.bind(this);
         this.renderDate = this.renderDate.bind(this);
         this.renderTime = this.renderTime.bind(this);
+        this.renderTimeOption = this.renderTimeOption.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.addEntityToList = this.addEntityToList.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
@@ -65,11 +67,35 @@ class DraftBlockComponent extends React.Component {
 
     changeDateStatus(){
         var addDate = this.state.addDate;
-        this.setState({addDate: !addDate});
+        var block = this.state.newBlock;
+        var ts = new Date();
+
+        if(!addDate){
+            //Add date
+            block.blockDate = {
+                date: ts.getDate(),
+                month: ts.getMonth(),
+                year: ts.getFullYear()
+            }
+            console.log(block);
+        }
+        else{
+            //Remove date
+            delete block["blockDate"];
+            console.log(block);
+        }
+        this.setState({
+            addDate: !addDate,
+            newBlock: block
+        });
     }
 
     changeTimeStatus(){
         var addTime = this.state.addTime;
+        if(!(addTime)){
+            //Set to true, add time
+            
+        }
         this.setState({addTime: !addTime});
     }
 
@@ -179,9 +205,16 @@ class DraftBlockComponent extends React.Component {
                 this.setState({newEntity: event.target.value});
             }
             else if(type == "date"){
-                block.blockDate = event.valueOf();
+                block.blockDate = {
+                    date: event.getDate(),
+                    month: event.getMonth(),
+                    year: event.getFullYear()
+                };
                 console.log(block.blockDate);
-                this.setState({date: event});
+                this.setState({
+                    date: event,
+                    newBlock: block
+                });
             }
 
         }
@@ -305,6 +338,24 @@ class DraftBlockComponent extends React.Component {
             </div>
         )
     }
+
+    renderTimeOption(){
+        return (
+                    <div style={{marginTop:'5px', marginBottom:'5px'}}>
+                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Time: </span>
+                        <button 
+                            className="addDateTimeButton" 
+                            onClick={this.changeTimeStatus}>
+                            {!this.state.addTime?
+                            <AddIcon/>
+                            :
+                            <ClearIcon/>
+                            }
+                        </button>
+                        {this.renderTime()}  
+                    </div>
+        );
+    }
       
     EditSingleBlock(listItem, index){
 
@@ -395,19 +446,10 @@ class DraftBlockComponent extends React.Component {
                         </button>
                         {this.renderDate()}  
                     </div>
-                    <div style={{marginTop:'5px', marginBottom:'5px'}}>
-                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Time: </span>
-                        <button 
-                            className="addDateTimeButton" 
-                            onClick={this.changeTimeStatus}>
-                            {!this.state.addTime?
-                            <AddIcon/>
-                            :
-                            <ClearIcon/>
-                            }
-                        </button>
-                        {this.renderTime()}  
-                    </div>
+                    {this.state.addDate?
+                        this.renderTimeOption()
+                        :
+                        null}
                                        
                 </div>
 
@@ -468,7 +510,28 @@ class DraftBlockComponent extends React.Component {
 
         //Deepcopy props to state
         const blockStr = JSON.stringify(this.props.draftBlock);
-        this.setState({newBlock:JSON.parse(blockStr)});
+        var block = JSON.parse(blockStr);
+        var date = new Date();
+        var addDate = false;
+        if(("blockDate" in block) && block.blockDate!=null){
+            date.setFullYear(block.blockDate.year);
+            date.setMonth(block.blockDate.month);
+            date.setDate(block.blockDate.date);
+            date.setHours(0);
+            date.setMinutes(0);
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+
+            addDate = true;
+            console.log(block.blockDate);
+            console.log(date);
+            console.log(addDate);
+        }
+        this.setState({
+            newBlock:JSON.parse(blockStr),
+            date: date,
+            addDate: addDate
+        });
     }
 
     render(){
