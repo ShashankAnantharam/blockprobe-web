@@ -14,7 +14,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
-import TimePicker from 'rc-time-picker';
+import Timekeeper from 'react-timekeeper';
 import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -97,13 +97,17 @@ class DraftBlockComponent extends React.Component {
     changeTimeStatus(){
         var addTime = this.state.addTime;
         var block = this.state.newBlock
-        var ts = moment();
+        var currDate = new Date();
+        var ts = {
+            hour:currDate.getHours(),
+            minute: currDate.getMinutes()
+        };
 
         if(!(addTime)){
             //Set to true, add time
             block.blockTime={
-                hours: ts.hours(),
-                minutes: ts.minutes(),
+                hours: ts.hour,
+                minutes: ts.minute,
                 time: ts
             }
             console.log(block);
@@ -115,7 +119,8 @@ class DraftBlockComponent extends React.Component {
         }
         this.setState({
             addTime: !addTime,
-            newBlock: block
+            newBlock: block,
+            time: ts
         });
     }
 
@@ -238,8 +243,8 @@ class DraftBlockComponent extends React.Component {
             }
             else if(type == "time"){
                 block.blockTime = {
-                    minutes: event.minutes(),
-                    hours: event.hours()
+                    minutes: event.minute,
+                    hours: event.hour24
                 }
                 console.log(block.blockTime);
                 this.setState({
@@ -363,6 +368,11 @@ class DraftBlockComponent extends React.Component {
             <div>
                 {this.state.addTime?
                     <div>
+                        <Timekeeper
+                            time={this.state.time}
+                            onChange={(e)=> this.handleChange(e,"time")}
+                            // ...
+                        />
                     </div>
                     :
                     null
@@ -544,7 +554,10 @@ class DraftBlockComponent extends React.Component {
         const blockStr = JSON.stringify(this.props.draftBlock);
         var block = JSON.parse(blockStr);
         var date = new Date();
+        var time = undefined;
         var addDate = false;
+        var addTime = false;
+
         if(("blockDate" in block) && block.blockDate!=null){
             date.setFullYear(block.blockDate.year);
             date.setMonth(block.blockDate.month);
@@ -555,14 +568,23 @@ class DraftBlockComponent extends React.Component {
             date.setMilliseconds(0);
 
             addDate = true;
-            console.log(block.blockDate);
-            console.log(date);
-            console.log(addDate);
+
+            if(("blockTime" in block) && block.blockTime!=null){
+                time = {
+                    hour: block.blockTime.hours,
+                    minute: block.blockTime.minutes
+                }
+                addTime = true;
+                console.log("Blocktime");
+                console.log(time);
+            }
         }
         this.setState({
             newBlock:JSON.parse(blockStr),
             date: date,
-            addDate: addDate
+            addDate: addDate,
+            addTime: addTime,
+            time: time
         });
     }
 
