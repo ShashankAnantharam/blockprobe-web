@@ -14,6 +14,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
+import TimePicker from 'rc-time-picker';
+import moment from 'moment';
 import "react-datepicker/dist/react-datepicker.css";
 
 class DraftBlockComponent extends React.Component {
@@ -43,7 +45,8 @@ class DraftBlockComponent extends React.Component {
             multiSelectEntityList: [],
             addDate: false,
             addTime: false,
-            date: new Date()
+            date: new Date(),
+            time: undefined
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -86,17 +89,34 @@ class DraftBlockComponent extends React.Component {
         }
         this.setState({
             addDate: !addDate,
-            newBlock: block
+            newBlock: block,
+            date: ts
         });
     }
 
     changeTimeStatus(){
         var addTime = this.state.addTime;
+        var block = this.state.newBlock
+        var ts = moment();
+
         if(!(addTime)){
             //Set to true, add time
-            
+            block.blockTime={
+                hours: ts.hours(),
+                minutes: ts.minutes(),
+                time: ts
+            }
+            console.log(block);
         }
-        this.setState({addTime: !addTime});
+        else{
+            //Delete blockTime
+            delete block["blockTime"];
+            console.log(block);
+        }
+        this.setState({
+            addTime: !addTime,
+            newBlock: block
+        });
     }
 
     entityClicked(entityList) {
@@ -184,7 +204,7 @@ class DraftBlockComponent extends React.Component {
     handleChange(event, type) {
 
         var shouldUpdate = true;
-        if(type!="date"){
+        if(type!="date" && type!="time"){
             var lastChar = event.target.value[event.target.value.length-1];
             if(lastChar=='\n' || lastChar=='\t'){
                 shouldUpdate=false;
@@ -213,6 +233,17 @@ class DraftBlockComponent extends React.Component {
                 console.log(block.blockDate);
                 this.setState({
                     date: event,
+                    newBlock: block
+                });
+            }
+            else if(type == "time"){
+                block.blockTime = {
+                    minutes: event.minutes(),
+                    hours: event.hours()
+                }
+                console.log(block.blockTime);
+                this.setState({
+                    time: event,
                     newBlock: block
                 });
             }
@@ -331,7 +362,8 @@ class DraftBlockComponent extends React.Component {
         return (
             <div>
                 {this.state.addTime?
-                    <div></div>
+                    <div>
+                    </div>
                     :
                     null
                 }
