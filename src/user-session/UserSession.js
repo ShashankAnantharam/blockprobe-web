@@ -133,6 +133,9 @@ class UserSession extends React.Component {
                         firebase.firestore().collection("Users").
                                 doc(this.state.userId).set(userData);
                     }
+                    else{
+                        // console.log(doc.data());
+                    }
                 });
         }
       }
