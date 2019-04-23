@@ -20,6 +20,7 @@ class UserSession extends React.Component {
             providerId: '',
             blockprobes: {}
         }
+        this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
         this.loggedInContent = this.loggedInContent.bind(this);
         this.loggedOutView = this.loggedOutView.bind(this);
@@ -119,6 +120,23 @@ class UserSession extends React.Component {
 
       }
 
+      getAndSetUser(){
+        if(this.state.isUserSignedIn && (this.state.selectedBlockprobeId == '')){
+            
+            firebase.firestore().collection("Users").
+                doc(this.state.userId).get().then(function(doc) {
+                    if (!doc.exists) {
+                        
+                        var userData = {
+                            ID: this.state.userId
+                        };
+                        firebase.firestore().collection("Users").
+                                doc(this.state.userId).set(userData);
+                    }
+                });
+        }
+      }
+
       componentDidMount(){
         firebase.auth().onAuthStateChanged(user =>{
 
@@ -145,6 +163,8 @@ class UserSession extends React.Component {
            // console.log(firebase.auth().currentUser);
 
             if(!!user && !isNullOrUndefined(firebase.auth().currentUser)){
+                
+                this.getAndSetUser();
                 this.getBlockprobes();
             }
           })
