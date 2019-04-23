@@ -80,12 +80,10 @@ class DraftBlockComponent extends React.Component {
                 month: ts.getMonth(),
                 year: ts.getFullYear()
             }
-            console.log(block);
         }
         else{
             //Remove date
             delete block["blockDate"];
-            console.log(block);
         }
         this.setState({
             addDate: !addDate,
@@ -110,12 +108,10 @@ class DraftBlockComponent extends React.Component {
                 minutes: ts.minute,
                 time: ts
             }
-            console.log(block);
         }
         else{
             //Delete blockTime
             delete block["blockTime"];
-            console.log(block);
         }
         this.setState({
             addTime: !addTime,
@@ -176,7 +172,6 @@ class DraftBlockComponent extends React.Component {
         var entityLabel = this.state.newEntity;
         for( var i=0; i<entityList.length; i++){
             var entityItem = entityList[i]
-            console.log(entityItem.title + ' ' + entityLabel);
             if(entityItem.label == entityLabel){
                 isEntityAlreadyPresent=true;
                 break;
@@ -196,8 +191,8 @@ class DraftBlockComponent extends React.Component {
             block.entities.push({
                 title:entityLabel
             });
-            console.log(entityList);
-            console.log(block);
+            // console.log(entityList);
+            // console.log(block);
             this.setState({
                 multiSelectEntityList: entityList,
                 newBlock: block,
@@ -235,7 +230,7 @@ class DraftBlockComponent extends React.Component {
                     month: event.getMonth(),
                     year: event.getFullYear()
                 };
-                console.log(block.blockDate);
+                // console.log(block.blockDate);
                 this.setState({
                     date: event,
                     newBlock: block
@@ -246,7 +241,7 @@ class DraftBlockComponent extends React.Component {
                     minutes: event.minute,
                     hours: event.hour24
                 }
-                console.log(block.blockTime);
+                // console.log(block.blockTime);
                 this.setState({
                     time: event,
                     newBlock: block
@@ -339,8 +334,8 @@ class DraftBlockComponent extends React.Component {
     }
 
     cancelDraftBlock(){
-        console.log(this.state.newBlock);
-        console.log(this.props.draftBlock);
+        // console.log(this.state.newBlock);
+        // console.log(this.props.draftBlock);
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'CANCEL');
     }
 
@@ -403,7 +398,7 @@ class DraftBlockComponent extends React.Component {
 
         var renderEvidenceList = "";
         if(!isNullOrUndefined(this.state.newBlock.evidences)){
-            console.log(this.state.newBlock.evidences);
+            // console.log(this.state.newBlock.evidences);
             renderEvidenceList = this.state.newBlock.evidences.map((blockEvidence, index) => 
                 this.singleBlockEvidence(blockEvidence)
             );            
@@ -575,8 +570,8 @@ class DraftBlockComponent extends React.Component {
                     minute: block.blockTime.minutes
                 }
                 addTime = true;
-                console.log("Blocktime");
-                console.log(time);
+                // console.log("Blocktime");
+                // console.log(time);
             }
         }
         this.setState({

@@ -83,7 +83,7 @@ class ViewBlockListComponent extends React.Component {
             this.giveBlockToNextReviewer(newBlock);
         }
         else if(option == "can_commit"){
-            console.log(this.props.latestBlock);
+            //console.log(this.props.latestBlock);
 
             const oldKey = this.props.selectedBlock.key;
             
@@ -110,8 +110,8 @@ class ViewBlockListComponent extends React.Component {
             var committedBlock = JSON.parse(JSON.stringify(newBlock));
             delete committedBlock["blockState"];
             delete committedBlock["bpID"];
-            console.log(newBlock);
-            console.log(committedBlock);
+            //console.log(newBlock);
+            //console.log(committedBlock);
 
             firebase.database().ref("Blockprobes/"+newBlock.bpID
             +"/reviewBlocks/"+oldKey).remove();
@@ -181,7 +181,7 @@ class ViewBlockListComponent extends React.Component {
 
         }
         else{
-            console.log("No other reviewers left!");
+            //console.log("No other reviewers left!");
         }
 
     }

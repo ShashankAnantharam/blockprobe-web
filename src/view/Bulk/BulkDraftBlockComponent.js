@@ -129,7 +129,7 @@ class BulkDraftBlockComponent extends React.Component {
      saveDraftInBulk(){
         var bulkBlocks = [];
         bulkBlocks = this.getParas(this.state.value);
-         console.log(bulkBlocks);
+         //console.log(bulkBlocks);
 
          var draftBlocks=[];
          for(var i=0;i<bulkBlocks.length;i++){

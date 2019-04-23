@@ -97,7 +97,7 @@ class UserBlocksComponent extends React.Component {
 
         }
         else{
-            console.log("No other reviewers left!");
+            //console.log("No other reviewers left!");
         }
 
 

@@ -13,8 +13,8 @@ class DraftBlockEvidenceView extends React.Component {
         super(props);
         //props: isClicked; updateEvidence; evidence: supportingDetails, evidenceLink;
 
-        console.log('Here');
-        console.log(this.props.evidence);
+        //console.log('Here');
+        //console.log(this.props.evidence);
         this.state={
             isClicked: this.props.isClicked,
             newEvidence: this.props.evidence

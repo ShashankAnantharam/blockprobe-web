@@ -93,15 +93,15 @@ class UserSession extends React.Component {
                     querySnapshot => {
                         querySnapshot.docChanges().forEach(change => {
                             if (change.type === 'added') {
-                                console.log('New block: ', change.doc.data());
+                                //console.log('New block: ', change.doc.data());
                                 this.addBlockprobeToList(change.doc);
                               }
                               if (change.type === 'modified') {
-                                console.log('Modified block: ', change.doc.data());
+                                //console.log('Modified block: ', change.doc.data());
                                 this.addBlockprobeToList(change.doc);
                               }
                               if (change.type === 'removed') {
-                                console.log('Removed block: ', change.doc.data());
+                                //console.log('Removed block: ', change.doc.data());
                                 this.removeBlockprobeFromList(change.doc);
                               }
                         })

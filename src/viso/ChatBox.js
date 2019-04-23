@@ -124,7 +124,7 @@ class ChatBox extends React.Component {
         if(this.prevBlockId != this.props.selectedBlock.key ||
            (this.prevBlockId == this.props.selectedBlock.key &&
             this.prevBlockState != this.props.selectedBlock.blockState)){
-          console.log('Here');
+          //console.log('Here');
           this.prevBlockId= this.props.selectedBlock.key;
           this.prevBlockState= this.props.selectedBlock.blockState;
           await this.setState({

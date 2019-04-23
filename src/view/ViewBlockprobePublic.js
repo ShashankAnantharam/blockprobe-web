@@ -65,7 +65,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             this.setState({
                 selectedVisualisation: newVisualisation
             });
-            console.log(newVisualisation);
+            // console.log(newVisualisation);
         }
     }
 
@@ -75,7 +75,7 @@ class ViewBlockprobePublicComponent extends React.Component {
 
     onSetMenuBlockSidebarOpen(open) {
         this.setState({ menuBarOpen: open });
-        console.log(this.state.menuBarOpen);
+        // console.log(this.state.menuBarOpen);
     }
 
     addBlocksToProbe(doc){      
@@ -236,7 +236,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             }
         });
 
-        console.log(entityList);
+        // console.log(entityList);
 
         this.setState({
             multiSelectEntityList: entityList
@@ -285,7 +285,7 @@ class ViewBlockprobePublicComponent extends React.Component {
     }
 
     changeSelectedBlock = (block) =>{
-        console.log(block);
+        // console.log(block);
         this.setState({
             selectedBlock:block
         }); 

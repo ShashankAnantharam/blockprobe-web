@@ -122,10 +122,10 @@ class GraphComponent extends React.Component {
         var { nodes, edges } = event;
         
         /*
-        console.log("Selected nodes:");
-        console.log(nodes);        
-        console.log("Selected edges:");
-        console.log(edges);
+        //console.log("Selected nodes:");
+        //console.log(nodes);        
+        //console.log("Selected edges:");
+        //console.log(edges);
         */
         var blocksToBeSelected = [];
         var blocksAdded = {};

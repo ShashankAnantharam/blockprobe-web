@@ -277,7 +277,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             }
         });
 
-        console.log(entityList);
+        // console.log(entityList);
 
         this.setState({
             multiSelectEntityList: entityList

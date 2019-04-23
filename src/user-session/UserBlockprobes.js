@@ -41,7 +41,7 @@ class UserBlockprobesComponent extends React.Component {
             scope.renderSingleBlockprobeItem(scope.props.blockprobes[blockprobeId], scope)
         ));
 
-        console.log(blockprobeListRender);
+        //console.log(blockprobeListRender);
 
         return (
             <div>

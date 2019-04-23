@@ -52,7 +52,7 @@ class TimelineComponent extends React.Component {
      }
 
      selectTimelineBlock(block){
-        console.log(block);
+        //console.log(block);
         this.props.selectBlock(block);
 
      }
