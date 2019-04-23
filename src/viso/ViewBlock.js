@@ -12,7 +12,7 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //closeSideBar, bpDetails
+        //closeSideBar, bpDetails, refreshBlockprobe
 
 
         this.state={
@@ -172,6 +172,7 @@ class ViewBlockComponent extends React.Component {
 
     selectOption(option){
         if(option == "revert" || option == "upvote" || option == "can_commit"){            
+            this.props.refreshBlockprobe();
             this.props.closeSideBar();
         }
     }

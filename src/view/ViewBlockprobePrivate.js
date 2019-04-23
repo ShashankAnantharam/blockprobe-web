@@ -436,6 +436,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 closeSideBar = {this.closeSelectedBlockSidebar}
                 bpDetails = {this.state.bpDetails}
                 latestBlock ={this.state.latestBlock}
+                refreshBlockprobe = {this.refreshBlockprobe}
                 />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}
