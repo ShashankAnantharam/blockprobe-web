@@ -258,10 +258,11 @@ class DraftBlockComponent extends React.Component {
               block.evidences=[];
           }
           if(isDelete){
+              
                 block.evidences = block.evidences.filter(
                     ev => ((ev.evidenceLink != oldEvidence.evidenceLink) ||
                     (ev.supportingDetails != oldEvidence.supportingDetails))
-                )
+                )              
           }
           else if(isUpdate){
           for(var i=0;i<block.evidences.length;i++){

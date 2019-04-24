@@ -16,9 +16,10 @@ class DraftBlockEvidenceView extends React.Component {
         //console.log('Here');
         //console.log(this.props.evidence);
         this.state={
-            isClicked: this.props.isClicked,
-            newEvidence: this.props.evidence
+            isClicked: JSON.parse(JSON.stringify(this.props.isClicked)),
+            newEvidence: JSON.parse(JSON.stringify(this.props.evidence))
         }
+        
 
         this.getEvidenceViewOnly = this.getEvidenceViewOnly.bind(this);
         this.clickEvidenceNotInDraft = this.clickEvidenceNotInDraft.bind(this);
@@ -35,7 +36,12 @@ class DraftBlockEvidenceView extends React.Component {
     }
 
     removeEvidence(){
+        // console.log(this.state.newEvidence);
+        // console.log(this.props.evidence);
         this.props.updateEvidence(this.props.evidence, null, false, true);
+        this.setState({
+            isClicked: false
+        });
     }
 
     updateEvidence(){
