@@ -537,6 +537,28 @@ class DraftBlockComponent extends React.Component {
                             <AddIcon />
                         </button>   
                 </div>
+                <div className="draft-options-container">
+                    <button 
+                        className="saveBlockButton" 
+                        onClick={this.saveDraftBlock}>
+                            <SaveIcon/>
+                    </button>
+                    <button 
+                        className="submitBlockButton" 
+                        onClick={this.submitDraftBlock}>
+                            <DoneAllIcon/>
+                    </button>
+                    <button 
+                        className="cancelBlockButton" 
+                        onClick={this.cancelDraftBlock}>
+                            <ClearIcon/>
+                    </button>
+                    <button 
+                        className="deleteBlockButton" 
+                        onClick={this.removeDraftBlock}>
+                            <DeleteIcon/>
+                    </button>    
+                </div>
             </div>
 
         );

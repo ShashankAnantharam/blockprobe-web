@@ -22,6 +22,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     constructor(props){
         super(props);
+        //permit
 
         this.state={
             genesisBlockId: "",
@@ -67,7 +68,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
     setNewVisualisation(newVisualisation){
         if(this.state.visualisation != newVisualisation){
             this.setState({
-                selectedVisualisation: newVisualisation
+                selectedVisualisation: newVisualisation,
+                menuBarOpen: false
             });
             // console.log(newVisualisation);
         }
@@ -453,6 +455,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <VisualizeOptionsListComponent 
                     selectVisualisation={this.setNewVisualisation}
                     selectedVisualisation={this.state.selectedVisualisation}
+                    permit = {this.props.permit}
                     isViewOnly={false}/>
                 </div>}
                 open={this.state.menuBarOpen}

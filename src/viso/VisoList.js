@@ -15,6 +15,7 @@ class VisualizeOptionsListComponent extends React.Component {
 
     constructor(props){
       super(props);
+      //role
 
       this.state={
           shouldShowOptions:false
@@ -22,7 +23,9 @@ class VisualizeOptionsListComponent extends React.Component {
 
       this.renderOptions = this.renderOptions.bind(this);
 
-      if(!props.isViewOnly){
+      //console.log(props.permit);
+
+      if(!props.isViewOnly || props.permit == "VIEWER"){
           //View only
             this.setState({
                 shouldShowOptions:true

@@ -218,7 +218,8 @@ class UserSession extends React.Component {
                         <div className="blockprobe-list-container">
                         <ViewBlockprobePrivateComponent 
                         bId={this.state.selectedBlockprobeId} 
-                        uId={this.state.userId}/>
+                        uId={this.state.userId}
+                        permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}/>
                         </div>    
                     }
                 </div>
