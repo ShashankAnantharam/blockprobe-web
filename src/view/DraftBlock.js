@@ -527,17 +527,19 @@ class DraftBlockComponent extends React.Component {
 
                 <div className="draft-box-evidence-container">
                     <h6 style={{marginBottom:'3px',marginTop:'3px'}}>Evidences</h6>
-                    <div>
-                        {renderEvidenceList}
-                    </div>
+                    <span style={{fontSize:'0.8em', fontWeight:'bold'}}>New Evidence</span>
                     <button 
                         className="addEvidenceButton" 
                         onClick={this.addEvidence}
                         >
+                    
                             <AddIcon />
-                        </button>   
+                        </button>  
+                    <div>
+                        {renderEvidenceList}
+                    </div> 
                 </div>
-                <div className="draft-options-container">
+                <div className="draft-options-container" style={{marginTop:'0.1em'}}>
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
