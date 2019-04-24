@@ -203,7 +203,8 @@ class UserSession extends React.Component {
                         <div className="spacer" />
                         <div className="toolbar__navigation-items">
                             <ul>
-                                <li><a href="/">{this.state.userId}</a></li>
+                                <li><a href="/">Home</a></li>
+                                <li style={{color:'white'}}>{this.state.userId}</li>
                                 <li><a onClick={() => firebase.auth().signOut()}>Logout</a></li>
                             </ul>
                         </div>
