@@ -332,6 +332,7 @@ class UserBlocksComponent extends React.Component {
                     <BulkDraftBlockComponent
                         cancelBulkDraftBlock = {this.cancelBulkBlock}
                         addDraftBlocksInBulk = {this.addDraftBlocksInBulk}
+                        investigationGraph = {this.props.investigationGraph}
                     />
                 </div>
             )

@@ -20,7 +20,7 @@ class BulkDraftBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //cancelBulkDraftBlock, addDraftBlock
+        //cancelBulkDraftBlock, addDraftBlock,investigationGraph
 
         this.state ={
             display:'',
@@ -129,7 +129,6 @@ class BulkDraftBlockComponent extends React.Component {
      saveDraftInBulk(){
         var bulkBlocks = [];
         bulkBlocks = this.getParas(this.state.value);
-         //console.log(bulkBlocks);
 
          var draftBlocks=[];
          for(var i=0;i<bulkBlocks.length;i++){
@@ -139,6 +138,15 @@ class BulkDraftBlockComponent extends React.Component {
                  summary: bulkBlocks[i].body,
                  title: bulkBlocks[i].title
              }
+
+             Object.keys(this.props.investigationGraph).forEach(function(key) {
+                if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
+                    newDraftBlock.entities.push({
+                        title:key,
+                        type:"None"
+                    })
+                }
+            });
              draftBlocks.push(newDraftBlock);
          }
 
