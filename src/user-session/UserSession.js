@@ -184,6 +184,7 @@ class UserSession extends React.Component {
             blockprobes={this.state.blockprobes}
             selectedBlockprobe = {this.state.selectedBlockprobeId}
             selectBlockprobe = {this.selectBlockprobe}
+            uId={this.state.userId}
             />:
             null
             }

@@ -1,0 +1,18 @@
+.addBlockprobeButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-top:0;
+    margin-bottom: 0.5em;
+    size:2.6em;
+    border:none;
+}
+
+.submitBlockprobeButton{
+    background:rgb(78, 14, 30);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-top:0;
+    size:2.6em;
+    border:none;
+}
