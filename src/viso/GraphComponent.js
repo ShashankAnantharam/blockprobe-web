@@ -121,12 +121,12 @@ class GraphComponent extends React.Component {
     onSelectGraph(event){
         var { nodes, edges } = event;
         
-        /*
-        //console.log("Selected nodes:");
-        //console.log(nodes);        
-        //console.log("Selected edges:");
-        //console.log(edges);
-        */
+        
+        console.log("Selected nodes:");
+        console.log(nodes);        
+        console.log("Selected edges:");
+        console.log(edges);
+        
         var blocksToBeSelected = [];
         var blocksAdded = {};
 
@@ -230,11 +230,20 @@ class GraphComponent extends React.Component {
         this.graphHelperMap= newGraphHelper 
         //console.log(this.state.graphHelperMap);
 
+        const context = this;
+        var graphEvents = {
+            
+            select: function(event) {
+                context.onSelectGraph(event);
+            }
+    
+        }
+
         return(
             <Graph 
                         graph={newGraph} 
                         options={this.state.graphOptions} 
-                        events={this.state.graphEvents} 
+                        events={graphEvents} 
                         style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
                         />
         );
