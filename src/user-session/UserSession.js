@@ -176,20 +176,23 @@ class UserSession extends React.Component {
 
       loggedInContent(){
          // console.log(this.state.blockprobes);
-         
-        return (
-            <div className="blockprobe-list-container">
-                {this.state.blockprobes?
-            <UserBlockprobesComponent 
-            blockprobes={this.state.blockprobes}
-            selectedBlockprobe = {this.state.selectedBlockprobeId}
-            selectBlockprobe = {this.selectBlockprobe}
-            uId={this.state.userId}
-            />:
-            null
-            }
-            </div>
-        );
+         if(this.state.userId!=''){
+            return (
+                <div className="blockprobe-list-container">
+                    {this.state.blockprobes?
+                <UserBlockprobesComponent 
+                blockprobes={this.state.blockprobes}
+                selectedBlockprobe = {this.state.selectedBlockprobeId}
+                selectBlockprobe = {this.selectBlockprobe}
+                uId={this.state.userId}
+                />:
+                null
+                }
+                </div>
+            );
+        }
+
+        return null;
       }
 
 
