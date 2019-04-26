@@ -6,6 +6,7 @@ import './ViewBlockprobePrivate.css';
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
+import BlockprobeSettingsComponent from './BlockprobeSettings/BlockprobeSettings';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
@@ -412,6 +413,19 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     />
                 </div>
             );
+        }
+        else if(this.state.selectedVisualisation == "manage_blockprobe"){
+            return(
+                <div>
+                    <BlockprobeSettingsComponent 
+                    uId={this.props.uId}
+                    bpId={this.props.bId}
+                    details = {this.state.bpDetails}
+                    permit = {this.props.permit}
+                    />
+                </div>
+            )
+
         }
 
         return (
