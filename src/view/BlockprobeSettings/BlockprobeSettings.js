@@ -34,7 +34,8 @@ class BlockprobeSettingsComponent extends React.Component {
             newCriterion: JSON.parse(JSON.stringify(props.details.criterion)),
             step: 1,
             min: 0,
-            viewerId: ''
+            viewerId: '',
+            contributorId: ''
         }
 
         var shajs = require('sha.js');
@@ -45,6 +46,7 @@ class BlockprobeSettingsComponent extends React.Component {
         this.renderBlockprobeSettings = this.renderBlockprobeSettings.bind(this);
         this.modifyBlockProbeSettings = this.modifyBlockProbeSettings.bind(this);
         this.renderAddViewers = this.renderAddViewers.bind(this);
+        this.renderAddContributors = this.renderAddContributors.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -116,10 +118,64 @@ class BlockprobeSettingsComponent extends React.Component {
                 var id = event.target.value;
                 this.setState({viewerId: id});
             }
+            else if(type == "contributor"){
+                var id = event.target.value;
+                this.setState({contributorId: id});
+            }
             
 
         }
       }
+
+      renderAddContributors(){
+          if(this.props.permit == "PRIVILEGED" || this.props.permit == "CREATOR"){
+            return (
+                <div style={{marginLeft:'10px', marginTop:'1em'}}>
+                    <h3>Add Contributors</h3>
+                    <form>
+                    <label>
+                        <Textarea 
+                            type="text"
+                            placeholder = "Phone number"
+                            value={this.state.contributorId}
+                            onChange={(e) => { this.handleChange(e,"contributor")}}
+                            maxRows="1"
+                            minRows="1"
+                            style={{
+                                background: 'white',
+                                borderWidth:'2px', 
+                                borderStyle:'solid', 
+                                borderColor:'darkgrey',
+                                paddingTop:'6px',
+                                paddingBottom:'6px',
+                                width:'30%'
+                                }}/>
+                    </label>
+                    </form>
+                    {this.state.contributorId!=''?
+                            <div className="blockprobe-settings-criterion-options-container">
+                                <button 
+                                className="saveBlockProbeSettingsButton" 
+                                style={{marginTop:'1em'}}
+                                onClick={(e) => this.modifyBlockProbeSettings("contributorId",true)}>
+                                    <DoneAllIcon/>
+                                </button>
+                                <button 
+                                className="cancelBlockProbeSettingsButton" 
+                                style={{marginTop:'1em'}}
+                                onClick={(e) => this.modifyBlockProbeSettings("contributorId",false)}>
+                                    <ClearIcon/>
+                                </button>
+                            </div>
+                            :
+                            null
+                        }           
+                </div>
+                )
+                    }
+
+            return null;        
+    }
 
     renderAddViewers(){
         return (
@@ -172,6 +228,7 @@ class BlockprobeSettingsComponent extends React.Component {
         return (
             <div>
                 {this.renderBlockprobeSettings()}
+                {this.renderAddContributors()}
                 {this.renderAddViewers()}
             </div>
         );
