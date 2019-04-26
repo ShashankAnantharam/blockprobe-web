@@ -53,6 +53,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
             testList: []
         }
 
+        this.bpDetailsDoc = null;
+
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
         this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
@@ -356,8 +358,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     componentDidMount(){
         
-        firebase.firestore().collection("Blockprobes").
-        doc(this.props.bId).onSnapshot((snapshot) => (
+        this.bpDetailsDoc = firebase.firestore().collection("Blockprobes").
+        doc(this.props.bId);
+        
+        this.bpDetailsDoc.onSnapshot((snapshot) => (
             this.setState({
                 bpDetails: snapshot.data()
             })
@@ -368,6 +372,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
         .collection("fullBlocks").get().then((snapshot) => (
             this.createBlockprobe(snapshot)
          ));
+    }
+
+    componentWillUnmount(){
+        var unsub = this.bpDetailsDoc.onSnapshot(() => {});
+        unsub();
     }
 
     renderVisualisation(){
