@@ -72,7 +72,7 @@ class UserBlockprobesComponent extends React.Component {
             verificationHash: ''
         }
 
-        var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(this.state.draftBlockprobe.timestamp)).digest('hex');
+        var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(timestamp)).digest('hex');
         firstBlock.verificationHash = newBlockId;
         firstBlock.key = this.state.shajs('sha256').update(newBlockId + firstBlock.previousKey).digest('hex');
         var blockprobeId = firstBlock.key;
@@ -117,13 +117,15 @@ class UserBlockprobesComponent extends React.Component {
         // console.log(details);
         firebase.firestore().collection('Blockprobes').doc(blockprobeId).set(details);
        
-       /* console.log('Users/'+this.props.uId +"/blockprobes/"+blockprobeId+
-        "/privelegedInfo/nickPhoneHash");
-        console.log(nickPhoneHash);
-        */
+       // console.log('Users/'+this.props.uId +"/blockprobes/"+blockprobeId+
+       // "/privelegedInfo/nickPhoneHash");
+       // console.log(nickPhoneHash);
+        
         firebase.firestore().collection('Users').doc(this.props.uId)
         .collection('blockprobes').doc(blockprobeId).
         collection('privelegedInfo').doc('nickPhoneHash').set(nickPhoneHash);
+
+        
 
         this.addCancelBlockprobe();
     }

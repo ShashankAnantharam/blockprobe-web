@@ -8,6 +8,7 @@
     "@material-ui/lab": "^3.0.0-alpha.30",
     "firebase": "^5.8.5",
     "jquery": "^3.4.0",
+    "js-sha256": "^0.9.0",
     "multi-select-react": "^0.1.8",
     "rc-time-picker": "^3.6.4",
     "react": "^16.8.3",
