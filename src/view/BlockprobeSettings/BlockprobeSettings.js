@@ -83,42 +83,54 @@ class BlockprobeSettingsComponent extends React.Component {
                     title: this.props.details.title,
                     timestamp: 0
                 };
-                console.log(softBlockprobeToAdd);
+                // console.log(softBlockprobeToAdd);
 
-            /*   firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
+                var scope = this;
+                
+               firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
                     if(doc.exists){
-                        console.log("Debug exists:" + val);
+                        // console.log("Debug exists:" + val);
                         firebase.firestore().collection("Users").doc(val).
-                        collection("blockprobes").doc(this.props.bpId).get().then(
+                        collection("blockprobes").doc(scope.props.bpId).get().then(
                             function(bpSnapshot){
                                 if(bpSnapshot.exists){
+
+                                    // console.log("Blockprobe exist for user");
+
                                     var existingBlockprobe = bpSnapshot.data();
+                                    softBlockprobeToAdd.timestamp = existingBlockprobe.timestamp;
                                     if(change == "contributor" 
-                                        && existingBlockprobe.permit == "viewer"){
+                                        && existingBlockprobe.permit == "VIEWER"){
                                             
                                             firebase.firestore().collection("Users").
                                             doc(val).collection("blockprobes").
-                                                doc(this.props.bpId).set(softBlockprobeToAdd);
+                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
                                         }
                                     else if(change == "reviewer" && 
                                         !(existingBlockprobe.permit != "PRIVILEGED")){
 
                                             firebase.firestore().collection("Users").
                                             doc(val).collection("blockprobes").
-                                                doc(this.props.bpId).set(softBlockprobeToAdd);
+                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
                                         }
 
                                 }
                                 else{
+
+                                    // console.log("adding blockprobe first time");
+
                                     firebase.firestore().collection("Users").
                                     doc(val).collection("blockprobes").
-                                        doc(this.props.bpId).set(softBlockprobeToAdd);
+                                        doc(scope.props.bpId).set(softBlockprobeToAdd);
                                 }
                             }
                         )
                     }
+                    else{
+                        console.log("User does not exist");
+                    }
                 });
-                */
+                
             }
             else if(change == 'criterion'){
 
@@ -250,13 +262,13 @@ class BlockprobeSettingsComponent extends React.Component {
                                 <button 
                                 className="saveBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
-                                onClick={(e) => this.modifyBlockProbeSettings("contributorId",true)}>
+                                onClick={(e) => this.modifyBlockProbeSettings("contributor",true)}>
                                     <DoneAllIcon/>
                                 </button>
                                 <button 
                                 className="cancelBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
-                                onClick={(e) => this.modifyBlockProbeSettings("contributorId",false)}>
+                                onClick={(e) => this.modifyBlockProbeSettings("contributor",false)}>
                                     <ClearIcon/>
                                 </button>
                             </div>
