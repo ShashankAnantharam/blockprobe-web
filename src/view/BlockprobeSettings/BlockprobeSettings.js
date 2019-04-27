@@ -55,69 +55,82 @@ class BlockprobeSettingsComponent extends React.Component {
     };
 
     modifyBlockProbeSettings(change, shouldModify){
+        var val = "";
         if(shouldModify){
             //Modify change in db
 
-            var val = "";
             var permit = "";
             if(change == "viewer"){
-                val = viewerId;
+                val = this.state.viewerId;
                 permit = "VIEWER";
             }
             else if(change == "contributor"){
-                val = contributorId;
+                val = this.state.contributorId;
                 permit = "CONTRIBUTOR";
             }
             else if(change == 'reviewer'){
                 permit = "REVIEWER";
             }
 
-            
-            var softBlockprobeToAdd = {
-                active: true,
-                id: bpId,
-                isActive: true,
-                permit:permit,
-                summary: this.props.details.summary,
-                title: this.props.details.title,
-                timestamp: 0
-            };
-            console.log(softBlockprobeToAdd);
+            if(change != 'criterion'){
+                
+                var softBlockprobeToAdd = {
+                    active: true,
+                    id: this.props.bpId,
+                    isActive: true,
+                    permit:permit,
+                    summary: this.props.details.summary,
+                    title: this.props.details.title,
+                    timestamp: 0
+                };
+                console.log(softBlockprobeToAdd);
 
-         /*   firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
-                if(doc.exists){
-                    console.log("Debug exists:" + val);
-                    firebase.firestore().collection("Users").doc(val).
-                    collection("blockprobes").doc(this.props.bpId).get().then(
-                        function(bpSnapshot){
-                            if(bpSnapshot.exists){
-                                var existingBlockprobe = bpSnapshot.data();
-                                if(change == "contributor" 
-                                    && existingBlockprobe.permit == "viewer"){
-                                        
-                                        firebase.firestore().collection("Users").
-                                        doc(val).collection("blockprobes").
-                                            doc(this.props.bpId).set(softBlockprobeToAdd);
-                                    }
-                                else if(change == "reviewer" && 
-                                    !(existingBlockprobe.permit != "PRIVILEGED")){
+            /*   firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
+                    if(doc.exists){
+                        console.log("Debug exists:" + val);
+                        firebase.firestore().collection("Users").doc(val).
+                        collection("blockprobes").doc(this.props.bpId).get().then(
+                            function(bpSnapshot){
+                                if(bpSnapshot.exists){
+                                    var existingBlockprobe = bpSnapshot.data();
+                                    if(change == "contributor" 
+                                        && existingBlockprobe.permit == "viewer"){
+                                            
+                                            firebase.firestore().collection("Users").
+                                            doc(val).collection("blockprobes").
+                                                doc(this.props.bpId).set(softBlockprobeToAdd);
+                                        }
+                                    else if(change == "reviewer" && 
+                                        !(existingBlockprobe.permit != "PRIVILEGED")){
 
-                                        firebase.firestore().collection("Users").
-                                        doc(val).collection("blockprobes").
-                                            doc(this.props.bpId).set(softBlockprobeToAdd);
-                                    }
+                                            firebase.firestore().collection("Users").
+                                            doc(val).collection("blockprobes").
+                                                doc(this.props.bpId).set(softBlockprobeToAdd);
+                                        }
 
+                                }
+                                else{
+                                    firebase.firestore().collection("Users").
+                                    doc(val).collection("blockprobes").
+                                        doc(this.props.bpId).set(softBlockprobeToAdd);
+                                }
                             }
-                            else{
-                                firebase.firestore().collection("Users").
-                                doc(val).collection("blockprobes").
-                                    doc(this.props.bpId).set(softBlockprobeToAdd);
-                            }
-                        }
-                    )
-                }
-            });
-            */
+                        )
+                    }
+                });
+                */
+            }
+            else if(change == 'criterion'){
+
+                var newDetails = JSON.parse(JSON.stringify(this.props.details));
+
+                newDetails['criterion'] = this.state.newCriterion;
+
+
+                // console.log(newDetails);
+
+                firebase.firestore().collection('Blockprobes').doc(this.props.bpId).set(newDetails);
+            }
 
         }
         
@@ -128,7 +141,19 @@ class BlockprobeSettingsComponent extends React.Component {
         else if(change == "contributor"){
             this.setState({contributorId: ''});
         }
+        else if(change == "criterion"){
 
+            if(!shouldModify){
+                val = this.props.details.criterion;
+            }
+            else{
+                val = this.state.newCriterion;
+            }
+
+            this.setState({
+                newCriterion: val
+            });
+        }
     }
 
     renderBlockprobeSettings(){
