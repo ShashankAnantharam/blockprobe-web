@@ -18,19 +18,10 @@ class VisualizeOptionsListComponent extends React.Component {
       //role
 
       this.state={
-          shouldShowOptions:false
       }
 
       this.renderOptions = this.renderOptions.bind(this);
 
-      //console.log(props.permit);
-
-      if(!props.isViewOnly || props.permit == "VIEWER"){
-          //View only
-            this.setState({
-                shouldShowOptions:true
-            })
-      }
 
       /* Add later if needed
       <ListItem button
@@ -114,7 +105,7 @@ class VisualizeOptionsListComponent extends React.Component {
                     </ListItem>
 
                     </List>
-                    {!this.props.isViewOnly? 
+                    {(!this.props.isViewOnly && this.props.permit != "VIEWER")? 
                         this.renderOptions()
                         :
                         null    

@@ -121,12 +121,13 @@ class GraphComponent extends React.Component {
     onSelectGraph(event){
         var { nodes, edges } = event;
         
-        
+     /*   
         console.log("Selected nodes:");
         console.log(nodes);        
         console.log("Selected edges:");
         console.log(edges);
-        
+     */
+       
         var blocksToBeSelected = [];
         var blocksAdded = {};
 
