@@ -206,7 +206,9 @@ class UserBlocksComponent extends React.Component {
 
     addDraftBlocksInBulk(blocks){
 
+        var currTime = Date.now();
         for(var i =0;i<blocks.length; i++){
+            blocks[i].timestamp = currTime + 1000*i;
             this.addDraftBlock(blocks[i]);
         }
 
@@ -214,7 +216,8 @@ class UserBlocksComponent extends React.Component {
     }
 
     addDraftBlock(block){
-        block.timestamp = Date.now();
+        if(isNullOrUndefined(block.timestamp))
+            block.timestamp = Date.now();
         var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(block.timestamp)).digest('hex');
 
         if(isNullOrUndefined(block.blockState)){
