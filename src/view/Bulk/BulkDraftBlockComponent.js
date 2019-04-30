@@ -101,6 +101,7 @@ class BulkDraftBlockComponent extends React.Component {
                currentPara = [];
             }
 
+            // console.log(allParas);
         return allParas;
     }
 
@@ -149,7 +150,7 @@ class BulkDraftBlockComponent extends React.Component {
             });
              draftBlocks.push(newDraftBlock);
          }
-
+         // console.log(draftBlocks);
          this.props.addDraftBlocksInBulk(draftBlocks);
      } 
 

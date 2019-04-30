@@ -121,7 +121,7 @@ class UserSession extends React.Component {
       }
 
       getAndSetUser(){
-        if(this.state.isUserSignedIn && (this.state.selectedBlockprobeId == '')){
+        if(this.state.isUserSignedIn){
             
             firebase.firestore().collection("Users").
                 doc(this.state.userId).get().then(function(doc) {
