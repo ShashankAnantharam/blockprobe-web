@@ -122,16 +122,16 @@ class UserSession extends React.Component {
 
       getAndSetUser(){
         if(this.state.isUserSignedIn){
-            
+            var uId = this.state.userId;
             firebase.firestore().collection("Users").
                 doc(this.state.userId).get().then(function(doc) {
                     if (!doc.exists) {
                         
                         var userData = {
-                            ID: this.state.userId
+                            ID: uId
                         };
                         firebase.firestore().collection("Users").
-                                doc(this.state.userId).set(userData);
+                                doc(uId).set(userData);
                     }
                     else{
                         // console.log(doc.data());
