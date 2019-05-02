@@ -8,6 +8,7 @@ import PeopleIcon from '@material-ui/icons/People';
 import UndoIcon from '@material-ui/icons/Undo'; 
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'; 
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import DeleteIcon from '@material-ui/icons/Delete';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 
@@ -31,6 +32,7 @@ class ViewBlockListComponent extends React.Component {
         this.renderSubmitterOptionList = this.renderSubmitterOptionList.bind(this);
         this.getRandomReviewer = this.getRandomReviewer.bind(this);
         this.giveBlockToNextReviewer = this.giveBlockToNextReviewer.bind(this);
+        this.renderSuccessfulOptionList = this.renderSuccessfulOptionList.bind(this);
     }
 
     selectOption(option){
@@ -135,6 +137,58 @@ class ViewBlockListComponent extends React.Component {
 
             
         }
+        else if(option == 'remove'){
+
+            var timestamp = Date.now();
+            var newTitle = "CHALLENGE TO {" + this.props.selectedBlock.title +"}";
+            var committedBlock = {
+                key:'',
+                title: newTitle,
+                summary:this.props.selectedBlock.summary,
+                entities:this.props.selectedBlock.entities,
+                blockDate: this.props.selectedBlock.blockDate,
+                blockTime: this.props.selectedBlock.blockTime,
+                evidences:[],
+                actionType:'REMOVE',
+                previousKey: this.props.selectedBlock.key,
+                referenceBlock: this.props.selectedBlock.key,
+                timestamp: timestamp,
+                verificationHash: ''
+            }
+
+            committedBlock.actionType = "REMOVE";
+
+            var softBlock = JSON.parse(JSON.stringify(this.props.selectedBlock));
+            softBlock.actionType = 'REMOVE';
+            softBlock.referenceBlock = this.props.selectedBlock.key;
+            softBlock.previousKey = this.props.selectedBlock.key;
+            softBlock.title = newTitle;
+            softBlock.timestamp = timestamp;
+
+            var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(timestamp)).digest('hex');
+            committedBlock.verificationHash = newBlockId;
+            softBlock.verificationHash = newBlockId;
+            var newKey = this.state.shajs('sha256').update(newBlockId + committedBlock.previousKey).digest('hex');
+            committedBlock.key = newKey;
+            softBlock.key = newKey;
+
+            // console.log(committedBlock);
+            // console.log(softBlock);
+
+            firebase.firestore().collection("Blockprobes").
+                doc(softBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(softBlock.key).set(softBlock);
+            
+            firebase.firestore().collection("Blockprobes").
+                doc(softBlock.bpID).
+                collection("fullBlocks").
+                doc(committedBlock.key).set(committedBlock);
+            
+            option = "can_commit";
+
+        }
 
         this.props.selectOption(option);
     }
@@ -205,6 +259,27 @@ class ViewBlockListComponent extends React.Component {
         );
     }
 
+    renderSuccessfulOptionList(){
+        return(
+            <div>
+                <h3 style={{textAlign:"center"}}>OPTIONS</h3>
+                <List className="view-block-option-list">
+
+                    
+                    <ListItem button 
+                        onClick={() => { this.selectOption("remove")}}
+                    >
+                        <Avatar>
+                            <DeleteIcon />
+                        </Avatar>
+                            <ListItemText primary="Remove Block from Investigation"/>
+                    </ListItem>
+                        
+                </List>
+            </div>
+        );
+    }
+
     renderSubmitterOptionList(){
         return(
             <div>
@@ -255,6 +330,10 @@ class ViewBlockListComponent extends React.Component {
 
                 {this.props.blockState == 'UNDER REVIEW'?
                 this.renderSubmitterOptionList():
+                null}
+
+                {this.props.blockState == 'SUCCESSFUL' && this.props.selectedBlock.actionType == "ADD"?
+                this.renderSuccessfulOptionList():
                 null}
 
             </div>

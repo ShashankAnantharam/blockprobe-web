@@ -99,21 +99,24 @@ class GraphComponent extends React.Component {
     }
 
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
-        var charBlockList = this.props.investigationGraph[node].char;
 
-        for(var i=0;i<charBlockList.length;i++){
-            const blockKey = charBlockList[i];
+        if(!isNullOrUndefined(this.props.investigationGraph[node])){
+            var charBlockList = this.props.investigationGraph[node].char;
 
-            if(!(blockKey in blocksAdded)){
+            for(var i=0;i<charBlockList.length;i++){
+                const blockKey = charBlockList[i];
 
-                // Add block if it is not already in list
-                const newBlock = this.props.blockTree[blockKey];
+                if(!(blockKey in blocksAdded)){
 
-                if(this.isValidBlock(newBlock))
-                {
-                    blocksToBeSelected.push(newBlock);
+                    // Add block if it is not already in list
+                    const newBlock = this.props.blockTree[blockKey];
+
+                    if(this.isValidBlock(newBlock))
+                    {
+                        blocksToBeSelected.push(newBlock);
+                    }
+                    blocksAdded[blockKey]=true;
                 }
-                blocksAdded[blockKey]=true;
             }
         }
     }
