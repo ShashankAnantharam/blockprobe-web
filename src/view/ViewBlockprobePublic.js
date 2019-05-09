@@ -63,7 +63,8 @@ class ViewBlockprobePublicComponent extends React.Component {
     setNewVisualisation(newVisualisation){
         if(this.state.visualisation != newVisualisation){
             this.setState({
-                selectedVisualisation: newVisualisation
+                selectedVisualisation: newVisualisation,
+                menuBarOpen: false
             });
             // console.log(newVisualisation);
         }
