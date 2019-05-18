@@ -34,7 +34,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             timeline: [],
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
-            selectedVisualisation: "timeline",
+            selectedVisualisation: "graph",
             multiSelectEntityList: [
                 {
                     value: true, 

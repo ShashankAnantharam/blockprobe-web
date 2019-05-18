@@ -150,6 +150,8 @@ class GraphComponent extends React.Component {
             }
         }
 
+        blocksToBeSelected.sort((a, b) => (a.title > b.title) ? 1 : -1);
+
         this.setState({
             currentSelectedBlocks: blocksToBeSelected
         });
