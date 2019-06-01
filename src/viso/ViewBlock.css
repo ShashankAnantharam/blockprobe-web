@@ -9,6 +9,7 @@
     font-weight: bold;
     color:white;
     text-align: center;
+    box-shadow: 2px 2px 10px 2px lightgrey;
 }
 
 .block-evidence-list{
@@ -16,12 +17,14 @@
 }
 
 .block-evidence{
-    border: 1px solid rgb(67, 248, 218);
     padding: 10px;
-    box-shadow: 5px 10px darkcyan;
-    border-radius:10px;
-    background: rgb(67, 248, 218);
-    margin-bottom:10px;
+    border-radius:3px;
+    background: #ffffff;
+    border: 1px #111111;
+    margin-bottom: 10px;
+    margin-right:8px;
+    box-shadow: 2px 2px 15px 2px lightgrey;
+    border: 1px lightgrey solid;
 }
 
 .block-evidence-title{

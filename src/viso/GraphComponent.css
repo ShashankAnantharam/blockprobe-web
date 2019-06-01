@@ -69,7 +69,7 @@
     border-radius:3px;
     padding: 5px;
     background: #ededee;
-    border: 1px #111111;
+    border: 1px lightgrey solid;
     cursor: pointer;
     transition: padding 0.5s;
 }
