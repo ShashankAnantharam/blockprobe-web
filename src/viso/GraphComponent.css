@@ -63,13 +63,20 @@
 }
 
 .graph-block-div{
-    border: 1px solid rgb(204, 234, 236);
     margin-bottom: 11px;
     margin-right:8px;
-    box-shadow: 5px 10px darkcyan;
-    border-radius:10px;
-    background: rgb(204, 234, 236);
+    box-shadow: 2px 2px 10px 2px grey;
+    border-radius:3px;
+    padding: 5px;
+    background: #ededee;
+    border: 1px #111111;
     cursor: pointer;
+    transition: padding 0.5s;
+}
+
+.graph-block-div:hover{
+    background: #bcbcbb;
+    padding:10px;
 }
 
 .graph-block-list{
@@ -77,6 +84,7 @@
     width:45%;
     height: 780px;
     overflow-y:scroll;
+    padding:1%;
 }
 
 
@@ -93,13 +101,12 @@
  
  #graph-selected-block-list::-webkit-scrollbar
  {
-     width: 12px;
-     background-color: #F5F5F5;
+     width: 5px;
+     background: transparent;
  }
  
  #graph-selected-block-list::-webkit-scrollbar-thumb
  {
      border-radius: 10px;
-     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
      background-color: #555;
  }
