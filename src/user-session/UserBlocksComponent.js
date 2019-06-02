@@ -354,6 +354,16 @@ class UserBlocksComponent extends React.Component {
             )
         }
 
+        if(this.state.isEntityPaneOpen){
+            return (
+                <EntityPaneView
+                    closeEntityPane = {this.closeEntityPane}
+                    investigationGraph = {this.props.investigationGraph}
+                    bId = {this.props.bId}
+                    uIdHash={this.state.uIdHash}/>
+            );
+        }
+
         return (<div className="userblocks-options-container">
                     <button 
                     className="addBlockButton" 
@@ -400,14 +410,6 @@ class UserBlocksComponent extends React.Component {
         return(
             <div>
                 {this.renderBlockOptions()}
-                {this.state.isEntityPaneOpen?
-                    <EntityPaneView
-                    closeEntityPane = {this.closeEntityPane}
-                    investigationGraph = {this.props.investigationGraph}
-                    bId = {this.props.bId}
-                    uIdHash={this.state.uIdHash}/>
-                    :
-                    null}
                     
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>

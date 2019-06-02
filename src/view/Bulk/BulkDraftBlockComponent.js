@@ -164,7 +164,7 @@ class BulkDraftBlockComponent extends React.Component {
                             <SaveIcon/>
                     </button>
                     <button 
-                        className="cancelBlockButton" 
+                        className="cancelBlockBackButton" 
                         onClick={this.props.cancelBulkDraftBlock}>
                             <ClearIcon/>
                     </button>
