@@ -11,21 +11,27 @@ class EntityPaneView extends React.Component {
 
     constructor(props){
         super(props);
-        // closeEntityPane
+        // closeEntityPane, this.props.investigationGraph
 
         this.state={
             entities:[],
             haveEntitiesLoaded: false,
-            newEntity: ''
+            newEntity: '',
+            entityPresent: {}
         }
 
         this.addEntityToList = this.addEntityToList.bind(this);
-        this.getEntities = this.getEntities.bind(this);
+        this.initEntities = this.initEntities.bind(this);
         this.removeEntity = this.removeEntity.bind(this);
+    }
+
+    componentDidUpdate(){
+
     }
 
     componentDidMount(){
         //Get data for entities
+        this.initEntities();
         this.setState({haveEntitiesLoaded:true});
 
     }
@@ -50,27 +56,21 @@ class EntityPaneView extends React.Component {
       }
 
     addEntityToList(){
-        var isEntityAlreadyPresent = false;
         var entityList = this.state.entities;
         var entityLabel = this.state.newEntity;
-        for( var i=0; i<entityList.length; i++){
-            var entityItem = entityList[i]
-            if(entityItem.label == entityLabel){
-                isEntityAlreadyPresent=true;
-                break;
-            }
-        }
-        if(!isEntityAlreadyPresent){
-            var count = entityList.length;
-            count = count + 1;
+        var isEntityPresent = this.state.entityPresent;
+        
+        if(!(entityLabel in isEntityPresent)){
             entityList.push({                
                 canRemove: true, 
                 label: entityLabel, 
             });
+            isEntityPresent[entityLabel] = true;
 
             this.setState({
                 entities: entityList,
-                newEntity: ''
+                newEntity: '',
+                entityPresent: isEntityPresent
             });
         }       
     }
@@ -85,7 +85,7 @@ class EntityPaneView extends React.Component {
         <span className="block-entity">
             {entity.label}
             {entity.canRemove? 
-            <a style={{marginLeft:'5px', color: 'grey', cursor: 'pointer'}} 
+            <a style={{marginLeft:'5px', color: 'black', cursor: 'pointer'}} 
             onClick={() => { this.removeEntity(entity)}}>X</a>
             : 
             null}
@@ -93,8 +93,27 @@ class EntityPaneView extends React.Component {
         );   
     }
 
-    getEntities(){
-        return this.state.entities;
+    initEntities(){
+
+        var entities = this.state.entities;
+        var isEntityPresent = this.state.entityPresent;
+        if(this.props.investigationGraph !=null){
+            Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
+                if(!(entityLabel in isEntityPresent)){
+                    entities.push({                
+                        canRemove: false, 
+                        label: entityLabel, 
+                    });
+                }
+                isEntityPresent[entityLabel] = false;
+            });
+        }
+
+        for(var i=0;i<entities.length;i++){
+            entities[i].canRemove = isEntityPresent[entities[i].label];
+        }
+
+        return entities;
     }
 
     render(){
@@ -103,7 +122,7 @@ class EntityPaneView extends React.Component {
          Create render template for the entities
          */
         var renderBlockEntities = '';
-        var entities = this.getEntities();
+        var entities = this.initEntities();
         if(entities!=null && entities.length>0){            
             renderBlockEntities = entities.map((blockEntity) => 
                this.BlockEntity(blockEntity)

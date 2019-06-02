@@ -402,7 +402,8 @@ class UserBlocksComponent extends React.Component {
                 {this.renderBlockOptions()}
                 {this.state.isEntityPaneOpen?
                     <EntityPaneView
-                    closeEntityPane = {this.closeEntityPane}/>
+                    closeEntityPane = {this.closeEntityPane}
+                    investigationGraph = {this.props.investigationGraph}/>
                     :
                     null}
                     
