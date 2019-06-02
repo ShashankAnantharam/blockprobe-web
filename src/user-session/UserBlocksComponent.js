@@ -403,7 +403,9 @@ class UserBlocksComponent extends React.Component {
                 {this.state.isEntityPaneOpen?
                     <EntityPaneView
                     closeEntityPane = {this.closeEntityPane}
-                    investigationGraph = {this.props.investigationGraph}/>
+                    investigationGraph = {this.props.investigationGraph}
+                    bId = {this.props.bId}
+                    uIdHash={this.state.uIdHash}/>
                     :
                     null}
                     

@@ -6,12 +6,14 @@ import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import Textarea from 'react-textarea-autosize';
 import './EntityPane.css';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 
 class EntityPaneView extends React.Component {
 
     constructor(props){
         super(props);
-        // closeEntityPane, this.props.investigationGraph
+        // closeEntityPane, this.props.investigationGraph, bId, uIdHash
 
         this.state={
             entities:[],
@@ -22,6 +24,7 @@ class EntityPaneView extends React.Component {
 
         this.addEntityToList = this.addEntityToList.bind(this);
         this.initEntities = this.initEntities.bind(this);
+        this.getEntities = this.getEntities.bind(this);
         this.removeEntity = this.removeEntity.bind(this);
     }
 
@@ -29,11 +32,30 @@ class EntityPaneView extends React.Component {
 
     }
 
+    initEntities(snapshot, scope){
+        var entities = snapshot.data().entities;
+        console.log(entities);
+        var isEntityPresent = scope.state.entityPresent;
+        for(var i=0; i<entities.length;i++){
+            isEntityPresent[entities[i].label] = true;
+        }
+        
+        scope.setState({
+            entityPresent: isEntityPresent,
+            entities: entities,
+            haveEntitiesLoaded: true
+        });
+    }
+
     componentDidMount(){
         //Get data for entities
-        this.initEntities();
-        this.setState({haveEntitiesLoaded:true});
-
+        var scope = this;
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.props.uIdHash).collection("session")
+        .doc("entityPane").get().then((snapshot) => {
+            if(snapshot.exists)
+                scope.initEntities(snapshot,scope);
+        });
     }
 
 
@@ -67,6 +89,12 @@ class EntityPaneView extends React.Component {
             });
             isEntityPresent[entityLabel] = true;
 
+            firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+            .collection("users").doc(this.props.uIdHash).collection("session")
+            .doc("entityPane").set({
+                entities:entityList
+            });
+
             this.setState({
                 entities: entityList,
                 newEntity: '',
@@ -77,6 +105,11 @@ class EntityPaneView extends React.Component {
 
     removeEntity(entity){
         var entityList = this.state.entities.filter(e => e.label!=entity.label);
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+            .collection("users").doc(this.props.uIdHash).collection("session")
+            .doc("entityPane").set({
+                entities:entityList
+            });
         this.setState({entities:entityList});
     }
 
@@ -93,7 +126,7 @@ class EntityPaneView extends React.Component {
         );   
     }
 
-    initEntities(){
+    getEntities(){
 
         var entities = this.state.entities;
         var isEntityPresent = this.state.entityPresent;
@@ -122,7 +155,7 @@ class EntityPaneView extends React.Component {
          Create render template for the entities
          */
         var renderBlockEntities = '';
-        var entities = this.initEntities();
+        var entities = this.getEntities();
         if(entities!=null && entities.length>0){            
             renderBlockEntities = entities.map((blockEntity) => 
                this.BlockEntity(blockEntity)
