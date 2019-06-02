@@ -420,7 +420,7 @@ class DraftBlockComponent extends React.Component {
                             <DoneAllIcon/>
                     </button>
                     <button 
-                        className="cancelBlockButton" 
+                        className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
                             <ClearIcon/>
                     </button>
@@ -552,7 +552,7 @@ class DraftBlockComponent extends React.Component {
                             <DoneAllIcon/>
                     </button>
                     <button 
-                        className="cancelBlockButton" 
+                        className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
                             <ClearIcon/>
                     </button>
