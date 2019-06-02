@@ -20,6 +20,8 @@ class EntityPaneView extends React.Component {
         }
 
         this.addEntityToList = this.addEntityToList.bind(this);
+        this.getEntities = this.getEntities.bind(this);
+        this.removeEntity = this.removeEntity.bind(this);
     }
 
     componentDidMount(){
@@ -62,9 +64,8 @@ class EntityPaneView extends React.Component {
             var count = entityList.length;
             count = count + 1;
             entityList.push({                
-                value: true, 
+                canRemove: true, 
                 label: entityLabel, 
-                id: count             
             });
 
             this.setState({
@@ -74,10 +75,45 @@ class EntityPaneView extends React.Component {
         }       
     }
 
+    removeEntity(entity){
+        var entityList = this.state.entities.filter(e => e.label!=entity.label);
+        this.setState({entities:entityList});
+    }
+
+    BlockEntity(entity){
+        return(
+        <span className="block-entity">
+            {entity.label}
+            {entity.canRemove? 
+            <a style={{marginLeft:'5px', color: 'grey', cursor: 'pointer'}} 
+            onClick={() => { this.removeEntity(entity)}}>X</a>
+            : 
+            null}
+        </span>
+        );   
+    }
+
+    getEntities(){
+        return this.state.entities;
+    }
+
     render(){
+
+        /*
+         Create render template for the entities
+         */
+        var renderBlockEntities = '';
+        var entities = this.getEntities();
+        if(entities!=null && entities.length>0){            
+            renderBlockEntities = entities.map((blockEntity) => 
+               this.BlockEntity(blockEntity)
+           );            
+       }
+
         return(
             <div style={{marginBottom:'20px'}}>
-                <div style={{display:'flex'}}>
+                <div>
+                    {renderBlockEntities}
                 </div>
                 <Textarea 
                                 type="text"
