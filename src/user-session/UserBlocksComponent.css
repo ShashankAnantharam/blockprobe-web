@@ -29,6 +29,15 @@
     border:none;
 }
 
+.editEntitiesButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-bottom:1em;
+    size:2.6em;
+    border:none;
+}
+
 .userblocks-options-container{
     display:flex; 
     flex-direction:row;

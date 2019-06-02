@@ -6,8 +6,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import AddIcon from '@material-ui/icons/Add';
 import BookIcon from '@material-ui/icons/Book';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
+import EntityPaneView from "../view/EntityPane/EntityPane";
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -31,7 +33,8 @@ class UserBlocksComponent extends React.Component {
                 entities:[]
             },
             isCreateBlockClicked:false,
-            isCreateBulkBlockClicked: false
+            isCreateBulkBlockClicked: false,
+            isEntityPaneOpen: false
         }
         //props include bpId, uId
         var shajs = require('sha.js');
@@ -46,6 +49,8 @@ class UserBlocksComponent extends React.Component {
         this.createBlock = this.createBlock.bind(this);
         this.createBulkBlock = this.createBulkBlock.bind(this);
         this.cancelBulkBlock = this.cancelBulkBlock.bind(this);
+        this.openEntityPane = this.openEntityPane.bind(this);
+        this.closeEntityPane = this.closeEntityPane.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
@@ -308,6 +313,14 @@ class UserBlocksComponent extends React.Component {
         this.setState({isCreateBlockClicked:true});
     }
 
+    openEntityPane(){
+        this.setState({isEntityPaneOpen: true});
+    }
+
+    closeEntityPane(){
+        this.setState({isEntityPaneOpen: false});
+    }
+
     createBulkBlock(){
         this.setState({isCreateBulkBlockClicked:true});
     }
@@ -352,6 +365,11 @@ class UserBlocksComponent extends React.Component {
                     onClick={this.createBulkBlock}>
                         <BookIcon/>
                     </button>
+                    <button 
+                    className="editEntitiesButton" 
+                    onClick={this.openEntityPane}>
+                        <AccountCircleIcon/>
+                    </button>
                 </div>)
     }
 
@@ -382,7 +400,12 @@ class UserBlocksComponent extends React.Component {
         return(
             <div>
                 {this.renderBlockOptions()}
-                                
+                {this.state.isEntityPaneOpen?
+                    <EntityPaneView
+                    closeEntityPane = {this.closeEntityPane}/>
+                    :
+                    null}
+                    
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
                     <h4 className="block-list-title">DRAFT</h4>
