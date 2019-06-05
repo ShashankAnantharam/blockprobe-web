@@ -76,7 +76,8 @@
 
 .graph-block-div:hover{
     background: #bcbcbb;
-    padding:10px;
+    padding-top:10px;
+    padding-bottom:10px;
 }
 
 .graph-block-list{
