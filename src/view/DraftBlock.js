@@ -133,6 +133,7 @@ class DraftBlockComponent extends React.Component {
         var entityList = this.state.multiSelectEntityList;
         var oldEntities = this.props.draftBlock.entities;
         var oldEntitiesDict = {};
+        var consideredEntitiesDict = {};
 
         for(var i=0;i<oldEntities.length;i++){
             if(!(oldEntities[i].title in this.props.investigationGraph)){
@@ -142,24 +143,28 @@ class DraftBlockComponent extends React.Component {
                     id: count
                 });
                 count++;
+                consideredEntitiesDict[oldEntities[i].title] = "";
             }
             oldEntitiesDict[oldEntities[i].title]="";
         }
 
         //MARK HERE
         var entityPane = this.props.entityPane;
+        console.log(entityPane);
         for(var i=0; i<entityPane.length; i++){
             var val = false;
             var entityLabel = entityPane[i].label;
             if(entityLabel in oldEntitiesDict){
                 val = true;
             }
-            entityList.push({                
-                    value: val, 
-                    label: entityLabel, 
-                    id: count             
-            });
-            count++;
+            if(!(entityLabel in consideredEntitiesDict)){
+                entityList.push({                
+                        value: val, 
+                        label: entityLabel, 
+                        id: count             
+                });
+                count++;
+            }
         }
 
         
