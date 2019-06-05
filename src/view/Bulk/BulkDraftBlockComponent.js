@@ -140,6 +140,8 @@ class BulkDraftBlockComponent extends React.Component {
                  title: bulkBlocks[i].title
              }
 
+             //MARK HERE ENTITIES
+
              Object.keys(this.props.investigationGraph).forEach(function(key) {
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({

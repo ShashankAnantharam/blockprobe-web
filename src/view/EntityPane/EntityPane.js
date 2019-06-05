@@ -34,12 +34,12 @@ class EntityPaneView extends React.Component {
 
     initEntities(snapshot, scope){
         var entities = snapshot.data().entities;
-        console.log(entities);
+        // console.log(entities);
         var isEntityPresent = scope.state.entityPresent;
         for(var i=0; i<entities.length;i++){
             isEntityPresent[entities[i].label] = true;
         }
-        
+        scope.props.updateEntityPaneList(entities);
         scope.setState({
             entityPresent: isEntityPresent,
             entities: entities,
@@ -95,6 +95,7 @@ class EntityPaneView extends React.Component {
                 entities:entityList
             });
 
+            this.props.updateEntityPaneList(this.getEntities());
             this.setState({
                 entities: entityList,
                 newEntity: '',

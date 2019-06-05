@@ -38,7 +38,7 @@ class DraftBlockComponent extends React.Component {
     constructor(props){
         super(props);
 
-        //props:draftBlock, bpId, uId 
+        //props:draftBlock, bpId, uId, entityPane 
         this.state={
             newBlock: {},
             newEntity: '',
@@ -146,8 +146,11 @@ class DraftBlockComponent extends React.Component {
             oldEntitiesDict[oldEntities[i].title]="";
         }
 
-        Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
+        //MARK HERE
+        var entityPane = this.props.entityPane;
+        for(var i=0; i<entityPane.length; i++){
             var val = false;
+            var entityLabel = entityPane[i].label;
             if(entityLabel in oldEntitiesDict){
                 val = true;
             }
@@ -157,7 +160,9 @@ class DraftBlockComponent extends React.Component {
                     id: count             
             });
             count++;
-        });
+        }
+
+        
         this.setState({
             multiSelectEntityList: entityList
         });

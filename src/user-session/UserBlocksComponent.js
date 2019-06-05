@@ -21,6 +21,7 @@ class UserBlocksComponent extends React.Component {
         this.state={
             uIdHash:'',
             shajs:null,
+            entityPaneList: [],
             draftBlocks:{},
             successBlocks:{},
             toReviewBlocks:{},
@@ -58,7 +59,13 @@ class UserBlocksComponent extends React.Component {
         this.updateDraftBlock = this.updateDraftBlock.bind(this);
         this.getRandomReviewer = this.getRandomReviewer.bind(this);
         this.giveBlockToFirstReviewer = this.giveBlockToFirstReviewer.bind(this);
-        this.submitDraftBlock = this.submitDraftBlock.bind(this);        
+        this.submitDraftBlock = this.submitDraftBlock.bind(this);     
+        this.updateEntityPaneList = this.updateEntityPaneList.bind(this);  
+        this.initEntityPane = this.initEntityPane.bind(this); 
+    }
+
+    updateEntityPaneList(list){
+        this.setState({entityPaneList: list});
     }
 
     getRandomReviewer(reviewerList, revMap)
@@ -280,7 +287,9 @@ class UserBlocksComponent extends React.Component {
 
             
             }
-        );    
+        );  
+        
+        this.initEntityPane();
     }
 
     renderSingleBlock(block, scope, isNewBlock){
@@ -300,6 +309,7 @@ class UserBlocksComponent extends React.Component {
             addDraftBlock = {this.addDraftBlock}
             updateDraftBlock = {this.updateDraftBlock}
             submitDraftBlock = {this.submitDraftBlock}
+            entityPane = {this.state.entityPaneList}
             />
         );
     }
@@ -333,6 +343,19 @@ class UserBlocksComponent extends React.Component {
         this.setState({isCreateBlockClicked:false});
     }
 
+    initEntityPane(){
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.state.uIdHash).collection("session")
+        .doc("entityPane").get().then((snapshot) => {
+            if(snapshot.exists)
+                {
+                    var entities = snapshot.data().entities;
+                    // console.log(entities);
+                    this.setState({entityPaneList:entities});
+                }
+        });
+    }
+
     renderBlockOptions(){
 
         if(this.state.isCreateBlockClicked){
@@ -349,6 +372,7 @@ class UserBlocksComponent extends React.Component {
                         cancelBulkDraftBlock = {this.cancelBulkBlock}
                         addDraftBlocksInBulk = {this.addDraftBlocksInBulk}
                         investigationGraph = {this.props.investigationGraph}
+                        entityPane = {this.state.entityPaneList}
                     />
                 </div>
             )
@@ -360,7 +384,8 @@ class UserBlocksComponent extends React.Component {
                     closeEntityPane = {this.closeEntityPane}
                     investigationGraph = {this.props.investigationGraph}
                     bId = {this.props.bId}
-                    uIdHash={this.state.uIdHash}/>
+                    uIdHash={this.state.uIdHash}
+                    updateEntityPaneList = {this.updateEntityPaneList}/>
             );
         }
 
