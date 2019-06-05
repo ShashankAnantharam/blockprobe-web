@@ -130,8 +130,7 @@ class BulkDraftBlockComponent extends React.Component {
      saveDraftInBulk(){
         var bulkBlocks = [];
         bulkBlocks = this.getParas(this.state.value);
-
-         var draftBlocks=[];
+        var draftBlocks=[];
          for(var i=0;i<bulkBlocks.length;i++){
              var newDraftBlock = {
                  entities:[],
@@ -142,14 +141,21 @@ class BulkDraftBlockComponent extends React.Component {
 
              //MARK HERE ENTITIES
 
-             Object.keys(this.props.investigationGraph).forEach(function(key) {
+             
+             var entityPane = this.props.entityPane;
+
+
+             for(var j =0; j< entityPane.length; j++){
+                var key = entityPane[j].label;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({
                         title:key,
                         type:"None"
                     })
-                }
-            });
+                } 
+             }
+             
+            
              draftBlocks.push(newDraftBlock);
          }
          // console.log(draftBlocks);
