@@ -150,7 +150,7 @@ class DraftBlockComponent extends React.Component {
 
         //MARK HERE
         var entityPane = this.props.entityPane;
-        console.log(entityPane);
+        // console.log(entityPane);
         for(var i=0; i<entityPane.length; i++){
             var val = false;
             var entityLabel = entityPane[i].label;
