@@ -70,6 +70,7 @@ class GraphComponent extends React.Component {
         this.isValidBlock = this.isValidBlock.bind(this);
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
+        this.removeHashedIndex = this.removeHashedIndex.bind(this);
     }
 
     isValidBlock(block){
@@ -314,7 +315,22 @@ class GraphComponent extends React.Component {
         );
     }
 
-  
+    removeHashedIndex(a){
+        a = a.trim();
+        var startI = 0;
+        if(a.length>0 && a[0]=='#'){
+            for(var i=1; i<a.length; i++){
+                startI = i;
+                if((a[i]>='0' && a[i]<='9') || a[i]=='.'){
+                    i++;
+                }
+                else{
+                    break;
+                }
+            }    
+        }
+        return a.substring(startI).trim();
+    }
 
     BlockEntity(entity){
         return(
@@ -341,7 +357,7 @@ class GraphComponent extends React.Component {
         return(
         <div className="graph-block-div"
         onClick={() => { this.clickBlockFromList(singleBlock)}}>
-            <h4 className="graph-block-title">{singleBlock.title}</h4>
+            <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
             <p className="graph-block-text">
                 {singleBlock.summary}
             </p>
