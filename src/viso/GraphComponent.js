@@ -310,7 +310,8 @@ class GraphComponent extends React.Component {
                         graph={newGraph} 
                         options={this.state.graphOptions} 
                         events={graphEvents} 
-                        style={{ height: "780px", width:'50%', border: '1px solid lightgrey' }} 
+                        style={{ height: "780px", width:'50%', 
+                        boxShadow: '2px 2px 10px 2px lightgrey', border: '1px solid lightgrey' }} 
                         />
         );
     }
