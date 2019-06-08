@@ -69,6 +69,7 @@ class GraphComponent extends React.Component {
         this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
         this.isValidBlock = this.isValidBlock.bind(this);
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
+        this.sortBlocks = this.sortBlocks.bind(this);
     }
 
     isValidBlock(block){
@@ -121,6 +122,64 @@ class GraphComponent extends React.Component {
         }
     }
 
+    sortBlocks(a, b){
+        a = a.trim();        
+        b = b.trim();
+
+        var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
+        if(a.length>0 && a[0]=='#'){
+            for(var i=1; i<a.length; i++){
+                var num = '';
+                if((a[i]>='0' && a[i]<='9') || a[i]=='.'){
+                    num += a[i];
+                    i++;
+                }
+                else{
+                    if(num.length > 0){
+                        aIndex = Number(num);
+                        isAExist = true;
+                    }
+                }
+            }    
+        }
+
+        if(b.length>0 && b[0]=='#'){
+            for(var i=1; i<b.length; i++){
+                var num = '';
+                if((b[i]>='0' && b[i]<='9') || b[i]=='.'){
+                    num += b[i];
+                    i++;
+                }
+                else{
+                    if(num.length > 0){
+                        bIndex = Number(num);
+                        isBExist = true;
+                    }
+                }
+            }    
+        }
+
+        // A comes after b
+        if(!isAExist && isBExist)
+            return 1;
+
+        // A comes before b
+        if(isAExist && !isBExist)
+            return -1;
+        
+        // A comes before b
+        if(isAExist && isBExist){
+            if(aIndex > bIndex)
+                return 1;
+            return -1;
+        }
+
+        if(a > b)
+            return 1;
+
+        return -1;
+    }
+
     onSelectGraph(event){
         var { nodes, edges } = event;
         
@@ -150,7 +209,7 @@ class GraphComponent extends React.Component {
             }
         }
 
-        blocksToBeSelected.sort((a, b) => (a.title > b.title) ? 1 : -1);
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected
