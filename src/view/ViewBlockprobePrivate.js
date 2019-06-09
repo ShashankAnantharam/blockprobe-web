@@ -453,7 +453,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             <div>
 
             <Sidebar
-                sidebar={<div style={{width:'30vw'}}>
+                sidebar={<div style={{width:'45vw'}}>
                 <ViewBlockComponent 
                 selectedBlock={this.state.selectedBlock}
                 uId={this.props.uId}
