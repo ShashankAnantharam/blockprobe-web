@@ -79,6 +79,8 @@ class ViewBlockComponent extends React.Component {
             <div className="block-evidence">
                 <a href={evidence.evidenceLink} target="_blank" className="block-evidence-title">Evidence {index+1}</a>
                 <div className="block-evidence-subtitle">{evidence.supportingDetails}</div>
+                <img src={evidence.evidenceLink} alt='' onerror="this.style.display=''"
+                style={{width:'100%'}}></img>
             </div>
         );
     }   
