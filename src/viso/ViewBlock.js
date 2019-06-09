@@ -3,6 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import ChatBox from './ChatBox';
 import ViewBlockListComponent from './ViewBlockOptionList';
 import UpvoteStatusComponent from './UpvoteStatus';
+import Img from 'react-image';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
@@ -75,12 +76,13 @@ class ViewBlockComponent extends React.Component {
 
     BlockEvidence(evidence, index){
         const WebView = require('react-electron-web-view');
+        var evidenceList = [evidence.evidenceLink];
         return(
             <div className="block-evidence">
                 <a href={evidence.evidenceLink} target="_blank" className="block-evidence-title">Evidence {index+1}</a>
                 <div className="block-evidence-subtitle">{evidence.supportingDetails}</div>
-                <img src={evidence.evidenceLink} alt='' onerror="this.style.display=''"
-                style={{width:'100%'}}></img>
+                <Img src={evidenceList}
+                style={{width:'100%'}}></Img>
             </div>
         );
     }   
