@@ -128,32 +128,32 @@ class GraphComponent extends React.Component {
         b = b.trim();
 
         var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
-        if(a.length>0 && a[0]=='#'){
+        if(a.length>0 && a.charAt(0)==='#'){
+            var num = '';
             for(var i=1; i<a.length; i++){
-                var num = '';
-                if((a[i]>='0' && a[i]<='9') || a[i]=='.'){
-                    num += a[i];
-                    i++;
+                
+                if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                    num += a.charAt(i);
                 }
                 else{
                     if(num.length > 0){
-                        aIndex = Number(num);
+                        aIndex = parseFloat(num);
                         isAExist = true;
                     }
                 }
             }    
         }
 
-        if(b.length>0 && b[0]=='#'){
+        if(b.length>0 && b.charAt(0)==='#'){
+            var num = '';
             for(var i=1; i<b.length; i++){
-                var num = '';
-                if((b[i]>='0' && b[i]<='9') || b[i]=='.'){
-                    num += b[i];
-                    i++;
+                
+                if((!isNaN(parseInt(b.charAt(i), 10))) || b[i]==='.'){
+                    num += b.charAt(i);
                 }
                 else{
                     if(num.length > 0){
-                        bIndex = Number(num);
+                        bIndex = parseFloat(num);
                         isBExist = true;
                     }
                 }
@@ -209,6 +209,7 @@ class GraphComponent extends React.Component {
                 this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
             }
         }
+        
 
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
 
