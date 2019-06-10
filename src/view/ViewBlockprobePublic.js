@@ -87,6 +87,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                  blockTree:tempState
              });
              if(block.actionType == "genesis"){
+                document.title = block.title;
                  this.setState({
                      genesisBlockId: block.key,
                      blockprobeTitle: block.title,
@@ -293,7 +294,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.onSetSelectedBlockSidebarOpen(true);
     }
 
-    componentDidMount(){
+    componentDidMount(){      
         firebase.firestore().collection("public").doc(this.props.match.params.bId)
         .collection("aggBlocks").get().then((snapshot) => (
             this.createBlockprobe(snapshot)

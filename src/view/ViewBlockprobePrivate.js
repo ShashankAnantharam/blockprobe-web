@@ -132,6 +132,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                  latestBlock: latestBlock
              });
         if(block.actionType == "genesis"){
+            document.title = block.title;
             this.setState({
                 genesisBlockId: block.key,
                 blockprobeTitle: block.title,
