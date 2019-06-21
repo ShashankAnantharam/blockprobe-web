@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import './ViewBlockprobePrivate.css';
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
+import SummaryViewComponent from "../viso/summary/SummaryView";
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import BlockprobeSettingsComponent from './BlockprobeSettings/BlockprobeSettings';
 import ViewBlockComponent from '../viso/ViewBlock';
@@ -394,6 +395,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         else if(this.state.selectedVisualisation == "graph"){
             return(
                 <div>
+                    <SummaryViewComponent></SummaryViewComponent>
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}

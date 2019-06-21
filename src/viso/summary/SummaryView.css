@@ -1,0 +1,22 @@
+.summaryView-container{
+    margin-left:2%;
+    margin-right:2%;
+    height:250px;
+    background-color: #500550;
+    border-radius: 2px;
+    padding: 10px;
+}
+
+.summaryView-title{
+    color:white; 
+    text-align: center;    
+    font-weight: bold;
+    margin: 10px; 
+    font-size: 2em;
+}
+
+.summaryView-desc{
+    color: white;
+    margin: 10px;
+    font-size: 1em;
+}
