@@ -35,6 +35,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             blockTree: {},
             investigationGraph: {},
             timeline: [],
+            summaryList: [],
             latestBlock: null,
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
@@ -65,7 +66,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
         this.closeSelectedBlockSidebar = this.closeSelectedBlockSidebar.bind(this);
         this.refreshBlockprobe = this.refreshBlockprobe.bind(this);
-
+        this.sortBlocks = this.sortBlocks.bind(this);
+        this.isSummaryBlock = this.isSummaryBlock.bind(this);
+        this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
     }
 
@@ -156,6 +159,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         else{
             blockStatus[currBlock.referenceBlock]=false;
         }
+        
 
         if(currBlock.blockDate!=null || currBlock.blockTime!=null){
             if(currBlock.actionType!="REMOVE"){
@@ -216,6 +220,95 @@ class ViewBlockprobePrivateComponent extends React.Component {
             graph[entity_i].edges[entity_j]=[];
         }
         graph[entity_i].edges[entity_j].push(block.key);
+    }
+
+    sortBlocks(a, b){
+        a = a.trim();        
+        b = b.trim();
+  
+        var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
+        if(a.length>0 && a.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<a.length; i++){
+                
+                if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                    num += a.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        aIndex = parseFloat(num);
+                        isAExist = true;
+                    }
+                }
+            }    
+        }
+  
+        if(b.length>0 && b.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<b.length; i++){
+                
+                if((!isNaN(parseInt(b.charAt(i), 10))) || b[i]==='.'){
+                    num += b.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        bIndex = parseFloat(num);
+                        isBExist = true;
+                    }
+                }
+            }    
+        }
+  
+        // A comes after b
+        if(!isAExist && isBExist)
+            return 1;
+  
+        // A comes before b
+        if(isAExist && !isBExist)
+            return -1;
+        
+        // A comes before b
+        if(isAExist && isBExist){
+            if(aIndex > bIndex)
+                return 1;
+            return -1;
+        }
+  
+        if(a > b)
+            return 1;
+  
+        return -1;
+    }
+  
+
+    isSummaryBlock(block){
+        let a = block.title;
+        a = a.trim();
+
+        if(a.length>0 && a.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<a.length; i++){
+                if(a.charAt(i)==' ')
+                    return false;
+                else if(a.charAt(i)=='s' || a.charAt(i)=='S')
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    createSummaryList(blockList){
+        var sList = [];
+
+        blockList.forEach((blockKey) => {
+            var block = this.state.blockTree[blockKey];
+            if(this.isSummaryBlock(block)){
+                sList.push(block);
+            }
+        });
+        sList.sort((a, b) => this.sortBlocks(a.title,b.title));
+        this.setState({summaryList: sList});
     }
 
     createInvestigationGraph(blockList){
@@ -330,6 +423,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
 
         this.createInvestigationGraph(finalBlockList);
+        this.createSummaryList(finalBlockList);
 
         // console.log(finalBlockList);
         
@@ -395,7 +489,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         else if(this.state.selectedVisualisation == "graph"){
             return(
                 <div>
-                    <SummaryViewComponent></SummaryViewComponent>
+                    <SummaryViewComponent
+                        summaryBlocks = {this.state.summaryList}/>
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}

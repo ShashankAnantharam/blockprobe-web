@@ -323,15 +323,12 @@ class GraphComponent extends React.Component {
         if(a.length>0 && a[0]=='#'){
             for(var i=1; i<a.length; i++){
                 startI = i;
-                if((a[i]>='0' && a[i]<='9') || a[i]=='.'){
-                    i++;
-                }
-                else{
-                    break;
+                if(a.charAt(i)==' '){
+                    return a.substring(startI).trim();
                 }
             }    
         }
-        return a.substring(startI).trim();
+        return '';
     }
 
     BlockEntity(entity){
