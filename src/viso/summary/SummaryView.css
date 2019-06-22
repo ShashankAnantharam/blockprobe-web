@@ -1,7 +1,7 @@
 .summaryView-container{
     margin-left:2%;
     margin-right:2%;
-    height:250px;
+    height:180px;
     border-radius: 20px;
     padding: 10px;   
     box-shadow: 3px 3px 10px 3px grey; 
@@ -88,6 +88,15 @@
     opacity: 1;
     transition: opacity .5s ease-in;
   }
+
+.summaryContent-nav{
+    font-size: 40px !important;
+    transition: 0.5s !important;
+}  
+
+.summaryContent-nav:hover{
+    font-size: 60px !important;
+}
 
 /*Create ripple effec*/
 

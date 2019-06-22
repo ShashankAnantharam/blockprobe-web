@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './SummaryView.css';
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
 import { isNullOrUndefined } from 'util';
 
 class SummaryViewComponent extends React.Component {
@@ -24,6 +26,7 @@ class SummaryViewComponent extends React.Component {
       this.getTitle = this.getTitle.bind(this);
       this.getSummary = this.getSummary.bind(this);  
       this.removeHashedIndex = this.removeHashedIndex.bind(this);    
+      this.clickChevron = this.clickChevron.bind(this);
     }
 
     removeHashedIndex(a){
@@ -73,32 +76,56 @@ class SummaryViewComponent extends React.Component {
         return this.props.summaryBlocks[this.state.summBlockIdx].summary;
     }
 
-    
+    clickChevron(forward){
+      if(!isNullOrUndefined(this.props.summaryBlocks)){
+        let currentIdx = this.state.summBlockIdx;
+        let currArrSize = Math.max(1,this.props.summaryBlocks.length);
+        if(forward){
+          currentIdx = (currentIdx+1)%currArrSize;
+        }
+        else{
+          currentIdx = (currentIdx+currArrSize-1)%currArrSize;
+        }
+
+        this.setState({summBlockIdx: currentIdx});
+      }
+    }
 
     render(){
 
         return (
           
-            <div
-            className = 'color-gradient summaryView-container' 
-            >
-            <ReactCSSTransitionGroup transitionName="summaryContent"
-              transitionAppear={true}
-              transitionAppearTimeout={500}
-              transitionEnter={true}
-              transitionEnterTimeout={500}
-              transitionLeave={true}
-              transitionLeaveTimeout={500}
+          <div style={{display:'flex', alignItems:'center'}}>
+              <div style={{width:'5%', cursor:'pointer', transition:'0.5s'}} >
+                  <ChevronLeft className='summaryContent-nav'
+                  onClick={() => { this.clickChevron(false)}}/>
+              </div>
+              <div
+              style={{width:'90%'}}
+              className = 'color-gradient summaryView-container' 
               >
-              {this.state.isContentActive?
-                       <div>
-                              <div className='summaryView-title'>{this.getTitle()}</div>
-                              <p className='summaryView-desc'>{this.getSummary()}</p>
-                       </div>
-                              :
-                              null              
-              }
-            </ReactCSSTransitionGroup>
+              <ReactCSSTransitionGroup transitionName="summaryContent"
+                transitionAppear={true}
+                transitionAppearTimeout={500}
+                transitionEnter={true}
+                transitionEnterTimeout={500}
+                transitionLeave={true}
+                transitionLeaveTimeout={500}
+                >
+                {this.state.isContentActive?
+                        <div>
+                                <div className='summaryView-title'>{this.getTitle()}</div>
+                                <p className='summaryView-desc'>{this.getSummary()}</p>
+                        </div>
+                                :
+                                null              
+                }
+              </ReactCSSTransitionGroup>
+              </div>
+              <div style={{width:'5%', cursor:'pointer', transition:'0.5s'}}>
+                <ChevronRight className='summaryContent-nav' 
+                onClick={() => { this.clickChevron(true)}}/>
+              </div>
             </div>
         );
     }
