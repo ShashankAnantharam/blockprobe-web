@@ -16,3 +16,23 @@
     size:4em;
     color:rgb(219, 243, 242);
 }
+
+@media only screen and (max-width: 500px) {
+    .right-sidebar{
+        width: 75vw;
+    }
+
+    .left-sidebar{
+        width: 75vw;
+    }
+}
+
+@media only screen and (min-width: 501px) {
+    .right-sidebar{
+        width: 45vw;
+    }
+
+    .left-sidebar{
+        width: 40vw;
+    }
+}

@@ -345,7 +345,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             <div>
 
             <Sidebar
-                sidebar={<div style={{width:'45vw'}}>
+                sidebar={<div className="right-sidebar">
                 <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}
@@ -358,7 +358,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             </Sidebar>
 
             <Sidebar
-                sidebar={<div style={{width:'40vw'}}>
+                sidebar={<div className="left-sidebar">
                     <VisualizeOptionsListComponent 
                     selectVisualisation={this.setNewVisualisation}
                     selectedVisualisation={this.state.selectedVisualisation}
