@@ -476,6 +476,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     renderVisualisation(){
+        /*
+                            <SummaryViewComponent
+                        summaryBlocks = {this.state.summaryList}/>
+                        */
         if(this.state.selectedVisualisation == "timeline")
         {
             return (
@@ -489,8 +493,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         else if(this.state.selectedVisualisation == "graph"){
             return(
                 <div>
-                    <SummaryViewComponent
-                        summaryBlocks = {this.state.summaryList}/>
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
