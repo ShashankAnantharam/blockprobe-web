@@ -312,7 +312,7 @@ class GraphComponent extends React.Component {
                         options={this.state.graphOptions} 
                         events={graphEvents} 
                         className="graph-main"
-                        style={{ height: "500px", minWidth:'50%',
+                        style={{ height: "500px", minWidth:'50%', maxWidth:'80%',
                         boxShadow: '2px 2px 10px 2px lightgrey', border: '1px solid lightgrey' }} 
                         />
         );

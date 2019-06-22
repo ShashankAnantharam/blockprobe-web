@@ -96,7 +96,7 @@
 @media only screen and (max-width: 500px) {
     .graph-block-list{
         margin-left:0;
-        width:100%;
+        width:80%;
         height: 500px;
         overflow-y:scroll;
         padding:1%;
