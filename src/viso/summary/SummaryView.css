@@ -3,13 +3,13 @@
     margin-right:2%;
     height:250px;
     border-radius: 20px;
-    padding: 10px;
-    transition: padding 0.33s;
+    padding: 10px;   
+    box-shadow: 3px 3px 10px 3px grey; 
+    transition: 0.33s;
 }
 
 .summaryView-container:hover{
-    padding-top:15px;
-    padding-bottom:15px;
+    box-shadow: 3px 3px 10px 3px rgb(43, 42, 42);
 }
 
 .color-gradient{
