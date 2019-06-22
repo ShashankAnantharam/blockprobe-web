@@ -40,6 +40,8 @@ class SummaryViewComponent extends React.Component {
           },500);
                 
         }, 11000);
+
+
       }
 
       getTitle(){
@@ -64,7 +66,9 @@ class SummaryViewComponent extends React.Component {
 
         return (
           
-            <div className="summaryView-container Ripple-parent">
+            <div
+            className = 'color-gradient summaryView-container' 
+            >
             <ReactCSSTransitionGroup transitionName="summaryContent"
               transitionAppear={true}
               transitionAppearTimeout={500}
