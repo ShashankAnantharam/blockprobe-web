@@ -61,6 +61,8 @@ class ShareBlockprobeComponent extends React.Component {
         let url = this.state.urlPrefix + this.props.bpId;
         return (
             <div>
+                <div className='share-section-heading'>Link</div>
+                <a href={url} target="_blank" className="share-url">{url}</a>
                 <div className='share-section-heading'>Share</div>
                 <div className='shareContainer'>
                     <div className='shareIcons'>
@@ -134,9 +136,6 @@ class ShareBlockprobeComponent extends React.Component {
                 );
 
         }
-            
-        
-       // this.setState({blocksUploaded: true});
     }
 
     render(){
