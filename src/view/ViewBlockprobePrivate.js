@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import './ViewBlockprobePrivate.css';
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
+import DashboardViewComponent from "../viso/dashboard/DashboardView";
 import SummaryViewComponent from "../viso/summary/SummaryView";
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import BlockprobeSettingsComponent from './BlockprobeSettings/BlockprobeSettings';
@@ -39,7 +40,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             latestBlock: null,
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
-            selectedVisualisation: "graph",
+            selectedVisualisation: "dashboard",
             multiSelectEntityList: [
                 {
                     value: true, 
@@ -487,6 +488,20 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <TimelineComponent 
                     timeline={this.state.timeline} 
                     selectBlock={this.changeSelectedBlock}/>
+                </div>
+            );
+        }
+        else if(this.state.selectedVisualisation == "dashboard"){
+            return(
+                <div>
+                    <DashboardViewComponent
+                        summaryBlocks = {this.state.summaryList}
+                        blockTree={this.state.blockTree} 
+                        investigationGraph={this.state.investigationGraph}
+                        selectBlock={this.changeSelectedBlock}
+                        multiSelectEntityList = {this.state.multiSelectEntityList}
+                        timeline={this.state.timeline}                     
+                    />
                 </div>
             );
         }

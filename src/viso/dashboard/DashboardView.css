@@ -1,0 +1,14 @@
+.dashboard-section-heading{
+    margin-top:30px; 
+    font-weight:500;
+    margin-left:10px; 
+    font-size:1.3em;
+}
+
+.graph-heading{
+    margin-bottom:10px; 
+}
+
+.timeline-heading{
+    margin-bottom:-25px; 
+}

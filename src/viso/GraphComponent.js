@@ -486,11 +486,12 @@ class GraphComponent extends React.Component {
                 </div>
                 <div className='graph-container'>
                        {this.generateGraph()}
-
-                      <div className="graph-block-list"  id="graph-selected-block-list">
+                      {this.state.currentSelectedBlocks.length > 0?
+                        <div className="graph-block-list"  id="graph-selected-block-list">
                             {renderBlocks}
-                      </div>  
-                      
+                        </div>                        
+                        :
+                        null}                        
                 </div>
             </div>
         );

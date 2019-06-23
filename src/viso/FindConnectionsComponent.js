@@ -506,13 +506,16 @@ class FindConnectionsComponent extends React.Component {
                         graph={this.state.graph} 
                         options={this.state.graphOptions} 
                         events={this.state.graphEvents} 
-                        style={{ height: "780px", minWidth:'50%', maxWidth:'80%', 
-                        border: '1px solid lightgrey' }} 
+                        style={{height: "500px", minWidth:'50%', maxWidth:'80%',
+                        boxShadow: '2px 2px 10px 2px lightgrey', border: '1px solid lightgrey'}} 
                         />
 
-                      <div className="graph-block-list"  id="graph-selected-block-list">
+                    {this.state.currentSelectedBlocks.length > 0?
+                        <div className="graph-block-list"  id="graph-selected-block-list">
                             {renderBlocks}
-                      </div>  
+                        </div>                        
+                        :
+                        null}  
                       
                 </div>
             </div>
