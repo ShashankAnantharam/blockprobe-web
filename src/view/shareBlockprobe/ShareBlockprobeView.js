@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './ShareBlockprobe.css';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
 import Loader from 'react-loader-spinner';
 import {
     FacebookShareButton,
@@ -81,6 +83,59 @@ class ShareBlockprobeComponent extends React.Component {
     }
 
     componentDidMount(){
+        var bTree = this.props.blockTree;
+        let count=0;
+        let allBlocks = [], currBlockPage = [];
+        if(bTree!=null){
+            Object.keys(bTree).map((key, index) => {
+                if(count==100){
+                    let page = {
+                        blocks: currBlockPage
+                    };
+                    allBlocks.push(page);
+                    currBlockPage = [];
+                }
+                var block = bTree[key];
+                if(block!=null){
+                    if(block.previousKey)
+                        block['parent']=block.previousKey;
+                    if(!block.children)
+                        block['children']=[];    
+                    if(block.actionType){    
+                    currBlockPage.push(block);
+                    count++;
+                    }
+                }
+            } 
+            );
+        }
+        if(currBlockPage.length > 0){
+            let page = {
+                blocks: currBlockPage
+            };
+            allBlocks.push(page);
+            currBlockPage = [];
+        }
+        if(allBlocks.length>0){
+
+            firebase.firestore().collection("public").doc(this.props.bpId)
+                .collection("aggBlocks").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bpId)
+                            .collection("aggBlocks").doc(doc.id).delete();
+                    });
+                    for(var i=0; i<allBlocks.length; i++){
+                        firebase.firestore().collection('public').doc(this.props.bpId)
+                        .collection('aggBlocks').doc(String(i)).set(allBlocks[i]);        
+                    }
+        
+                }).then(
+                    this.setState({blocksUploaded: true})
+                );
+
+        }
+            
+        
        // this.setState({blocksUploaded: true});
     }
 
