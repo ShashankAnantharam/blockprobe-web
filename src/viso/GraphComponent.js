@@ -327,9 +327,10 @@ class GraphComponent extends React.Component {
                 if(a.charAt(i)==' '){
                     return a.substring(startI).trim();
                 }
-            }    
+            } 
+            return '';   
         }
-        return '';
+        return a;
     }
 
     BlockEntity(entity){
