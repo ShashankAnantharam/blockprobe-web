@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
+import DashboardViewComponent from "../viso/dashboard/DashboardView";
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
@@ -355,36 +356,21 @@ class ViewBlockprobePublicComponent extends React.Component {
                 styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
             >
 
-            </Sidebar>
 
-            <Sidebar
-                sidebar={<div className="left-sidebar">
-                    <VisualizeOptionsListComponent 
-                    selectVisualisation={this.setNewVisualisation}
-                    selectedVisualisation={this.state.selectedVisualisation}
-                    isViewOnly={true}/>
-                </div>}
-                open={this.state.menuBarOpen}
-                onSetOpen={this.onSetMenuBlockSidebarOpen}
-                pullRight={false}
-                defaultSidebarWidth='200px'
-                styles={{ sidebar: { background:"white", position:'fixed' } }}
-            >
-
-                <div>
-                <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
-                className="menu-button">
-                        <MenuIcon/>
-                    </button>
-                </div>
                 <div className="blockprobe-header"> 
                     <h2>{this.state.blockprobeTitle}</h2>
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 
-                {this.renderVisualisation()}
+                <DashboardViewComponent
+                        summaryBlocks = {this.state.summaryList}
+                        blockTree={this.state.blockTree} 
+                        investigationGraph={this.state.investigationGraph}
+                        selectBlock={this.changeSelectedBlock}
+                        multiSelectEntityList = {this.state.multiSelectEntityList}
+                        timeline={this.state.timeline}                     
+                    />
             </Sidebar>
-
 
             </div>
             );

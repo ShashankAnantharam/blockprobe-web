@@ -6,6 +6,7 @@ import SummaryViewComponent from "../summary/SummaryView";
 import GraphComponent from "../GraphComponent";
 import FindConnectionsComponent from "../FindConnectionsComponent";
 import TimelineComponent from "../TimelineComponent";
+import { isNullOrUndefined } from 'util';
 
 class DashboardViewComponent extends React.Component {
 
@@ -14,15 +15,29 @@ class DashboardViewComponent extends React.Component {
       this.state={
           key: 'graph'
       }
+      this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
+    }
+
+    isSummaryBlocksAvailable(){
+        if(isNullOrUndefined(this.props.summaryBlocks) || this.props.summaryBlocks.length==0)
+            return false;
+        return true;
     }
 
     render(){
         return (
             <div>
-                <div className="dashboard-section-heading graph-heading">Summary</div>
-                <SummaryViewComponent
-                        summaryBlocks = {this.props.summaryBlocks}/>
 
+                {this.isSummaryBlocksAvailable()?
+                    <div>
+                        <div className="dashboard-section-heading graph-heading">Summary</div>
+                        <SummaryViewComponent
+                                summaryBlocks = {this.props.summaryBlocks}/>
+                    </div>
+                            :
+                    null
+                }
+                
                 <div className="dashboard-section-heading graph-heading">Graph</div>
                 <Tabs>
                     <TabList>
