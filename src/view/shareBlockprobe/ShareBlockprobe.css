@@ -1,0 +1,17 @@
+.shareContainer{
+    display:flex;
+}
+
+.shareIcons{
+    float:left;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.share-section-heading{
+    margin-top:30px; 
+    font-weight:500;
+    margin-left:10px; 
+    font-size:1.3em;
+    margin-bottom:10px; 
+}

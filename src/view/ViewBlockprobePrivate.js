@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePrivate.css';
+import ShareBlockprobeComponent from './shareBlockprobe/ShareBlockprobeView';
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
 import DashboardViewComponent from "../viso/dashboard/DashboardView";
@@ -551,6 +552,22 @@ class ViewBlockprobePrivateComponent extends React.Component {
             )
 
         }
+        else if(this.state.selectedVisualisation == "publish_blockprobe"){
+            return(
+                <div>
+                    <ShareBlockprobeComponent 
+                    uId={this.props.uId}
+                    bpId={this.props.bId}
+                    details = {this.state.bpDetails}
+                    permit = {this.props.permit}
+                    blockTree = {this.state.blockTree}
+                    />
+                </div>
+            )
+
+        }
+
+        //ShareBlockprobeComponent
 
         return (
             <div style={{textAlign:"center"}}>
