@@ -96,7 +96,7 @@ class SummaryViewComponent extends React.Component {
 
         return (
           
-          <div style={{display:'flex', alignItems:'center'}}>
+          <div className="summary-container">
               <div style={{width:'5%', cursor:'pointer', transition:'0.5s'}} >
                   <ChevronLeft className='summaryContent-nav'
                   onClick={() => { this.clickChevron(false)}}/>

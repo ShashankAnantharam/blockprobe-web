@@ -89,14 +89,35 @@
     transition: opacity .5s ease-in;
   }
 
-.summaryContent-nav{
+@media only screen and (min-width: 501px) {
+  .summary-container{
+    display: flex; 
+    align-items: center;
+  }
+
+  .summaryContent-nav{
     font-size: 40px !important;
     transition: 0.5s !important;
-}  
+  }  
 
-.summaryContent-nav:hover{
-    font-size: 60px !important;
+  .summaryContent-nav:hover{
+      font-size: 60px !important;
+  }
 }
+
+@media only screen and (max-width: 500px) {
+  .summary-container{
+    display: flex; 
+    align-items: center;
+    width: 90%;
+  }
+
+  .summaryContent-nav{
+    font-size: 20px !important;
+  }  
+}
+
+
 
 /*Create ripple effec*/
 
