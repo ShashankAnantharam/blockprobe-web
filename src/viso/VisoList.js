@@ -8,6 +8,7 @@ import AcUnitIcon from '@material-ui/icons/AcUnit';
 import GroupIcon from '@material-ui/icons/Group'; 
 import BuildIcon from '@material-ui/icons/Build'; 
 import CreateIcon from '@material-ui/icons/Create'; 
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import ListIcon from '@material-ui/icons/List';
 import './VisoList.css';
 
@@ -74,6 +75,16 @@ class VisualizeOptionsListComponent extends React.Component {
             <div>
                 <h3 style={{textAlign:"center"}}>VISUALISE</h3>
                 <List className="">
+                    <ListItem button 
+                    selected={this.props.selectedVisualisation == "dashboard"}
+                    onClick={() => { this.selectNewVisualisation("dashboard")}}
+                    >
+                    <Avatar>
+                        <DashboardIcon />
+                    </Avatar>
+                        <ListItemText primary="Dashboard"/>
+                    </ListItem>
+
                     <ListItem button 
                     selected={this.props.selectedVisualisation == "timeline"}
                     onClick={() => { this.selectNewVisualisation("timeline")}}
