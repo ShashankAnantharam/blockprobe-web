@@ -502,13 +502,13 @@ class FindConnectionsComponent extends React.Component {
                     <button className="filterButton" onClick={this.generateGraph}>Find Connection</button>
                 </div>
                 <div className='graph-container'>
-                    <Graph 
-                        graph={this.state.graph} 
-                        options={this.state.graphOptions} 
-                        events={this.state.graphEvents} 
-                        style={{height: "500px", minWidth:'50%', maxWidth:'80%',
-                        boxShadow: '2px 2px 10px 2px lightgrey', border: '1px solid lightgrey'}} 
-                        />
+                    <div className="graph-main">
+                        <Graph 
+                                 graph={this.state.graph} 
+                                 options={this.state.graphOptions} 
+                                 events={this.state.graphEvents} 
+                                />
+                    </div>                    
 
                     {this.state.currentSelectedBlocks.length > 0?
                         <div className="graph-block-list"  id="graph-selected-block-list">
