@@ -9,7 +9,7 @@ import GroupIcon from '@material-ui/icons/Group';
 import BuildIcon from '@material-ui/icons/Build'; 
 import CreateIcon from '@material-ui/icons/Create'; 
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PublicIcon from '@material-ui/icons/Public';
+import ShareIcon from '@material-ui/icons/Share';
 import ListIcon from '@material-ui/icons/List';
 import './VisoList.css';
 
@@ -73,9 +73,9 @@ class VisualizeOptionsListComponent extends React.Component {
                         onClick={() => { this.selectNewVisualisation("publish_blockprobe")}}
                         >
                         <Avatar>
-                            <PublicIcon />
+                            <ShareIcon />
                         </Avatar>
-                            <ListItemText primary="Take Blockprobe Public"/>
+                            <ListItemText primary="Share Blockprobe"/>
                     </ListItem>
                         :
                         null}

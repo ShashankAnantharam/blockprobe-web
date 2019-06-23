@@ -61,9 +61,9 @@ class ShareBlockprobeComponent extends React.Component {
         let url = this.state.urlPrefix + this.props.bpId;
         return (
             <div>
-                <div className='share-section-heading'>Link</div>
+                <div className='share-section-heading'>Public Link</div>
                 <a href={url} target="_blank" className="share-url">{url}</a>
-                <div className='share-section-heading'>Share</div>
+                <div className='share-section-heading'>Share Link on Social Media</div>
                 <div className='shareContainer'>
                     <div className='shareIcons'>
                         <FacebookShareButton                        
