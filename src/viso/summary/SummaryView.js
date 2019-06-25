@@ -102,7 +102,6 @@ class SummaryViewComponent extends React.Component {
                   onClick={() => { this.clickChevron(false)}}/>
               </div>
               <div
-              style={{width:'90%'}}
               className = 'color-gradient summaryView-container' 
               >
               <ReactCSSTransitionGroup transitionName="summaryContent"

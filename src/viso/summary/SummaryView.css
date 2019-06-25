@@ -1,12 +1,4 @@
-.summaryView-container{
-    margin-left:2%;
-    margin-right:2%;
-    height:180px;
-    border-radius: 20px;
-    padding: 10px;   
-    box-shadow: 3px 3px 10px 3px grey; 
-    transition: 0.33s;
-}
+
 
 .summaryView-container:hover{
     box-shadow: 3px 3px 10px 3px rgb(43, 42, 42);
@@ -103,6 +95,17 @@
   .summaryContent-nav:hover{
       font-size: 60px !important;
   }
+
+  .summaryView-container{
+    margin-left:2%;
+    margin-right:2%;
+    height:180px;
+    border-radius: 20px;
+    padding: 10px;   
+    box-shadow: 3px 3px 10px 3px grey; 
+    transition: 0.33s;
+    width: 90%;
+  }
 }
 
 @media only screen and (max-width: 500px) {
@@ -115,6 +118,17 @@
   .summaryContent-nav{
     font-size: 20px !important;
   }  
+
+  .summaryView-container{
+    margin-left:2%;
+    margin-right:2%;
+    height: 300px;
+    border-radius: 20px;
+    padding: 10px;   
+    box-shadow: 3px 3px 10px 3px grey; 
+    transition: 0.33s;
+    width: 90%;
+  }
 }
 
 
