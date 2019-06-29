@@ -141,6 +141,10 @@ class GraphComponent extends React.Component {
                         isAExist = true;
                     }
                 }
+            }
+            if(num.length > 0){
+                aIndex = parseFloat(num);
+                isAExist = true;
             }    
         }
 
@@ -158,6 +162,11 @@ class GraphComponent extends React.Component {
                     }
                 }
             }    
+            if(num.length > 0){
+                bIndex = parseFloat(num);
+                isBExist = true;
+            }
+        
         }
 
         // A comes after b
@@ -167,7 +176,7 @@ class GraphComponent extends React.Component {
         // A comes before b
         if(isAExist && !isBExist)
             return -1;
-        
+
         // A comes before b
         if(isAExist && isBExist){
             if(aIndex > bIndex)
