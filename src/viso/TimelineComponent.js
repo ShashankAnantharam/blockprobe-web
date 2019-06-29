@@ -9,6 +9,7 @@ class TimelineComponent extends React.Component {
       super(props);
       
       this.selectTimelineBlock = this.selectTimelineBlock.bind(this);
+      this.removeHashedIndex = this.removeHashedIndex.bind(this);
     }
 
     BlockEntity(entity){
@@ -18,6 +19,21 @@ class TimelineComponent extends React.Component {
       </span>
       );  
      }
+
+     removeHashedIndex(a){
+        a = a.trim();
+        var startI = 0;
+        if(a.length>0 && a[0]=='#'){
+            for(var i=1; i<a.length; i++){
+                startI = i;
+                if(a.charAt(i)==' '){
+                    return a.substring(startI).trim();
+                }
+            } 
+            return '';   
+        }
+        return a;
+    }
    
      getDateTimeString(timelineBlock){
          var ans = "";
@@ -87,7 +103,7 @@ class TimelineComponent extends React.Component {
          date={blockDateTime}
          iconStyle={{ background: backgroundColor, color: '#fff' }}
        >
-        <h4 className="vertical-timeline-element-title timeline-block-title timeline-block-text">{timelineBlock.title}</h4>
+        <h4 className="vertical-timeline-element-title timeline-block-title timeline-block-text">{this.removeHashedIndex(timelineBlock.title)}</h4>
         <p className="timeline-block-text">
             {timelineBlock.summary}
         </p>

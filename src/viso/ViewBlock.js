@@ -32,6 +32,22 @@ class ViewBlockComponent extends React.Component {
         this.selectOption = this.selectOption.bind(this);
         this.getReviewersStatusForBlock = this.getReviewersStatusForBlock.bind(this);
         this.modifyReviewerMap = this.modifyReviewerMap.bind(this);
+        this.removeHashedIndex = this.removeHashedIndex.bind(this);
+    }
+
+    removeHashedIndex(a){
+        a = a.trim();
+        var startI = 0;
+        if(a.length>0 && a[0]=='#'){
+            for(var i=1; i<a.length; i++){
+                startI = i;
+                if(a.charAt(i)==' '){
+                    return a.substring(startI).trim();
+                }
+            } 
+            return '';   
+        }
+        return a;
     }
 
     getDateTimeString(timelineBlock){
@@ -239,7 +255,7 @@ class ViewBlockComponent extends React.Component {
         return (
             <div class="block-div">
             <div class="block-text">
-                <h2 class="block-title">{this.props.selectedBlock.title}</h2>
+                <h2 class="block-title">{this.removeHashedIndex(this.props.selectedBlock.title)}</h2>
                 <p class="block-summary">{this.props.selectedBlock.summary}</p>
             </div>
             
