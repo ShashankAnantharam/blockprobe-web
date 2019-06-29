@@ -36,18 +36,21 @@ class ViewBlockComponent extends React.Component {
     }
 
     removeHashedIndex(a){
-        a = a.trim();
-        var startI = 0;
-        if(a.length>0 && a[0]=='#'){
-            for(var i=1; i<a.length; i++){
-                startI = i;
-                if(a.charAt(i)==' '){
-                    return a.substring(startI).trim();
-                }
-            } 
-            return '';   
+        if(a){        
+            a = a.trim();
+            var startI = 0;
+            if(a.length>0 && a[0]=='#'){
+                for(var i=1; i<a.length; i++){
+                    startI = i;
+                    if(a.charAt(i)==' '){
+                        return a.substring(startI).trim();
+                    }
+                } 
+                return '';   
+            }
+            return a;
         }
-        return a;
+        return '';
     }
 
     getDateTimeString(timelineBlock){
