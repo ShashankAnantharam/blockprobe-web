@@ -395,9 +395,9 @@ class DraftBlockComponent extends React.Component {
                             className="addDateTimeButton" 
                             onClick={this.changeTimeStatus}>
                             {!this.state.addTime?
-                            <AddIcon/>
+                            <div>Add time</div>
                             :
-                            <ClearIcon/>
+                            <div>Remove time</div>
                             }
                         </button>
                         {this.renderTime()}  
@@ -422,22 +422,22 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
-                            <SaveIcon/>
+                            <div>Save block</div>
                     </button>
                     <button 
                         className="submitBlockButton" 
                         onClick={this.submitDraftBlock}>
-                            <DoneAllIcon/>
+                            <div>Submit block</div>
                     </button>
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
-                            <ClearIcon/>
+                            <div>Cancel</div>
                     </button>
                     <button 
                         className="deleteBlockButton" 
                         onClick={this.removeDraftBlock}>
-                            <DeleteIcon/>
+                            <div>Delete block</div>
                     </button>    
                 </div>
                 <form>
@@ -461,7 +461,7 @@ class DraftBlockComponent extends React.Component {
                             }}/>
                     <Textarea 
                     type="text"
-                    placeholder = "Summary of your contribution."
+                    placeholder = "Content of your contribution."
                     value={this.state.newBlock.summary}
                     onChange={(e) => { this.handleChange(e,"summary")}}
                     maxRows="13"
@@ -487,9 +487,9 @@ class DraftBlockComponent extends React.Component {
                             className="addDateTimeButton" 
                             onClick={this.changeDateStatus}>
                             {!this.state.addDate?
-                            <AddIcon/>
+                            <div>Add Date</div>
                             :
-                            <ClearIcon/>
+                            <div>Remove date</div>
                             }
                         </button>
                         {this.renderDate()}  
@@ -531,7 +531,7 @@ class DraftBlockComponent extends React.Component {
                         <button 
                         className="addEntityButton" 
                         onClick={this.addEntityToList}>
-                            <AddIcon/>
+                            <div>Add new entity</div>
                         </button>            
                     </div>       
                 </div>
@@ -542,9 +542,8 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="addEvidenceButton" 
                         onClick={this.addEvidence}
-                        >
-                    
-                            <AddIcon />
+                        >                    
+                            <div>Add evidence</div>
                         </button>  
                     <div>
                         {renderEvidenceList}
@@ -554,22 +553,22 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
-                            <SaveIcon/>
+                            <div>Save block</div>
                     </button>
                     <button 
                         className="submitBlockButton" 
                         onClick={this.submitDraftBlock}>
-                            <DoneAllIcon/>
+                            <div>Submit block</div>
                     </button>
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
-                            <ClearIcon/>
+                            <div>Cancel</div>
                     </button>
                     <button 
                         className="deleteBlockButton" 
                         onClick={this.removeDraftBlock}>
-                            <DeleteIcon/>
+                            <div>Delete block</div>
                     </button>    
                 </div>
             </div>
