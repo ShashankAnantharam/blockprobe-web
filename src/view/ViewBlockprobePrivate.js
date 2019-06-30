@@ -21,6 +21,7 @@ import { red } from '@material-ui/core/colors';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import UserBlocksComponent from '../user-session/UserBlocksComponent';
+import Loader from 'react-loader-spinner';
 
 class ViewBlockprobePrivateComponent extends React.Component {
 
@@ -54,7 +55,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     id: -1
                 }
             ],
-            testList: []
+            testList: [],
+            isloading: {
+                bpDetails: true,
+                blockprobe: true
+            }
         }
 
         this.bpDetailsDoc = null;
@@ -459,17 +464,27 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.bpDetailsDoc = firebase.firestore().collection("Blockprobes").
         doc(this.props.bId);
         
-        this.bpDetailsDoc.onSnapshot((snapshot) => (
+        this.bpDetailsDoc.onSnapshot((snapshot) => {
             this.setState({
                 bpDetails: snapshot.data()
             })
            // console.log(snapshot.data())
-        ));
+            var loadingState = this.state.isloading;
+            loadingState.bpDetails = false;
+            this.setState({
+                isloading: loadingState
+            });
+        });
 
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-        .collection("fullBlocks").get().then((snapshot) => (
-            this.createBlockprobe(snapshot)
-         ));
+        .collection("fullBlocks").get().then((snapshot) => {
+            this.createBlockprobe(snapshot);
+            var loadingState = this.state.isloading;
+            loadingState.blockprobe = false;
+            this.setState({
+                isloading: loadingState
+            });
+        });
     }
 
     componentWillUnmount(){
@@ -635,7 +650,17 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 
-                {this.renderVisualisation()}
+                {this.state.isloading.blockprobe || this.state.isloading.bpDetails?
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"              
+                        /> 
+                    </div>
+                    :
+                this.renderVisualisation()}
             </Sidebar>
 
 
