@@ -27,11 +27,19 @@ class DraftBlockEvidenceView extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.removeEvidence = this.removeEvidence.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
+        this.cancelEvidenceAction = this.cancelEvidenceAction.bind(this);
     }
 
     clickEvidenceNotInDraft(){
         this.setState({
-            isClicked: true
+            isClicked: true,
+            newEvidence: JSON.parse(JSON.stringify(this.props.evidence))
+        });
+    }
+
+    cancelEvidenceAction(){
+        this.setState({
+            isClicked: false
         });
     }
 
@@ -125,6 +133,11 @@ class DraftBlockEvidenceView extends React.Component {
                     className="removeEvidenceButton"
                     onClick={this.removeEvidence}>
                         <div>Remove evidence</div>
+                    </button>
+                    <button
+                    className="removeEvidenceButton"
+                    onClick={this.cancelEvidenceAction}>
+                        <div>Cancel</div>
                     </button>
                 </div>
 
