@@ -393,7 +393,7 @@ class UserBlocksComponent extends React.Component {
                     <button 
                     className="addBulkBlockButton" 
                     onClick={this.createBulkBlock}>
-                        <div>Add blocks</div>
+                        <div>Contribute</div>
                     </button>
                     <button 
                     className="editEntitiesButton" 

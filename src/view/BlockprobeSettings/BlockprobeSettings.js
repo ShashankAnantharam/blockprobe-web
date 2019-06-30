@@ -176,7 +176,7 @@ class BlockprobeSettingsComponent extends React.Component {
             return (
                 <div style={{marginLeft:'10px', marginBottom:'5em'}}>
                     <h3>Upvote Criteria</h3>
-                    <h5>Number of reviewer upvotes for any block to accepted.</h5>
+                    <h5>Number of reviewer upvotes for any block to accepted. ({this.state.newCriterion})</h5>
                     <div style={{width:'30%', marginLeft:'15px'}}>
                         <Slider
                             value={this.state.newCriterion}
@@ -191,12 +191,12 @@ class BlockprobeSettingsComponent extends React.Component {
                             <button 
                             className="saveBlockProbeSettingsButton" 
                             onClick={(e) => this.modifyBlockProbeSettings("criterion",true)}>
-                                <DoneAllIcon/>
+                                <div>Confirm settings</div>
                             </button>
                             <button 
                             className="cancelBlockProbeSettingsButton" 
                             onClick={(e) => this.modifyBlockProbeSettings("criterion",false)}>
-                                <ClearIcon/>
+                                <div>Cancel</div>
                             </button>
                         </div>
                         :
@@ -263,13 +263,13 @@ class BlockprobeSettingsComponent extends React.Component {
                                 className="saveBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("contributor",true)}>
-                                    <DoneAllIcon/>
+                                    <div>Confirm contributor</div>
                                 </button>
                                 <button 
                                 className="cancelBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("contributor",false)}>
-                                    <ClearIcon/>
+                                    <div>Cancel</div>
                                 </button>
                             </div>
                             :
@@ -312,13 +312,13 @@ class BlockprobeSettingsComponent extends React.Component {
                             className="saveBlockProbeSettingsButton" 
                             style={{marginTop:'1em'}}
                             onClick={(e) => this.modifyBlockProbeSettings("viewer",true)}>
-                                <DoneAllIcon/>
+                                <div>Confirm viewer</div>
                             </button>
                             <button 
                             className="cancelBlockProbeSettingsButton" 
                             style={{marginTop:'1em'}}
                             onClick={(e) => this.modifyBlockProbeSettings("viewer",false)}>
-                                <ClearIcon/>
+                                <div>Cancel</div>
                             </button>
                         </div>
                         :
