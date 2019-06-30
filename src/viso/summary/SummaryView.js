@@ -27,6 +27,7 @@ class SummaryViewComponent extends React.Component {
       this.getSummary = this.getSummary.bind(this);  
       this.removeHashedIndex = this.removeHashedIndex.bind(this);    
       this.clickChevron = this.clickChevron.bind(this);
+      this.clickSummaryBlock = this.clickSummaryBlock.bind(this);
     }
 
     removeHashedIndex(a){
@@ -42,6 +43,13 @@ class SummaryViewComponent extends React.Component {
           return '';   
       }
       return a;
+  }
+
+  clickSummaryBlock(){
+    if(this.props.summaryBlocks && this.state.summBlockIdx < this.props.summaryBlocks.length
+       && this.state.summBlockIdx >=0){
+        this.props.selectBlock(this.props.summaryBlocks[this.state.summBlockIdx]);
+      }
   }
   
 
@@ -103,6 +111,7 @@ class SummaryViewComponent extends React.Component {
               </div>
               <div
               className = 'color-gradient summaryView-container' 
+              onClick={() => { this.clickSummaryBlock()}}
               >
               <ReactCSSTransitionGroup transitionName="summaryContent"
                 transitionAppear={true}

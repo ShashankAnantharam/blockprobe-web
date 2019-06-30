@@ -32,7 +32,8 @@ class DashboardViewComponent extends React.Component {
                     <div>
                         <div className="dashboard-section-heading graph-heading">Summary</div>
                         <SummaryViewComponent
-                                summaryBlocks = {this.props.summaryBlocks}/>
+                                summaryBlocks = {this.props.summaryBlocks}
+                                selectBlock={this.props.selectBlock}/>
                     </div>
                             :
                     null
