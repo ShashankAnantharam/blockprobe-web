@@ -445,17 +445,24 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     refreshBlockprobe(){
-
+        var loadingState = this.state.isloading;
+        loadingState.blockprobe = true;
         this.setState({
             blockTree: {},
             investigationGraph: {},
-            timeline: []
+            timeline: [],
+            isloading: loadingState
         });
 
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-        .collection("fullBlocks").get().then((snapshot) => (
-            this.createBlockprobe(snapshot)
-         ));
+        .collection("fullBlocks").get().then((snapshot) => {
+            this.createBlockprobe(snapshot);
+            var loadingState = this.state.isloading;
+            loadingState.blockprobe = false;
+            this.setState({
+                isloading: loadingState
+            });
+        });
     }
 
 
