@@ -24,8 +24,10 @@ class BulkDraftBlockComponent extends React.Component {
 
         this.state ={
             display:'',
-            value:''
+            value:'',
+            placeholder: "Title of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)"
         }
+        
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -169,12 +171,12 @@ class BulkDraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftInBulk}>
-                            <SaveIcon/>
+                            <div>Save blocks</div>
                     </button>
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.props.cancelBulkDraftBlock}>
-                            <ClearIcon/>
+                            <div>Cancel</div>
                     </button>
                 </div>
                 <form>
@@ -183,6 +185,7 @@ class BulkDraftBlockComponent extends React.Component {
                     type="text"
                     value={this.state.value}
                     onKeyPress={this.handleKeyPress}
+                    placeholder={this.state.placeholder}
                     onChange={(e) => { this.handleChange(e)}}
                     maxRows="60"
                     minRows="10"

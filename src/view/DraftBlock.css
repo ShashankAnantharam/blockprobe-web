@@ -40,6 +40,10 @@
     border:none;
 }
 
+.addDateTimeButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
 .addEntityButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
@@ -49,6 +53,10 @@
     border:none;
 }
 
+.addEntityButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
 .addEvidenceButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
@@ -56,6 +64,10 @@
     margin-top:1.5em;
     size:2.6em;
     border:none;
+}
+
+.addEvidenceButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .draft-add-new-entity-container{
@@ -75,25 +87,33 @@
 }
 
 .saveBlockButton{
-    background:rgb(78, 14, 30);
+    background:rgb(12, 52, 231);
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
     size:2.6em;
     border:none;
+}
+
+.saveBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .cancelBlockBackButton{
-    background:rgb(78, 14, 30);
+    background:rgb(12, 52, 231);
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
     size:2.6em;
     border:none;
+}
+
+.cancelBlockBackButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .deleteBlockButton{
-    background:rgb(78, 14, 30);
+    background:rgb(12, 52, 231);
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
@@ -101,11 +121,19 @@
     border:none;
 }
 
+.deleteBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
 .submitBlockButton{
-    background:rgb(78, 14, 30);
+    background:rgb(12, 52, 231);
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
     size:2.6em;
     border:none;
+}
+
+.submitBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }

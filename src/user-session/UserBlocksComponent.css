@@ -20,6 +20,10 @@
     border:none;
 }
 
+.addBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
 .addBulkBlockButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
@@ -29,6 +33,10 @@
     border:none;
 }
 
+.addBulkBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
 .editEntitiesButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
@@ -36,6 +44,10 @@
     margin-bottom:1em;
     size:2.6em;
     border:none;
+}
+
+.editEntitiesButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .userblocks-options-container{

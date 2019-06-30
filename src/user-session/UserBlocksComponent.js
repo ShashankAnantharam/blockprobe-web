@@ -389,21 +389,16 @@ class UserBlocksComponent extends React.Component {
             );
         }
 
-        return (<div className="userblocks-options-container">
-                    <button 
-                    className="addBlockButton" 
-                    onClick={this.createBlock}>
-                        <AddIcon/>
-                    </button>
+        return (<div className="userblocks-options-container">                    
                     <button 
                     className="addBulkBlockButton" 
                     onClick={this.createBulkBlock}>
-                        <BookIcon/>
+                        <div>Add blocks</div>
                     </button>
                     <button 
                     className="editEntitiesButton" 
                     onClick={this.openEntityPane}>
-                        <AccountCircleIcon/>
+                        <div>Manage story entities</div>
                     </button>
                 </div>)
     }

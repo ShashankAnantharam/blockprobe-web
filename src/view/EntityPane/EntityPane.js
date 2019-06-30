@@ -189,12 +189,12 @@ class EntityPaneView extends React.Component {
                         <button 
                         className="addEntityButton" 
                         onClick={this.addEntityToList}>
-                            <AddIcon/>
+                            <div>Confirm</div>
                         </button>  
                         <button 
                             className="cancelBlockButton" 
                             onClick={this.props.closeEntityPane}>
-                                <ClearIcon/>
+                                <div>Cancel</div>
                         </button>          
                 </div>   
             </div>
