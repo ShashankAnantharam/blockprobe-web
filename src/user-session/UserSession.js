@@ -6,6 +6,47 @@ import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 import Loader from 'react-loader-spinner';
+import GoogleFontLoader from 'react-google-font-loader';
+import {
+    FacebookShareButton,
+    LinkedinShareButton,
+    TwitterShareButton,
+    TelegramShareButton,
+    WhatsappShareButton,
+    PinterestShareButton,
+    VKShareButton,
+    OKShareButton,
+    RedditShareButton,
+    TumblrShareButton,
+    LivejournalShareButton,
+    MailruShareButton,
+    ViberShareButton,
+    WorkplaceShareButton,
+    LineShareButton,
+    PocketShareButton,
+    InstapaperShareButton,
+    EmailShareButton,
+  } from 'react-share';
+  import {
+    FacebookIcon,
+    TwitterIcon,
+    TelegramIcon,
+    WhatsappIcon,
+    LinkedinIcon,
+    PinterestIcon,
+    VKIcon,
+    OKIcon,
+    RedditIcon,
+    TumblrIcon,
+    LivejournalIcon,
+    MailruIcon,
+    ViberIcon,
+    WorkplaceIcon,
+    LineIcon,
+    PocketIcon,
+    InstapaperIcon,
+    EmailIcon,
+  } from 'react-share';
 
 class UserSession extends React.Component {
 
@@ -13,7 +54,7 @@ class UserSession extends React.Component {
         super(props);
         this.state={
             isUserSignedIn: false,
-            showLogin: false,
+            showLogin: true,
             selectedBlockprobeId: '',
             userId: '',
             providerId: '',
@@ -252,6 +293,7 @@ class UserSession extends React.Component {
       }
 
       loggedOutView(){
+          var url = 'https://blockprobe-32644.firebaseapp.com/';
           return (
               <div>
                 <header className="toolbar">
@@ -259,20 +301,72 @@ class UserSession extends React.Component {
                         <div></div>
                         <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
                         <div className="spacer" />
-                        <div className="toolbar__navigation-items">
-                            <ul>
-                                <li><a onClick={() => this.clickLoginOption()}>Login</a></li>
-                            </ul>
+                        <div className="toolbar__navigation-items">                            
                         </div>
                     </nav>                 
                 </header>
-                <main style={{marginTop:'80px'}}>
-                        {this.state.showLogin?
-                            <StyleFirebaseAuth
-                            uiConfig={this.uiConfig}
-                            firebaseAuth={firebase.auth()}
-                            /> : null 
-                        }
+                <main style={{paddingTop:'80px',minHeight:'100vh'}} className="body-color-gradient">
+                    <div style={{display:'flex'}}>
+                        <GoogleFontLoader
+                            fonts={[
+                                {
+                                font: 'Roboto',
+                                weights: [400, '400i'],
+                                },
+                                {
+                                font: 'Roboto Mono',
+                                weights: [400, 700],
+                                },
+                                {
+                                    font: 'Bungee Inline',
+                                    weights: [400]
+                                },
+                                {
+                                    font:'Lora',
+                                    weights: [400]
+                                }
+                            ]}
+                            subsets={['cyrillic-ext', 'greek']}
+                            />                        
+
+                        <div className="landing-view-container">
+                                <div style={{fontFamily: 'Bungee Inline, cursive', textAlign:'center', marginTop:'20px'}}>Making journalism and storybuilding fun, collaborative and visual.</div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                A blockprobe is a story that is built from the bottom-up by individuals collaborating with one another.
+                                The story can then be visualized as a graph, timeline, etc. and shared with the general public so that they can engage better with the story.
+                                </div>
+                                <div style={{marginTop:'3%'}}>
+                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
+                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/privacy-policy" target="blank">Privacy Policy</a>
+                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>
+                                </div>
+                                <div className='shareContainer'>
+                                    <div className='shareIcons'>
+                                        <FacebookShareButton                        
+                                            children={<FacebookIcon round={true}/>} 
+                                            url={url} 
+                                            hashtag = '#blockprobe'/>
+                                    </div>
+                                    <div className='shareIcons'>
+                                        <WhatsappShareButton
+                                            children={<WhatsappIcon round={true}/>} 
+                                            url={url} 
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>                        
+                            {this.state.showLogin?
+                            <div style={{margin:'2%',position:'fixed'}} className="user-session-shadow-view">
+                                    <StyleFirebaseAuth
+                                    uiConfig={this.uiConfig}
+                                    firebaseAuth={firebase.auth()}                            
+                                    />
+                                </div> : null 
+                            }
+                            </div>
+                        </div>
+                        
                 </main>
               </div>
           );
