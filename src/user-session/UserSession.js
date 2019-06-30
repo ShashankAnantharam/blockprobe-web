@@ -5,8 +5,7 @@ import { isNullOrUndefined } from 'util';
 import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
-
-
+import Loader from 'react-loader-spinner';
 
 class UserSession extends React.Component {
 
@@ -18,7 +17,8 @@ class UserSession extends React.Component {
             selectedBlockprobeId: '',
             userId: '',
             providerId: '',
-            blockprobes: {}
+            blockprobes: {},
+            areBlockprobesLoading: false
         }
         this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
@@ -86,12 +86,16 @@ class UserSession extends React.Component {
 
       getBlockprobes(){
         if(this.state.isUserSignedIn && (this.state.selectedBlockprobeId == '')){
+            this.setState({areBlockprobesLoading: true});
 
             var arr= [];
 
                 firebase.firestore().collection("Users").doc(this.state.userId)
                 .collection("blockprobes").onSnapshot(
                     querySnapshot => {
+                        this.setState({
+                            areBlockprobesLoading: false
+                        });
                         querySnapshot.docChanges().forEach(change => {
                             if (change.type === 'added') {
                                 //console.log('New block: ', change.doc.data());
@@ -180,13 +184,27 @@ class UserSession extends React.Component {
             return (
                 <div className="blockprobe-list-container">
                     {this.state.blockprobes?
-                <UserBlockprobesComponent 
-                blockprobes={this.state.blockprobes}
-                selectedBlockprobe = {this.state.selectedBlockprobeId}
-                selectBlockprobe = {this.selectBlockprobe}
-                uId={this.state.userId}
-                />:
-                null
+                    <div>
+                        {this.state.areBlockprobesLoading?
+                                <div style={{margin:'auto',width:'50px'}}>
+                                    <Loader 
+                                    type="TailSpin"
+                                    color="#00BFFF"
+                                    height="50"	
+                                    width="50"
+                                    /> 
+                                </div>
+                                :
+                                <UserBlockprobesComponent 
+                                blockprobes={this.state.blockprobes}
+                                selectedBlockprobe = {this.state.selectedBlockprobeId}
+                                selectBlockprobe = {this.selectBlockprobe}
+                                uId={this.state.userId}
+                                />
+                        }
+                    </div>
+                        : 
+                    null                  
                 }
                 </div>
             );

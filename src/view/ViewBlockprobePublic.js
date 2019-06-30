@@ -15,6 +15,7 @@ import VisualizeOptionsList from '../viso/VisoList';
 import VisualizeOptionsListComponent from '../viso/VisoList';
 import { red } from '@material-ui/core/colors';
 import { timingSafeEqual } from 'crypto';
+import Loader from 'react-loader-spinner';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -49,7 +50,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                     id: -1
                 }
             ],
-            testList: []
+            testList: [],
+            isPageLoading: true
         }
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
@@ -390,9 +392,12 @@ class ViewBlockprobePublicComponent extends React.Component {
 
     componentDidMount(){      
         firebase.firestore().collection("public").doc(this.props.match.params.bId)
-        .collection("aggBlocks").get().then((snapshot) => (
-            this.createBlockprobe(snapshot)
-         ));
+        .collection("aggBlocks").get().then((snapshot) => {
+            this.createBlockprobe(snapshot);
+            this.setState({
+                isPageLoading: false
+            })
+        });
     }
 
     renderVisualisation(){
@@ -437,34 +442,45 @@ class ViewBlockprobePublicComponent extends React.Component {
     render(){
         return (
             <div>
+            {this.state.isPageLoading?
+            <div style={{width:'50px',margin:'auto'}}>
+                <Loader 
+                type="TailSpin"
+                color="#00BFFF"
+                height="50"	
+                width="50"              
+                /> 
+            </div>
+            :
+            <div>
+                <Sidebar
+                    sidebar={<div className="right-sidebar">
+                    <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                    </div>}
+                    open={this.state.selectedBlockSidebarOpen}
+                    onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                    pullRight={true}
+                    defaultSidebarWidth='200px'
+                    styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
+                >
 
-            <Sidebar
-                sidebar={<div className="right-sidebar">
-                <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
-                </div>}
-                open={this.state.selectedBlockSidebarOpen}
-                onSetOpen={this.onSetSelectedBlockSidebarOpen}
-                pullRight={true}
-                defaultSidebarWidth='200px'
-                styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
-            >
 
-
-                <div className="blockprobe-header"> 
-                    <h2>{this.state.blockprobeTitle}</h2>
-                    <h4>{this.state.blockprobeSummary}</h4>
-                </div>
-
-                <DashboardViewComponent
-                        summaryBlocks = {this.state.summaryList}
-                        blockTree={this.state.blockTree} 
-                        investigationGraph={this.state.investigationGraph}
-                        selectBlock={this.changeSelectedBlock}
-                        multiSelectEntityList = {this.state.multiSelectEntityList}
-                        timeline={this.state.timeline}                     
-                    />
-            </Sidebar>
-
+                    <div className="blockprobe-header"> 
+                        <h2>{this.state.blockprobeTitle}</h2>
+                        <h4>{this.state.blockprobeSummary}</h4>
+                    </div>
+                    
+                    <DashboardViewComponent
+                            summaryBlocks = {this.state.summaryList}
+                            blockTree={this.state.blockTree} 
+                            investigationGraph={this.state.investigationGraph}
+                            selectBlock={this.changeSelectedBlock}
+                            multiSelectEntityList = {this.state.multiSelectEntityList}
+                            timeline={this.state.timeline}                     
+                        />
+                </Sidebar>
+                </div>            
+            }
             </div>
             );
     }
