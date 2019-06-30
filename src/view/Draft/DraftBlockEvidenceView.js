@@ -119,12 +119,12 @@ class DraftBlockEvidenceView extends React.Component {
                     <button
                     className="updateEvidenceButton"
                     onClick={this.updateEvidence}>
-                        <DoneIcon/>
+                        <div>Confirm evidence</div>
                     </button>
                     <button
                     className="removeEvidenceButton"
                     onClick={this.removeEvidence}>
-                        <DeleteIcon/>
+                        <div>Remove evidence</div>
                     </button>
                 </div>
 
