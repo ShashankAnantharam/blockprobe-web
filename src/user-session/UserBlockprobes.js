@@ -144,7 +144,7 @@ class UserBlockprobesComponent extends React.Component {
                         <label>
                             <Textarea 
                                 type="text"
-                                placeholder = "Title of your investigation."
+                                placeholder = "Title of your story."
                                 value={this.state.draftBlockprobe.title}
                                 onChange={(e) => { this.handleChange(e,"title")}}
                                 maxRows="2"
@@ -161,7 +161,7 @@ class UserBlockprobesComponent extends React.Component {
                                     }}/>
                             <Textarea 
                             type="text"
-                            placeholder = "Summary of your investigation."
+                            placeholder = "A one line summary of your story."
                             value={this.state.draftBlockprobe.summary}
                             onChange={(e) => { this.handleChange(e,"summary")}}
                             maxRows="5"
@@ -182,7 +182,7 @@ class UserBlockprobesComponent extends React.Component {
                         <button
                         className="submitBlockprobeButton"
                         onClick={this.createBlockprobe}>
-                            <DoneAllIcon/>
+                            <div>Confirm</div>
                         </button>                    
                     :
                         null
@@ -248,15 +248,15 @@ class UserBlockprobesComponent extends React.Component {
 
         return (
             <div>
-                <h2>My Investigations</h2>
+                <h2 style={{textAlign:'center'}}>My stories</h2>
                 <div>
                     <button 
                             className="addBlockprobeButton" 
                             onClick={this.addCancelBlockprobe}>
                             {!this.state.addBlockprobe?
-                            <AddIcon/>
+                            <div>Create new story</div>
                             :
-                            <ClearIcon/>
+                            <div>Cancel</div>
                             }
                     </button>
                     {this.state.addBlockprobe?
