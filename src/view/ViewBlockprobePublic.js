@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
+import ReactGA from 'react-ga';
 import DashboardViewComponent from "../viso/dashboard/DashboardView";
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
@@ -53,6 +54,10 @@ class ViewBlockprobePublicComponent extends React.Component {
             testList: [],
             isPageLoading: true
         }
+
+        ReactGA.initialize('UA-143383035-1');   
+        ReactGA.pageview('/viewBlockprobePublic');
+
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
         this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
@@ -378,6 +383,12 @@ class ViewBlockprobePublicComponent extends React.Component {
 
         this.createInvestigationGraph(finalBlockList);
         this.createSummaryList(finalBlockList);
+
+        ReactGA.event({
+            category: 'public_view',
+            action: 'View blockprobe publicly',
+            label: this.props.match.params.bId
+          });
 
         // console.log(finalBlockList);
     }
