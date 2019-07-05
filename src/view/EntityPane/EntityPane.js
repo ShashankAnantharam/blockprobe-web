@@ -26,6 +26,7 @@ class EntityPaneView extends React.Component {
         this.initEntities = this.initEntities.bind(this);
         this.getEntities = this.getEntities.bind(this);
         this.removeEntity = this.removeEntity.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
     }
 
     componentDidUpdate(){
@@ -58,6 +59,20 @@ class EntityPaneView extends React.Component {
         });
     }
 
+    handleKeyDown(event){
+        if (event.key === 'Enter') {
+            var totalStr= event.target.value;
+            var entityArr = totalStr.split(',');
+            for(var i=0; i<entityArr.length; i++){
+                var str = entityArr[i].trim();
+                if(str.length > 0)
+                    this.addEntityToList(str);
+            }
+            str = '';
+            this.setState({newEntity: str});                
+          }
+    }
+
 
     handleChange(event, type) {
 
@@ -66,18 +81,7 @@ class EntityPaneView extends React.Component {
             var lastChar = event.target.value[event.target.value.length-1];
             if(lastChar=='\n' || lastChar=='\t'){
                 shouldUpdate=false;
-            }
-
-            if(lastChar == ','){
-                //Add entity to list and clear everything else
-                var str= event.target.value;
-                str = str.substr(0,str.length-1);
-                if(str.length > 0)
-                    this.addEntityToList(str);
-                str = '';
-                this.setState({newEntity: str});
-                return;
-            }
+            }          
         }
 
         if(shouldUpdate){
@@ -182,7 +186,8 @@ class EntityPaneView extends React.Component {
                                 type="text"
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
-                                placeholder = "New Entity"
+                                onKeyDown={(e) => { this.handleKeyDown(e)}}
+                                placeholder = "Input entity names seperated by ',' and press 'Enter key'"
                                 maxRows="2"
                                 minRows="1"
                                 style={{
