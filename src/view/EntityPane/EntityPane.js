@@ -67,6 +67,17 @@ class EntityPaneView extends React.Component {
             if(lastChar=='\n' || lastChar=='\t'){
                 shouldUpdate=false;
             }
+
+            if(lastChar == ','){
+                //Add entity to list and clear everything else
+                var str= event.target.value;
+                str = str.substr(0,str.length-1);
+                if(str.length > 0)
+                    this.addEntityToList(str);
+                str = '';
+                this.setState({newEntity: str});
+                return;
+            }
         }
 
         if(shouldUpdate){
@@ -77,9 +88,8 @@ class EntityPaneView extends React.Component {
         }
       }
 
-    addEntityToList(){
+    addEntityToList(entityLabel){
         var entityList = this.state.entities;
-        var entityLabel = this.state.newEntity;
         var isEntityPresent = this.state.entityPresent;
         
         if(!(entityLabel in isEntityPresent)){
@@ -185,12 +195,7 @@ class EntityPaneView extends React.Component {
                                     width:'40%',
                                     marginLeft:'1em'
                                     }}/>
-                <div className="draft-add-new-entity-container">                        
-                        <button 
-                        className="addEntityButton" 
-                        onClick={this.addEntityToList}>
-                            <div>Confirm</div>
-                        </button>  
+                <div className="draft-add-new-entity-container">                       
                         <button 
                             className="cancelBlockButton" 
                             onClick={this.props.closeEntityPane}>
