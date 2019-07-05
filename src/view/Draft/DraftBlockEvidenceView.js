@@ -152,7 +152,8 @@ class DraftBlockEvidenceView extends React.Component {
                     onClick={() => { this.clickEvidenceNotInDraft()}}
                     style={{width:'100%'}}
                     >
-                    <ListItemText 
+                    <ListItemText
+                    style={{overflow:'hidden'}} 
                     primary={this.props.evidence.evidenceLink} 
                     secondary={this.props.evidence.supportingDetails}/>
             </ListItem>        
