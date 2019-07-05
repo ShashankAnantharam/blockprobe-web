@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import ReactGA from 'react-ga';
 import SingleBlock from '../view/SingleBlock';
 import BulkDraftBlockComponent from '../view/Bulk/BulkDraftBlockComponent';
 import List from '@material-ui/core/List';
@@ -37,10 +38,14 @@ class UserBlocksComponent extends React.Component {
             isCreateBulkBlockClicked: false,
             isEntityPaneOpen: false
         }
+
         //props include bpId, uId
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
         this.state.shajs = shajs;
+
+        ReactGA.initialize('UA-143383035-1');   
+        ReactGA.pageview('/userBlocks');
 
         this.modifyBlockList = this.modifyBlockList.bind(this);
         this.modifyBlockListWrapper = this.modifyBlockListWrapper.bind(this);
@@ -223,8 +228,18 @@ class UserBlocksComponent extends React.Component {
             blocks[i].timestamp = currTime + 1000*i;
             this.addDraftBlock(blocks[i]);
         }
-
         this.setState({isCreateBulkBlockClicked: false});
+
+        var args = {
+            blockprobe: this.props.bId,
+            count: blocks.length
+        }        
+        ReactGA.event({
+            category: 'blocks',
+            action: 'Add blocks in bulk',
+            label: JSON.stringify(args)
+          });
+
     }
 
     addDraftBlock(block){

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import 'firebase/firestore';
+import ReactGA from 'react-ga';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -30,6 +31,9 @@ class UserBlockprobesComponent extends React.Component {
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
         this.state.shajs = shajs;
+
+        ReactGA.initialize('UA-143383035-1');   
+        ReactGA.pageview('/userBlockProbes');
 
         this.isValidBlockprobe = this.isValidBlockprobe.bind(this);
         this.renderSingleBlockprobeItem = this.renderSingleBlockprobeItem.bind(this);
@@ -123,11 +127,15 @@ class UserBlockprobesComponent extends React.Component {
         
         firebase.firestore().collection('Users').doc(this.props.uId)
         .collection('blockprobes').doc(blockprobeId).
-        collection('privelegedInfo').doc('nickPhoneHash').set(nickPhoneHash);
-
-        
+        collection('privelegedInfo').doc('nickPhoneHash').set(nickPhoneHash);        
 
         this.addCancelBlockprobe();
+
+        ReactGA.event({
+            category: 'blockprobe',
+            action: 'Create blockprobe',
+            label: blockprobeId
+          });
     }
 
     isValidBlockprobe(){
