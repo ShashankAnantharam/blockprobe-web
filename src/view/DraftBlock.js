@@ -57,6 +57,7 @@ class DraftBlockComponent extends React.Component {
         this.renderTimeOption = this.renderTimeOption.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.addEntityToList = this.addEntityToList.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
         this.addEvidence = this.addEvidence.bind(this);
         this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
@@ -175,11 +176,24 @@ class DraftBlockComponent extends React.Component {
         
     }
 
-    addEntityToList(){
+    handleKeyDown(event){
+        if (event.key === 'Enter') {
+            var totalStr= event.target.value;
+            var entityArr = totalStr.split(',');
+            for(var i=0; i<entityArr.length; i++){
+                var str = entityArr[i].trim();
+                if(str.length > 0)
+                    this.addEntityToList(str);
+            }
+            str = '';
+            this.setState({newEntity: str});                
+          }
+    }
+
+    addEntityToList(entityLabel){
         var isEntityAlreadyPresent = false;
         var entityList = this.state.multiSelectEntityList;
         var block = this.state.newBlock;
-        var entityLabel = this.state.newEntity;
         for( var i=0; i<entityList.length; i++){
             var entityItem = entityList[i]
             if(entityItem.label == entityLabel){
@@ -516,7 +530,8 @@ class DraftBlockComponent extends React.Component {
                                 type="text"
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
-                                placeholder = "New Entity"
+                                onKeyDown={(e) => { this.handleKeyDown(e)}}
+                                placeholder = "New Entities seperated by commas and press 'Enter'"
                                 maxRows="2"
                                 minRows="1"
                                 style={{
@@ -526,13 +541,9 @@ class DraftBlockComponent extends React.Component {
                                     borderColor:'darkgrey',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
-                                    width:'40%'
-                                    }}/>
-                        <button 
-                        className="addEntityButton" 
-                        onClick={this.addEntityToList}>
-                            <div>Add new entity</div>
-                        </button>            
+                                    minWidth:'60%',
+                                    maxWidth: '90%'
+                                    }}/>                                   
                     </div>       
                 </div>
 

@@ -197,7 +197,8 @@ class EntityPaneView extends React.Component {
                                     borderColor:'darkgrey',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
-                                    width:'40%',
+                                    minWidth:'60%',
+                                    maxWidth: '80%',
                                     marginLeft:'1em'
                                     }}/>
                 <div className="draft-add-new-entity-container">                       
