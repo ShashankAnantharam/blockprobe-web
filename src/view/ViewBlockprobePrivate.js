@@ -385,7 +385,19 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
 
         // console.log(entityList);
-
+        entityList.sort(function(a,b){
+            if(a.label.toLocaleLowerCase() == 'all')
+                return -1;
+            if(b.label.toLocaleLowerCase() == 'all')
+                return 1;
+            if(a.label.toLocaleLowerCase() == 'none')
+                return -1;
+            if(b.label.toLocaleLowerCase() == 'none')
+                return 1;
+            if(a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase())
+                return -1;
+            return 1;
+        });
         this.setState({
             multiSelectEntityList: entityList
         });
