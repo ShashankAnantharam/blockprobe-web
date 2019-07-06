@@ -9,21 +9,31 @@
 }
 
 .menu-button{
-    background:rgb(2, 1, 54);
+    background:rgb(3, 1, 129);
     border: none;
     border-radius: 10px;
     margin-left: 6px;
     size:4em;
     color:rgb(219, 243, 242);
+    transition: 1s;
+}
+
+.menu-button:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .sync-button{
-    background:rgb(2, 1, 54);
+    background:rgb(3, 1, 129);
     border: none;
     border-radius: 10px;
     margin-left: 6px;
     size:4em;
     color:rgb(219, 243, 242);
+    transition: 1s;
+}
+
+.sync-button:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
 .blockprobe-options-container{

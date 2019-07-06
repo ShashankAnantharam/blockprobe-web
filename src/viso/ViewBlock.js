@@ -194,8 +194,9 @@ class ViewBlockComponent extends React.Component {
     }
 
     selectOption(option){
-        if(option == "revert" || option == "upvote" || option == "can_commit"){            
-            this.props.refreshBlockprobe();
+        if(option == "revert" || option == "upvote" || option == "can_commit"){
+            if(option == "can_commit")            
+                this.props.refreshBlockprobe();
             this.props.closeSideBar();
         }
     }
