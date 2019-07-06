@@ -378,6 +378,27 @@ class FindConnectionsComponent extends React.Component {
             });
             count++;
         });
+
+        firstEntityList.sort(function(a,b){
+            if(a.label.toLocaleLowerCase() == 'none')
+                return -1;
+            if(b.label.toLocaleLowerCase() == 'none')
+                return 1;
+            if(a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase())
+                return -1;
+            return 1;
+        });
+        secondEntityList.sort(function(a,b){
+            if(a.label.toLocaleLowerCase() == 'none')
+                return -1;
+            if(b.label.toLocaleLowerCase() == 'none')
+                return 1;
+            if(a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase())
+                return -1;
+            return 1;
+        });
+
+
         this.setState({
             firstEntitySelectList: firstEntityList,
             secondEntitySelectList: secondEntityList
