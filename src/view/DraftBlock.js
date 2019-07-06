@@ -168,7 +168,11 @@ class DraftBlockComponent extends React.Component {
             }
         }
 
-        
+        entityList.sort(function(a,b){
+            if(a.label.toLocaleLowerCase() < b.label.toLocaleLowerCase())
+                return -1;
+            return 1;
+        });
         this.setState({
             multiSelectEntityList: entityList
         });
