@@ -27,24 +27,27 @@ class UserBlockprobesComponent extends React.Component {
                 title:'',
                 summary:''
             },
-            createStoryStep: [
-                {
-                  title: 'Get started with a new story!',
-                  target: '.addBlockprobeButton',
-                  content: 'Click to create new story and get started!',
-                  disableBeacon: true
-                }                                
-              ],
-            clickOnStoryStep: [
-                {                    
-                    title: 'Let\'s go right to it!',
-                    target: '.blockprobeListTooltip',
-                    content: 'Click on your new story!',
-                    disableBeacon: true                    
-                }
-            ],
+            toolTipSteps:{
+                createStoryStep: [
+                    {
+                    title: 'Get started with a new story!',
+                    target: '.addBlockprobeButton',
+                    content: 'Click to create new story and get started!',
+                    disableBeacon: true
+                    }                                
+                ],
+                clickOnStoryStep: [
+                    {                    
+                        title: 'Let\'s go right to it!',
+                        target: '.blockprobeListTooltip',
+                        content: 'Click on your new story!',
+                        disableBeacon: true                    
+                    }
+                ]
+            },
             showToolTips:{
-                createStory: true,
+                createStory: false,
+                addTitleAndSummary: false,
                 clickOnStory: false
             }
         };
@@ -61,6 +64,7 @@ class UserBlockprobesComponent extends React.Component {
         this.addCancelBlockprobe = this.addCancelBlockprobe.bind(this);
         this.renderDraftBlockprobe = this.renderDraftBlockprobe.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.startTooltipTour = this.startTooltipTour.bind(this);
         this.createBlockprobe = this.createBlockprobe.bind(this);
     }
 
@@ -177,6 +181,7 @@ class UserBlockprobesComponent extends React.Component {
                 <div style={{}}>
                     <Joyride
                     steps={draftBlockprobeSteps}
+                    run = {this.state.showToolTips.addTitleAndSummary}
                     />
                     <form className="newBlockprobeForm">
                         <label>
@@ -266,9 +271,17 @@ class UserBlockprobesComponent extends React.Component {
                 title:'',
                 summary:''
             };
+            if(showToolTips.addTitleAndSummary){
+                showToolTips.createStory = false;
+                showToolTips.addTitleAndSummary = false;
+                showToolTips.clickOnStory = true;
+            }
+        }
+        else{
             if(showToolTips.createStory){
                 showToolTips.createStory = false;
-                showToolTips.clickOnStory = true;
+                showToolTips.addTitleAndSummary = true;
+                showToolTips.clickOnStory = false;
             }
         }
 
@@ -279,6 +292,19 @@ class UserBlockprobesComponent extends React.Component {
             showToolTips: showToolTips
         });
         
+    }
+
+    startTooltipTour(){
+        var showToolTips = this.state.showToolTips;
+        if(!showToolTips.createStory){
+            //start tooltips
+            showToolTips.createStory = true;
+            showToolTips.addTitleAndSummary = false;
+            showToolTips.clickOnStory = false;
+            this.setState({
+                showToolTips: showToolTips
+            });
+        }
     }
 
     render(){
@@ -295,21 +321,27 @@ class UserBlockprobesComponent extends React.Component {
         return (
             <div>
                 <Joyride
-                steps={this.state.createStoryStep}
+                steps={this.state.toolTipSteps.createStoryStep}
                 run = {this.state.showToolTips.createStory}
                 />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
                 <div>
-                    <button 
-                            className="addBlockprobeButton" 
-                            id="createBlockprobe"
-                            onClick={this.addCancelBlockprobe}>
-                            {!this.state.addBlockprobe?
-                            <div>Create new story</div>
-                            :
-                            <div>Cancel</div>
-                            }
-                    </button>
+                    <div>
+                        <button 
+                                className="addBlockprobeButton" 
+                                onClick={this.addCancelBlockprobe}>
+                                {!this.state.addBlockprobe?
+                                <div>Create new story</div>
+                                :
+                                <div>Cancel</div>
+                                }
+                        </button>
+                        <button
+                            className="startTooltipsButton" 
+                            onClick={() => this.startTooltipTour()}>
+                            Start tooltips tour
+                        </button>
+                    </div>
                     {this.state.addBlockprobe?
                         this.renderDraftBlockprobe()
                         :
@@ -317,7 +349,7 @@ class UserBlockprobesComponent extends React.Component {
                     }
                 </div>
                 <Joyride
-                    steps={this.state.clickOnStoryStep}
+                    steps={this.state.toolTipSteps.clickOnStoryStep}
                     run = {this.state.showToolTips.clickOnStory}
                     />  
                 <List className="blockprobeListTooltip">
