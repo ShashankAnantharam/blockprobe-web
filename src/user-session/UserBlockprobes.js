@@ -48,7 +48,8 @@ class UserBlockprobesComponent extends React.Component {
             showToolTips:{
                 createStory: false,
                 addTitleAndSummary: false,
-                clickOnStory: false
+                clickOnStory: false,
+                buildStory: false
             }
         };
 
@@ -69,7 +70,7 @@ class UserBlockprobesComponent extends React.Component {
     }
 
     selectBlockprobe(blockprobeId){
-        this.props.selectBlockprobe(blockprobeId);
+        this.props.selectBlockprobe(blockprobeId, this.state.showToolTips.buildStory);
     }
 
     renderSingleBlockprobeItem(blockprobe, scope){
@@ -301,6 +302,7 @@ class UserBlockprobesComponent extends React.Component {
             showToolTips.createStory = true;
             showToolTips.addTitleAndSummary = false;
             showToolTips.clickOnStory = false;
+            showToolTips.buildStory = true;
             this.setState({
                 showToolTips: showToolTips
             });

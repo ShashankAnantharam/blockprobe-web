@@ -60,7 +60,10 @@ class UserSession extends React.Component {
             userId: '',
             providerId: '',
             blockprobes: {},
-            areBlockprobesLoading: false           
+            areBlockprobesLoading: false,
+            tooltip:{
+                buildStory: false
+            }           
         }
         this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
@@ -159,9 +162,12 @@ class UserSession extends React.Component {
         }
       }
 
-      selectBlockprobe(blockprobeId){
+      selectBlockprobe(blockprobeId, buildStory){
+          var tooltip = this.state.tooltip;
+          tooltip.buildStory = buildStory;
           this.setState({
-              selectedBlockprobeId: blockprobeId
+              selectedBlockprobeId: blockprobeId,
+              tooltip: tooltip
           })
 
       }
@@ -257,6 +263,8 @@ class UserSession extends React.Component {
 
 
       loggedInView(){
+          
+          var buildStorytooltip = this.state.tooltip.buildStory;
           return (
             <div>
                 <div style={{display: 'block'}}>
@@ -282,9 +290,10 @@ class UserSession extends React.Component {
                         :
                         <div className="blockprobe-list-container">
                         <ViewBlockprobePrivateComponent 
-                        bId={this.state.selectedBlockprobeId} 
-                        uId={this.state.userId}
-                        permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}/>
+                            bId={this.state.selectedBlockprobeId} 
+                            uId={this.state.userId}
+                            permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}
+                            buildStorytooltip={buildStorytooltip}/>
                         </div>    
                     }
                 </div>

@@ -27,7 +27,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //permit
+        //permit, buildStorytooltip
 
         this.state={
             genesisBlockId: "",
@@ -59,6 +59,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
             isloading: {
                 bpDetails: true,
                 blockprobe: true
+            },
+            showTooltip:{
+                buildStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
+                viewDashboardView: false
             }
         }
 
@@ -77,6 +81,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.isSummaryBlock = this.isSummaryBlock.bind(this);
         this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+        this.finishBuildingStoryTooltip = this.finishBuildingStoryTooltip.bind(this);
+    }
+
+    finishBuildingStoryTooltip(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.viewDashboardView = true;
+        this.setState({
+            showTooltip: showTooltip
+        });
     }
 
     setNewVisualisation(newVisualisation){
@@ -478,8 +492,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
 
-    componentDidMount(){
-        
+    componentDidMount(){        
         this.bpDetailsDoc = firebase.firestore().collection("Blockprobes").
         doc(this.props.bId);
         
@@ -569,6 +582,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     bpDetails = {this.state.bpDetails}    
                     selectBlock={this.changeSelectedBlock}
                     investigationGraph = {this.state.investigationGraph}
+                    buildStory = {this.state.showTooltip.buildStory}
+                    finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}
                     />
                 </div>
             );

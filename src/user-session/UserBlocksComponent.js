@@ -11,6 +11,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
+import Joyride from 'react-joyride';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -36,7 +37,21 @@ class UserBlocksComponent extends React.Component {
             },
             isCreateBlockClicked:false,
             isCreateBulkBlockClicked: false,
-            isEntityPaneOpen: false
+            isEntityPaneOpen: false,
+            tooltipText:{
+                entityPane:[                    
+                    {                    
+                        title: 'Your story is empty!',
+                        target: '.entityPaneButtonTooltip',
+                        content: 'First you have to define the entities or characters of your story. Click on this button to start defining the entities',
+                        disableBeacon: true
+                    }             
+                ]
+            },
+            showTooltip:{
+                entityPane: JSON.parse(JSON.stringify(props.buildStory)),
+                addBlocks: false
+            }
         }
 
         //props include bpId, uId
@@ -404,14 +419,16 @@ class UserBlocksComponent extends React.Component {
             );
         }
 
-        return (<div className="userblocks-options-container">                    
+        return (<div className="userblocks-options-container">   
+                              
                     <button 
                     className="addBulkBlockButton" 
                     onClick={this.createBulkBlock}>
                         <div>Contribute</div>
                     </button>
+                    
                     <button 
-                    className="editEntitiesButton" 
+                    className="editEntitiesButton entityPaneButtonTooltip" 
                     onClick={this.openEntityPane}>
                         <div>Manage story entities</div>
                     </button>
@@ -444,6 +461,11 @@ class UserBlocksComponent extends React.Component {
 
         return(
             <div>
+                <Joyride
+                    steps={this.state.tooltipText.entityPane}
+                    run = {this.state.showTooltip.entityPane}
+                    
+                    />   
                 {this.renderBlockOptions()}
                     
                 {Object.keys(this.state.draftBlocks).length>0?
