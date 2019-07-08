@@ -42,7 +42,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             latestBlock: null,
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
-            selectedVisualisation: "dashboard",
+            selectedVisualisation: "contributions",
             multiSelectEntityList: [
                 {
                     value: true, 
