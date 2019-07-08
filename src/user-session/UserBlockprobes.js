@@ -11,6 +11,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Textarea from 'react-textarea-autosize';
 import './UserBlockprobes.css';
+import Joyride from 'react-joyride';
 
 class UserBlockprobesComponent extends React.Component {
 
@@ -25,6 +26,26 @@ class UserBlockprobesComponent extends React.Component {
             draftBlockprobe: {
                 title:'',
                 summary:''
+            },
+            createStoryStep: [
+                {
+                  title: 'Get started with a new story!',
+                  target: '.addBlockprobeButton',
+                  content: 'Click to create new story and get started!',
+                  disableBeacon: true
+                }                                
+              ],
+            clickOnStoryStep: [
+                {                    
+                    title: 'Let\'s go right to it!',
+                    target: '.blockprobeListTooltip',
+                    content: 'Click on your new story!',
+                    disableBeacon: true                    
+                }
+            ],
+            showToolTips:{
+                createStory: true,
+                clickOnStory: false
             }
         };
 
@@ -145,10 +166,19 @@ class UserBlockprobesComponent extends React.Component {
     }
 
     renderDraftBlockprobe(){
+        var draftBlockprobeSteps = [
+            {
+                target: '.newBlockprobeForm',
+                content: 'Give a title and summary to your story!',
+                disableBeacon: true                    
+            }];
         if(this.state.addBlockprobe){
             return (
                 <div style={{}}>
-                    <form>
+                    <Joyride
+                    steps={draftBlockprobeSteps}
+                    />
+                    <form className="newBlockprobeForm">
                         <label>
                             <Textarea 
                                 type="text"
@@ -228,6 +258,7 @@ class UserBlockprobesComponent extends React.Component {
         var addBlockprobe = this.state.addBlockprobe;
 
         var draftBlockprobe = this.state.draftBlockprobe;
+        var showToolTips = this.state.showToolTips;
 
         if(addBlockprobe){
             //cancel or submit pressed
@@ -235,12 +266,19 @@ class UserBlockprobesComponent extends React.Component {
                 title:'',
                 summary:''
             };
+            if(showToolTips.createStory){
+                showToolTips.createStory = false;
+                showToolTips.clickOnStory = true;
+            }
         }
 
+        
         this.setState({
             addBlockprobe: !addBlockprobe,
-            draftBlockprobe: draftBlockprobe
+            draftBlockprobe: draftBlockprobe,
+            showToolTips: showToolTips
         });
+        
     }
 
     render(){
@@ -256,10 +294,15 @@ class UserBlockprobesComponent extends React.Component {
 
         return (
             <div>
+                <Joyride
+                steps={this.state.createStoryStep}
+                run = {this.state.showToolTips.createStory}
+                />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
                 <div>
                     <button 
                             className="addBlockprobeButton" 
+                            id="createBlockprobe"
                             onClick={this.addCancelBlockprobe}>
                             {!this.state.addBlockprobe?
                             <div>Create new story</div>
@@ -273,7 +316,12 @@ class UserBlockprobesComponent extends React.Component {
                         null
                     }
                 </div>
-                <List>                   
+                <Joyride
+                    steps={this.state.clickOnStoryStep}
+                    run = {this.state.showToolTips.clickOnStory}
+                    />  
+                <List className="blockprobeListTooltip">
+                                     
                     {blockprobeListRender}
                 </List>
             </div>

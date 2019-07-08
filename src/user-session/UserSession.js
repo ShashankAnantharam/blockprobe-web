@@ -7,6 +7,7 @@ import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 import Loader from 'react-loader-spinner';
 import GoogleFontLoader from 'react-google-font-loader';
+import Joyride from 'react-joyride';
 import {
     FacebookShareButton,
     LinkedinShareButton,
@@ -59,7 +60,7 @@ class UserSession extends React.Component {
             userId: '',
             providerId: '',
             blockprobes: {},
-            areBlockprobesLoading: false
+            areBlockprobesLoading: false           
         }
         this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
