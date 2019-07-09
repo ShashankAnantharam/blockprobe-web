@@ -257,13 +257,16 @@ class UserBlocksComponent extends React.Component {
         var args = {
             blockprobe: this.props.bId,
             count: blocks.length
-        }        
+        }    
+        
+        this.finishTooltip('addBlocks');
+
+
         ReactGA.event({
             category: 'blocks',
             action: 'Add blocks in bulk',
             label: JSON.stringify(args)
           });
-
     }
 
     addDraftBlock(block){
@@ -397,17 +400,22 @@ class UserBlocksComponent extends React.Component {
     }
 
     finishTooltip(tooltip){
-        if(tooltip == 'entity'){
-            var showTooltip = this.state.showTooltip;
+        var showTooltip = this.state.showTooltip;
+        if(tooltip == 'entity'){            
             if(showTooltip.entityPane){
                 showTooltip.entityPane = false;
                 showTooltip.addBlocks = true;
             }
-            this.setState({
-                showTooltip: showTooltip
-            })
         }
+        else if(tooltip == 'addBlocks'){            
+            if(showTooltip.addBlocks){
+                showTooltip.addBlocks = false;
+            }
+        } 
 
+        this.setState({
+            showTooltip: showTooltip
+        })
     }
 
     renderBlockOptions(){
@@ -427,6 +435,8 @@ class UserBlocksComponent extends React.Component {
                         addDraftBlocksInBulk = {this.addDraftBlocksInBulk}
                         investigationGraph = {this.props.investigationGraph}
                         entityPane = {this.state.entityPaneList}
+                        addBlocksTooltip = {this.state.showTooltip.addBlocks}
+                        finishTooltip = {this.finishTooltip}
                     />
                 </div>
             )

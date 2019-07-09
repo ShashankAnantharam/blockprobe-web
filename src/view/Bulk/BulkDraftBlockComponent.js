@@ -13,19 +13,44 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
-
+import Joyride from 'react-joyride';
 
 class BulkDraftBlockComponent extends React.Component {
 
 
     constructor(props){
         super(props);
-        //cancelBulkDraftBlock, addDraftBlock,investigationGraph
+        //cancelBulkDraftBlock, addDraftBlock,investigationGraph, addBlocksTooltip
 
         this.state ={
             display:'',
             value:'',
-            placeholder: "Title of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)"
+            placeholder: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
+            tooltipText:{
+                addBlocks:[
+                    {
+                        title: 'Add your blocks!',
+                        target: '.addBlocksPane',
+                        content: 'You are going to add your first blocks to your story. Copy paste the lines shown here to the input',
+                        disableBeacon: true
+                    },
+                    {
+                        title: 'Add your blocks!',
+                        target: '.addBlocksPaneInput',
+                        content: 'Paste the text you copied here.',
+                        disableBeacon: true
+                    },
+                    {
+                        title: 'Save your blocks!',
+                        target: '.saveBlocksInBulk',
+                        content: 'Once you are done, please save your content.',
+                        disableBeacon: true
+                    }
+                ]            
+            },
+            showTooltip:{
+                addBlocks: JSON.parse(JSON.stringify(props.addBlocksTooltip))
+            }
         }
         
 
@@ -169,7 +194,7 @@ class BulkDraftBlockComponent extends React.Component {
             <div>
                 <div className="bulk-draft-options-container">
                     <button 
-                        className="saveBlockButton" 
+                        className="saveBlockButton saveBlocksInBulk" 
                         onClick={this.saveDraftInBulk}>
                             <div>Save blocks</div>
                     </button>
@@ -179,7 +204,25 @@ class BulkDraftBlockComponent extends React.Component {
                             <div>Cancel</div>
                     </button>
                 </div>
-                <form>
+
+                {this.props.addBlocksTooltip?
+                    <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                        <p style={{fontSize: '14px', color:'grey'}}>Copy paste these lines:<br/><br/></p>
+                        <p style={{fontSize: '14px', color:'grey', fontStyle:'italic'}}>                           
+                            #1s Avengers<br/>
+                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
+                            Thor is from Asgard
+                        </p>
+                    </div>
+                        :
+                        null
+                }
+
+                <Joyride
+                    steps={this.state.tooltipText.addBlocks}
+                    run = {this.state.showTooltip.addBlocks}                    
+                    />  
+                <form className='addBlocksPaneInput'>
                 <label>
                     <Textarea 
                     type="text"
