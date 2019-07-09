@@ -399,8 +399,10 @@ class UserBlocksComponent extends React.Component {
     finishTooltip(tooltip){
         if(tooltip == 'entity'){
             var showTooltip = this.state.showTooltip;
-            showTooltip.entityPane = false;
-            showTooltip.addBlocks = true;
+            if(showTooltip.entityPane){
+                showTooltip.entityPane = false;
+                showTooltip.addBlocks = true;
+            }
             this.setState({
                 showTooltip: showTooltip
             })

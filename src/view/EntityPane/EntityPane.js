@@ -93,13 +93,9 @@ class EntityPaneView extends React.Component {
             str = '';
             var showTooltip = this.state.showTooltip;
 
-            console.log('here1');
             if(entityArr.length > 0){
-                console.log(entityArr);
-                if(this.props.entityPaneTooltip){
-                   
+                if(this.props.entityPaneTooltip){                   
                     showTooltip.cancel = true;
-                    console.log(showTooltip);
                 }                
             }               
             this.setState({
@@ -227,6 +223,16 @@ class EntityPaneView extends React.Component {
                     steps={this.state.tooltipText.entityPane}
                     run = {this.props.entityPaneTooltip}                    
                     /> 
+                {this.props.entityPaneTooltip?
+                <div style={{marginLeft:'1em'}}>
+                    <p style={{fontSize:'14px', color:'grey'}}>
+                    For example, you can add the following entities by copy pasting the text:<br/> 
+                    <span style={{fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
+                    </p>                     
+                </div>    
+                    :
+                    null
+                }    
                 <Textarea 
                                 type="text"
                                 className="createNewEntitiesPane"
@@ -247,6 +253,7 @@ class EntityPaneView extends React.Component {
                                     maxWidth: '80%',
                                     marginLeft:'1em'
                                     }}/>
+                
                 <Joyride
                     steps={this.state.tooltipText.cancelButton}
                     run = {this.state.showTooltip.cancel}                    
