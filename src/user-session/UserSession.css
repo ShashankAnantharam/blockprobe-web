@@ -47,7 +47,7 @@
 .blockprobe-list-container{
     width:100%; 
     height:inherit; 
-    overflow-y:scroll;
+    overflow-y:scroll !important;
 }
 
 .spacer {

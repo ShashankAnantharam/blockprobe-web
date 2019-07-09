@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import Textarea from 'react-textarea-autosize';
+import Joyride from 'react-joyride';
 import './EntityPane.css';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
@@ -13,13 +14,34 @@ class EntityPaneView extends React.Component {
 
     constructor(props){
         super(props);
-        // closeEntityPane, this.props.investigationGraph, bId, uIdHash
+        // closeEntityPane, this.props.investigationGraph, bId, uIdHash, finishTooltip
 
         this.state={
             entities:[],
             haveEntitiesLoaded: false,
             newEntity: '',
-            entityPresent: {}
+            entityPresent: {},
+            tooltipText:{
+                entityPane:[                    
+                    {                    
+                        title: 'Copy paste the following text and press enter',
+                        target: '.createNewEntitiesPane',
+                        content: 'Ironman, Thor, Rogers, Asgard, Thanos',
+                        disableBeacon: true
+                    }             
+                ],
+                cancelButton:[                    
+                    {                    
+                        title: 'Your entities have been defined!',
+                        target: '.cancelEntityPaneButton',
+                        content: 'The characters of your story are Ironman, Thor, Rogers, Asgard, Thanos.\n Click on cancel to go back now.',
+                        disableBeacon: false
+                    }             
+                ]
+            },
+            showTooltip:{
+                cancel: false
+            }
         }
 
         this.addEntityToList = this.addEntityToList.bind(this);
@@ -69,7 +91,21 @@ class EntityPaneView extends React.Component {
                     this.addEntityToList(str);
             }
             str = '';
-            this.setState({newEntity: str});                
+            var showTooltip = this.state.showTooltip;
+
+            console.log('here1');
+            if(entityArr.length > 0){
+                console.log(entityArr);
+                if(this.props.entityPaneTooltip){
+                   
+                    showTooltip.cancel = true;
+                    console.log(showTooltip);
+                }                
+            }               
+            this.setState({
+                newEntity: str,
+                showTooltip: showTooltip
+            }); 
           }
     }
 
@@ -182,8 +218,13 @@ class EntityPaneView extends React.Component {
                 <div>
                     {renderBlockEntities}
                 </div>
+                <Joyride
+                    steps={this.state.tooltipText.entityPane}
+                    run = {this.props.entityPaneTooltip}                    
+                    /> 
                 <Textarea 
                                 type="text"
+                                className="createNewEntitiesPane"
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
@@ -201,9 +242,13 @@ class EntityPaneView extends React.Component {
                                     maxWidth: '80%',
                                     marginLeft:'1em'
                                     }}/>
-                <div className="draft-add-new-entity-container">                       
+                <Joyride
+                    steps={this.state.tooltipText.cancelButton}
+                    run = {this.state.showTooltip.cancel}                    
+                    />                                     
+                <div className="draft-add-new-entity-container">                                       
                         <button 
-                            className="cancelBlockButton" 
+                            className="cancelBlockButton cancelEntityPaneButton" 
                             onClick={this.props.closeEntityPane}>
                                 <div>Cancel</div>
                         </button>          

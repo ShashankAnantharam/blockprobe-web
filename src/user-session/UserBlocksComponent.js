@@ -82,6 +82,7 @@ class UserBlocksComponent extends React.Component {
         this.submitDraftBlock = this.submitDraftBlock.bind(this);     
         this.updateEntityPaneList = this.updateEntityPaneList.bind(this);  
         this.initEntityPane = this.initEntityPane.bind(this); 
+        this.finishTooltip = this.finishTooltip.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -386,6 +387,18 @@ class UserBlocksComponent extends React.Component {
         });
     }
 
+    finishTooltip(tooltip){
+        if(tooltip == 'entity'){
+            var showTooltip = this.state.showTooltip;
+            showTooltip.entityPane = false;
+            showTooltip.addBlocks = true;
+            this.setState({
+                showTooltip: showTooltip
+            })
+        }
+
+    }
+
     renderBlockOptions(){
 
         if(this.state.isCreateBlockClicked){
@@ -415,7 +428,9 @@ class UserBlocksComponent extends React.Component {
                     investigationGraph = {this.props.investigationGraph}
                     bId = {this.props.bId}
                     uIdHash={this.state.uIdHash}
-                    updateEntityPaneList = {this.updateEntityPaneList}/>
+                    updateEntityPaneList = {this.updateEntityPaneList}
+                    entityPaneTooltip = {this.state.showTooltip.entityPane}
+                    finishTooltip = {this.finishTooltip}/>
             );
         }
 
