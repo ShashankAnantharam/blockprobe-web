@@ -446,7 +446,14 @@ class UserBlocksComponent extends React.Component {
         }
 
         return (<div className="userblocks-options-container">   
-                              
+                   <Joyride
+                    steps={this.state.tooltipText.entityPane}
+                    run = {this.state.showTooltip.entityPane}                    
+                    />   
+                    <Joyride
+                    steps={this.state.tooltipText.addBlocks}
+                    run = {this.state.showTooltip.addBlocks}                    
+                    />             
                     <button 
                     className="addBulkBlockButton" 
                     onClick={this.createBulkBlock}>
@@ -487,14 +494,7 @@ class UserBlocksComponent extends React.Component {
 
         return(
             <div>
-                <Joyride
-                    steps={this.state.tooltipText.entityPane}
-                    run = {this.state.showTooltip.entityPane}                    
-                    />   
-                <Joyride
-                    steps={this.state.tooltipText.addBlocks}
-                    run = {this.state.showTooltip.addBlocks}                    
-                    />       
+                     
                 {this.renderBlockOptions()}
                     
                 {Object.keys(this.state.draftBlocks).length>0?

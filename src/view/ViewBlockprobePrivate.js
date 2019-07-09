@@ -669,6 +669,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 styles={{ sidebar: { background:"white", position:'fixed' } }}
             >
 
+            <div style={{height:'100%',overflowY:'scroll'}}>
                 <div className="blockprobe-options-container">
                     <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
                     className="menu-button">
@@ -695,6 +696,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     </div>
                     :
                 this.renderVisualisation()}
+            </div>
             </Sidebar>
 
 
