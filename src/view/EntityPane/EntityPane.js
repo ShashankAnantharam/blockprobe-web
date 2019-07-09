@@ -156,12 +156,17 @@ class EntityPaneView extends React.Component {
 
     removeEntity(entity){
         var entityList = this.state.entities.filter(e => e.label!=entity.label);
+        var isEntityPresent = this.state.entityPresent;
+        delete isEntityPresent[entity.label];
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
             .collection("users").doc(this.props.uIdHash).collection("session")
             .doc("entityPane").set({
                 entities:entityList
             });
-        this.setState({entities:entityList});
+        this.setState({
+            entities: entityList,
+            entityPresent: isEntityPresent
+        });
     }
 
     BlockEntity(entity){

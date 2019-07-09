@@ -46,6 +46,14 @@ class UserBlocksComponent extends React.Component {
                         content: 'First you have to define the entities or characters of your story. Click on this button to start defining the entities',
                         disableBeacon: true
                     }             
+                ],
+                addBlocks:[                    
+                    {                    
+                        title: 'Add your first block!',
+                        target: '.addBulkBlockButton',
+                        content: 'Now lets add the content to your story. Click on \'Contribute\' to start adding content to your story',
+                        disableBeacon: true
+                    }             
                 ]
             },
             showTooltip:{
@@ -359,6 +367,7 @@ class UserBlocksComponent extends React.Component {
     }
 
     closeEntityPane(){
+        this.finishTooltip('entity');
         this.setState({isEntityPaneOpen: false});
     }
 
@@ -478,9 +487,12 @@ class UserBlocksComponent extends React.Component {
             <div>
                 <Joyride
                     steps={this.state.tooltipText.entityPane}
-                    run = {this.state.showTooltip.entityPane}
-                    
+                    run = {this.state.showTooltip.entityPane}                    
                     />   
+                <Joyride
+                    steps={this.state.tooltipText.addBlocks}
+                    run = {this.state.showTooltip.addBlocks}                    
+                    />       
                 {this.renderBlockOptions()}
                     
                 {Object.keys(this.state.draftBlocks).length>0?
