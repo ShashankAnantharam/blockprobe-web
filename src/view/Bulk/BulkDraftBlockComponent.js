@@ -185,7 +185,8 @@ class BulkDraftBlockComponent extends React.Component {
 
     render(){
         return(
-            <div>
+            <div className='bulkDraftBlocksPaneContainer'>
+            <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
                 <Joyride
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
@@ -234,7 +235,7 @@ class BulkDraftBlockComponent extends React.Component {
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.props.cancelBulkDraftBlock}>
-                            <div>Cancel</div>
+                            <div>Close</div>
                     </button>
                 </div>
             </div>
