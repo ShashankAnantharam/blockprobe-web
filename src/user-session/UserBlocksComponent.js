@@ -54,11 +54,20 @@ class UserBlocksComponent extends React.Component {
                         content: 'Now lets add the content to your story. Click on \'Contribute\' to start adding content to your story',
                         disableBeacon: true
                     }             
+                ],
+                draftBlock:[
+                    {
+                        title: 'Lets do the final touches!',
+                        target: '.draftBlocksList',
+                        content: 'Your contribution are in draft. Click on entry with the title \'#1s Avengers\'. You can do final touches there.',
+                        disableBeacon: true
+                    }
                 ]
             },
             showTooltip:{
                 entityPane: JSON.parse(JSON.stringify(props.buildStory)),
-                addBlocks: false
+                addBlocks: false,
+                draftBlock: false
             }
         }
 
@@ -352,6 +361,8 @@ class UserBlocksComponent extends React.Component {
             updateDraftBlock = {this.updateDraftBlock}
             submitDraftBlock = {this.submitDraftBlock}
             entityPane = {this.state.entityPaneList}
+            draftBlockTooltip = {this.state.showTooltip.draftBlock}
+            finishTooltip = {this.finishTooltip}
             />
         );
     }
@@ -409,7 +420,16 @@ class UserBlocksComponent extends React.Component {
         }
         else if(tooltip == 'addBlocks'){            
             if(showTooltip.addBlocks){
+                showTooltip.entityPane = false;
                 showTooltip.addBlocks = false;
+                showTooltip.draftBlock = true;
+            }
+        }
+        else if(tooltip == 'draftBlock'){            
+            if(showTooltip.draftBlock){
+                showTooltip.entityPane = false;
+                showTooltip.addBlocks = false;
+                showTooltip.draftBlock = false;
             }
         } 
 
@@ -509,8 +529,12 @@ class UserBlocksComponent extends React.Component {
                     
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
+                     <Joyride
+                    steps={this.state.tooltipText.draftBlock}
+                    run = {this.state.showTooltip.draftBlock}                    
+                    /> 
                     <h4 className="block-list-title">DRAFT</h4>
-                    <div className="block-list-content">
+                    <div className="block-list-content draftBlocksList">
                         <List>{draftBlocksListRender}</List>
                     </div>
                 </div>

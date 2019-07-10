@@ -23,9 +23,9 @@ class BulkDraftBlockComponent extends React.Component {
         //cancelBulkDraftBlock, addDraftBlock,investigationGraph, addBlocksTooltip
 
         this.state ={
-            display:'',
             value:'',
-            placeholder: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
+            placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
+            placeholder: "Input or Paste the text here",
             tooltipText:{
                 addBlocks:[
                     {
@@ -245,7 +245,18 @@ class BulkDraftBlockComponent extends React.Component {
                         }}/>
                 </label>
                 </form>
-                <div>{this.state.display}</div>
+                <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
+                    <button 
+                        className="saveBlockButton saveBlocksInBulk" 
+                        onClick={this.saveDraftInBulk}>
+                            <div>Save</div>
+                    </button>
+                    <button 
+                        className="cancelBlockBackButton" 
+                        onClick={this.props.cancelBulkDraftBlock}>
+                            <div>Cancel</div>
+                    </button>
+                </div>
             </div>
         );
     }
