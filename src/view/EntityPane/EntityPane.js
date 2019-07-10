@@ -227,7 +227,8 @@ class EntityPaneView extends React.Component {
        }
 
         return(
-            <div style={{marginBottom:'20px'}}>
+            <div className='entityPaneContainer'>
+                <div className='entityPaneTitle'>Entities of your story</div>
                 <div>
                     {renderBlockEntities}
                 </div>
@@ -260,7 +261,7 @@ class EntityPaneView extends React.Component {
                                     fontWeight:'600'
                                     }}/>
                 <div style={{marginLeft:'1em'}}>
-                    <span style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input your entity names seperated by comma and press 'Enter key' or 'Ok button'. For example, copy paste the following text shown in red as input: <br/></span> 
+                    <span style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input your entity names seperated by comma and press 'Enter key' or 'Ok button'. For example, copy paste the text below shown in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=122' target='blank'>Learn More</a><br/></span> 
                     <span style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
                 </div>
                 <Joyride
@@ -271,7 +272,7 @@ class EntityPaneView extends React.Component {
                         <button 
                             className="cancelBlockButton cancelEntityPaneButton" 
                             onClick={this.props.closeEntityPane}>
-                                <div>Cancel</div>
+                                <div>Close</div>
                         </button>  
                         <button 
                             className="addEntityButton" 

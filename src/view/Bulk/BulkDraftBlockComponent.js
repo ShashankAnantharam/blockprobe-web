@@ -218,13 +218,12 @@ class BulkDraftBlockComponent extends React.Component {
                 </label>
                 </form>
                 <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block. You can give a title to each para. For example, copy paste the text in red:</p>
+                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block and you can give a title to each para. For example, copy paste the text in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>Learn More</a></p>
                         <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>                           
                             #1s Avengers<br/>
                             Thor, Rogers and Ironman are the Avengers.<br/><br/>
                             Thor is from Asgard
                         </p>
-                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>These hashtags play an important role in ordering the blocks. You can learn more about these key features here</p>
                 </div>
                 <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                     <button 
