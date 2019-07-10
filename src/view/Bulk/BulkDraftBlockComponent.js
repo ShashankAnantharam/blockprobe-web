@@ -192,19 +192,6 @@ class BulkDraftBlockComponent extends React.Component {
     render(){
         return(
             <div>
-                <div className="bulk-draft-options-container">
-                    <button 
-                        className="saveBlockButton saveBlocksInBulk" 
-                        onClick={this.saveDraftInBulk}>
-                            <div>Save blocks</div>
-                    </button>
-                    <button 
-                        className="cancelBlockBackButton" 
-                        onClick={this.props.cancelBulkDraftBlock}>
-                            <div>Cancel</div>
-                    </button>
-                </div>
-
                 {this.props.addBlocksTooltip?
                     <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
                         <p style={{fontSize: '14px', color:'grey'}}>Copy paste these lines:<br/><br/></p>

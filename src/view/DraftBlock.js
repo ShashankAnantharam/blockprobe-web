@@ -16,6 +16,7 @@ import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
 import Timekeeper from 'react-timekeeper';
 import moment from 'moment';
+import Joyride from 'react-joyride';
 import "react-datepicker/dist/react-datepicker.css";
 
 class DraftBlockComponent extends React.Component {
@@ -38,7 +39,7 @@ class DraftBlockComponent extends React.Component {
     constructor(props){
         super(props);
 
-        //props:draftBlock, bpId, uId, entityPane 
+        //props:draftBlock, bpId, uId, entityPane, draftBlockTooltip, finishTooltip
         this.state={
             newBlock: {},
             newEntity: '',
@@ -46,7 +47,32 @@ class DraftBlockComponent extends React.Component {
             addDate: false,
             addTime: false,
             date: new Date(),
-            time: undefined
+            time: undefined,
+            showTooltip:{
+                draftBlockTour: JSON.parse(JSON.stringify(props.draftBlockTooltip))
+            },
+            tooltipText:{
+                draftBlockTour:[
+                    {                    
+                        title: 'Add some date to your block!',
+                        target: '.addDateTimeButton',
+                        content: 'If the content of your contribution is associated with some date-time, you can add it here.',
+                        disableBeacon: false
+                    },
+                    {                    
+                        title: 'Your entities were auto detected!',
+                        target: '.draft-box-entity-dropdown-container',
+                        content: 'Your entities that were defined were autodetected in the text of your content. You can manually change it here.',
+                        disableBeacon: false
+                    },
+                    {                    
+                        title: 'Submit block!',
+                        target: '.submitBlockButton',
+                        content: 'Submit the block once done by clicking this button!',
+                        disableBeacon: false
+                    }
+                ]
+            }
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -435,29 +461,7 @@ class DraftBlockComponent extends React.Component {
 
         return(
 
-            <div className="draft-block-container">
-                <div className="draft-options-container">
-                    <button 
-                        className="saveBlockButton" 
-                        onClick={this.saveDraftBlock}>
-                            <div>Save block</div>
-                    </button>
-                    <button 
-                        className="submitBlockButton" 
-                        onClick={this.submitDraftBlock}>
-                            <div>Submit block</div>
-                    </button>
-                    <button 
-                        className="cancelBlockBackButton" 
-                        onClick={this.cancelDraftBlock}>
-                            <div>Cancel</div>
-                    </button>
-                    <button 
-                        className="deleteBlockButton" 
-                        onClick={this.removeDraftBlock}>
-                            <div>Delete block</div>
-                    </button>    
-                </div>
+            <div className="draft-block-container">                
                 <form>
                 <label>
                     <Textarea 
@@ -568,12 +572,12 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
-                            <div>Save block</div>
+                            <div>Save</div>
                     </button>
                     <button 
                         className="submitBlockButton" 
                         onClick={this.submitDraftBlock}>
-                            <div>Submit block</div>
+                            <div>Submit</div>
                     </button>
                     <button 
                         className="cancelBlockBackButton" 
@@ -583,7 +587,7 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="deleteBlockButton" 
                         onClick={this.removeDraftBlock}>
-                            <div>Delete block</div>
+                            <div>Delete</div>
                     </button>    
                 </div>
             </div>
@@ -635,6 +639,10 @@ class DraftBlockComponent extends React.Component {
     render(){
         return(
             <div>
+                <Joyride
+                    steps={this.state.tooltipText.draftBlockTour}
+                    run = {this.state.showTooltip.draftBlockTour}                    
+                    /> 
                 {this.EditSingleBlock()}
             </div>
         );

@@ -62,12 +62,21 @@ class UserBlocksComponent extends React.Component {
                         content: 'Your contribution are in draft. Click on entry with the title \'#1s Avengers\'. You can do final touches there.',
                         disableBeacon: true
                     }
+                ],
+                commitBlock:[
+                    {
+                        title: 'Add your block to the story!',
+                        target: '.inReviewBlockList',
+                        content: 'Your block (contribution) is in review. But for now, you can directly add it to the story without anyone reviewing it. Click on your block in review.',
+                        disableBeacon: true
+                    }
                 ]
             },
             showTooltip:{
                 entityPane: JSON.parse(JSON.stringify(props.buildStory)),
                 addBlocks: false,
-                draftBlock: false
+                draftBlock: false,
+                commitBlock: false
             }
         }
 
@@ -317,7 +326,7 @@ class UserBlocksComponent extends React.Component {
         this.giveBlockToFirstReviewer(block);
 
         this.setState({isCreateBlockClicked:false});
-
+        this.finishTooltip('draftBlock');
     }
 
     componentDidMount(){
@@ -430,6 +439,7 @@ class UserBlocksComponent extends React.Component {
                 showTooltip.entityPane = false;
                 showTooltip.addBlocks = false;
                 showTooltip.draftBlock = false;
+                showTooltip.commitBlock = true;
             }
         } 
 
@@ -544,8 +554,12 @@ class UserBlocksComponent extends React.Component {
 
                 {Object.keys(this.state.inReviewBlocks).length>0?
                 <div>
+                    <Joyride
+                    steps={this.state.tooltipText.commitBlock}
+                    run = {this.state.showTooltip.commitBlock}                    
+                    /> 
                     <h4 className="block-list-title">IN REVIEW</h4>
-                    <div className="block-list-content">
+                    <div className="block-list-content inReviewBlockList">
                         <List>{inReviewBlocksListRender}</List>
                     </div>
                 </div>

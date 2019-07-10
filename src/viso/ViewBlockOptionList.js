@@ -293,7 +293,7 @@ class ViewBlockListComponent extends React.Component {
                         <Avatar>
                             <DoneAllIcon />
                         </Avatar>
-                            <ListItemText primary="Commit Block to Investigation"/>
+                            <ListItemText primary="Commit block to story"/>
                         </ListItem>
                         :
                         null}
