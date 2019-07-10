@@ -49,6 +49,8 @@ class EntityPaneView extends React.Component {
         this.getEntities = this.getEntities.bind(this);
         this.removeEntity = this.removeEntity.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.clickOkayButton = this.clickOkayButton.bind(this);
+        this.addEntitiesInBulk = this.addEntitiesInBulk.bind(this);
     }
 
     componentDidUpdate(){
@@ -81,27 +83,37 @@ class EntityPaneView extends React.Component {
         });
     }
 
+    addEntitiesInBulk(totalStr){
+        var entityArr = totalStr.split(',');
+        for(var i=0; i<entityArr.length; i++){
+            var str = entityArr[i].trim();
+            if(str.length > 0)
+                this.addEntityToList(str);
+        }
+        str = '';
+        var showTooltip = this.state.showTooltip;
+
+        if(entityArr.length > 0){
+            if(this.props.entityPaneTooltip){                   
+                showTooltip.cancel = true;
+            }                
+        }               
+        this.setState({
+            newEntity: str,
+            showTooltip: showTooltip
+        }); 
+
+    }
+
+    clickOkayButton(){
+        var totalStr = this.state.newEntity;
+        this.addEntitiesInBulk(totalStr);
+    }
+
     handleKeyDown(event){
         if (event.key === 'Enter') {
             var totalStr= event.target.value;
-            var entityArr = totalStr.split(',');
-            for(var i=0; i<entityArr.length; i++){
-                var str = entityArr[i].trim();
-                if(str.length > 0)
-                    this.addEntityToList(str);
-            }
-            str = '';
-            var showTooltip = this.state.showTooltip;
-
-            if(entityArr.length > 0){
-                if(this.props.entityPaneTooltip){                   
-                    showTooltip.cancel = true;
-                }                
-            }               
-            this.setState({
-                newEntity: str,
-                showTooltip: showTooltip
-            }); 
+            this.addEntitiesInBulk(totalStr);
           }
     }
 
@@ -223,37 +235,34 @@ class EntityPaneView extends React.Component {
                     steps={this.state.tooltipText.entityPane}
                     run = {this.props.entityPaneTooltip}                    
                     /> 
-                {this.props.entityPaneTooltip?
-                <div style={{marginLeft:'1em'}}>
-                    <p style={{fontSize:'14px', color:'grey'}}>
-                    For example, you can add the following entities by copy pasting the text:<br/> 
-                    <span style={{fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
-                    </p>                     
-                </div>    
-                    :
-                    null
-                }    
+                 
                 <Textarea 
                                 type="text"
                                 className="createNewEntitiesPane"
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
-                                placeholder = "Input entity names seperated by ',' and press 'Enter key'"
+                                placeholder = "Input entity names seperated by ',' and press 'Enter key' or 'Ok button'"
                                 maxRows="2"
                                 minRows="1"
                                 style={{
                                     background: 'white',
+                                    borderRadius:'5px',
                                     borderWidth:'2px', 
                                     borderStyle:'solid', 
-                                    borderColor:'darkgrey',
+                                    borderColor:'black',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
                                     minWidth:'60%',
                                     maxWidth: '80%',
-                                    marginLeft:'1em'
+                                    marginLeft:'1em',
+                                    color: 'darkBlue',
+                                    fontWeight:'600'
                                     }}/>
-                
+                <div style={{marginLeft:'1em'}}>
+                    <span style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input entity names seperated by comma and press 'Enter key' or 'Ok button'. For example, copy paste the following text as input: <br/></span> 
+                    <span style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
+                </div>
                 <Joyride
                     steps={this.state.tooltipText.cancelButton}
                     run = {this.state.showTooltip.cancel}                    
@@ -263,7 +272,12 @@ class EntityPaneView extends React.Component {
                             className="cancelBlockButton cancelEntityPaneButton" 
                             onClick={this.props.closeEntityPane}>
                                 <div>Cancel</div>
-                        </button>          
+                        </button>  
+                        <button 
+                            className="addEntityButton" 
+                            onClick={this.clickOkayButton}>
+                                <div>Ok</div>
+                        </button>        
                 </div>   
             </div>
         );
