@@ -30,21 +30,15 @@ class BulkDraftBlockComponent extends React.Component {
                 addBlocks:[
                     {
                         title: 'Add your blocks!',
-                        target: '.addBlocksPane',
-                        content: 'You are going to add your first blocks to your story. Copy paste the lines shown here to the input',
-                        disableBeacon: true
-                    },
-                    {
-                        title: 'Add your blocks!',
-                        target: '.addBlocksPaneInput',
-                        content: 'Paste the text you copied here.',
+                        target: '.copyBlockBulkText',
+                        content: 'You are going to add your first blocks to your story. Copy paste the lines shown here as input.',
                         disableBeacon: true
                     },
                     {
                         title: 'Save your blocks!',
                         target: '.saveBlocksInBulk',
-                        content: 'Once you are done, please save your content.',
-                        disableBeacon: true
+                        content: 'Once you are done copy-pasting the red text into the input, please save your content.',
+                        disableBeacon: false
                     }
                 ]            
             },
@@ -192,19 +186,6 @@ class BulkDraftBlockComponent extends React.Component {
     render(){
         return(
             <div>
-                {this.props.addBlocksTooltip?
-                    <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize: '14px', color:'grey'}}>Copy paste these lines:<br/><br/></p>
-                        <p style={{fontSize: '14px', color:'grey', fontStyle:'italic'}}>                           
-                            #1s Avengers<br/>
-                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
-                            Thor is from Asgard
-                        </p>
-                    </div>
-                        :
-                        null
-                }
-
                 <Joyride
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
@@ -221,17 +202,30 @@ class BulkDraftBlockComponent extends React.Component {
                     minRows="10"
                     onKeyUp = {this.sendMessage}
                     style={{
+                        background: 'white',
+                        borderRadius:'5px',
                         borderWidth:'2px', 
                         borderStyle:'solid', 
-                        borderColor:'lightgrey',
+                        borderColor:'black',
                         marginLeft:'1%',
                         marginRight:'1%',
                         paddingTop:'6px',
                         paddingBottom:'6px',
-                        width:'95%'
+                        width:'95%',
+                        color: 'darkBlue',
+                        fontWeight:'600'
                         }}/>
                 </label>
                 </form>
+                <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block. You can give a title to each para. For example, copy paste the text in red:</p>
+                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>                           
+                            #1s Avengers<br/>
+                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
+                            Thor is from Asgard
+                        </p>
+                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>These hashtags play an important role in ordering the blocks. You can learn more about these key features here</p>
+                </div>
                 <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                     <button 
                         className="saveBlockButton saveBlocksInBulk" 

@@ -59,7 +59,7 @@ class UserBlocksComponent extends React.Component {
                     {
                         title: 'Lets do the final touches!',
                         target: '.draftBlocksList',
-                        content: 'Your contribution are in draft. Click on entry with the title \'#1s Avengers\'. You can do final touches there.',
+                        content: 'Your newly created blocks are in draft and you can see them here in the list. Click on the block with the title \'#1s Avengers\'.',
                         disableBeacon: true
                     }
                 ],
@@ -67,7 +67,7 @@ class UserBlocksComponent extends React.Component {
                     {
                         title: 'Add your block to the story!',
                         target: '.inReviewBlockList',
-                        content: 'Your block (contribution) is in review. But for now, you can directly add it to the story without anyone reviewing it. Click on your block in review.',
+                        content: 'Your block is in review. You can see it in this list. Since you are the creator of the story, you also get to review the block. But for now, you can skip te review and directly add it to the story. Click on your block in review.',
                         disableBeacon: true
                     }
                 ]
