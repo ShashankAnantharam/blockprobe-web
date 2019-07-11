@@ -390,8 +390,9 @@ class UserBlocksComponent extends React.Component {
         this.setState({isEntityPaneOpen: true});
     }
 
-    closeEntityPane(){
-        this.finishTooltip('entity');
+    closeEntityPane(hasTooltipsFinished){
+        if(hasTooltipsFinished)
+            this.finishTooltip('entity');
         this.setState({isEntityPaneOpen: false});
     }
 

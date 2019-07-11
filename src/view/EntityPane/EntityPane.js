@@ -51,6 +51,7 @@ class EntityPaneView extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.clickOkayButton = this.clickOkayButton.bind(this);
         this.addEntitiesInBulk = this.addEntitiesInBulk.bind(this);
+        this.closeEntityPane = this.closeEntityPane.bind(this);
     }
 
     componentDidUpdate(){
@@ -93,7 +94,7 @@ class EntityPaneView extends React.Component {
         str = '';
         var showTooltip = this.state.showTooltip;
 
-        if(entityArr.length > 0){
+        if(entityArr.length > 0 && totalStr.trim() != ''){
             if(this.props.entityPaneTooltip){                   
                 showTooltip.cancel = true;
             }                
@@ -213,6 +214,13 @@ class EntityPaneView extends React.Component {
         return entities;
     }
 
+    closeEntityPane(){
+        var shouldFinishTooltips = false;
+        if(this.state.showTooltip.cancel)
+            shouldFinishTooltips = true;
+        this.props.closeEntityPane(shouldFinishTooltips);
+    }
+
     render(){
 
         /*
@@ -271,7 +279,7 @@ class EntityPaneView extends React.Component {
                 <div className="draft-add-new-entity-container">                                       
                         <button 
                             className="cancelBlockButton cancelEntityPaneButton" 
-                            onClick={this.props.closeEntityPane}>
+                            onClick={this.closeEntityPane}>
                                 <div>Close</div>
                         </button>  
                         <button 
