@@ -358,8 +358,6 @@ class UserBlocksComponent extends React.Component {
     }
 
     changeSelectedBlock(draftBlockId){
-        console.log('changing draft block');
-        console.log(draftBlockId);
         this.setState({
             selectedDraftBlockId: draftBlockId
         });
