@@ -11,6 +11,7 @@ class SingleUserBlock extends React.Component {
     constructor(props){
         super(props);
         //props: isNewBlock, deleteNewBlcok, addDraftBlock, entityPane, draftBlockTooltip, finishTooltip
+        //changeSelectedBlock
 
         this.state={
             isBlockClicked: false
@@ -62,6 +63,9 @@ class SingleUserBlock extends React.Component {
                 isBlockClicked: true
             });
         }
+        if(this.props.block.key != this.props.selectedDraftBlockId){
+            this.props.changeSelectedBlock(this.props.block.key);
+        }
     }
 
     revertBlockInDraft(){
@@ -75,7 +79,7 @@ class SingleUserBlock extends React.Component {
     renderDraftBlock(){
         return(
             <div onClick={this.clickBlockInDraft}>
-                {this.state.isBlockClicked?
+                {this.props.selectedDraftBlockId == this.props.block.key?
                     <div>
                         <DraftBlockComponent 
                         draftBlock={this.props.block}
@@ -115,6 +119,7 @@ class SingleUserBlock extends React.Component {
             this.setState({
                 isBlockClicked: false
             });
+            this.props.changeSelectedBlock(null);
         }
         else if(updateType=='SUBMIT'){
             //SUBMIT
@@ -124,6 +129,7 @@ class SingleUserBlock extends React.Component {
             this.setState({
                 isBlockClicked: false
             });
+            this.props.changeSelectedBlock(null);
         }
         else if(updateType=='CANCEL'){
             //CANCEL CHANGES
@@ -133,12 +139,13 @@ class SingleUserBlock extends React.Component {
                 this.setState({
                     isBlockClicked: false
                 });
+                this.props.changeSelectedBlock(null);                              
             }
             else{
 
                 //If block is a new block, then delete it
                 this.props.deleteNewBlock();
-            }
+            }              
         }
         else if(updateType=='DELETE'){
             //DELETE CHANGES
@@ -153,6 +160,7 @@ class SingleUserBlock extends React.Component {
                 this.setState({
                     isBlockClicked: false
                 });
+                this.props.changeSelectedBlock(null);
             }
         }
     }

@@ -24,6 +24,7 @@ class UserBlocksComponent extends React.Component {
         this.state={
             uIdHash:'',
             shajs:null,
+            selectedDraftBlockId: null,
             entityPaneList: [],
             draftBlocks:{},
             successBlocks:{},
@@ -97,6 +98,7 @@ class UserBlocksComponent extends React.Component {
         this.createBlock = this.createBlock.bind(this);
         this.createBulkBlock = this.createBulkBlock.bind(this);
         this.cancelBulkBlock = this.cancelBulkBlock.bind(this);
+        this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.openEntityPane = this.openEntityPane.bind(this);
         this.closeEntityPane = this.closeEntityPane.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
@@ -355,6 +357,14 @@ class UserBlocksComponent extends React.Component {
         this.initEntityPane();
     }
 
+    changeSelectedBlock(draftBlockId){
+        console.log('changing draft block');
+        console.log(draftBlockId);
+        this.setState({
+            selectedDraftBlockId: draftBlockId
+        });
+    }
+
     renderSingleBlock(block, scope, isNewBlock){
 
         if(isNullOrUndefined(block)){
@@ -375,6 +385,8 @@ class UserBlocksComponent extends React.Component {
             entityPane = {this.state.entityPaneList}
             draftBlockTooltip = {this.state.showTooltip.draftBlock}
             finishTooltip = {this.finishTooltip}
+            selectedDraftBlockId = {this.state.selectedDraftBlockId}
+            changeSelectedBlock = {this.changeSelectedBlock} 
             />
         );
     }
