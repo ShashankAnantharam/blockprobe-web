@@ -9,6 +9,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'; 
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Joyride from 'react-joyride';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 
@@ -16,11 +17,22 @@ class ViewBlockListComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //props: blockState, selectOption, canCommit, uId, selectedBlock, latestBlock, reviewersMap
+        //props: blockState, selectOption, canCommit, uId, selectedBlock, latestBlock, 
+        //reviewersMap, commitToStoryTooltip
 
         this.state={
             shajs: '',
             uIdHash: '',
+            tooltipText:{
+                addToStory:[
+                    {
+                        title: 'Add your first block to the story!',
+                        target: '.commitBlock',
+                        content: 'Click on this option and add your block to the story!',
+                        disableBeacon: true   
+                    }
+                ]
+            }
         };
 
         var shajs = require('sha.js');
@@ -281,13 +293,20 @@ class ViewBlockListComponent extends React.Component {
     }
 
     renderSubmitterOptionList(){
+        console.log(this.props.commitToStoryTooltip);
+        console.log(this.state.tooltipText.addToStory);
         return(
             <div>
+                <Joyride
+                    steps={this.state.tooltipText.addToStory}
+                    run = {this.props.commitToStoryTooltip}                    
+                    /> 
                 <h3 style={{textAlign:"center"}}>OPTIONS</h3>
                 <List className="view-block-option-list">
 
                     {this.props.canCommit?
                         <ListItem button 
+                        className='commitBlock'
                         onClick={() => { this.selectOption("can_commit")}}
                         >
                         <Avatar>

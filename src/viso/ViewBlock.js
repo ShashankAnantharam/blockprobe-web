@@ -13,14 +13,14 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //closeSideBar, bpDetails, refreshBlockprobe
+        //closeSideBar, bpDetails, refreshBlockprobe, commitToStoryTooltip, finishAddingBlockToStoryTooltip
 
 
         this.state={
             chatList: [],
             reviewersMap: {},
             upVotes: 0,
-            canCommit: false
+            canCommit: false            
         }
         this.prevBlockId = null;
         this.prevBlockState = null;
@@ -195,8 +195,10 @@ class ViewBlockComponent extends React.Component {
 
     selectOption(option){
         if(option == "revert" || option == "upvote" || option == "can_commit"){
-            if(option == "can_commit")            
+            if(option == "can_commit") {       
+                this.props.finishAddingBlockToStoryTooltip();    
                 this.props.refreshBlockprobe();
+            }
             this.props.closeSideBar();
         }
     }
@@ -214,6 +216,7 @@ class ViewBlockComponent extends React.Component {
                 bpDetails={this.props.bpDetails}
                 reviewersMap={this.state.reviewersMap}
                 latestBlock ={this.props.latestBlock}
+                commitToStoryTooltip = {this.props.commitToStoryTooltip}
                 />
             )
         }

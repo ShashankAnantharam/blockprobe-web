@@ -19,6 +19,7 @@ class UserBlocksComponent extends React.Component {
     
     constructor(props){
         super(props);
+        //props: finishBuildingStoryTooltip
 
         this.state={
             uIdHash:'',
@@ -440,6 +441,8 @@ class UserBlocksComponent extends React.Component {
                 showTooltip.addBlocks = false;
                 showTooltip.draftBlock = false;
                 showTooltip.commitBlock = true;
+
+                this.props.finishBuildingStoryTooltip();
             }
         } 
 

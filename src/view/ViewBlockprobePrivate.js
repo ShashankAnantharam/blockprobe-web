@@ -62,6 +62,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             },
             showTooltip:{
                 buildStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
+                commitToStory: false,
                 viewDashboardView: false
             }
         }
@@ -82,11 +83,23 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.finishBuildingStoryTooltip = this.finishBuildingStoryTooltip.bind(this);
+        this.finishAddingBlockToStoryTooltip = this.finishAddingBlockToStoryTooltip.bind(this);
     }
 
     finishBuildingStoryTooltip(){
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
+        showTooltip.commitToStory = true;
+        showTooltip.viewDashboardView = false;
+        this.setState({
+            showTooltip: showTooltip
+        });
+    }
+
+    finishAddingBlockToStoryTooltip(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.commitToStory = false;
         showTooltip.viewDashboardView = true;
         this.setState({
             showTooltip: showTooltip
@@ -643,6 +656,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 bpDetails = {this.state.bpDetails}
                 latestBlock ={this.state.latestBlock}
                 refreshBlockprobe = {this.refreshBlockprobe}
+                commitToStoryTooltip = {this.state.showTooltip.commitToStory}
+                finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
                 />
                 </div>}
                 open={this.state.selectedBlockSidebarOpen}
