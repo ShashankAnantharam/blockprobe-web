@@ -282,11 +282,14 @@ class EntityPaneView extends React.Component {
                             onClick={this.closeEntityPane}>
                                 <div>Close</div>
                         </button>  
-                        <button 
-                            className="addEntityButton" 
-                            onClick={this.clickOkayButton}>
-                                <div>Ok</div>
-                        </button>        
+                        {this.state.newEntity != ''?
+                            <button 
+                                className="addEntityButton" 
+                                onClick={this.clickOkayButton}>
+                                    <div>Ok</div>
+                            </button>        
+                                :
+                            null}
                 </div>   
             </div>
         );
