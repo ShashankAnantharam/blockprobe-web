@@ -195,8 +195,9 @@ class ViewBlockComponent extends React.Component {
 
     selectOption(option){
         if(option == "revert" || option == "upvote" || option == "can_commit"){
-            if(option == "can_commit") {       
-                this.props.finishAddingBlockToStoryTooltip();    
+            if(option == "can_commit") {
+                if(this.props.commitToStoryTooltip)       
+                    this.props.finishAddingBlockToStoryTooltip();    
                 this.props.refreshBlockprobe();
             }
             this.props.closeSideBar();

@@ -29,7 +29,7 @@ class ViewBlockListComponent extends React.Component {
                         title: 'Add your first block to the story!',
                         target: '.commitBlock',
                         content: 'Click on this option and add your block to the story!',
-                        disableBeacon: true   
+                        disableBeacon: false   
                     }
                 ]
             }
@@ -293,27 +293,29 @@ class ViewBlockListComponent extends React.Component {
     }
 
     renderSubmitterOptionList(){
-        console.log(this.props.commitToStoryTooltip);
-        console.log(this.state.tooltipText.addToStory);
         return(
-            <div>
-                <Joyride
-                    steps={this.state.tooltipText.addToStory}
-                    run = {this.props.commitToStoryTooltip}                    
-                    /> 
+            <div>                
                 <h3 style={{textAlign:"center"}}>OPTIONS</h3>
                 <List className="view-block-option-list">
 
                     {this.props.canCommit?
-                        <ListItem button 
-                        className='commitBlock'
-                        onClick={() => { this.selectOption("can_commit")}}
-                        >
-                        <Avatar>
-                            <DoneAllIcon />
-                        </Avatar>
-                            <ListItemText primary="Commit block to story"/>
-                        </ListItem>
+                        <div>
+                            <Joyride
+                                steps={this.state.tooltipText.addToStory}
+                                run = {this.props.commitToStoryTooltip}                    
+                                /> 
+                             <div className='commitBlock'>
+                             <ListItem button                                 
+                                onClick={() => { this.selectOption("can_commit")}}
+                                >
+                            <Avatar>
+                                <DoneAllIcon />
+                            </Avatar>
+                                <ListItemText primary="Commit block to story"/>
+                            </ListItem>
+                            </div>   
+                        </div>
+
                         :
                         null}
 
