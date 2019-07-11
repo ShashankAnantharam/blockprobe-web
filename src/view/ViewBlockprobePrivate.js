@@ -96,6 +96,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.finishBuildingStoryTooltip = this.finishBuildingStoryTooltip.bind(this);
         this.finishAddingBlockToStoryTooltip = this.finishAddingBlockToStoryTooltip.bind(this);
+        this.finishOpenMenuForDashboard = this.finishOpenMenuForDashboard.bind(this);
+        this.finishDashboardView = this.finishDashboardView.bind(this);
     }
 
     finishBuildingStoryTooltip(){
@@ -120,8 +122,37 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
     }
 
+    finishOpenMenuForDashboard(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.commitToStory = false;
+        showTooltip.menuClickFirst = false;
+        showTooltip.viewDashboardView = true;
+        this.setState({
+            showTooltip: showTooltip
+        });
+    }
+
+    finishDashboardView(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.commitToStory = false;
+        showTooltip.menuClickFirst = false;
+        showTooltip.viewDashboardView = false;
+        this.setState({
+            showTooltip: showTooltip
+        });
+    }
+
     setNewVisualisation(newVisualisation){
         if(this.state.visualisation != newVisualisation){
+
+            if(newVisualisation == 'dashboard'){
+                if(this.state.showTooltip.viewDashboardView){
+                    this.finishDashboardView();
+                }
+            }
+
             this.setState({
                 selectedVisualisation: newVisualisation,
                 menuBarOpen: false
@@ -135,6 +166,12 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     onSetMenuBlockSidebarOpen(open) {
+        if(open){
+            if(this.state.showTooltip.menuClickFirst){
+                this.finishOpenMenuForDashboard();
+            }
+        }
+
         this.setState({ menuBarOpen: open });
         // console.log(this.state.menuBarOpen);
     }
@@ -689,7 +726,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     selectVisualisation={this.setNewVisualisation}
                     selectedVisualisation={this.state.selectedVisualisation}
                     permit = {this.props.permit}
-                    isViewOnly={false}/>
+                    isViewOnly={false}
+                    dashboardTooltip={this.state.showTooltip.viewDashboardView}/>
                 </div>}
                 open={this.state.menuBarOpen}
                 onSetOpen={this.onSetMenuBlockSidebarOpen}

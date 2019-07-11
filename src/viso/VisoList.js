@@ -10,6 +10,7 @@ import BuildIcon from '@material-ui/icons/Build';
 import CreateIcon from '@material-ui/icons/Create'; 
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShareIcon from '@material-ui/icons/Share';
+import Joyride from 'react-joyride';
 import ListIcon from '@material-ui/icons/List';
 import './VisoList.css';
 
@@ -17,9 +18,28 @@ class VisualizeOptionsListComponent extends React.Component {
 
     constructor(props){
       super(props);
-      //role
+      //role, dashboardTooltip
 
       this.state={
+          tooltipText:{
+              dashboard:[
+                  {
+                    title: 'Visualize your story dashboard!',
+                    target: '.dashboard-menu',
+                    content: 'Click on dashboard and visualize your story. If you followed the steps as specified, you will see a summary view, a graph view and a timeline view.',
+                    disableBeacon: false
+                  },
+                  {
+                    title: 'Share your story dashboard!',
+                    target: '.shareOption',
+                    content: 'After seeing the dashboard, share it with friends on social media by clicking on share story and using the public link.',
+                    disableBeacon: true
+                  }
+              ]
+          },
+          showTooltip:{
+              dashboard: JSON.parse(JSON.stringify(props.dashboardTooltip))
+          }
       }
 
       this.renderOptions = this.renderOptions.bind(this);
@@ -68,15 +88,17 @@ class VisualizeOptionsListComponent extends React.Component {
                     </ListItem>
 
                     {this.props.permit == "CREATOR"?
-                    <ListItem button 
-                        selected={this.props.selectedVisualisation == "publish_blockprobe"}
-                        onClick={() => { this.selectNewVisualisation("publish_blockprobe")}}
-                        >
-                        <Avatar>
-                            <ShareIcon />
-                        </Avatar>
-                            <ListItemText primary="Share Blockprobe"/>
-                    </ListItem>
+                        <div className='shareOption'>
+                            <ListItem button 
+                                selected={this.props.selectedVisualisation == "publish_blockprobe"}
+                                onClick={() => { this.selectNewVisualisation("publish_blockprobe")}}
+                                >
+                                <Avatar>
+                                    <ShareIcon />
+                                </Avatar>
+                                    <ListItemText primary="Share my story dashboard"/>
+                            </ListItem>
+                        </div>
                         :
                         null}
                 </List>
@@ -84,20 +106,36 @@ class VisualizeOptionsListComponent extends React.Component {
         )
     }
 
+    componentWillReceiveProps(nextProps) {
+        // You don't have to do this check first, but it can help prevent an unneeded render
+
+        if (nextProps.dashboardTooltip !== this.state.showTooltip.dashboard) {
+            var showTooltip = this.state.showTooltip;
+            showTooltip.dashboard = JSON.parse(JSON.stringify(nextProps.dashboardTooltip));
+            this.setState({ startTime: nextProps.startTime });
+        }
+    }
+
     render(){
         return(
             <div>
+                <Joyride
+                    steps={this.state.tooltipText.dashboard}
+                    run = {this.state.showTooltip.dashboard}                    
+                    />
                 <h3 style={{textAlign:"center"}}>VISUALISE</h3>
                 <List className="">
-                    <ListItem button 
-                    selected={this.props.selectedVisualisation == "dashboard"}
-                    onClick={() => { this.selectNewVisualisation("dashboard")}}
-                    >
-                    <Avatar>
-                        <DashboardIcon />
-                    </Avatar>
-                        <ListItemText primary="Dashboard"/>
-                    </ListItem>
+                    <div className='dashboard-menu'>
+                                <ListItem button 
+                                    selected={this.props.selectedVisualisation == "dashboard"}
+                                    onClick={() => { this.selectNewVisualisation("dashboard")}}
+                                    >
+                                    <Avatar>
+                                        <DashboardIcon />
+                                    </Avatar>
+                                        <ListItemText primary="Dashboard"/>
+                                </ListItem>
+                    </div>                    
 
                     <ListItem button 
                     selected={this.props.selectedVisualisation == "timeline"}
