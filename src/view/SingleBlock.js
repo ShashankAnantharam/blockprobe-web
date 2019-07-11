@@ -19,11 +19,7 @@ class SingleUserBlock extends React.Component {
         this.clickBlockInDraft = this.clickBlockInDraft.bind(this);
         this.revertBlockInDraft = this.revertBlockInDraft.bind(this);
         this.clickBlockNotInDraft = this.clickBlockNotInDraft.bind(this);
-        this.updateDraftBlock = this.updateDraftBlock.bind(this);
-
-        if(props.block.title=='' && props.block.summary==''){
-            this.state.isBlockClicked = true;
-        }
+        this.updateDraftBlock = this.updateDraftBlock.bind(this);        
     }
 
     BlockEntity(entity){
