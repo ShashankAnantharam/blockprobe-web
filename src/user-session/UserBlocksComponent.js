@@ -277,8 +277,10 @@ class UserBlocksComponent extends React.Component {
             blockprobe: this.props.bId,
             count: blocks.length
         }    
-        
-        this.finishTooltip('addBlocks');
+    
+        console.log(blocks);
+        if(blocks.length>0)
+            this.finishTooltip('addBlocks');
 
 
         ReactGA.event({
