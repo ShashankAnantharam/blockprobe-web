@@ -21,6 +21,7 @@ import { red } from '@material-ui/core/colors';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import UserBlocksComponent from '../user-session/UserBlocksComponent';
+import Joyride from 'react-joyride';
 import Loader from 'react-loader-spinner';
 
 class ViewBlockprobePrivateComponent extends React.Component {
@@ -60,9 +61,20 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 bpDetails: true,
                 blockprobe: true
             },
+            tooltipText:{
+                menuClickFirst:[
+                    {
+                        title: 'Let\'s see your story!',
+                        target: '.menu-button',
+                        content: 'Click on the menu icon.',
+                        disableBeacon: true
+                    }
+                ]
+            },
             showTooltip:{
                 buildStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
                 commitToStory: false,
+                menuClickFirst: false,
                 viewDashboardView: false
             }
         }
@@ -90,6 +102,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
         showTooltip.commitToStory = true;
+        showTooltip.menuClickFirst = false;
         showTooltip.viewDashboardView = false;
         this.setState({
             showTooltip: showTooltip
@@ -100,7 +113,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
         showTooltip.commitToStory = false;
-        showTooltip.viewDashboardView = true;
+        showTooltip.menuClickFirst = true;
+        showTooltip.viewDashboardView = false;
         this.setState({
             showTooltip: showTooltip
         });
@@ -686,6 +700,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
             <div style={{height:'100%',overflowY:'scroll'}}>
                 <div className="blockprobe-options-container">
+                    <Joyride
+                        steps={this.state.tooltipText.menuClickFirst}
+                        run = {this.state.showTooltip.menuClickFirst}                    
+                        /> 
                     <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
                     className="menu-button">
                             <MenuIcon/>
