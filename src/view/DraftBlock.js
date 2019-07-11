@@ -461,7 +461,8 @@ class DraftBlockComponent extends React.Component {
 
         return(
 
-            <div className="draft-block-container">                
+            <div className="draft-block-container">      
+                <div className='draftBlocksPaneTitle'>Edit block</div>          
                 <form>
                 <label>
                     <Textarea 
