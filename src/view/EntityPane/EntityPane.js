@@ -36,7 +36,8 @@ class EntityPaneView extends React.Component {
                         target: '.cancelEntityPaneButton',
                         content: 'Click on close. We are done here!',
                         disableBeacon: false,
-                        placementBeacon: 'left'
+                        placementBeacon: 'left',
+                        event: 'hover'
                     }             
                 ]
             },
@@ -287,7 +288,7 @@ class EntityPaneView extends React.Component {
                 styles={{
                     options: {
                       arrowColor: '#e3ffeb',
-                      beaconSize: '5em',
+                      beaconSize: '4em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
                       overlayColor: 'rgba(79, 26, 0, 0.4)',
