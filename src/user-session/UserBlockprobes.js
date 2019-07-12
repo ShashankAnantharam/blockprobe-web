@@ -33,6 +33,7 @@ class UserBlockprobesComponent extends React.Component {
                     title: 'Get started with a new story!',
                     target: '.addBlockprobeButton',
                     content: 'Click to create new story and get started!',
+                    placementBeacon: 'left',
                     disableBeacon: true
                     }                                
                 ],
@@ -325,6 +326,18 @@ class UserBlockprobesComponent extends React.Component {
                 <Joyride
                 steps={this.state.toolTipSteps.createStoryStep}
                 run = {this.state.showToolTips.createStory}
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#06DEE5',
+                      arrowColor: '#e3ffeb',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                 />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
                 <div>
@@ -352,7 +365,7 @@ class UserBlockprobesComponent extends React.Component {
                 </div>
                 <Joyride
                     steps={this.state.toolTipSteps.clickOnStoryStep}
-                    run = {this.state.showToolTips.clickOnStory}
+                    run = {this.state.showToolTips.clickOnStory}                    
                     />  
                 <List className="blockprobeListTooltip">
                                      
