@@ -11,7 +11,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Textarea from 'react-textarea-autosize';
 import './UserBlockprobes.css';
-import Joyride from 'react-joyride';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 
 class UserBlockprobesComponent extends React.Component {
 
@@ -68,11 +68,25 @@ class UserBlockprobesComponent extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.startTooltipTour = this.startTooltipTour.bind(this);
         this.createBlockprobe = this.createBlockprobe.bind(this);
+        this.handleCreateStoryJoyrideCallback = this.handleCreateStoryJoyrideCallback.bind(this);
+        
     }
 
     selectBlockprobe(blockprobeId){
         this.props.selectBlockprobe(blockprobeId, this.state.showToolTips.buildStory);
     }
+
+    handleCreateStoryJoyrideCallback(data){
+        const {action,index,status,type} = data;
+        if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+            var showToolTips = this.state.showToolTips;
+            showToolTips.createStory = false;
+            showToolTips.addTitleAndSummary = false;
+            showToolTips.clickOnStory = false;
+            this.setState({ showToolTips: showToolTips });
+        }
+    }
+
 
     renderSingleBlockprobeItem(blockprobe, scope){
         //console.log(blockprobe);
@@ -338,6 +352,7 @@ class UserBlockprobesComponent extends React.Component {
                       zIndex: 1000,
                     }
                   }}
+                  callback = {this.handleCreateStoryJoyrideCallback}
                 />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
                 <div>
