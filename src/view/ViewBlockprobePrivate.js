@@ -73,6 +73,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             },
             showTooltip:{
                 buildStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
+                preCommitToStory: false,
                 commitToStory: false,
                 menuClickFirst: false,
                 viewDashboardView: false
@@ -95,6 +96,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.finishBuildingStoryTooltip = this.finishBuildingStoryTooltip.bind(this);
+        this.startAddBlockToStoryTooltip = this.startAddBlockToStoryTooltip.bind(this);
         this.finishAddingBlockToStoryTooltip = this.finishAddingBlockToStoryTooltip.bind(this);
         this.finishOpenMenuForDashboard = this.finishOpenMenuForDashboard.bind(this);
         this.finishDashboardView = this.finishDashboardView.bind(this);
@@ -103,7 +105,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
     finishBuildingStoryTooltip(){
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
-        showTooltip.commitToStory = true;
+        showTooltip.preCommitToStory = true;
+        showTooltip.commitToStory = false;
         showTooltip.menuClickFirst = false;
         showTooltip.viewDashboardView = false;
         this.setState({
@@ -111,9 +114,22 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
     }
 
+    startAddBlockToStoryTooltip(){
+            var showTooltip = this.state.showTooltip;
+            showTooltip.buildStory = false;
+            showTooltip.preCommitToStory = false;
+            showTooltip.commitToStory = true;
+            showTooltip.menuClickFirst = false;
+            showTooltip.viewDashboardView = false;
+            this.setState({
+                showTooltip: showTooltip
+            });
+    }
+
     finishAddingBlockToStoryTooltip(){
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
+        showTooltip.preCommitToStory = false;
         showTooltip.commitToStory = false;
         showTooltip.menuClickFirst = true;
         showTooltip.viewDashboardView = false;
@@ -125,6 +141,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     finishOpenMenuForDashboard(){
         var showTooltip = this.state.showTooltip;
         showTooltip.buildStory = false;
+        showTooltip.preCommitToStory = false;
         showTooltip.commitToStory = false;
         showTooltip.menuClickFirst = false;
         showTooltip.viewDashboardView = true;
@@ -162,6 +179,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     onSetSelectedBlockSidebarOpen(open) {
+        if(open){
+            if(this.state.showTooltip.preCommitToStory){
+                this.startAddBlockToStoryTooltip();
+            }
+        }
+        else{
+            if(this.state.showTooltip.commitToStory){
+                this.finishBuildingStoryTooltip();
+            }
+        }
         this.setState({ selectedBlockSidebarOpen: open });
     }
 

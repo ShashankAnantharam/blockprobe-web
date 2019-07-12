@@ -31,15 +31,18 @@ class BulkDraftBlockComponent extends React.Component {
                     {
                         title: 'Add your blocks!',
                         target: '.copyBlockBulkText',
-                        content: 'You are going to add your first blocks to your story. Copy paste the lines shown here as input.',
+                        content: 'You are going to add your first blocks to your story. Copy-paste ALL the red colored text into the input and save your content. The text contains hashtags and paragraphs that play an important role while shaping your content. You can learn more by clicking the info icons in blue',
                         disableBeacon: true
-                    },
+                    }
+                   /* ,
                     {
                         title: 'Save your blocks!',
                         target: '.saveBlocksInBulk',
                         content: 'Once you are done copy-pasting the red text into the input, please save your content.',
-                        disableBeacon: false
-                    }
+                        disableBeacon: false,
+                        placementBeacon: 'left',
+                        event: 'hover'
+                    }*/
                 ]            
             },
             showTooltip:{
@@ -191,7 +194,7 @@ class BulkDraftBlockComponent extends React.Component {
                 styles={{
                     options: {
                       arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
+                      beaconSize: '4em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
                       overlayColor: 'rgba(79, 26, 0, 0.4)',
@@ -231,7 +234,7 @@ class BulkDraftBlockComponent extends React.Component {
                 </form>
                 <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
                         <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block and you can give a title to each para. For example, copy paste the text in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>Learn More</a></p>
-                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>                           
+                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
                             #1s Avengers<br/>
                             Thor, Rogers and Ironman are the Avengers.<br/><br/>
                             Thor is from Asgard

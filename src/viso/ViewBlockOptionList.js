@@ -9,7 +9,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'; 
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Joyride from 'react-joyride';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 
@@ -28,12 +28,23 @@ class ViewBlockListComponent extends React.Component {
                     {
                         title: 'Add your first block to the story!',
                         target: '.commitBlock',
-                        content: 'Click on this option and add your block to the story!',
-                        disableBeacon: false   
+                        content: 'Click on \'Commit block to story\' from the options!',
+                        disableBeacon: true,
+                        placement: 'center',
+                        event: 'hover'   
                     }
                 ]
+            },
+            showTooltip:{
+                addToStory:false
             }
         };
+
+        if(props.commitToStoryTooltip){
+            this.state.showTooltip={
+                addToStory: true
+            }
+        }
 
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
@@ -45,6 +56,7 @@ class ViewBlockListComponent extends React.Component {
         this.getRandomReviewer = this.getRandomReviewer.bind(this);
         this.giveBlockToNextReviewer = this.giveBlockToNextReviewer.bind(this);
         this.renderSuccessfulOptionList = this.renderSuccessfulOptionList.bind(this);
+        this.handleCommitJoyrideCallback = this.handleCommitJoyrideCallback.bind(this);
     }
 
     selectOption(option){
@@ -301,17 +313,18 @@ class ViewBlockListComponent extends React.Component {
                     {this.props.canCommit?
                         <div>
                             <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(79, 26, 0, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                }}
+                                callback = {this.handleCommitJoyrideCallback}
                                 steps={this.state.tooltipText.addToStory}
                                 run = {this.props.commitToStoryTooltip}                    
                                 /> 
@@ -351,6 +364,23 @@ class ViewBlockListComponent extends React.Component {
                 </List>
             </div>
         );
+    }
+
+    componentWillReceiveProps(newProps){
+        if(newProps.commitToStoryTooltip){
+            var showTooltip = this.state.showTooltip;
+            showTooltip.addToStory = true;
+            this.setState({showTooltip: showTooltip});
+        }
+    }
+
+    handleCommitJoyrideCallback(data){
+        const {action,index,status,type} = data;
+        if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+            var showTooltip = this.state.showTooltip;
+            showTooltip.addToStory = false;
+            this.setState({showTooltip: showTooltip});
+        }
     }
 
     render(){
