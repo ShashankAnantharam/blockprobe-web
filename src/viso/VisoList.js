@@ -35,7 +35,7 @@ class VisualizeOptionsListComponent extends React.Component {
                     {
                         title: 'Share your story dashboard!',
                         target: '.shareOption',
-                        content: 'After seeing the dashboard, click on \'Share my story\' and then use the public link to share the dashboard with friends.',
+                        content: 'Click on \'Share my story\' and then use the public link to share the dashboard with friends.',
                         disableBeacon: true,
                         placement: 'center'
                     }

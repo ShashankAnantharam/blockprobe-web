@@ -69,7 +69,7 @@ class UserBlocksComponent extends React.Component {
                     {
                         title: 'Add your block to the story!',
                         target: '.inReviewBlockList',
-                        content: 'Your block is in review. You can see it in this list. Since you are the creator of the story, you also get to review the block. But for now, you can skip te review and directly add it to the story. Click on your block in review.',
+                        content: 'Your block is in review. You can see it in this list. Since you are the creator of the story, you also get to review the block. But for now, you can skip the review and directly add it to the story. Click on your block in review.',
                         disableBeacon: true
                     }
                 ]

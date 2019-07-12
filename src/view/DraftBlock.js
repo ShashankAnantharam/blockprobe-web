@@ -57,19 +57,22 @@ class DraftBlockComponent extends React.Component {
                         title: 'Add some date to your block!',
                         target: '.addDateTimeButton',
                         content: 'If the content of your contribution is associated with some date-time, you can add it here.',
-                        disableBeacon: false
+                        disableBeacon: false,
+                        event: 'hover'
                     },
                     {                    
                         title: 'Your entities were auto detected!',
                         target: '.draft-box-entity-dropdown-container',
                         content: 'Your entities that were defined were autodetected in the text of your content. You can manually change it here.',
-                        disableBeacon: false
+                        disableBeacon: false,
+                        event: 'hover'
                     },
                     {                    
                         title: 'Submit block!',
                         target: '.submitBlockButton',
                         content: 'Submit the block once done by clicking this button!',
-                        disableBeacon: false
+                        disableBeacon: false,
+                        event: 'hover'
                     }
                 ]
             }
