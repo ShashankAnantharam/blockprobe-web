@@ -32,10 +32,10 @@ class EntityPaneView extends React.Component {
                 ],
                 cancelButton:[                    
                     {                    
-                        title: 'Your entities have been defined!',
+                        title: 'Well done! Your entities have been defined!',
                         target: '.cancelEntityPaneButton',
-                        content: 'Click on cancel to go back now.',
-                        disableBeacon: true,
+                        content: 'Click on close. We are done here!',
+                        disableBeacon: false,
                         placementBeacon: 'left'
                     }             
                 ]
@@ -95,11 +95,11 @@ class EntityPaneView extends React.Component {
         str = '';
         var showTooltip = this.state.showTooltip;
 
-        if(entityArr.length > 0 && totalStr.trim() != ''){
+        if(totalStr.trim() != ''){
             if(this.props.entityPaneTooltip){                   
                 showTooltip.cancel = true;
             }                
-        }               
+        }             
         this.setState({
             newEntity: str,
             showTooltip: showTooltip
@@ -287,12 +287,12 @@ class EntityPaneView extends React.Component {
                 styles={{
                     options: {
                       arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
+                      beaconSize: '5em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
                       overlayColor: 'rgba(79, 26, 0, 0.4)',
                       width: 900,
-                      zIndex: 1000,
+                      zIndex: 1000
                     }
                   }}
                     steps={this.state.tooltipText.cancelButton}
