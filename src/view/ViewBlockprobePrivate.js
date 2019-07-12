@@ -69,6 +69,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
                         content: 'Click on the menu icon.',
                         disableBeacon: true
                     }
+                ],
+                preShareStory:[
+                    {
+                        title: 'Let\'s share your story with friends!',
+                        target: '.menu-button',
+                        content: 'Click on the menu icon.',
+                        disableBeacon: false,
+                        placementBeacon: 'left',
+                        event: 'hover'
+                    }
                 ]
             },
             showTooltip:{
@@ -76,7 +86,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 preCommitToStory: false,
                 commitToStory: false,
                 menuClickFirst: false,
-                viewDashboardView: false
+                viewDashboardView: false,
+                preShareStory: false,
+                shareStory: false
             }
         }
 
@@ -100,6 +112,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.finishAddingBlockToStoryTooltip = this.finishAddingBlockToStoryTooltip.bind(this);
         this.finishOpenMenuForDashboard = this.finishOpenMenuForDashboard.bind(this);
         this.finishDashboardView = this.finishDashboardView.bind(this);
+        this.startShowingShareStoryTooltip = this.startShowingShareStoryTooltip.bind(this);
+        this.finishShareStoryTooltip = this.finishShareStoryTooltip.bind(this);
     }
 
     finishBuildingStoryTooltip(){
@@ -156,6 +170,33 @@ class ViewBlockprobePrivateComponent extends React.Component {
         showTooltip.commitToStory = false;
         showTooltip.menuClickFirst = false;
         showTooltip.viewDashboardView = false;
+        showTooltip.preShareStory = true;
+        showTooltip.shareStory = false;
+        this.setState({
+            showTooltip: showTooltip
+        });
+    }
+
+    startShowingShareStoryTooltip(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.commitToStory = false;
+        showTooltip.menuClickFirst = false;
+        showTooltip.viewDashboardView = false;
+        showTooltip.preShareStory = false;
+        showTooltip.shareStory = true;
+        this.setState({
+            showTooltip: showTooltip
+        });
+    }
+
+    finishShareStoryTooltip(){
+        var showTooltip = this.state.showTooltip;
+        showTooltip.buildStory = false;
+        showTooltip.commitToStory = false;
+        showTooltip.menuClickFirst = false;
+        showTooltip.viewDashboardView = false;
+        showTooltip.shareStory = false;
         this.setState({
             showTooltip: showTooltip
         });
@@ -164,11 +205,27 @@ class ViewBlockprobePrivateComponent extends React.Component {
     setNewVisualisation(newVisualisation){
         if(this.state.visualisation != newVisualisation){
 
+            if(newVisualisation == 'publish_blockprobe'){
+                if(this.state.showTooltip.shareStory){
+                    this.finishShareStoryTooltip();
+                }
+            }
+            else{
+                if(this.state.showTooltip.shareStory){
+                    this.finishDashboardView();
+                }
+            }
+
             if(newVisualisation == 'dashboard'){
                 if(this.state.showTooltip.viewDashboardView){
                     this.finishDashboardView();
                 }
             }
+            else{
+                if(this.state.showTooltip.viewDashboardView){
+                    this.finishAddingBlockToStoryTooltip();
+                }
+            }            
 
             this.setState({
                 selectedVisualisation: newVisualisation,
@@ -196,6 +253,17 @@ class ViewBlockprobePrivateComponent extends React.Component {
         if(open){
             if(this.state.showTooltip.menuClickFirst){
                 this.finishOpenMenuForDashboard();
+            }
+            else if(this.state.showTooltip.preShareStory){
+                this.startShowingShareStoryTooltip();
+            }
+        }
+        else{
+            if(this.state.selectedVisualisation!='dashboard' && this.state.showTooltip.viewDashboardView){
+                this.finishAddingBlockToStoryTooltip();
+            }
+            if(this.state.selectedVisualisation!='publish_blockprobe' && this.state.showTooltip.shareStory){
+                this.finishDashboardView();
             }
         }
 
@@ -754,7 +822,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     selectedVisualisation={this.state.selectedVisualisation}
                     permit = {this.props.permit}
                     isViewOnly={false}
-                    dashboardTooltip={this.state.showTooltip.viewDashboardView}/>
+                    dashboardTooltip={this.state.showTooltip.viewDashboardView}
+                    shareStoryTooltip={this.state.showTooltip.shareStory}/>
                 </div>}
                 open={this.state.menuBarOpen}
                 onSetOpen={this.onSetMenuBlockSidebarOpen}
@@ -766,19 +835,34 @@ class ViewBlockprobePrivateComponent extends React.Component {
             <div style={{height:'100%',overflowY:'scroll'}}>
                 <div className="blockprobe-options-container">
                     <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(79, 26, 0, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '3em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(79, 26, 0, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                        }}
                         steps={this.state.tooltipText.menuClickFirst}
                         run = {this.state.showTooltip.menuClickFirst}                    
+                        /> 
+                    <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '3em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(79, 26, 0, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                        }}
+                        steps={this.state.tooltipText.preShareStory}
+                        run = {this.state.showTooltip.preShareStory}                    
                         /> 
                     <button onClick={() => { this.onSetMenuBlockSidebarOpen(true)}}
                     className="menu-button">

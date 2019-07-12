@@ -26,19 +26,24 @@ class VisualizeOptionsListComponent extends React.Component {
                   {
                     title: 'Visualize your story dashboard!',
                     target: '.dashboard-menu',
-                    content: 'Click on dashboard and visualize your story. If you followed the steps as specified, you will see a summary view, a graph view and a timeline view.',
-                    disableBeacon: false
-                  },
-                  {
-                    title: 'Share your story dashboard!',
-                    target: '.shareOption',
-                    content: 'After seeing the dashboard, share it with friends on social media by clicking on share story and using the public link.',
-                    disableBeacon: true
-                  }
+                    content: 'Click on \'Dashboard\' from the menu and visualize your story. If you followed the steps as specified, you will see a summary view, a graph view and a timeline view.',
+                    disableBeacon: true,
+                    placement: 'center'
+                  }         
+              ],
+              shareStory:[
+                    {
+                        title: 'Share your story dashboard!',
+                        target: '.shareOption',
+                        content: 'After seeing the dashboard, click on \'Share my story\' and then use the public link to share the dashboard with friends.',
+                        disableBeacon: true,
+                        placement: 'center'
+                    }
               ]
           },
           showTooltip:{
-              dashboard: JSON.parse(JSON.stringify(props.dashboardTooltip))
+              dashboard: JSON.parse(JSON.stringify(props.dashboardTooltip)),
+              shareStory: JSON.parse(JSON.stringify(props.shareStoryTooltip))
           }
       }
 
@@ -65,6 +70,21 @@ class VisualizeOptionsListComponent extends React.Component {
     renderOptions(){
         return(
             <div>
+                <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
+                    steps={this.state.tooltipText.shareStory}
+                    run = {this.state.showTooltip.shareStory}                    
+                    />
                 <h3 style={{textAlign:"center"}}>OPTIONS</h3>
                 <List className="">
                     <ListItem button 
@@ -96,7 +116,7 @@ class VisualizeOptionsListComponent extends React.Component {
                                 <Avatar>
                                     <ShareIcon />
                                 </Avatar>
-                                    <ListItemText primary="Share my story dashboard"/>
+                                    <ListItemText primary="Share my story"/>
                             </ListItem>
                         </div>
                         :
@@ -108,12 +128,15 @@ class VisualizeOptionsListComponent extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // You don't have to do this check first, but it can help prevent an unneeded render
-
-        if (nextProps.dashboardTooltip !== this.state.showTooltip.dashboard) {
-            var showTooltip = this.state.showTooltip;
-            showTooltip.dashboard = JSON.parse(JSON.stringify(nextProps.dashboardTooltip));
-            this.setState({ startTime: nextProps.startTime });
+        var showTooltip = this.state.showTooltip;
+        if (nextProps.dashboardTooltip !== this.state.showTooltip.dashboard) {           
+            showTooltip.dashboard = JSON.parse(JSON.stringify(nextProps.dashboardTooltip));           
         }
+        if (nextProps.shareStoryTooltip !== this.state.showTooltip.shareStory) {           
+            showTooltip.shareStory = JSON.parse(JSON.stringify(nextProps.shareStoryTooltip));           
+        }
+
+        this.setState({ showTooltip: showTooltip });
     }
 
     render(){
