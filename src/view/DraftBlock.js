@@ -641,6 +641,17 @@ class DraftBlockComponent extends React.Component {
         return(
             <div>
                 <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.draftBlockTour}
                     run = {this.state.showTooltip.draftBlockTour}                    
                     /> 

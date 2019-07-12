@@ -24,9 +24,9 @@ class EntityPaneView extends React.Component {
             tooltipText:{
                 entityPane:[                    
                     {                    
-                        title: 'Copy paste the following text and press enter',
+                        title: 'Let us add characters (entities) to your story',
                         target: '.createNewEntitiesPane',
-                        content: 'Ironman, Thor, Rogers, Asgard, Thanos',
+                        content: 'Copy paste the text in red and press enter',
                         disableBeacon: true
                     }             
                 ],
@@ -34,8 +34,9 @@ class EntityPaneView extends React.Component {
                     {                    
                         title: 'Your entities have been defined!',
                         target: '.cancelEntityPaneButton',
-                        content: 'The characters of your story are Ironman, Thor, Rogers, Asgard, Thanos.\n Click on cancel to go back now.',
-                        disableBeacon: false
+                        content: 'Click on cancel to go back now.',
+                        disableBeacon: true,
+                        placementBeacon: 'left'
                     }             
                 ]
             },
@@ -122,11 +123,10 @@ class EntityPaneView extends React.Component {
     handleChange(event, type) {
 
         var shouldUpdate = true;
-        if(type!="date" && type!="time"){
-            var lastChar = event.target.value[event.target.value.length-1];
-            if(lastChar=='\n' || lastChar=='\t'){
-                shouldUpdate=false;
-            }          
+        if(type!="date" && type!="time"){            
+            event.target.value = event.target.value.replace(/(\r\n|\n|\r)/gm, "");
+            event.target.value = event.target.value.replace('\t','');
+            event.target.value.trim();          
         }
 
         if(shouldUpdate){
@@ -241,6 +241,17 @@ class EntityPaneView extends React.Component {
                     {renderBlockEntities}
                 </div>
                 <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.entityPane}
                     run = {this.props.entityPaneTooltip}                    
                     /> 
@@ -269,10 +280,21 @@ class EntityPaneView extends React.Component {
                                     fontWeight:'600'
                                     }}/>
                 <div style={{marginLeft:'1em'}}>
-                    <span style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input your entity names seperated by comma and press 'Enter key' or 'Ok button'. For example, copy paste the text below shown in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=122' target='blank'>Learn More</a><br/></span> 
-                    <span style={{fontSize:'13px', color:'red', fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
+                    <span style={{fontSize:'14px', color:'grey', fontStyle:'italic'}}>**Input your entity names seperated by comma and press 'Enter key' or 'Ok button'. For example, copy-paste the text below shown in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=122' target='blank'>Learn More</a><br/></span> 
+                    <span style={{fontSize:'14px', fontWeight:'bold', color:'red', background:'rgba(255,0,0,0.3)', fontStyle:'italic'}}>Ironman, Thor, Rogers, Asgard, Thanos</span>
                 </div>
                 <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.cancelButton}
                     run = {this.state.showTooltip.cancel}                    
                     />                                     

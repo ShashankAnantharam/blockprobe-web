@@ -81,7 +81,7 @@ class UserBlockprobesComponent extends React.Component {
         if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
             var showToolTips = this.state.showToolTips;
             showToolTips.createStory = false;
-            showToolTips.addTitleAndSummary = false;
+            showToolTips.addTitleAndSummary = true;
             showToolTips.clickOnStory = false;
             this.setState({ showToolTips: showToolTips });
         }
@@ -196,6 +196,17 @@ class UserBlockprobesComponent extends React.Component {
             return (
                 <div style={{}}>
                     <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={draftBlockprobeSteps}
                     run = {this.state.showToolTips.addTitleAndSummary}
                     />
@@ -338,20 +349,19 @@ class UserBlockprobesComponent extends React.Component {
         return (
             <div>
                 <Joyride
-                steps={this.state.toolTipSteps.createStoryStep}
-                run = {this.state.showToolTips.createStory}
                 styles={{
                     options: {
                       arrowColor: '#e3ffeb',
                       beaconSize: '3em',
-                      primaryColor: '#06DEE5',
-                      arrowColor: '#e3ffeb',
+                      primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
                       overlayColor: 'rgba(79, 26, 0, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
-                  }}
+                  }}                
+                steps={this.state.toolTipSteps.createStoryStep}
+                run = {this.state.showToolTips.createStory}                
                   callback = {this.handleCreateStoryJoyrideCallback}
                 />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
@@ -379,6 +389,17 @@ class UserBlockprobesComponent extends React.Component {
                     }
                 </div>
                 <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.toolTipSteps.clickOnStoryStep}
                     run = {this.state.showToolTips.clickOnStory}                    
                     />  

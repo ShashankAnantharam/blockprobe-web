@@ -503,10 +503,32 @@ class UserBlocksComponent extends React.Component {
 
         return (<div className="userblocks-options-container">   
                    <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.entityPane}
                     run = {this.state.showTooltip.entityPane}                    
                     />   
                     <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
                     />             
@@ -556,6 +578,17 @@ class UserBlocksComponent extends React.Component {
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
                      <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.draftBlock}
                     run = {this.state.showTooltip.draftBlock}                    
                     /> 
@@ -571,6 +604,17 @@ class UserBlocksComponent extends React.Component {
                 {Object.keys(this.state.inReviewBlocks).length>0?
                 <div>
                     <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.commitBlock}
                     run = {this.state.showTooltip.commitBlock}                    
                     /> 

@@ -188,6 +188,17 @@ class BulkDraftBlockComponent extends React.Component {
             <div className='bulkDraftBlocksPaneContainer'>
             <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
                 <Joyride
+                styles={{
+                    options: {
+                      arrowColor: '#e3ffeb',
+                      beaconSize: '3em',
+                      primaryColor: '#05878B',
+                      backgroundColor: '#e3ffeb',
+                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      width: 900,
+                      zIndex: 1000,
+                    }
+                  }}
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
                     />  
