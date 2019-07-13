@@ -32,7 +32,13 @@ class BulkDraftBlockComponent extends React.Component {
                     {
                         title: 'Add your blocks!',
                         target: '.copyBlockBulkText',
-                        content: 'You are going to add your first blocks to your story. Copy-paste ALL the red colored text into the input and save your content. The text contains hashtags and paragraphs that play an important role while shaping your content. You can learn more by clicking the info icons in blue',
+                        content: 'You are going to add your first blocks to your story. Copy-paste ALL the red colored text into the input and save your content.',
+                        disableBeacon: true
+                    },
+                    {
+                        title: 'Additional info!',
+                        target: '.bulkdraft-list',
+                        content: 'You can learn more by clicking the info icons in blue',
                         disableBeacon: true
                     }
                    /* ,
@@ -248,7 +254,7 @@ class BulkDraftBlockComponent extends React.Component {
             else if(tooltipType=='hashtag'){
                 adhocTooltip.hashtag.flag = false;
             }
-            else if(type == 'summary'){
+            else if(tooltipType == 'summary'){
                 adhocTooltip.summary.flag = false;
             }
             this.setState({adhocTooltip: adhocTooltip});
@@ -261,7 +267,7 @@ class BulkDraftBlockComponent extends React.Component {
              <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
                         <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
                          </p>
-                         <ol className='tooltips-list-bulkdraft'>
+                         <ol className='tooltips-list-bulkdraft bulkdraft-list'>
                              <li>
                                 How paragraphs get converted into blocks. 
                                 <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
@@ -332,6 +338,19 @@ class BulkDraftBlockComponent extends React.Component {
                          </ol>
                         
                 </div>
+                <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>For example, copy paste the text in red as input. 
+                            <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
+                                Learn More
+                            </a>
+                        </p>
+                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
+                            #1s Avengers<br/>
+                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
+                            Thor is from Asgard
+                        </p>
+                </div>
+
             <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
                 <Joyride
                 styles={{
@@ -375,18 +394,6 @@ class BulkDraftBlockComponent extends React.Component {
                         }}/>
                 </label>
                 </form>
-                <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block and you can give a title to each para. For example, copy paste the text in red as input. 
-                            <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
-                                Learn More
-                            </a>
-                        </p>
-                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
-                            #1s Avengers<br/>
-                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
-                            Thor is from Asgard
-                        </p>
-                </div>
                 <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                     <button 
                         className="saveBlockButton saveBlocksInBulk" 

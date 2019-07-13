@@ -16,7 +16,8 @@ import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
 import Timekeeper from 'react-timekeeper';
 import moment from 'moment';
-import Joyride from 'react-joyride';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import Info from '@material-ui/icons/Info';
 import "react-datepicker/dist/react-datepicker.css";
 
 class DraftBlockComponent extends React.Component {
@@ -54,27 +55,56 @@ class DraftBlockComponent extends React.Component {
             tooltipText:{
                 draftBlockTour:[
                     {                    
-                        title: 'Add some date to your block!',
+                        title: 'Edit your block!',
                         target: '.addDateTimeButton',
-                        content: 'If the content of your contribution is associated with some date-time, you can add it here.',
-                        disableBeacon: false,
-                        event: 'hover'
-                    },
-                    {                    
-                        title: 'Your entities were auto detected!',
-                        target: '.draft-box-entity-dropdown-container',
-                        content: 'Your entities that were defined were autodetected in the text of your content. You can manually change it here.',
-                        disableBeacon: false,
-                        event: 'hover'
+                        content: 'You can now edit each aspect of your block here. Click on the blue info icons to learn more about the various aspects of your block such as date-time, entities and evidences.',
+                        disableBeacon: true,
+                        placement: 'center'
                     },
                     {                    
                         title: 'Submit block!',
                         target: '.submitBlockButton',
                         content: 'Submit the block once done by clicking this button!',
                         disableBeacon: false,
+                        placementBeacon: 'left',
                         event: 'hover'
                     }
                 ]
+            },
+            adhocTooltip:{
+                datetime:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Add date and time to your block',
+                            target: '.tooltipDatetime',
+                            content: 'If the content of your block describes some event (someones birth, the creation of a company, a terrorist attack, etc.) that is associated with some date and time, then add that to the block. This enables your block to appear in the Timeline visualisation that shows the chronological view of your story.',
+                            disableBeacon: true
+                        }
+                    ]
+                },
+                entities:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'The entities/characters of your block!',
+                            target: '.tooltipEntities',
+                            content: 'Your block will be associated with some characters of the entire story. You can select those characters (or entities) here. Typically, some entities are autodetected in the text when you create the block. These entities appear in the Graph visualisation of your story that show how your story\'s characters are connected with one-another. Your block will also show up in the Graph visualisation if the viewer clicks on the entities your block is associated with.',
+                            disableBeacon: true
+                        }
+                    ]
+                },
+                evidences:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Add evidence to your block!',
+                            target: '.tooltipEvidences',
+                            content: 'You may want to add authenticity to your block\'s content by adding evidences that is visible to any viewer. You have to provide a link to the actual evidence that viewers of the story can click and navigate to. If your evidence is a picture (a chart), then add the link of the picture here so that the viewers of the story can see it when they click on your block.',
+                            disableBeacon: true
+                        }
+                    ]
+                }
             }
         }
 
@@ -95,6 +125,8 @@ class DraftBlockComponent extends React.Component {
         this.cancelDraftBlock = this.cancelDraftBlock.bind(this);
         this.removeDraftBlock = this.removeDraftBlock.bind(this);
         this.populateEntitiesAndEvidencesToBlock = this.populateEntitiesAndEvidencesToBlock.bind(this);
+        this.showLocalTooltip = this.showLocalTooltip.bind(this);
+        this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
     }
     
 
@@ -451,6 +483,37 @@ class DraftBlockComponent extends React.Component {
                     </div>
         );
     }
+
+    showLocalTooltip(type){
+        var adhocTooltip = this.state.adhocTooltip;
+       if(type=='datetime'){
+           adhocTooltip.datetime.flag = true;
+       }
+       else if(type=='entities'){
+           adhocTooltip.entities.flag = true;
+       }
+       else if(type == 'evidences'){
+           adhocTooltip.evidences.flag = true;
+       }
+       this.setState({adhocTooltip: adhocTooltip});
+    }
+
+    handleAdhocTooltipJoyrideCallback(data, tooltipType){
+       const {action,index,status,type} = data;
+       if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+           var adhocTooltip = this.state.adhocTooltip;
+           if(tooltipType=='datetime'){
+               adhocTooltip.datetime.flag = false;
+           }
+           else if(tooltipType=='entities'){
+               adhocTooltip.entities.flag = false;
+           }
+           else if(tooltipType == 'evidences'){
+               adhocTooltip.evidences.flag = false;
+           }
+           this.setState({adhocTooltip: adhocTooltip});
+       }
+   }
       
     EditSingleBlock(listItem, index){
 
@@ -506,7 +569,28 @@ class DraftBlockComponent extends React.Component {
                 </form>
 
                 <div className="draft-box-datetime-container"> 
-                    <h6 style={{marginBottom:'3px'}}>When did the event described here happen? (Only if your block describes an event)</h6>
+                    <h6 style={{marginBottom:'3px'}}>
+                        When did the event described here happen? (Only if your block describes an event)
+                        <a className='tooltipDatetime tooltips-draft' onClick={(e)=>{this.showLocalTooltip('datetime')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>                         
+                        <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.datetime.text}
+                                    run = {this.state.adhocTooltip.datetime.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'datetime')}}                    
+                                    />
+                    </h6>
                     <div style={{marginTop:'5px', marginBottom:'5px'}}>
                         <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Date: </span>
                         <button 
@@ -528,7 +612,28 @@ class DraftBlockComponent extends React.Component {
                 </div>
 
                 <div className="draft-box-entity-dropdown-container">
-                    <h6 style={{marginBottom:'3px'}}>Entities (Who all are involved?)</h6>
+                    <h6 style={{marginBottom:'3px'}}>
+                        Entities (Who all are involved?)
+                        <a className='tooltipEntities tooltips-draft' onClick={(e)=>{this.showLocalTooltip('entities')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>                         
+                        <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.entities.text}
+                                    run = {this.state.adhocTooltip.entities.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'entities')}}                    
+                                    />
+                    </h6>
                     <MultiSelectReact 
                         options={this.state.multiSelectEntityList}
                         optionClicked={this.entityClicked.bind(this)}
@@ -560,13 +665,33 @@ class DraftBlockComponent extends React.Component {
                 </div>
 
                 <div className="draft-box-evidence-container">
-                    <h6 style={{marginBottom:'3px',marginTop:'3px'}}>Evidences</h6>
-                    <span style={{fontSize:'0.8em', fontWeight:'bold'}}>New Evidence</span>
+                    <h6 style={{marginBottom:'3px',marginTop:'3px'}}>
+                        Evidences
+                        <a className='tooltipEvidences tooltips-draft' onClick={(e)=>{this.showLocalTooltip('evidences')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>                         
+                        <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.evidences.text}
+                                    run = {this.state.adhocTooltip.evidences.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'evidences')}}                    
+                                    />
+                    </h6>                    
                     <button 
                         className="addEvidenceButton" 
                         onClick={this.addEvidence}
                         >                    
-                            <div>Add evidence</div>
+                            <div>Add new evidence</div>
                         </button>  
                     <div>
                         {renderEvidenceList}
@@ -586,7 +711,7 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
-                            <div>Cancel</div>
+                            <div>Close</div>
                     </button>
                     <button 
                         className="deleteBlockButton" 
