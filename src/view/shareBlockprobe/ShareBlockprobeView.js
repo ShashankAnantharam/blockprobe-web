@@ -72,7 +72,7 @@ class ShareBlockprobeComponent extends React.Component {
                 text: [
                     {
                         title: 'Share link on social media',
-                        target: '.tooltipSocialMedia',
+                        target: '.shareContainer',
                         content: 'You can directly open social media (Facebook and Whatsapp) and share your dashboard\'s public link.',
                         disableBeacon: true
                     }
@@ -118,7 +118,7 @@ class ShareBlockprobeComponent extends React.Component {
                 <div className='share-section-heading'>
                     Public Link
                     <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
-                            <Info style={{fontSize:'19px', color:'blue'}}/>
+                            <Info style={{fontSize:'19px'}}/>
                     </a>
                     <Joyride
                                 styles={{
@@ -141,7 +141,7 @@ class ShareBlockprobeComponent extends React.Component {
                 <div className='share-section-heading'>
                     Share Link on Social Media
                     <a className='share-tooltips tooltipSocialMedia' onClick={(e)=>{this.showLocalTooltip('socialMedia')}} >
-                            <Info style={{fontSize:'19px', color:'blue'}}/>
+                            <Info style={{fontSize:'19px'}}/>
                             <Joyride
                                 styles={{
                                     options: {
