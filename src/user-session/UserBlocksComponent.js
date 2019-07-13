@@ -280,7 +280,7 @@ class UserBlocksComponent extends React.Component {
             count: blocks.length
         }    
     
-        console.log(blocks);
+        //console.log(blocks);
         if(blocks.length>0)
             this.finishTooltip('addBlocks');
 
