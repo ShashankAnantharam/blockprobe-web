@@ -18,3 +18,17 @@
     font-size: 16px;
     font-weight: 600;
 }
+
+.tooltips-bulkdraft{
+    color:rgb(0, 76, 78);
+    cursor: pointer;
+}
+
+.tooltips-list-bulkdraft{
+    font-size: 14px; 
+    color: rgb(0, 76, 78);
+}
+
+.tooltips-list-bulkdraft > li{
+    margin-bottom: 6px;
+}

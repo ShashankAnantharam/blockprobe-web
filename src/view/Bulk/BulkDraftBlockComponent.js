@@ -54,9 +54,9 @@ class BulkDraftBlockComponent extends React.Component {
                     flag: false,
                     text: [
                         {
-                            title: 'Importance of paragraphs in input! TODO',
+                            title: 'Importance of paragraphs in input!',
                             target: '.tooltipPara',
-                            content: '1 para 1 block',
+                            content: 'Your input must be in the forms of paras with every two paras seperated by atleast one empty line. Each para becomes one block. To add titles to your blocks, you can add a title to each para but please note that the title and the content must NOT have empty lines between them. In the example shown in red text, \'#1s Avengers\' is the title while \'Thor, Rogers,...\' is the content. In the same example, another block is inputed without a title but with content \'Thor is from Asgard.\' ',
                             disableBeacon: true
                         }
                     ]
@@ -65,9 +65,20 @@ class BulkDraftBlockComponent extends React.Component {
                     flag: false,
                     text: [
                         {
-                            title: 'Importance of hashtag in input! TODO',
+                            title: 'Importance of hashtags in the title of each block!',
                             target: '.tooltipHashtag',
-                            content: '1 hashtag 1 block',
+                            content: 'Each block has a title. If you want to order your blocks to provide structure to your content (in the same way paragraphs follow a certain order in a story), you can start the title using a hashtag. For example, the block with \'#1\' as title will show up before the block with \'#2\'. The text in red inputs a block with a title that starts with #1.',
+                            disableBeacon: true
+                        }
+                    ]
+                },
+                summary:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Importance of hashtags in the summary view!',
+                            target: '.tooltipSummary',
+                            content: 'Your story dashboard contains a summary visualisation that provides a summary of your story to any viewer. As a contributor to the story, you may want your block to surface in the summary. To do so, you need to append the letter \'s\' to the hashtag in the title. Note that the \'s\' must come after the number in the hashtag. For example, in the red text, the first block as a title that begins with \'#1s\', so it will surface in the summary view. The ordering of blocks in the summary view is the same as described in the previous tooltip.',
                             disableBeacon: true
                         }
                     ]
@@ -221,6 +232,9 @@ class BulkDraftBlockComponent extends React.Component {
         else if(type=='hashtag'){
             adhocTooltip.hashtag.flag = true;
         }
+        else if(type == 'summary'){
+            adhocTooltip.summary.flag = true;
+        }
         this.setState({adhocTooltip: adhocTooltip});
      }
 
@@ -234,6 +248,9 @@ class BulkDraftBlockComponent extends React.Component {
             else if(tooltipType=='hashtag'){
                 adhocTooltip.hashtag.flag = false;
             }
+            else if(type == 'summary'){
+                adhocTooltip.summary.flag = false;
+            }
             this.setState({adhocTooltip: adhocTooltip});
         }
     }
@@ -242,13 +259,13 @@ class BulkDraftBlockComponent extends React.Component {
         return(
             <div className='bulkDraftBlocksPaneContainer'>
              <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize:'14px', color:'blue'}}>**The following key points are important while creating any story. Click on the info icons in blue to learn more<br/>
+                        <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
                          </p>
-                         <ol style={{fontSize:'14px', color:'blue'}}>
-                             <li style={{marginBottom:'6px'}}>
+                         <ol className='tooltips-list-bulkdraft'>
+                             <li>
                                 How paragraphs get converted into blocks. 
-                                <a className='tooltipPara' style={{cursor:'pointer'}} onClick={(e)=>{this.showLocalTooltip('para')}} >
-                                    <Info style={{fontSize:'19px', color:'blue'}}/>
+                                <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
+                                    <Info style={{fontSize:'19px'}}/>
                                 </a>
                                 <Joyride
                                 styles={{
@@ -258,7 +275,7 @@ class BulkDraftBlockComponent extends React.Component {
                                     primaryColor: '#05878B',
                                     backgroundColor: '#e3ffeb',
                                     overlayColor: 'rgba(79, 26, 0, 0.4)',
-                                    width: 400,
+                                    width: 900,
                                     zIndex: 1000,
                                     }
                                     }}
@@ -268,10 +285,10 @@ class BulkDraftBlockComponent extends React.Component {
                                     />  
                                 
                             </li>
-                             <li style={{marginBottom:'6px'}}>
-                                Role of the title hashtag in ordering and summary 
-                                <a className='tooltipHashtag' style={{cursor:'pointer'}} onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
-                                    <Info style={{fontSize:'19px', color:'blue'}}/>
+                             <li>
+                                Role of the title hashtag in ordering of content 
+                                <a className='tooltipHashtag tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
+                                    <Info style={{fontSize:'19px'}}/>
                                 </a>
                                 <Joyride
                                 styles={{
@@ -281,13 +298,35 @@ class BulkDraftBlockComponent extends React.Component {
                                     primaryColor: '#05878B',
                                     backgroundColor: '#e3ffeb',
                                     overlayColor: 'rgba(79, 26, 0, 0.4)',
-                                    width: 400,
+                                    width: 900,
                                     zIndex: 1000,
                                     }
                                     }}
                                     steps={this.state.adhocTooltip.hashtag.text}
                                     run = {this.state.adhocTooltip.hashtag.flag}
                                     callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
+                                    />  
+                             </li>
+                             <li>
+                                Role of the title hashtag in the creation of the story summary 
+                                <a className='tooltipSummary tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('summary')}} >
+                                    <Info style={{fontSize:'19px'}}/>
+                                </a>
+                                <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.summary.text}
+                                    run = {this.state.adhocTooltip.summary.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'summary')}}                    
                                     />  
                              </li>
                          </ol>
