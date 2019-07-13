@@ -12,8 +12,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Info from '@material-ui/icons/Info';
 import { isNullOrUndefined } from 'util';
-import Joyride from 'react-joyride';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 
 class BulkDraftBlockComponent extends React.Component {
 
@@ -47,6 +48,30 @@ class BulkDraftBlockComponent extends React.Component {
             },
             showTooltip:{
                 addBlocks: JSON.parse(JSON.stringify(props.addBlocksTooltip))
+            },
+            adhocTooltip:{
+                para:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Importance of paragraphs in input! TODO',
+                            target: '.tooltipPara',
+                            content: '1 para 1 block',
+                            disableBeacon: true
+                        }
+                    ]
+                },
+                hashtag:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Importance of hashtag in input! TODO',
+                            target: '.tooltipHashtag',
+                            content: '1 hashtag 1 block',
+                            disableBeacon: true
+                        }
+                    ]
+                }
             }
         }
         
@@ -57,6 +82,8 @@ class BulkDraftBlockComponent extends React.Component {
         this.getParas = this.getParas.bind(this);
         this.formatParas = this.formatParas.bind(this);
         this.saveDraftInBulk = this.saveDraftInBulk.bind(this);
+        this.showLocalTooltip = this.showLocalTooltip.bind(this);
+        this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
 
     }
 
@@ -186,9 +213,86 @@ class BulkDraftBlockComponent extends React.Component {
          this.props.addDraftBlocksInBulk(draftBlocks);
      } 
 
+     showLocalTooltip(type){
+         var adhocTooltip = this.state.adhocTooltip;
+        if(type=='para'){
+            adhocTooltip.para.flag = true;
+        }
+        else if(type=='hashtag'){
+            adhocTooltip.hashtag.flag = true;
+        }
+        this.setState({adhocTooltip: adhocTooltip});
+     }
+
+     handleAdhocTooltipJoyrideCallback(data, tooltipType){
+        const {action,index,status,type} = data;
+        if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+            var adhocTooltip = this.state.adhocTooltip;
+            if(tooltipType=='para'){
+                adhocTooltip.para.flag = false;
+            }
+            else if(tooltipType=='hashtag'){
+                adhocTooltip.hashtag.flag = false;
+            }
+            this.setState({adhocTooltip: adhocTooltip});
+        }
+    }
+
     render(){
         return(
             <div className='bulkDraftBlocksPaneContainer'>
+             <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                        <p style={{fontSize:'14px', color:'blue'}}>**The following key points are important while creating any story. Click on the info icons in blue to learn more<br/>
+                         </p>
+                         <ol style={{fontSize:'14px', color:'blue'}}>
+                             <li style={{marginBottom:'6px'}}>
+                                How paragraphs get converted into blocks. 
+                                <a className='tooltipPara' style={{cursor:'pointer'}} onClick={(e)=>{this.showLocalTooltip('para')}} >
+                                    <Info style={{fontSize:'19px', color:'blue'}}/>
+                                </a>
+                                <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 400,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.para.text}
+                                    run = {this.state.adhocTooltip.para.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'para')}}                    
+                                    />  
+                                
+                            </li>
+                             <li style={{marginBottom:'6px'}}>
+                                Role of the title hashtag in ordering and summary 
+                                <a className='tooltipHashtag' style={{cursor:'pointer'}} onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
+                                    <Info style={{fontSize:'19px', color:'blue'}}/>
+                                </a>
+                                <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 400,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.hashtag.text}
+                                    run = {this.state.adhocTooltip.hashtag.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
+                                    />  
+                             </li>
+                         </ol>
+                        
+                </div>
             <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
                 <Joyride
                 styles={{
@@ -233,7 +337,11 @@ class BulkDraftBlockComponent extends React.Component {
                 </label>
                 </form>
                 <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block and you can give a title to each para. For example, copy paste the text in red as input. <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>Learn More</a></p>
+                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>**Input text as pararaphs with an empty line gap between two paras. Each para becomes a block and you can give a title to each para. For example, copy paste the text in red as input. 
+                            <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
+                                Learn More
+                            </a>
+                        </p>
                         <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
                             #1s Avengers<br/>
                             Thor, Rogers and Ironman are the Avengers.<br/><br/>
