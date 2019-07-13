@@ -20,3 +20,9 @@
     margin-left:10px; 
     font-size:0.85em;
 }
+
+.share-tooltips{
+    cursor: pointer; 
+    color: blue;
+    margin: 0 5px 0 5px;
+}

@@ -44,6 +44,9 @@ import {
     EmailIcon,
   } from 'react-share';
 import { timingSafeEqual } from 'crypto';
+import Info from '@material-ui/icons/Info';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
+
 
 class ShareBlockprobeComponent extends React.Component {
 
@@ -51,19 +54,112 @@ class ShareBlockprobeComponent extends React.Component {
       super(props);
       this.state = {
           urlPrefix: 'https://blockprobe-32644.firebaseapp.com/view/',
-          blocksUploaded: false
+          blocksUploaded: false,
+          adhocTooltip:{
+            publicLink:{
+                flag: false,
+                text: [
+                    {
+                        title: 'Link to share with public',
+                        target: '.share-url',
+                        content: 'Share your dashboard with the general public using this link so that they can also engage with your story.',
+                        disableBeacon: true
+                    }
+                ]
+            },
+            socialMedia:{
+                flag: false,
+                text: [
+                    {
+                        title: 'Share link on social media',
+                        target: '.tooltipSocialMedia',
+                        content: 'You can directly open social media (Facebook and Whatsapp) and share your dashboard\'s public link.',
+                        disableBeacon: true
+                    }
+                ]
+            }
+        }
       }
 
       this.renderShareScreen = this.renderShareScreen.bind(this);
+      this.showLocalTooltip = this.showLocalTooltip.bind(this);
+      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
     }
+
+    showLocalTooltip(type){
+        var adhocTooltip = this.state.adhocTooltip;
+       if(type=='publicLink'){
+           adhocTooltip.publicLink.flag = true;
+       }
+       else if(type=='socialMedia'){
+           adhocTooltip.socialMedia.flag = true;
+       }
+       this.setState({adhocTooltip: adhocTooltip});
+    }
+
+    handleAdhocTooltipJoyrideCallback(data, tooltipType){
+       const {action,index,status,type} = data;
+       if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+           var adhocTooltip = this.state.adhocTooltip;
+           if(tooltipType=='publicLink'){
+               adhocTooltip.publicLink.flag = false;
+           }
+           else if(tooltipType=='socialMedia'){
+               adhocTooltip.socialMedia.flag = false;
+           }
+           this.setState({adhocTooltip: adhocTooltip});
+       }
+   }
 
     renderShareScreen(){
         let url = this.state.urlPrefix + this.props.bpId;
         return (
             <div>
-                <div className='share-section-heading'>Public Link</div>
+                <div className='share-section-heading'>
+                    Public Link
+                    <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
+                            <Info style={{fontSize:'19px', color:'blue'}}/>
+                    </a>
+                    <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 400,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.publicLink.text}
+                                    run = {this.state.adhocTooltip.publicLink.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'publicLink')}}                    
+                                    />                     
+                </div>
                 <a href={url} target="_blank" className="share-url">{url}</a>
-                <div className='share-section-heading'>Share Link on Social Media</div>
+                <div className='share-section-heading'>
+                    Share Link on Social Media
+                    <a className='share-tooltips tooltipSocialMedia' onClick={(e)=>{this.showLocalTooltip('socialMedia')}} >
+                            <Info style={{fontSize:'19px', color:'blue'}}/>
+                            <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(79, 26, 0, 0.4)',
+                                    width: 400,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.socialMedia.text}
+                                    run = {this.state.adhocTooltip.socialMedia.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'socialMedia')}}                    
+                                    /> 
+                    </a> 
+                </div>
                 <div className='shareContainer'>
                     <div className='shareIcons'>
                         <FacebookShareButton                        
