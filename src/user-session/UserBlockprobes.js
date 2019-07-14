@@ -47,7 +47,7 @@ class UserBlockprobesComponent extends React.Component {
                 ]
             },
             showToolTips:{
-                createStory: false,
+                createStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
                 addTitleAndSummary: false,
                 clickOnStory: false,
                 buildStory: false
@@ -332,6 +332,14 @@ class UserBlockprobesComponent extends React.Component {
             this.setState({
                 showToolTips: showToolTips
             });
+        }
+    }
+
+    componentWillReceiveProps(newProps){
+        if(newProps.buildStorytooltip){
+            var showTooltips = this.state.showToolTips;
+            showTooltips.createStory = JSON.parse(JSON.stringify(newProps.buildStorytooltip));
+            this.setState({showToolTips:showTooltips});
         }
     }
 

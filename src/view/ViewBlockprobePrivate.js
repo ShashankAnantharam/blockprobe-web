@@ -788,6 +788,14 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.onSetSelectedBlockSidebarOpen(false)
     }
 
+    componentWillReceiveProps(newProps){
+        if(newProps.buildStorytooltip){
+            var showTooltip = this.state.showTooltip;
+            showTooltip.buildStory = JSON.parse(JSON.stringify(newProps.buildStorytooltip));
+            this.setState({showTooltip:showTooltip});
+        }
+    }
+
     render(){
         return (
             <div>

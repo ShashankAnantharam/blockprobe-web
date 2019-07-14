@@ -175,6 +175,7 @@ class UserSession extends React.Component {
       getAndSetUser(){
         if(this.state.isUserSignedIn){
             var uId = this.state.userId;
+            var scope = this;
             firebase.firestore().collection("Users").
                 doc(this.state.userId).get().then(function(doc) {
                     if (!doc.exists) {
@@ -184,9 +185,17 @@ class UserSession extends React.Component {
                         };
                         firebase.firestore().collection("Users").
                                 doc(uId).set(userData);
+                        var tooltip = scope.state.tooltip;
+                        tooltip.buildStory = true;
+                        scope.setState({tooltip: tooltip});
                     }
                     else{
                         // console.log(doc.data());
+                       /* var tooltip = scope.state.tooltip;
+                        tooltip.buildStory = true;
+                        console.log(tooltip);
+                        scope.setState({tooltip: tooltip});
+                        */
                     }
                 });
         }
@@ -248,6 +257,7 @@ class UserSession extends React.Component {
                                 selectedBlockprobe = {this.state.selectedBlockprobeId}
                                 selectBlockprobe = {this.selectBlockprobe}
                                 uId={this.state.userId}
+                                buildStorytooltip={this.state.tooltip.buildStory}
                                 />
                         }
                     </div>
@@ -264,7 +274,6 @@ class UserSession extends React.Component {
 
       loggedInView(){
           
-          var buildStorytooltip = this.state.tooltip.buildStory;
           return (
             <div>
                 <div style={{display: 'block'}}>
@@ -293,7 +302,7 @@ class UserSession extends React.Component {
                             bId={this.state.selectedBlockprobeId} 
                             uId={this.state.userId}
                             permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}
-                            buildStorytooltip={buildStorytooltip}/>
+                            buildStorytooltip={this.state.tooltip.buildStory}/>
                         </div>    
                     }
                 </div>
