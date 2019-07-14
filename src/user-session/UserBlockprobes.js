@@ -343,6 +343,20 @@ class UserBlockprobesComponent extends React.Component {
         }
     }
 
+    componentDidMount(){
+        /*
+        <!-- Event snippet for Blockprobe signup conversion page -->
+        <script>
+        gtag('event', 'conversion', {'send_to': 'AW-734513637/5XMVCJjI2qUBEOWTn94C'});
+        </script>
+
+        */
+        const script = document.createElement("script");
+        const scriptText = document.createTextNode("gtag('event', 'conversion', {'send_to': 'AW-734513637/5XMVCJjI2qUBEOWTn94C'});");
+        script.appendChild(scriptText);
+        document.head.appendChild(script);;
+    }
+
     render(){
 
         const scope = this;
