@@ -54,17 +54,23 @@ class UserSession extends React.Component {
     constructor(props){
         super(props);
         this.state={
-            isUserSignedIn: false,
+            isUserSignedIn: this.getItemWrapper('isUserSignedIn',false), //false,
             showLogin: true,
             selectedBlockprobeId: '',
-            userId: '',
-            providerId: '',
+            userId: this.getItemWrapper('userId',''),//'',
+            providerId: this.getItemWrapper('providerId',''),//'',
             blockprobes: {},
             areBlockprobesLoading: false,
             tooltip:{
                 buildStory: false
             }           
         }
+
+        if(this.state.userId == ''){
+            this.state.isUserSignedIn = false;
+        }
+        
+        this.getItemWrapper = this.getItemWrapper.bind(this);
         this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
         this.loggedInContent = this.loggedInContent.bind(this);
@@ -75,6 +81,13 @@ class UserSession extends React.Component {
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
+    }
+
+    getItemWrapper(key, defaultVal){
+        if(!isNullOrUndefined(localStorage.getItem(key))){
+            return localStorage.getItem(key);
+        }
+        return defaultVal;
     }
 
     uiConfig = {
@@ -201,37 +214,57 @@ class UserSession extends React.Component {
         }
       }
 
-      componentDidMount(){
-        firebase.auth().onAuthStateChanged(user =>{
+      logout(){
+        firebase.auth().signOut();
+        this.setState({
+            isUserSignedIn: false
+        });
+        localStorage.setItem('isUserSignedIn',false);
+        localStorage.removeItem('userId');
+      }
 
-            this.setState({
-                isUserSignedIn: !!user
+      componentDidMount(){
+
+        if(this.state.isUserSignedIn){
+            this.getAndSetUser();
+            this.getBlockprobes();
+        }
+
+            firebase.auth().onAuthStateChanged(user =>{
+
+                var oldState = this.state.isUserSignedIn;
+                this.setState({
+                    isUserSignedIn: !!user
+                });
+                localStorage.setItem('isUserSignedIn',!!user);
+
+                var providerId = '';
+                var uId = '';
+                
+                if(!isNullOrUndefined(firebase.auth().currentUser) && 
+                !isNullOrUndefined(firebase.auth().currentUser.providerData) &&
+                firebase.auth().currentUser.providerData.length>0){
+                    providerId = firebase.auth().currentUser.providerData[0].providerId;
+                }
+                if(providerId=="phone"){
+                    uId = firebase.auth().currentUser.phoneNumber;
+                }
+
+                this.setState({
+                    providerId: providerId,
+                    userId: uId
+                });
+                localStorage.setItem('providerId',providerId);
+                localStorage.setItem('userId',uId);
+            // console.log(firebase.auth().currentUser);
+
+                if(!!user && !isNullOrUndefined(firebase.auth().currentUser) && !oldState){
+                    
+                    this.getAndSetUser();
+                    this.getBlockprobes();
+                }
             });
 
-            var providerId = '';
-            var uId = '';
-            
-            if(!isNullOrUndefined(firebase.auth().currentUser) && 
-            !isNullOrUndefined(firebase.auth().currentUser.providerData) &&
-            firebase.auth().currentUser.providerData.length>0){
-                providerId = firebase.auth().currentUser.providerData[0].providerId;
-            }
-            if(providerId=="phone"){
-                uId = firebase.auth().currentUser.phoneNumber;
-            }
-
-            this.setState({
-                providerId: providerId,
-                userId: uId
-              });
-           // console.log(firebase.auth().currentUser);
-
-            if(!!user && !isNullOrUndefined(firebase.auth().currentUser)){
-                
-                this.getAndSetUser();
-                this.getBlockprobes();
-            }
-          })
       }
 
 
@@ -286,7 +319,7 @@ class UserSession extends React.Component {
                             <ul>
                                 <li><a href="/">Home</a></li>
                                 <li style={{color:'white'}}>{this.state.userId}</li>
-                                <li><a onClick={() => firebase.auth().signOut()}>Logout</a></li>
+                                <li><a onClick={() => this.logout()}>Logout</a></li>
                             </ul>
                         </div>
                     </nav>
