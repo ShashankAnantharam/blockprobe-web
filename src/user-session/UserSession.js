@@ -345,6 +345,12 @@ class UserSession extends React.Component {
                                 A blockprobe is a story that is built from the bottom-up by individuals collaborating with one another.
                                 The story can then be visualized as a graph, timeline, etc. and shared with the general public so that they can engage better with the story.
                                 </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
+                                </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                You can also build such visualisations for your stories and share them with your audience using the tool. If you want to do so, lets login and get started!
+                                </div>
                                 <div style={{marginTop:'3%'}}>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/privacy-policy" target="blank">Privacy Policy</a>
