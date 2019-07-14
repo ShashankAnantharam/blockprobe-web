@@ -221,6 +221,7 @@ class UserSession extends React.Component {
         });
         localStorage.setItem('isUserSignedIn',false);
         localStorage.removeItem('userId');
+        localStorage.removeItem('providerId');
       }
 
       componentDidMount(){
