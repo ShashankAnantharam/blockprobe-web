@@ -376,8 +376,13 @@ class UserSession extends React.Component {
                         <div className="landing-view-container">
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '20px', fontWeight:'bold', marginTop:'10px'}}><span>Visually engage your audience and yourself with your work.</span></div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                A blockprobe is a story that is built from the bottom-up by individuals collaborating with one another.
-                                The story can then be visualized as a graph, timeline, etc. and shared with the general public so that they can engage better with the story.
+                                As a journalist, you can build your story using the tool, visualise your story and enable your audience to visualise your story.
+                                </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                As a law enforcement or police officer, you can build your investigation using the tool, visualise your investigation and enable the general public to visualise your investigation.
+                                </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                As a lawmaker, you can visualise your proposals and laws using the tool, and enable your constituents to visualise the proposals.
                                 </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
                                 For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
