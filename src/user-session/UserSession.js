@@ -358,7 +358,7 @@ class UserSession extends React.Component {
                         </div>
                     </nav>                 
                 </header>
-                <main style={{paddingTop:'80px',minHeight:'100vh'}} className="body-color-gradient">
+                <main style={{paddingTop:'80px',minHeight:'100vh'}} className="body-color-backup">
                     <div style={{display:'flex'}}>
                         <GoogleFontLoader
                             fonts={[
