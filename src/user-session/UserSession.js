@@ -76,7 +76,7 @@ class UserSession extends React.Component {
                 },
                 police:{
                     logo: PoliceLogo,
-                    text: 'As a law enforcement, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and enable the general public to visualise your investigation.'
+                    text: 'As a law enforcement agent, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and enable the general public to visualise your investigation.'
                 },
                 politician:{
                     logo: PoliticianLogo,
