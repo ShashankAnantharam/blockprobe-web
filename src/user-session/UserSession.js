@@ -7,7 +7,12 @@ import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 import Loader from 'react-loader-spinner';
 import GoogleFontLoader from 'react-google-font-loader';
+import Img from 'react-image';
+import JournalistLogo from "./icons/journalist.png";
+import PoliceLogo from "./icons/police.png";
+import PoliticianLogo from "./icons/political.png";
 import Joyride from 'react-joyride';
+import {Container, Row, Col} from 'react-bootstrap';
 import {
     FacebookShareButton,
     LinkedinShareButton,
@@ -63,7 +68,21 @@ class UserSession extends React.Component {
             areBlockprobesLoading: false,
             tooltip:{
                 buildStory: false
-            }           
+            },
+            landingPage:{
+                journalist:{
+                    logo: JournalistLogo,
+                    text: 'As a journalist, you can build your story using blockprobe, visualise your story and enable your audience to visualise your story.'
+                },
+                police:{
+                    logo: PoliceLogo,
+                    text: 'As a law enforcement, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and enable the general public to visualise your investigation.'
+                },
+                politician:{
+                    logo: PoliticianLogo,
+                    text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and enable your constituents to visualise your proposals.'
+                }
+            }    
         }
 
         if(this.state.userId == ''){
@@ -81,6 +100,7 @@ class UserSession extends React.Component {
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
+        this.cueCardView = this.cueCardView.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -345,6 +365,26 @@ class UserSession extends React.Component {
           );
       }
 
+      cueCardView(icon, content){
+        var iconList = [icon];
+          return(
+                    <div className="cue-card-container" style={{border:'1px solid lightgrey', width:'100%', display:'flex'}}>
+                        <div style={{minWidth:'30%', maxWidth:'30%', padding:'10px 0 10px 0', textAlign:'center'}}>
+                            
+                            <div>
+                                <Img src={iconList}
+                                    style={{width:'50%'}}></Img>
+                            </div>                                
+                        </div>
+                        <div style={{padding:'10px 10px 10px 10px'}}>
+                            <div className="cue-card-text" style={{fontFamily: 'Lora, bold-italic', textAlign:'justify'}}>
+                                    {content}
+                            </div>
+                        </div>
+                    </div>              
+          )
+      }
+
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           return (
@@ -373,22 +413,18 @@ class UserSession extends React.Component {
                             subsets={['cyrillic-ext', 'greek']}
                             />                        
 
-                        <div className="landing-view-container">
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '20px', fontWeight:'bold', marginTop:'10px'}}><span>Visually engage your audience and yourself with your work.</span></div>
+                        <div className="landing-view-container">                       
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold', marginTop:'10px'}}><span>Visually engage your audience and yourself with your work.</span></div>
+                                <div style={{marginTop:'16px'}}>
+                                    {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
+                                    {this.cueCardView(this.state.landingPage.police.logo, this.state.landingPage.police.text)}
+                                    {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
+                                </div>                        
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                As a journalist, you can build your story using the tool, visualise your story and enable your audience to visualise your story.
+                                    For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
                                 </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                As a law enforcement or police officer, you can build your investigation using the tool, visualise your investigation and enable the general public to visualise your investigation.
-                                </div>
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                As a lawmaker, you can visualise your proposals and laws using the tool, and enable your constituents to visualise the proposals.
-                                </div>
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
-                                </div>
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                You can also build such visualisations for your stories and share them with your audience using the tool. If you want to do so, lets login and get started!
+                                    To use blockprobe, login with your mobile and get started!
                                 </div>
                                 <div style={{marginTop:'3%'}}>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
