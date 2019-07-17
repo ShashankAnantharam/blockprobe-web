@@ -348,17 +348,8 @@ class UserSession extends React.Component {
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           return (
-              <div>
-                <header className="toolbar">
-                    <nav className="toolbar__navigation">
-                        <div></div>
-                        <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
-                        <div className="spacer" />
-                        <div className="toolbar__navigation-items">                            
-                        </div>
-                    </nav>                 
-                </header>
-                <main style={{paddingTop:'80px',minHeight:'100vh'}} className="body-color-backup">
+              <div>                
+                <main style={{paddingTop:'10px',minHeight:'100vh'}} className="body-color-backup">
                     <div style={{display:'flex'}}>
                         <GoogleFontLoader
                             fonts={[
