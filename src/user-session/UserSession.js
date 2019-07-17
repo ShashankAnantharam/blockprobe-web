@@ -72,15 +72,15 @@ class UserSession extends React.Component {
             landingPage:{
                 journalist:{
                     logo: JournalistLogo,
-                    text: 'As a journalist, you can build your story using blockprobe, visualise your story and enable your audience to visualise your story.'
+                    text: 'As a journalist, you can build your story using blockprobe, visualise your story and better engage your audience with your story.'
                 },
                 police:{
                     logo: PoliceLogo,
-                    text: 'As a law enforcement agent, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and enable the general public to visualise your investigation.'
+                    text: 'As a law enforcement agent, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and better engage the general public with your investigation.'
                 },
                 politician:{
                     logo: PoliticianLogo,
-                    text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and enable your constituents to visualise your proposals.'
+                    text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and better engage your constituents with your proposals.'
                 }
             }    
         }
