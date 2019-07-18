@@ -348,7 +348,7 @@ class UserBlockprobesComponent extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
-        if(newProps.buildStorytooltip){
+        if(newProps.buildStorytooltip != this.props.buildStorytooltip){
             var showTooltips = this.state.showToolTips;
             showTooltips.createStory = JSON.parse(JSON.stringify(newProps.buildStorytooltip));
             this.setState({showToolTips:showTooltips});
@@ -420,21 +420,7 @@ class UserBlockprobesComponent extends React.Component {
                         null
                     }
                 </div>
-                <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(1, 79, 61, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
-                    steps={this.state.toolTipSteps.clickOnStoryStep}
-                    run = {this.state.showToolTips.clickOnStory}                    
-                    />  
+                 
 
                     {Object.keys(this.props.blockprobes).length == 0?
                         <div style={{padding:'15px'}}>
@@ -447,11 +433,26 @@ class UserBlockprobesComponent extends React.Component {
                         </p>
                         </div>                    
                         :
-                        null
-                        }
-                        <List className="blockprobeListTooltip">                                     
+                        <List className="blockprobeListTooltip">  
+                        <Joyride
+                            styles={{
+                                options: {
+                                arrowColor: '#e3ffeb',
+                                beaconSize: '3em',
+                                primaryColor: '#05878B',
+                                backgroundColor: '#e3ffeb',
+                                overlayColor: 'rgba(1, 79, 61, 0.4)',
+                                width: 900,
+                                zIndex: 1000,
+                                }
+                            }}
+                                steps={this.state.toolTipSteps.clickOnStoryStep}
+                                run = {this.state.showToolTips.clickOnStory}                    
+                                />                                    
                             {blockprobeListRender}
                         </List>
+                        }
+                        
                 
                 
             </div>
