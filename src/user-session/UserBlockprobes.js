@@ -408,7 +408,7 @@ class UserBlockprobesComponent extends React.Component {
                         <button
                             className="startTooltipsButton" 
                             onClick={() => this.startTooltipTour()}>
-                            Start tooltips tour
+                            Guided tutorial
                         </button>
                     </div>
                     {this.state.addBlockprobe?
@@ -432,6 +432,15 @@ class UserBlockprobesComponent extends React.Component {
                     steps={this.state.toolTipSteps.clickOnStoryStep}
                     run = {this.state.showToolTips.clickOnStory}                    
                     />  
+                    <div style={{padding:'15px'}}>
+                        <p className="emptyListText">
+                            If you want to understand the tool, click on the Guided Tutorial button and follow the steps.<br/><br/>
+                            Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
+                            If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
+                            If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
+                            If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
+                        </p>
+                    </div>
                 <List className="blockprobeListTooltip">
                                      
                     {blockprobeListRender}
