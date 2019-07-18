@@ -373,8 +373,6 @@ class UserBlockprobesComponent extends React.Component {
             scope.renderSingleBlockprobeItem(scope.props.blockprobes[blockprobeId], scope)
         ));
 
-        //console.log(blockprobeListRender);
-
         return (
             <div>
                 <Joyride
@@ -432,7 +430,9 @@ class UserBlockprobesComponent extends React.Component {
                     steps={this.state.toolTipSteps.clickOnStoryStep}
                     run = {this.state.showToolTips.clickOnStory}                    
                     />  
-                    <div style={{padding:'15px'}}>
+
+                    {Object.keys(this.props.blockprobes).length == 0?
+                        <div style={{padding:'15px'}}>
                         <p className="emptyListText">
                             If you want to understand the tool, click on the Guided Tutorial button and follow the steps.<br/><br/>
                             Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
@@ -440,11 +440,14 @@ class UserBlockprobesComponent extends React.Component {
                             If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
                             If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
                         </p>
-                    </div>
-                <List className="blockprobeListTooltip">
-                                     
-                    {blockprobeListRender}
-                </List>
+                        </div>                    
+                        :
+                        <List className="blockprobeListTooltip">                                     
+                            {blockprobeListRender}
+                        </List>
+                        }
+                
+                
             </div>
         );
     }
