@@ -30,11 +30,18 @@ class UserBlockprobesComponent extends React.Component {
             toolTipSteps:{
                 createStoryStep: [
                     {
-                    title: 'Get started with a new story!',
-                    target: '.addBlockprobeButton',
-                    content: 'Click to create new story and get started!',
-                    placementBeacon: 'left',
-                    disableBeacon: true
+                        title: 'The blockprobe tutorial!',
+                        target: '.addBlockprobeButton',
+                        content: 'This is a directed tutorial to show you how to use Blockprobe tool. In this tutorial, you will build, visualise and share your work using blockprobe!',
+                        placement: 'center',
+                        disableBeacon: true
+                    },
+                    {
+                        title: 'Get started!',
+                        target: '.addBlockprobeButton',
+                        content: 'Click to create new story and get started! A story could be an investigation of a crime, an article for a newspaper or a policy proposal.',
+                        placementBeacon: 'left',
+                        disableBeacon: true
                     }                                
                 ],
                 clickOnStoryStep: [
@@ -189,7 +196,7 @@ class UserBlockprobesComponent extends React.Component {
         var draftBlockprobeSteps = [
             {
                 target: '.newBlockprobeForm',
-                content: 'Give a title and summary to your story!',
+                content: 'Give a title and brief summary to your story!',
                 disableBeacon: true                    
             }];
         if(this.state.addBlockprobe){
@@ -202,7 +209,7 @@ class UserBlockprobesComponent extends React.Component {
                       beaconSize: '3em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      overlayColor: 'rgba(1, 79, 61, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
@@ -377,7 +384,7 @@ class UserBlockprobesComponent extends React.Component {
                       beaconSize: '3em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      overlayColor: 'rgba(1, 79, 61, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
@@ -417,7 +424,7 @@ class UserBlockprobesComponent extends React.Component {
                       beaconSize: '3em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(79, 26, 0, 0.4)',
+                      overlayColor: 'rgba(1, 79, 61, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
