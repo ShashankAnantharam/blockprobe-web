@@ -447,10 +447,11 @@ class UserBlockprobesComponent extends React.Component {
                         </p>
                         </div>                    
                         :
+                        null
+                        }
                         <List className="blockprobeListTooltip">                                     
                             {blockprobeListRender}
                         </List>
-                        }
                 
                 
             </div>
