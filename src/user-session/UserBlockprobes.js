@@ -91,6 +91,11 @@ class UserBlockprobesComponent extends React.Component {
             showToolTips.addTitleAndSummary = true;
             showToolTips.clickOnStory = false;
             this.setState({ showToolTips: showToolTips });
+            ReactGA.event({
+                category: 'read_initial_tooltip',
+                action: 'Closed initial tooltip',
+                label: 'close initial tooltip'
+              });
         }
     }
 
