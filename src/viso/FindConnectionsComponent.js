@@ -532,9 +532,12 @@ class FindConnectionsComponent extends React.Component {
                     </div>                    
 
                     {this.state.currentSelectedBlocks.length > 0?
-                        <div className="graph-block-list"  id="graph-selected-block-list">
-                            {renderBlocks}
-                        </div>                        
+                        <div className="graph-block-list">
+                            <div className='graph-block-list-title'>Graph selections</div> 
+                            <div className='graph-block-list-container' id="graph-selected-block-list">
+                                {renderBlocks}
+                            </div>
+                        </div>                            
                         :
                         null}  
                       
