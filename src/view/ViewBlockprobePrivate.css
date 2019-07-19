@@ -43,3 +43,23 @@
     margin-bottom:1em;
     height:auto;
 }
+
+@media only screen and (max-width: 600px) {
+    .right-sidebar{
+        width: 75vw;
+    }
+
+    .left-sidebar{
+        width: 75vw;
+    }
+}
+
+@media only screen and (min-width: 601px) {
+    .right-sidebar{
+        width: 45vw;
+    }
+
+    .left-sidebar{
+        width: 40vw;
+    }
+}
