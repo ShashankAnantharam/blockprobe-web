@@ -54,8 +54,8 @@ class UserBlockprobesComponent extends React.Component {
                 ]
             },
             showToolTips:{
-                createStory: false,
-                addTitleAndSummary: JSON.parse(JSON.stringify(props.buildStorytooltip)),
+                createStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
+                addTitleAndSummary: false,
                 clickOnStory: false,
                 buildStory: false
             }
@@ -403,10 +403,10 @@ class UserBlockprobesComponent extends React.Component {
                 </div>
                  
 
-                    {Object.keys(this.props.blockprobes).length == 0?
+                    {Object.keys(this.props.blockprobes).length != 0?
                         <div style={{padding:'15px'}}>
                         <p className="emptyListText">
-                            If you want to understand the tool, click on the Guided Tutorial button and follow the steps.<br/><br/>
+                            Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
                             Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
                             If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
                             If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
