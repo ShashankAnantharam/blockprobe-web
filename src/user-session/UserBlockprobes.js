@@ -80,6 +80,11 @@ class UserBlockprobesComponent extends React.Component {
     }
 
     selectBlockprobe(blockprobeId){
+        ReactGA.event({
+            category: 'blockprobe_opened',
+            action: 'Blockprobe Opened',
+            label: String(blockprobeId)
+          });
         this.props.selectBlockprobe(blockprobeId, this.state.showToolTips.buildStory);
     }
 
@@ -303,6 +308,11 @@ class UserBlockprobesComponent extends React.Component {
                 showToolTips.addTitleAndSummary = true;
                 showToolTips.clickOnStory = false;
             }
+            ReactGA.event({
+                category: 'clicked_on_create_story',
+                action: 'Clicked on create story',
+                label: 'Clicked on create story'
+              });
         }
 
         
