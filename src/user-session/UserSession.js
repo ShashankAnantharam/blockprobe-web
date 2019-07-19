@@ -435,11 +435,18 @@ class UserSession extends React.Component {
                             </div>
                             <div>                        
                             {this.state.showLogin?
-                            <div style={{margin:'2%',position:'fixed'}} className="user-session-shadow-view">
+                            <div className="user-session-login-container user-session-shadow-view">
                                     <StyleFirebaseAuth
                                     uiConfig={this.uiConfig}
                                     firebaseAuth={firebase.auth()}                            
                                     />
+                                    <div className='mobile-landing-page'>
+                                        <div style={{marginTop:'16px'}}>
+                                            {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
+                                            {this.cueCardView(this.state.landingPage.police.logo, this.state.landingPage.police.text)}
+                                            {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
+                                        </div> 
+                                    </div>
                                 </div> : null 
                             }
                             </div>
