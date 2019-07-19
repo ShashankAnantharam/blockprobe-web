@@ -339,7 +339,7 @@ class UserSession extends React.Component {
                         <div className="toolbar__navigation-items">
                             <ul>
                                 <li><a href="/">Home</a></li>
-                                <li style={{color:'white'}}>{this.state.userId}</li>
+                                <li className="userName" style={{color:'white'}}>{this.state.userId}</li>
                                 <li><a onClick={() => this.logout()}>Logout</a></li>
                             </ul>
                         </div>

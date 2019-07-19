@@ -30,13 +30,6 @@
     cursor: pointer;
 }
 
-.toolbar__logo a{
-    color: white;
-    text-decoration: none;
-    font-size: 1.5rem;
-    padding-left: 1.5rem;
-}
-
 .logged-in-content{
     margin-top:66px; 
     position:fixed; 
@@ -52,13 +45,6 @@
 
 .spacer {
     flex: 1;
-}
-
-.landing-view-container{
-    width: 60%; 
-    padding: 0 10px 30px 10px; 
-    margin: 2%;
-    border-radius: 20px;
 }
 
 .user-session-shadow-view{
@@ -133,4 +119,35 @@
 
 .react-joyride__spotlight{
     background-color: rgba(255,255,255,0.5) !important;
+}
+
+@media only screen and (min-width: 701px) {
+    .landing-view-container{
+        width: 60%; 
+        padding: 0 10px 30px 10px; 
+        margin: 2%;
+        border-radius: 20px;
+    }
+
+    .toolbar__logo a{
+        color: white;
+        text-decoration: none;
+        font-size: 1.5rem;
+        padding-left: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+
+    .landing-view-container{
+        display: none;
+    }
+
+    .toolbar__logo{
+        display: none;
+    }
+
+    .userName{
+        display: none;
+    }
 }
