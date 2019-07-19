@@ -215,7 +215,7 @@ class UserBlockprobesComponent extends React.Component {
                       beaconSize: '3em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(1, 79, 61, 0.4)',
+                      overlayColor: 'rgba(10,10,10, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
@@ -378,7 +378,7 @@ class UserBlockprobesComponent extends React.Component {
                       beaconSize: '3em',
                       primaryColor: '#05878B',
                       backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(1, 79, 61, 0.4)',
+                      overlayColor: 'rgba(10,10,10, 0.4)',
                       width: 900,
                       zIndex: 1000,
                     }
@@ -432,7 +432,7 @@ class UserBlockprobesComponent extends React.Component {
                                 beaconSize: '3em',
                                 primaryColor: '#05878B',
                                 backgroundColor: '#e3ffeb',
-                                overlayColor: 'rgba(1, 79, 61, 0.4)',
+                                overlayColor: 'rgba(10, 10, 10, 0.4)',
                                 width: 900,
                                 zIndex: 1000,
                                 }
