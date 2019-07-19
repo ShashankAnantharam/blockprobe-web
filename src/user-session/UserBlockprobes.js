@@ -35,14 +35,14 @@ class UserBlockprobesComponent extends React.Component {
                         content: 'This is a directed tutorial to show you how to use Blockprobe tool. In this tutorial, you will build, visualise and share your work using blockprobe!',
                         placement: 'center',
                         disableBeacon: true
-                    },
+                    }/*,
                     {
                         title: 'Get started!',
                         target: '.addBlockprobeButton',
                         content: 'Click to create new story and get started! A story could be an investigation of a crime, an article for a newspaper or a policy proposal.',
                         placementBeacon: 'left',
                         disableBeacon: true
-                    }                                
+                    } */                               
                 ],
                 clickOnStoryStep: [
                     {                    
@@ -54,8 +54,8 @@ class UserBlockprobesComponent extends React.Component {
                 ]
             },
             showToolTips:{
-                createStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
-                addTitleAndSummary: false,
+                createStory: false,
+                addTitleAndSummary: JSON.parse(JSON.stringify(props.buildStorytooltip)),
                 clickOnStory: false,
                 buildStory: false
             }
@@ -192,18 +192,14 @@ class UserBlockprobesComponent extends React.Component {
     }
 
     isValidBlockprobe(){
-        if(this.state.draftBlockprobe.title == '' || this.state.draftBlockprobe.summary == '')
+        if(this.state.draftBlockprobe.title.trim() == '')
             return false;
         return true;
     }
 
     renderDraftBlockprobe(){
         var draftBlockprobeSteps = [
-            {
-                target: '.newBlockprobeForm',
-                content: 'Give a title and brief summary to your story!',
-                disableBeacon: true                    
-            }];
+            ];
         if(this.state.addBlockprobe){
             return (
                 <div style={{}}>
@@ -226,7 +222,7 @@ class UserBlockprobesComponent extends React.Component {
                         <label>
                             <Textarea 
                                 type="text"
-                                placeholder = "Title of your story."
+                                placeholder = "Enter title of your story."
                                 value={this.state.draftBlockprobe.title}
                                 onChange={(e) => { this.handleChange(e,"title")}}
                                 maxRows="2"
@@ -235,29 +231,14 @@ class UserBlockprobesComponent extends React.Component {
                                     background: 'white',
                                     borderWidth:'2px', 
                                     borderStyle:'solid', 
-                                    borderColor:'darkgrey',
-                                    borderBottomWidth:'0px',
+                                    borderColor:'black',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
+                                    textColor: 'black',
+                                    fontWeight: '600',
+                                    marginLeft: '1em',
                                     width:'95%'
-                                    }}/>
-                            <Textarea 
-                            type="text"
-                            placeholder = "A one line summary of your story."
-                            value={this.state.draftBlockprobe.summary}
-                            onChange={(e) => { this.handleChange(e,"summary")}}
-                            maxRows="5"
-                            minRows="3"
-                            style={{
-                                background: 'white',
-                                borderWidth:'2px', 
-                                borderStyle:'solid', 
-                                borderColor:'darkgrey',
-                                borderTopWidth:'0px',
-                                paddingTop:'6px',
-                                paddingBottom:'6px',
-                                width:'95%'
-                                }}/>
+                                    }}/>                            
                         </label>
                     </form>
                     {this.isValidBlockprobe()?
