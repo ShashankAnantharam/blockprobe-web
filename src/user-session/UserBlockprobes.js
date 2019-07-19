@@ -46,9 +46,9 @@ class UserBlockprobesComponent extends React.Component {
                 ],
                 clickOnStoryStep: [
                     {                    
-                        title: 'Let\'s go right to it!',
+                        title: 'Great! Now click on your new story!',
                         target: '.blockprobeListTooltip',
-                        content: 'Click on your new story!',
+                        content: 'Let\'s go right to it!',
                         disableBeacon: true                    
                     }
                 ]
@@ -403,7 +403,7 @@ class UserBlockprobesComponent extends React.Component {
                 </div>
                  
 
-                    {Object.keys(this.props.blockprobes).length != 0?
+                    {Object.keys(this.props.blockprobes).length == 0?
                         <div style={{padding:'15px'}}>
                         <p className="emptyListText">
                             Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
