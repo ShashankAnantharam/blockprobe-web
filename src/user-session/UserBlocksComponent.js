@@ -399,6 +399,11 @@ class UserBlocksComponent extends React.Component {
     }
 
     openEntityPane(){
+        ReactGA.event({
+            category: 'entity pane',
+            action: 'entity pane opened',
+            label: 'entity pane opened'
+          });
         this.setState({isEntityPaneOpen: true});
     }
 
@@ -409,6 +414,11 @@ class UserBlocksComponent extends React.Component {
     }
 
     createBulkBlock(){
+        ReactGA.event({
+            category: 'bulk block pane',
+            action: 'bulk block pane opened',
+            label: 'bulk block pane opened'
+          });
         this.setState({isCreateBulkBlockClicked:true});
     }
 
