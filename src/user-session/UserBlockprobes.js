@@ -206,7 +206,7 @@ class UserBlockprobesComponent extends React.Component {
         .collection('blockprobes').doc(blockprobeId).
         collection('privelegedInfo').doc('nickPhoneHash').set(nickPhoneHash);        
 
-        this.addCancelBlockprobe();
+        this.addCancelBlockprobe(true);
 
         ReactGA.event({
             category: 'blockprobe',
@@ -303,7 +303,7 @@ class UserBlockprobesComponent extends React.Component {
         
     }
 
-    addCancelBlockprobe(){
+    addCancelBlockprobe(isSubmit){
         var addBlockprobe = this.state.addBlockprobe;
 
         var draftBlockprobe = this.state.draftBlockprobe;
@@ -315,7 +315,7 @@ class UserBlockprobesComponent extends React.Component {
                 title:'',
                 summary:''
             };
-            if(showToolTips.addTitleAndSummary){
+            if(showToolTips.addTitleAndSummary && isSubmit){
                 showToolTips.createStory = false;
                 showToolTips.addTitleAndSummary = false;
                 showToolTips.clickOnStory = true;
@@ -419,7 +419,7 @@ class UserBlockprobesComponent extends React.Component {
                     <div>
                         <button 
                                 className="addBlockprobeButton" 
-                                onClick={this.addCancelBlockprobe}>
+                                onClick={() => this.addCancelBlockprobe(false)}>
                                 {!this.state.addBlockprobe?
                                 <div>Create new story</div>
                                 :
