@@ -57,6 +57,7 @@ class UserBlockprobesComponent extends React.Component {
                 createStory: JSON.parse(JSON.stringify(props.buildStorytooltip)),
                 addTitleAndSummary: false,
                 clickOnStory: false,
+                clickOnStoryEnabler: false,
                 buildStory: false
             }
         };
@@ -76,6 +77,7 @@ class UserBlockprobesComponent extends React.Component {
         this.startTooltipTour = this.startTooltipTour.bind(this);
         this.createBlockprobe = this.createBlockprobe.bind(this);
         this.handleCreateStoryJoyrideCallback = this.handleCreateStoryJoyrideCallback.bind(this);
+        this.handleClickOnStoryJoyrideCallback = this.handleClickOnStoryJoyrideCallback.bind(this);
         
     }
 
@@ -86,6 +88,23 @@ class UserBlockprobesComponent extends React.Component {
             label: String(blockprobeId)
           });
         this.props.selectBlockprobe(blockprobeId, this.state.showToolTips.buildStory);
+    }
+
+    handleClickOnStoryJoyrideCallback(data){
+        const {action,index,status,type} = data;
+        if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+            var showToolTips = this.state.showToolTips;
+            showToolTips.createStory = false;
+            showToolTips.addTitleAndSummary = false;
+            showToolTips.clickOnStory = true;
+            showToolTips.clickOnStoryEnabler = false;
+            this.setState({ showToolTips: showToolTips });
+            ReactGA.event({
+                category: 'read_clickOnStory_tooltip',
+                action: 'Closed clickOnStory tooltip',
+                label: 'close clickOnStory tooltip'
+              });
+        }  
     }
 
     handleCreateStoryJoyrideCallback(data){
@@ -300,6 +319,7 @@ class UserBlockprobesComponent extends React.Component {
                 showToolTips.createStory = false;
                 showToolTips.addTitleAndSummary = false;
                 showToolTips.clickOnStory = true;
+                showToolTips.clickOnStoryEnabler = true;
             }
         }
         else{
@@ -307,6 +327,7 @@ class UserBlockprobesComponent extends React.Component {
                 showToolTips.createStory = false;
                 showToolTips.addTitleAndSummary = true;
                 showToolTips.clickOnStory = false;
+                showToolTips.clickOnStoryEnabler = false;
             }
             ReactGA.event({
                 category: 'clicked_on_create_story',
@@ -326,12 +347,18 @@ class UserBlockprobesComponent extends React.Component {
 
     startTooltipTour(){
         var showToolTips = this.state.showToolTips;
-        if(!showToolTips.createStory){
+        if(!showToolTips.createStory && !showToolTips.clickOnStory){
             //start tooltips
             showToolTips.createStory = true;
             showToolTips.addTitleAndSummary = false;
             showToolTips.clickOnStory = false;
             showToolTips.buildStory = true;
+            this.setState({
+                showToolTips: showToolTips
+            });
+        }
+        else if(showToolTips.clickOnStory){
+            showToolTips.clickOnStoryEnabler = true;
             this.setState({
                 showToolTips: showToolTips
             });
@@ -438,7 +465,8 @@ class UserBlockprobesComponent extends React.Component {
                                 }
                             }}
                                 steps={this.state.toolTipSteps.clickOnStoryStep}
-                                run = {this.state.showToolTips.clickOnStory}                    
+                                run = {this.state.showToolTips.clickOnStory && this.state.showToolTips.clickOnStoryEnabler}
+                                callback = {this.handleClickOnStoryJoyrideCallback}                    
                                 />                                    
                             {blockprobeListRender}
                         </List>
