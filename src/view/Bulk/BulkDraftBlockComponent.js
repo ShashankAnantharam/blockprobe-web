@@ -13,6 +13,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Info from '@material-ui/icons/Info';
+import Loader from 'react-loader-spinner';
 import { isNullOrUndefined } from 'util';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 
@@ -25,6 +26,7 @@ class BulkDraftBlockComponent extends React.Component {
 
         this.state ={
             value:'',
+            isSavingBlocks: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
             placeholder: "Input or Paste the text here",
             tooltipText:{
@@ -91,7 +93,7 @@ class BulkDraftBlockComponent extends React.Component {
                 }
             }
         }
-        
+        this.functions = firebase.functions();
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -195,7 +197,8 @@ class BulkDraftBlockComponent extends React.Component {
         }
       }
 
-     saveDraftInBulk(){
+     async saveDraftInBulk(){
+        this.setState({isSavingBlocks: true});
         var bulkBlocks = [];
         bulkBlocks = this.getParas(this.state.value);
         var draftBlocks=[];
@@ -222,11 +225,13 @@ class BulkDraftBlockComponent extends React.Component {
                     })
                 } 
              }
-             
-            
-             draftBlocks.push(newDraftBlock);
+             var entitiesFunc = this.functions.httpsCallable('entityExtraction');
+             var result = await entitiesFunc({text: newDraftBlock.summary});
+             console.log(result);
+             draftBlocks.push(newDraftBlock);             
          }
          // console.log(draftBlocks);
+         this.setState({isSavingBlocks: false});
          this.props.addDraftBlocksInBulk(draftBlocks);
      } 
 
@@ -264,148 +269,162 @@ class BulkDraftBlockComponent extends React.Component {
     render(){
         return(
             <div className='bulkDraftBlocksPaneContainer'>
-             <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
-                         </p>
-                         <ol className='tooltips-list-bulkdraft bulkdraft-list'>
-                             <li>
-                                How paragraphs get converted into blocks. 
-                                <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
-                                    <Info style={{fontSize:'19px'}}/>
-                                </a>
-                                <Joyride
-                                styles={{
-                                    options: {
-                                    arrowColor: '#e3ffeb',
-                                    beaconSize: '4em',
-                                    primaryColor: '#05878B',
-                                    backgroundColor: '#e3ffeb',
-                                    overlayColor: 'rgba(10,10,10, 0.4)',
-                                    width: 900,
-                                    zIndex: 1000,
-                                    }
-                                    }}
-                                    steps={this.state.adhocTooltip.para.text}
-                                    run = {this.state.adhocTooltip.para.flag}
-                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'para')}}                    
-                                    />  
+                {this.state.isSavingBlocks?
+                    <div style={{margin:'auto',width:'50px'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"
+                        /> 
+                    </div>
+                    :
+                    <div>
+                        <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                                <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
+                                </p>
+                                <ol className='tooltips-list-bulkdraft bulkdraft-list'>
+                                    <li>
+                                        How paragraphs get converted into blocks. 
+                                        <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
+                                            <Info style={{fontSize:'19px'}}/>
+                                        </a>
+                                        <Joyride
+                                        styles={{
+                                            options: {
+                                            arrowColor: '#e3ffeb',
+                                            beaconSize: '4em',
+                                            primaryColor: '#05878B',
+                                            backgroundColor: '#e3ffeb',
+                                            overlayColor: 'rgba(10,10,10, 0.4)',
+                                            width: 900,
+                                            zIndex: 1000,
+                                            }
+                                            }}
+                                            steps={this.state.adhocTooltip.para.text}
+                                            run = {this.state.adhocTooltip.para.flag}
+                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'para')}}                    
+                                            />  
+                                        
+                                    </li>
+                                    <li>
+                                        Role of the title hashtag in ordering of content 
+                                        <a className='tooltipHashtag tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
+                                            <Info style={{fontSize:'19px'}}/>
+                                        </a>
+                                        <Joyride
+                                        styles={{
+                                            options: {
+                                            arrowColor: '#e3ffeb',
+                                            beaconSize: '4em',
+                                            primaryColor: '#05878B',
+                                            backgroundColor: '#e3ffeb',
+                                            overlayColor: 'rgba(10,10,10, 0.4)',
+                                            width: 900,
+                                            zIndex: 1000,
+                                            }
+                                            }}
+                                            steps={this.state.adhocTooltip.hashtag.text}
+                                            run = {this.state.adhocTooltip.hashtag.flag}
+                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
+                                            />  
+                                    </li>
+                                    <li>
+                                        Role of the title hashtag in the creation of the story summary 
+                                        <a className='tooltipSummary tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('summary')}} >
+                                            <Info style={{fontSize:'19px'}}/>
+                                        </a>
+                                        <Joyride
+                                        styles={{
+                                            options: {
+                                            arrowColor: '#e3ffeb',
+                                            beaconSize: '4em',
+                                            primaryColor: '#05878B',
+                                            backgroundColor: '#e3ffeb',
+                                            overlayColor: 'rgba(10,10,10, 0.4)',
+                                            width: 900,
+                                            zIndex: 1000,
+                                            }
+                                            }}
+                                            steps={this.state.adhocTooltip.summary.text}
+                                            run = {this.state.adhocTooltip.summary.flag}
+                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'summary')}}                    
+                                            />  
+                                    </li>
+                                </ol>
                                 
-                            </li>
-                             <li>
-                                Role of the title hashtag in ordering of content 
-                                <a className='tooltipHashtag tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
-                                    <Info style={{fontSize:'19px'}}/>
-                                </a>
-                                <Joyride
-                                styles={{
-                                    options: {
-                                    arrowColor: '#e3ffeb',
-                                    beaconSize: '4em',
-                                    primaryColor: '#05878B',
-                                    backgroundColor: '#e3ffeb',
-                                    overlayColor: 'rgba(10,10,10, 0.4)',
-                                    width: 900,
-                                    zIndex: 1000,
-                                    }
-                                    }}
-                                    steps={this.state.adhocTooltip.hashtag.text}
-                                    run = {this.state.adhocTooltip.hashtag.flag}
-                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
-                                    />  
-                             </li>
-                             <li>
-                                Role of the title hashtag in the creation of the story summary 
-                                <a className='tooltipSummary tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('summary')}} >
-                                    <Info style={{fontSize:'19px'}}/>
-                                </a>
-                                <Joyride
-                                styles={{
-                                    options: {
-                                    arrowColor: '#e3ffeb',
-                                    beaconSize: '4em',
-                                    primaryColor: '#05878B',
-                                    backgroundColor: '#e3ffeb',
-                                    overlayColor: 'rgba(10,10,10, 0.4)',
-                                    width: 900,
-                                    zIndex: 1000,
-                                    }
-                                    }}
-                                    steps={this.state.adhocTooltip.summary.text}
-                                    run = {this.state.adhocTooltip.summary.flag}
-                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'summary')}}                    
-                                    />  
-                             </li>
-                         </ol>
-                        
-                </div>
-                <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                        <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>For example, copy paste the text in red as input. 
-                            <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
-                                Learn More
-                            </a>
-                        </p>
-                        <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
-                            #1s Avengers<br/>
-                            Thor, Rogers and Ironman are the Avengers.<br/><br/>
-                            Thor is from Asgard
-                        </p>
-                </div>
+                        </div>
+                        <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                                <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>For example, copy paste the text in red as input. 
+                                    <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
+                                        Learn More
+                                    </a>
+                                </p>
+                                <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
+                                    #1s Avengers<br/>
+                                    Thor, Rogers and Ironman are the Avengers.<br/><br/>
+                                    Thor is from Asgard
+                                </p>
+                        </div>
 
-            <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
-                <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '4em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(10,10,10, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
-                    steps={this.state.tooltipText.addBlocks}
-                    run = {this.state.showTooltip.addBlocks}                    
-                    />  
-                <form className='addBlocksPaneInput'>
-                <label>
-                    <Textarea 
-                    type="text"
-                    value={this.state.value}
-                    onKeyPress={this.handleKeyPress}
-                    placeholder={this.state.placeholder}
-                    onChange={(e) => { this.handleChange(e)}}
-                    maxRows="60"
-                    minRows="10"
-                    onKeyUp = {this.sendMessage}
-                    style={{
-                        background: 'white',
-                        borderRadius:'5px',
-                        borderWidth:'2px', 
-                        borderStyle:'solid', 
-                        borderColor:'black',
-                        marginLeft:'1%',
-                        marginRight:'1%',
-                        paddingTop:'6px',
-                        paddingBottom:'6px',
-                        width:'95%',
-                        color: 'darkBlue',
-                        fontWeight:'600'
-                        }}/>
-                </label>
-                </form>
-                <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
-                    <button 
-                        className="saveBlockButton saveBlocksInBulk" 
-                        onClick={this.saveDraftInBulk}>
-                            <div>Save</div>
-                    </button>
-                    <button 
-                        className="cancelBlockBackButton" 
-                        onClick={this.props.cancelBulkDraftBlock}>
-                            <div>Close</div>
-                    </button>
-                </div>
+                        <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.tooltipText.addBlocks}
+                            run = {this.state.showTooltip.addBlocks}                    
+                            />  
+                        <form className='addBlocksPaneInput'>
+                        <label>
+                            <Textarea 
+                            type="text"
+                            value={this.state.value}
+                            onKeyPress={this.handleKeyPress}
+                            placeholder={this.state.placeholder}
+                            onChange={(e) => { this.handleChange(e)}}
+                            maxRows="60"
+                            minRows="10"
+                            onKeyUp = {this.sendMessage}
+                            style={{
+                                background: 'white',
+                                borderRadius:'5px',
+                                borderWidth:'2px', 
+                                borderStyle:'solid', 
+                                borderColor:'black',
+                                marginLeft:'1%',
+                                marginRight:'1%',
+                                paddingTop:'6px',
+                                paddingBottom:'6px',
+                                width:'95%',
+                                color: 'darkBlue',
+                                fontWeight:'600'
+                                }}/>
+                        </label>
+                        </form>
+                        <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
+                            <button 
+                                className="saveBlockButton saveBlocksInBulk" 
+                                onClick={this.saveDraftInBulk}>
+                                    <div>Save</div>
+                            </button>
+                            <button 
+                                className="cancelBlockBackButton" 
+                                onClick={this.props.cancelBulkDraftBlock}>
+                                    <div>Close</div>
+                            </button>
+                        </div>
+                    </div>
+                }
+            
             </div>
         );
     }
