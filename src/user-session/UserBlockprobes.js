@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import Loader from 'react-loader-spinner';
 import Textarea from 'react-textarea-autosize';
 import './UserBlockprobes.css';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -59,7 +60,8 @@ class UserBlockprobesComponent extends React.Component {
                 clickOnStory: false,
                 clickOnStoryEnabler: false,
                 buildStory: false
-            }
+            },
+            isBlockprobeBeingCreated: false
         };
 
         var shajs = require('sha.js');
@@ -137,7 +139,10 @@ class UserBlockprobesComponent extends React.Component {
         );
     }
 
-    createBlockprobe(){
+    async createBlockprobe(){
+
+        this.setState({isBlockprobeBeingCreated: true});
+
         var timestamp = Date.now();
 
         var firstBlock = {
@@ -182,27 +187,27 @@ class UserBlockprobesComponent extends React.Component {
         nickPhoneHash["creator"]= this.props.uId;
 
         // console.log('Blockprobes/'+ blockprobeId +'/isActive/');
-        firebase.database().ref('Blockprobes/'+ blockprobeId +'/isActive/').set('true'); 
+        await firebase.database().ref('Blockprobes/'+ blockprobeId +'/isActive/').set('true'); 
 
         // console.log('Blockprobes/'+ blockprobeId +'/fullBlocks/'+blockprobeId);
         // console.log(firstBlock);
-        firebase.firestore().collection('Blockprobes').doc(blockprobeId)
+        await firebase.firestore().collection('Blockprobes').doc(blockprobeId)
         .collection('fullBlocks').doc(blockprobeId).set(firstBlock);
 
         // console.log('Users/'+ this.props.uId +'/blockprobes/'+blockprobeId);
         // console.log(softBlockprobe);
-        firebase.firestore().collection('Users').doc(this.props.uId)
+        await firebase.firestore().collection('Users').doc(this.props.uId)
         .collection('blockprobes').doc(blockprobeId).set(softBlockprobe);
        
         // console.log('Blockprobes/'+blockprobeId);
         // console.log(details);
-        firebase.firestore().collection('Blockprobes').doc(blockprobeId).set(details);
+        await firebase.firestore().collection('Blockprobes').doc(blockprobeId).set(details);
        
        // console.log('Users/'+this.props.uId +"/blockprobes/"+blockprobeId+
        // "/privelegedInfo/nickPhoneHash");
        // console.log(nickPhoneHash);
         
-        firebase.firestore().collection('Users').doc(this.props.uId)
+        await firebase.firestore().collection('Users').doc(this.props.uId)
         .collection('blockprobes').doc(blockprobeId).
         collection('privelegedInfo').doc('nickPhoneHash').set(nickPhoneHash);        
 
@@ -213,6 +218,9 @@ class UserBlockprobesComponent extends React.Component {
             action: 'Create blockprobe',
             label: blockprobeId
           });
+        
+          this.setState({isBlockprobeBeingCreated: false});
+          this.selectBlockprobe(blockprobeId);
     }
 
     isValidBlockprobe(){
@@ -465,10 +473,24 @@ class UserBlockprobesComponent extends React.Component {
                                 }
                             }}
                                 steps={this.state.toolTipSteps.clickOnStoryStep}
-                                run = {this.state.showToolTips.clickOnStory && this.state.showToolTips.clickOnStoryEnabler}
+                                run = {false}//this.state.showToolTips.clickOnStory && this.state.showToolTips.clickOnStoryEnabler}
                                 callback = {this.handleClickOnStoryJoyrideCallback}                    
-                                />                                    
-                            {blockprobeListRender}
+                                />        
+                                {this.state.isBlockprobeBeingCreated?
+                                    <div style={{margin:'auto',width:'50px'}}>
+                                        <Loader 
+                                        type="TailSpin"
+                                        color="#00BFFF"
+                                        height="50"	
+                                        width="50"
+                                        /> 
+                                    </div>
+                                    :
+                                    <div>
+                                    {blockprobeListRender}
+                                    </div>
+                                }                            
+                            
                         </List>
                         }
                         
