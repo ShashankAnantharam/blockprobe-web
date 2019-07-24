@@ -74,7 +74,7 @@ class GraphComponent extends React.Component {
     }
 
     isValidBlock(block){
-        if(isNullOrUndefined(block.title) || block.title=='')
+        if(isNullOrUndefined(block.title))
             return false;
         return true;
     }
@@ -193,7 +193,7 @@ class GraphComponent extends React.Component {
     onSelectGraph(event){
         var { nodes, edges } = event;
         
-     /*   
+      /*  
         console.log("Selected nodes:");
         console.log(nodes);        
         console.log("Selected edges:");
@@ -218,7 +218,7 @@ class GraphComponent extends React.Component {
                 this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
             }
         }
-        
+        //console.log(blocksToBeSelected);
 
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
 

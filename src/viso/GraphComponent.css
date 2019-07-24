@@ -38,7 +38,8 @@
 }
 
 .graph-block-div:hover{
-    background: #edbdfc;    
+    background: #efd1f8;  
+    padding: 10px 5px 10px 5px;  
 }
 
 .graph-main:hover{
