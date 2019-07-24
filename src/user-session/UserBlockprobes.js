@@ -423,92 +423,76 @@ class UserBlockprobesComponent extends React.Component {
                   callback = {this.handleCreateStoryJoyrideCallback}
                 />
                 <h2 style={{textAlign:'center'}}>My stories</h2>
-                <div>
-                    <div>
-                        <button 
-                                className="addBlockprobeButton" 
-                                onClick={() => this.addCancelBlockprobe(false)}>
-                                {!this.state.addBlockprobe?
-                                <div>Create new story</div>
-                                :
-                                <div>Cancel</div>
-                                }
-                        </button>
-                        <button
-                            className="startTooltipsButton" 
-                            onClick={() => this.startTooltipTour()}>
-                            Guided tutorial
-                        </button>
+                {this.state.isBlockprobeBeingCreated?
+                    <div style={{margin:'auto',width:'50px'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"
+                        /> 
                     </div>
-                    {this.state.addBlockprobe?
-                        this.renderDraftBlockprobe()
-                        :
-                        null
-                    }
-                </div>
-                 
-
-                    {Object.keys(this.props.blockprobes).length == 0?
+                    :
+                    <div>
                         <div>
-                            {this.state.isBlockprobeBeingCreated?
-                                <div style={{margin:'auto',width:'50px'}}>
-                                    <Loader 
-                                    type="TailSpin"
-                                    color="#00BFFF"
-                                    height="50"	
-                                    width="50"
-                                    /> 
-                                </div>
+                            <div>
+                                <button 
+                                        className="addBlockprobeButton" 
+                                        onClick={() => this.addCancelBlockprobe(false)}>
+                                        {!this.state.addBlockprobe?
+                                        <div>Create new story</div>
+                                        :
+                                        <div>Cancel</div>
+                                        }
+                                </button>
+                                <button
+                                    className="startTooltipsButton" 
+                                    onClick={() => this.startTooltipTour()}>
+                                    Guided tutorial
+                                </button>
+                            </div>
+                            {this.state.addBlockprobe?
+                                this.renderDraftBlockprobe()
                                 :
-                                <div style={{padding:'15px'}}>
-                                <p className="emptyListText">
-                                    Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
-                                    Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
-                                    If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
-                                    If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
-                                    If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
-                                </p>
-                                </div>
+                                null
                             }
-                        </div>                       
-                        :
-                        <List className="blockprobeListTooltip">  
-                        <Joyride
-                            styles={{
-                                options: {
-                                arrowColor: '#e3ffeb',
-                                beaconSize: '3em',
-                                primaryColor: '#05878B',
-                                backgroundColor: '#e3ffeb',
-                                overlayColor: 'rgba(10, 10, 10, 0.4)',
-                                width: 900,
-                                zIndex: 1000,
-                                }
-                            }}
-                                steps={this.state.toolTipSteps.clickOnStoryStep}
-                                run = {false}//this.state.showToolTips.clickOnStory && this.state.showToolTips.clickOnStoryEnabler}
-                                callback = {this.handleClickOnStoryJoyrideCallback}                    
-                                />        
-                                {this.state.isBlockprobeBeingCreated?
-                                    <div style={{margin:'auto',width:'50px'}}>
-                                        <Loader 
-                                        type="TailSpin"
-                                        color="#00BFFF"
-                                        height="50"	
-                                        width="50"
-                                        /> 
+                        </div>
+
+                        {Object.keys(this.props.blockprobes).length == 0?
+                            <div>
+                                    <div style={{padding:'15px'}}>
+                                    <p className="emptyListText">
+                                        Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
+                                        Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
+                                        If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
+                                        If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
+                                        If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
+                                    </p>
                                     </div>
-                                    :
-                                    <div>
-                                    {blockprobeListRender}
-                                    </div>
-                                }                            
-                            
-                        </List>
-                        }
-                        
-                
-                
+                            </div>                       
+                            :
+                            <List className="blockprobeListTooltip">  
+                            <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '3em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(10, 10, 10, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                }}
+                                    steps={this.state.toolTipSteps.clickOnStoryStep}
+                                    run = {false}//this.state.showToolTips.clickOnStory && this.state.showToolTips.clickOnStoryEnabler}
+                                    callback = {this.handleClickOnStoryJoyrideCallback}                    
+                                    />                                            
+                                        {blockprobeListRender}                                                                                                
+                            </List>
+                            }
+                    </div>
+                }                
             </div>
         );
     }
