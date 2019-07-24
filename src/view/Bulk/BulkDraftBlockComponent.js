@@ -100,6 +100,8 @@ class BulkDraftBlockComponent extends React.Component {
         this.sendMessage = this.sendMessage.bind(this);
         this.getParas = this.getParas.bind(this);
         this.formatParas = this.formatParas.bind(this);
+        this.isValidNlpEntity = this.isValidNlpEntity.bind(this);
+        this.isRepeatedNlpEntity = this.isRepeatedNlpEntity.bind(this);
         this.saveDraftInBulk = this.saveDraftInBulk.bind(this);
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
@@ -197,11 +199,56 @@ class BulkDraftBlockComponent extends React.Component {
         }
       }
 
+     isValidNlpEntity(nlpItem){
+         var mentions = nlpItem.mentions;
+         for(var i=0;i<mentions.length;i++){
+             if(mentions[i].type == 'PROPER')
+                return true;
+         }
+         return false;
+     }
+
+     isRepeatedNlpEntity(nlpItem){
+        var entityPane = this.props.entityPane;
+        var nlpKey = nlpItem.name;
+        for(var j =0; j< entityPane.length; j++){
+            var key = entityPane[j].label;
+            if(key.toLowerCase().indexOf(nlpKey.toLowerCase())>=0 || nlpKey.toLowerCase().indexOf(key.toLowerCase())>=0){
+                return true;
+            }
+        }
+        return false;
+     }
+
      async saveDraftInBulk(){
         this.setState({isSavingBlocks: true});
         var bulkBlocks = [];
         bulkBlocks = this.getParas(this.state.value);
         var draftBlocks=[];
+        
+        //Takin 10 blocks at a time for summary
+        var concatSummaryText = '';
+        var nlpEntities = [];
+        for(var i=0;i<bulkBlocks.length;i++){
+            concatSummaryText += bulkBlocks[i].body;
+            concatSummaryText += '.';
+            if(i%10==9 || i==bulkBlocks.length-1){
+                var entitiesFunc = this.functions.httpsCallable('entityExtraction');
+                var result = await entitiesFunc({text: concatSummaryText});
+                if(result.data){
+                    //console.log(result.data);
+                    for(var j=0;j<result.data.length;j++){
+                        if(this.isValidNlpEntity(result.data[j]) &&  !this.isRepeatedNlpEntity(result.data[j])){
+                            nlpEntities.push(result.data[j]);
+                        }
+                    }
+                }
+                 //   nlpEntities.concat(result.data);
+                concatSummaryText = '';        
+            }
+        }
+         // console.log(nlpEntities);
+        
          for(var i=0;i<bulkBlocks.length;i++){
              var newDraftBlock = {
                  entities:[],
@@ -211,10 +258,8 @@ class BulkDraftBlockComponent extends React.Component {
              }
 
              //MARK HERE ENTITIES
-
-             
+            
              var entityPane = this.props.entityPane;
-
 
              for(var j =0; j< entityPane.length; j++){
                 var key = entityPane[j].label;
@@ -225,9 +270,17 @@ class BulkDraftBlockComponent extends React.Component {
                     })
                 } 
              }
-             var entitiesFunc = this.functions.httpsCallable('entityExtraction');
-             var result = await entitiesFunc({text: newDraftBlock.summary});
-             console.log(result);
+
+             for(var j=0; j<nlpEntities.length; j++){
+                var key = nlpEntities[j].name;
+                if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
+                    newDraftBlock.entities.push({
+                        title:key,
+                        type:"None"
+                    })
+                } 
+             }
+             
              draftBlocks.push(newDraftBlock);             
          }
          // console.log(draftBlocks);
