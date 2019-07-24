@@ -122,6 +122,9 @@ class SingleUserBlock extends React.Component {
             });
             this.props.changeSelectedBlock(null);
         }
+        else if(updateType=='COMMIT'){
+            this.props.commitBlockToBlockprobe(newBlock);
+        }
         else if(updateType=='SUBMIT'){
             //SUBMIT
 

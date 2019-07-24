@@ -120,6 +120,7 @@ class DraftBlockComponent extends React.Component {
         this.updateEvidence = this.updateEvidence.bind(this);
         this.addEvidence = this.addEvidence.bind(this);
         this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
+        this.commitDraftBlock = this.commitDraftBlock.bind(this);
         this.saveDraftBlock = this.saveDraftBlock.bind(this);
         this.submitDraftBlock = this.submitDraftBlock.bind(this);
         this.cancelDraftBlock = this.cancelDraftBlock.bind(this);
@@ -418,6 +419,11 @@ class DraftBlockComponent extends React.Component {
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SAVE');
     }
 
+    commitDraftBlock(){
+        this.populateEntitiesAndEvidencesToBlock();
+        this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'COMMIT');
+    }
+
     submitDraftBlock(){
         this.populateEntitiesAndEvidencesToBlock();
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'SUBMIT');
@@ -701,7 +707,7 @@ class DraftBlockComponent extends React.Component {
                 {this.props.bpDetails.criterion == 0?
                                     <button 
                                         className="commitBlockButton" 
-                                        onClick={this.submitDraftBlock}>
+                                        onClick={this.commitDraftBlock}>
                                             <div>Add to story</div>
                                     </button>
                                     :

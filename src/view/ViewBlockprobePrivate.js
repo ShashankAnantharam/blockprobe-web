@@ -28,9 +28,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //permit, buildStorytooltip
+        //permit, buildStorytooltip, uId, bId
 
         this.state={
+            uIdHash: "",
+            shajs: null,
             genesisBlockId: "",
             blockprobeTitle: "",
             blockprobeSummary: "",
@@ -92,6 +94,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
             }
         }
 
+        //props include bId, uId
+        var shajs = require('sha.js');
+        this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
+        this.state.shajs = shajs;
+
         if(!isNullOrUndefined(props.permit) && props.permit == 'VIEWER' ){
             this.state.selectedVisualisation = 'dashboard';
         }
@@ -118,6 +125,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.finishDashboardView = this.finishDashboardView.bind(this);
         this.startShowingShareStoryTooltip = this.startShowingShareStoryTooltip.bind(this);
         this.finishShareStoryTooltip = this.finishShareStoryTooltip.bind(this);
+        this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
     }
 
     finishBuildingStoryTooltip(){
@@ -747,6 +755,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     investigationGraph = {this.state.investigationGraph}
                     buildStory = {this.state.showTooltip.buildStory}
                     finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}
+                    commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
                     />
                 </div>
             );
@@ -798,6 +807,60 @@ class ViewBlockprobePrivateComponent extends React.Component {
             showTooltip.buildStory = JSON.parse(JSON.stringify(newProps.buildStorytooltip));
             this.setState({showTooltip:showTooltip});
         }
+    }
+
+    async commitBlockToBlockprobe(block){
+
+        const oldKey = block.key;
+            
+
+        //Deepcopy of block
+        const blockStr = JSON.stringify(block);
+        var newBlock = JSON.parse(blockStr);
+        console.log(this.state);
+        var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
+        newBlock.timestamp = Date.now(); 
+        newBlock.verificationHash = newBlockId;
+        newBlock.previousKey = this.state.latestBlock.key;
+        if(newBlock.actionType == "ADD"){
+            newBlock.referenceBlock = null;
+        }
+        newBlock.key = this.state.shajs('sha256').update(newBlockId + newBlock.previousKey).digest('hex');            
+        if(isNullOrUndefined(newBlock.blockDate)){
+            newBlock.blockDate = null;
+        }
+        if(isNullOrUndefined(newBlock.blockTime)){
+            newBlock.blockTime = null;
+        }
+        newBlock.blockState = "SUCCESSFUL";
+
+        var committedBlock = JSON.parse(JSON.stringify(newBlock));
+        delete committedBlock["blockState"];
+        delete committedBlock["bpID"];
+        //console.log(newBlock);
+        //console.log(committedBlock);
+
+        await firebase.database().ref("Blockprobes/"+newBlock.bpID
+        +"/reviewBlocks/"+oldKey).remove();
+
+        await firebase.firestore().collection("Blockprobes").
+            doc(newBlock.bpID).
+            collection("users").doc(this.state.uIdHash).
+            collection("userBlocks").
+            doc(oldKey).delete();
+        
+        await firebase.firestore().collection("Blockprobes").
+            doc(newBlock.bpID).
+            collection("users").doc(this.state.uIdHash).
+            collection("userBlocks").
+            doc(newBlock.key).set(newBlock);
+        
+        await firebase.firestore().collection("Blockprobes").
+            doc(newBlock.bpID).
+            collection("fullBlocks").
+            doc(committedBlock.key).set(committedBlock);
+
+            this.refreshBlockprobe();
     }
 
     render(){

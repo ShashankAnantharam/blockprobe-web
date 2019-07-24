@@ -380,6 +380,7 @@ class UserBlocksComponent extends React.Component {
             addDraftBlock = {this.addDraftBlock}
             updateDraftBlock = {this.updateDraftBlock}
             submitDraftBlock = {this.submitDraftBlock}
+            commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
             entityPane = {this.state.entityPaneList}
             draftBlockTooltip = {this.state.showTooltip.draftBlock}
             finishTooltip = {this.finishTooltip}
