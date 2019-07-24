@@ -92,6 +92,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
             }
         }
 
+        if(!isNullOrUndefined(props.permit) && props.permit == 'VIEWER' ){
+            this.state.selectedVisualisation = 'dashboard';
+        }
+
         this.bpDetailsDoc = null;
 
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
