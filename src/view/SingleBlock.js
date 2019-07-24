@@ -11,7 +11,7 @@ class SingleUserBlock extends React.Component {
     constructor(props){
         super(props);
         //props: isNewBlock, deleteNewBlcok, addDraftBlock, entityPane, draftBlockTooltip, finishTooltip
-        //changeSelectedBlock
+        //changeSelectedBlock, bpDetails
 
         this.state={
             isBlockClicked: false
@@ -88,6 +88,7 @@ class SingleUserBlock extends React.Component {
                         entityPane = {this.props.entityPane}
                         draftBlockTooltip = {this.props.draftBlockTooltip}
                         finishTooltip = {this.props.finishTooltip}
+                        bpDetails = {this.props.bpDetails}
                         />
                     </div>                    
                     :

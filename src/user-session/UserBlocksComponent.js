@@ -19,7 +19,7 @@ class UserBlocksComponent extends React.Component {
     
     constructor(props){
         super(props);
-        //props: finishBuildingStoryTooltip
+        //props: finishBuildingStoryTooltip, bpDetails
 
         this.state={
             uIdHash:'',
@@ -385,6 +385,7 @@ class UserBlocksComponent extends React.Component {
             finishTooltip = {this.finishTooltip}
             selectedDraftBlockId = {this.state.selectedDraftBlockId}
             changeSelectedBlock = {this.changeSelectedBlock} 
+            bpDetails = {this.props.bpDetails}
             />
         );
     }

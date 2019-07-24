@@ -40,7 +40,7 @@ class DraftBlockComponent extends React.Component {
     constructor(props){
         super(props);
 
-        //props:draftBlock, bpId, uId, entityPane, draftBlockTooltip, finishTooltip
+        //props:draftBlock, bpId, uId, entityPane, draftBlockTooltip, finishTooltip, bpDetails
         this.state={
             newBlock: {},
             newEntity: '',
@@ -698,11 +698,21 @@ class DraftBlockComponent extends React.Component {
                     </div> 
                 </div>
                 <div className="draft-options-container" style={{marginTop:'0.1em'}}>
+                {this.props.bpDetails.criterion == 0?
+                                    <button 
+                                        className="commitBlockButton" 
+                                        onClick={this.submitDraftBlock}>
+                                            <div>Add to story</div>
+                                    </button>
+                                    :
+                                    null
+                    }
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
                             <div>Save</div>
                     </button>
+                    
                     <button 
                         className="submitBlockButton" 
                         onClick={this.submitDraftBlock}>
