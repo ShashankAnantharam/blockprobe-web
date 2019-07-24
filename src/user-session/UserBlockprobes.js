@@ -449,15 +449,28 @@ class UserBlockprobesComponent extends React.Component {
                  
 
                     {Object.keys(this.props.blockprobes).length == 0?
-                        <div style={{padding:'15px'}}>
-                        <p className="emptyListText">
-                            Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
-                            Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
-                            If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
-                            If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
-                            If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
-                        </p>
-                        </div>                    
+                        <div>
+                            {this.state.isBlockprobeBeingCreated?
+                                <div style={{margin:'auto',width:'50px'}}>
+                                    <Loader 
+                                    type="TailSpin"
+                                    color="#00BFFF"
+                                    height="50"	
+                                    width="50"
+                                    /> 
+                                </div>
+                                :
+                                <div style={{padding:'15px'}}>
+                                <p className="emptyListText">
+                                    Click on <span className="emptyListTextEmphasisStory">Create new story</span> and get started.<br/><br/>
+                                    Your work will be saved as <span className="emptyListTextEmphasisStory">stories</span>.<br/>
+                                    If you are a <span className="emptyListTextEmphasisPersona">police officer</span>, the <span className="emptyListTextEmphasisStory">story</span> could be the <span className="emptyListTextEmphasisStoryType">case that you are investigating</span>.<br/>
+                                    If you are a <span className="emptyListTextEmphasisPersona">politician</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">policy proposal</span>.<br/>
+                                    If you are a <span className="emptyListTextEmphasisPersona">journalist</span>, the <span className="emptyListTextEmphasisStory">story</span> could be your <span className="emptyListTextEmphasisStoryType">article or investigation</span>.<br/>
+                                </p>
+                                </div>
+                            }
+                        </div>                       
                         :
                         <List className="blockprobeListTooltip">  
                         <Joyride
