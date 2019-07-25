@@ -62,10 +62,10 @@ class DraftBlockComponent extends React.Component {
                         placement: 'center'
                     },
                     {                    
-                        title: 'Submit block!',
-                        target: '.submitBlockButton',
-                        content: 'Submit the block once done by clicking this button!',
-                        disableBeacon: false,
+                        title: 'Add block to your story after editing!',
+                        target: '.commitBlockTooltip',
+                        content: 'After editing, click this button to add to story!',
+                        disableBeacon: true,
                         placementBeacon: 'left',
                         event: 'hover'
                     }
@@ -534,7 +534,39 @@ class DraftBlockComponent extends React.Component {
         return(
 
             <div className="draft-block-container">      
-                <div className='draftBlocksPaneTitle'>Edit block</div>          
+                <div className='draftBlocksPaneTitle'>Edit block</div>       
+                <div className="draft-options-container" style={{marginTop:'0.1em'}}>
+                {this.props.bpDetails.criterion == 0?
+                                    <button 
+                                        className="commitBlockButton commitBlockTooltip" 
+                                        onClick={this.commitDraftBlock}>
+                                            <div>Add to story</div>
+                                    </button>
+                                    :
+                                    null
+                    }
+                    <button 
+                        className="saveBlockButton" 
+                        onClick={this.saveDraftBlock}>
+                            <div>Save</div>
+                    </button>
+                    
+                    <button 
+                        className="submitBlockButton" 
+                        onClick={this.submitDraftBlock}>
+                            <div>Submit</div>
+                    </button>
+                    <button 
+                        className="cancelBlockBackButton" 
+                        onClick={this.cancelDraftBlock}>
+                            <div>Close</div>
+                    </button>
+                    <button 
+                        className="deleteBlockButton" 
+                        onClick={this.removeDraftBlock}>
+                            <div>Delete</div>
+                    </button>    
+                </div>   
                 <form>
                 <label>
                     <Textarea 

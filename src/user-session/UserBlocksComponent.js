@@ -75,8 +75,8 @@ class UserBlocksComponent extends React.Component {
                 ]
             },
             showTooltip:{
-                entityPane: JSON.parse(JSON.stringify(props.buildStory)),
-                addBlocks: false,
+                entityPane: false, //JSON.parse(JSON.stringify(props.buildStory)),
+                addBlocks: JSON.parse(JSON.stringify(props.buildStory)), //false,
                 draftBlock: false,
                 commitBlock: false
             }
