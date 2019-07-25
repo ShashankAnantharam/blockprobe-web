@@ -59,9 +59,9 @@ class UserBlocksComponent extends React.Component {
                 ],
                 draftBlock:[
                     {
-                        title: 'Lets do the final touches!',
+                        title: 'Click on any block for the final touches!',
                         target: '.draftBlocksList',
-                        content: 'Your newly created blocks are in draft and you can see them here in the list. Click on the block with the title \'#1s Avengers\'.',
+                        content: 'Your newly created blocks are in draft and you edit them here in the list.',
                         disableBeacon: true
                     }
                 ],
