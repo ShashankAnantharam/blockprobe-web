@@ -756,6 +756,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     buildStory = {this.state.showTooltip.buildStory}
                     finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}
                     commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
+                    finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
                     />
                 </div>
             );

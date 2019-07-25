@@ -19,7 +19,7 @@ class UserBlocksComponent extends React.Component {
     
     constructor(props){
         super(props);
-        //props: finishBuildingStoryTooltip, bpDetails
+        //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip
 
         this.state={
             uIdHash:'',
@@ -112,6 +112,7 @@ class UserBlocksComponent extends React.Component {
         this.updateEntityPaneList = this.updateEntityPaneList.bind(this);  
         this.initEntityPane = this.initEntityPane.bind(this); 
         this.finishTooltip = this.finishTooltip.bind(this);
+        this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -380,7 +381,7 @@ class UserBlocksComponent extends React.Component {
             addDraftBlock = {this.addDraftBlock}
             updateDraftBlock = {this.updateDraftBlock}
             submitDraftBlock = {this.submitDraftBlock}
-            commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+            commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
             entityPane = {this.state.entityPaneList}
             draftBlockTooltip = {this.state.showTooltip.draftBlock}
             finishTooltip = {this.finishTooltip}
@@ -445,6 +446,11 @@ class UserBlocksComponent extends React.Component {
         });
     }
 
+    async commitBlockToBlockprobe(block){
+        await this.props.commitBlockToBlockprobe(block);
+        this.finishTooltip('commitBlock');
+    }
+
     finishTooltip(tooltip){
         var showTooltip = this.state.showTooltip;
         if(tooltip == 'entity'){            
@@ -470,6 +476,13 @@ class UserBlocksComponent extends React.Component {
                 this.props.finishBuildingStoryTooltip();
             }
         } 
+        else if(tooltip == 'commitBlock'){
+            showTooltip.entityPane = false;
+            showTooltip.addBlocks = false;
+            showTooltip.draftBlock = false;
+            showTooltip.commitBlock = false;
+            this.props.finishAddingBlockToStoryTooltip();
+        }
 
         this.setState({
             showTooltip: showTooltip

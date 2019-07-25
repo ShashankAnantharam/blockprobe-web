@@ -24,18 +24,18 @@ class VisualizeOptionsListComponent extends React.Component {
           tooltipText:{
               dashboard:[
                   {
-                    title: 'Visualize your story dashboard!',
+                    title: 'Click on \'Dashboard\' from the menu and visualise your work!',
                     target: '.dashboard-menu',
-                    content: 'Click on \'Dashboard\' from the menu and visualize your story. If you followed the steps as specified, you will see a summary view, a graph view and a timeline view.',
+                    content: '',
                     disableBeacon: true,
                     placement: 'center'
                   }         
               ],
               shareStory:[
                     {
-                        title: 'Share your story dashboard!',
+                        title: 'Click on \'Share my story\' and use the public link to share the dashboard.',
                         target: '.shareOption',
-                        content: 'Click on \'Share my story\' and then use the public link to share the dashboard with friends.',
+                        content: '',
                         disableBeacon: true,
                         placement: 'center'
                     }
