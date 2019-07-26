@@ -61,18 +61,18 @@ class EntityPaneView extends React.Component {
     }
 
     initEntities(snapshot, scope){
-        var entities = snapshot.data().entities;
-        // console.log(entities);
+        var entities = snapshot.data().entities;        
         var isEntityPresent = scope.state.entityPresent;
         for(var i=0; i<entities.length;i++){
-            isEntityPresent[entities[i].label] = true;
+            isEntityPresent[entities[i].label] = entities[i].canRemove;
         }
+        
         scope.props.updateEntityPaneList(entities);
         scope.setState({
             entityPresent: isEntityPresent,
             entities: entities,
             haveEntitiesLoaded: true
-        });
+        });         
     }
 
     componentDidMount(){
@@ -195,6 +195,7 @@ class EntityPaneView extends React.Component {
     getEntities(){
 
         var entities = this.state.entities;
+        // console.log(entities);
         var isEntityPresent = this.state.entityPresent;
         if(this.props.investigationGraph !=null){
             Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
@@ -208,10 +209,11 @@ class EntityPaneView extends React.Component {
             });
         }
 
+        
         for(var i=0;i<entities.length;i++){
             entities[i].canRemove = isEntityPresent[entities[i].label];
         }
-
+        // console.log(entities);
         return entities;
     }
 
