@@ -341,13 +341,20 @@ class BulkDraftBlockComponent extends React.Component {
         return(
             <div className='bulkDraftBlocksPaneContainer'>
                 {this.state.isSavingBlocks?
-                    <div style={{margin:'auto',width:'50px'}}>
-                        <Loader 
-                        type="TailSpin"
-                        color="#00BFFF"
-                        height="50"	
-                        width="50"
-                        /> 
+                    <div>
+                        <div style={{padding:'15px', textAlign:'center'}}>
+                                    <p className="processingDraftBlockText">
+                                        We are processing your contribution. Kindly wait for a few moments.
+                                    </p>
+                        </div>                        
+                        <div style={{margin:'auto',width:'50px'}}>
+                            <Loader 
+                            type="TailSpin"
+                            color="#00BFFF"
+                            height="50"	
+                            width="50"
+                            /> 
+                        </div>
                     </div>
                     :
                     <div>

@@ -32,3 +32,8 @@
 .tooltips-list-bulkdraft > li{
     margin-bottom: 6px;
 }
+
+.processingDraftBlockText{
+    font-size: 20px; 
+    color: grey;
+}
