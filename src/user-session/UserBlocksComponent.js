@@ -332,7 +332,10 @@ class UserBlocksComponent extends React.Component {
                     
                     // console.log(entityArr);
                     //commit array
-                     transaction.update(entityPaneRef, {entities: entityArr});
+                    if(doc.exists)
+                         transaction.update(entityPaneRef, {entities: entityArr});
+                    else
+                        entityPaneRef.set({entities: entityArr});
 
                 })
             });
