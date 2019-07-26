@@ -199,10 +199,10 @@ class BulkDraftBlockComponent extends React.Component {
         }
       }
 
-     isValidNlpEntity(nlpItem){
+     isValidNlpEntity(nlpItem, nounType){
          var mentions = nlpItem.mentions;
          for(var i=0;i<mentions.length;i++){
-             if(mentions[i].type == 'PROPER')
+             if(mentions[i].type == nounType)
                 return true;
          }
          return false;
@@ -229,6 +229,7 @@ class BulkDraftBlockComponent extends React.Component {
         //Takin 10 blocks at a time for summary
         var concatSummaryText = '';
         var nlpEntities = [];
+        var nlpCommonNounEntities = [];
         for(var i=0;i<bulkBlocks.length;i++){
             concatSummaryText += bulkBlocks[i].body;
             concatSummaryText += '.';
@@ -238,8 +239,11 @@ class BulkDraftBlockComponent extends React.Component {
                 if(result.data){
                     //console.log(result.data);
                     for(var j=0;j<result.data.length;j++){
-                        if(this.isValidNlpEntity(result.data[j]) &&  !this.isRepeatedNlpEntity(result.data[j])){
+                        if(this.isValidNlpEntity(result.data[j],'PROPER') &&  !this.isRepeatedNlpEntity(result.data[j])){
                             nlpEntities.push(result.data[j]);
+                        }
+                        if(this.isValidNlpEntity(result.data[j],'COMMON')){
+                            nlpCommonNounEntities.push(result.data[j]);
                         }
                     }
                 }
@@ -248,6 +252,7 @@ class BulkDraftBlockComponent extends React.Component {
             }
         }
          // console.log(nlpEntities);
+         // console.log(nlpCommonNounEntities);
         
          for(var i=0;i<bulkBlocks.length;i++){
              var newDraftBlock = {
@@ -280,6 +285,19 @@ class BulkDraftBlockComponent extends React.Component {
                     })
                 } 
              }
+
+             //If entities are less, use common nouns also
+             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length<=4; j++){
+                var key = nlpCommonNounEntities[j].name;
+                if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
+                    newDraftBlock.entities.push({
+                        title:key,
+                        type:"None"
+                    })
+                } 
+             }
+
+             
              
              draftBlocks.push(newDraftBlock);             
          }
