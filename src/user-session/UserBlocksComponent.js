@@ -266,6 +266,8 @@ class UserBlocksComponent extends React.Component {
         .collection("users").doc(this.state.uIdHash).collection("userBlocks").
         doc(blockKey).set(newBlock);
 
+        this.updateStoryEntities(newBlock);
+
     }
 
     addDraftBlocksInBulk(blocks){
