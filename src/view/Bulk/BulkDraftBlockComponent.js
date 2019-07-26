@@ -16,6 +16,7 @@ import Info from '@material-ui/icons/Info';
 import Loader from 'react-loader-spinner';
 import { isNullOrUndefined } from 'util';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import { setTimeout } from 'timers';
 
 class BulkDraftBlockComponent extends React.Component {
 
@@ -235,7 +236,7 @@ class BulkDraftBlockComponent extends React.Component {
             concatSummaryText += '.';
             if(i%10==9 || i==bulkBlocks.length-1){
                 var entitiesFunc = this.functions.httpsCallable('entityExtraction');
-                var result = await entitiesFunc({text: concatSummaryText});
+                var result = await entitiesFunc({text: concatSummaryText});   
                 if(result.data){
                     //console.log(result.data);
                     for(var j=0;j<result.data.length;j++){

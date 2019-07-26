@@ -31,9 +31,9 @@ class UserBlockprobesComponent extends React.Component {
             toolTipSteps:{
                 createStoryStep: [
                     {
-                        title: 'The blockprobe tutorial!',
+                        title: 'Click on \'Create new story\' to get started!',
                         target: '.addBlockprobeButton',
-                        content: 'This is a directed tutorial to show you how to use Blockprobe tool. In this tutorial, you will build, visualise and share your work using blockprobe!',
+                        content: '',
                         placement: 'center',
                         disableBeacon: true
                     }/*,
