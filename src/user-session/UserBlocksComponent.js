@@ -526,7 +526,9 @@ class UserBlocksComponent extends React.Component {
             );
         }
 
-        return (<div className="userblocks-options-container">   
+        return (
+        <div className="userblocks-header-container">
+                <div className="userblocks-options-container">   
                    <Joyride
                 styles={{
                     options: {
@@ -568,7 +570,14 @@ class UserBlocksComponent extends React.Component {
                     onClick={this.openEntityPane}>
                         <div>Manage story entities</div>
                     </button>
-                </div>)
+                </div>
+                <div className="contributeOpenTooltipTextContainer">
+                        <p className="contributeOpenTooltipText">
+                            Click on 'Contribute' to add content to your story.
+                        </p>
+                </div>   
+        </div>
+        )
     }
 
     render(){
@@ -598,7 +607,7 @@ class UserBlocksComponent extends React.Component {
         return(
             <div>
                      
-                {this.renderBlockOptions()}
+                {this.renderBlockOptions()}                              
                     
                 {Object.keys(this.state.draftBlocks).length>0?
                 <div>
