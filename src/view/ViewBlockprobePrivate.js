@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import ReactGA from 'react-ga';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import './ViewBlockprobePrivate.css';
@@ -105,6 +106,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
         this.bpDetailsDoc = null;
 
+        ReactGA.initialize('UA-143383035-1');   
+        ReactGA.pageview('/userBlockprobePrivate');
+
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
         this.onSetMenuBlockSidebarOpen = this.onSetMenuBlockSidebarOpen.bind(this);
@@ -162,6 +166,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.setState({
             showTooltip: showTooltip
         });
+        ReactGA.event({
+            category: 'open_menu_tooltip',
+            action: 'Open menu tooltip',
+            label: this.props.bId
+          });
     }
 
     finishOpenMenuForDashboard(){
@@ -269,6 +278,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
             else if(this.state.showTooltip.preShareStory){
                 this.startShowingShareStoryTooltip();
             }
+            ReactGA.event({
+                category: 'open_menu',
+                action: 'Opened menu',
+                label: this.props.bId
+              });
         }
         else{
             if(this.state.selectedVisualisation!='dashboard' && this.state.showTooltip.viewDashboardView){
@@ -818,7 +832,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         //Deepcopy of block
         const blockStr = JSON.stringify(block);
         var newBlock = JSON.parse(blockStr);
-        console.log(this.state);
+        //console.log(this.state);
         var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
         newBlock.timestamp = Date.now(); 
         newBlock.verificationHash = newBlockId;

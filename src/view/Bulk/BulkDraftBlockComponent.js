@@ -342,7 +342,7 @@ class BulkDraftBlockComponent extends React.Component {
             <div className='bulkDraftBlocksPaneContainer'>
                 {this.state.isSavingBlocks?
                     <div>
-                        <div style={{padding:'15px', textAlign:'center'}}>
+                        <div style={{padding:'3px', textAlign:'center'}}>
                                     <p className="processingDraftBlockText">
                                         We are processing your contribution. Kindly wait for a few moments.
                                     </p>

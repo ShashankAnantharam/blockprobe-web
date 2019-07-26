@@ -61,7 +61,7 @@ class UserBlocksComponent extends React.Component {
                     {
                         title: 'Click on any block for the final touches!',
                         target: '.draftBlocksList',
-                        content: 'Your newly created blocks are in draft and you edit them here in the list.',
+                        content: 'Your newly created blocks are in draft and you can edit them.',
                         disableBeacon: true
                     }
                 ],
@@ -449,6 +449,11 @@ class UserBlocksComponent extends React.Component {
     async commitBlockToBlockprobe(block){
         await this.props.commitBlockToBlockprobe(block);
         this.finishTooltip('commitBlock');
+        ReactGA.event({
+            category: 'commit_blocks',
+            action: 'Committed blocks',
+            label: this.props.bId
+          });
     }
 
     finishTooltip(tooltip){
