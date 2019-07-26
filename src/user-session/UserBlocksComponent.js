@@ -105,6 +105,7 @@ class UserBlocksComponent extends React.Component {
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
         this.addDraftBlocksInBulk = this.addDraftBlocksInBulk.bind(this);
+        this.updateStoryEntities = this.updateStoryEntities.bind(this);
         this.updateDraftBlock = this.updateDraftBlock.bind(this);
         this.getRandomReviewer = this.getRandomReviewer.bind(this);
         this.giveBlockToFirstReviewer = this.giveBlockToFirstReviewer.bind(this);
@@ -293,6 +294,49 @@ class UserBlocksComponent extends React.Component {
           });
     }
 
+    updateStoryEntities(block){
+        var entityPaneRef = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.state.uIdHash).collection("session")
+        .doc("entityPane");
+        var entities = block.entities;
+        
+        if(entities){
+
+            firebase.firestore().runTransaction(function(transaction){
+                return transaction.get(entityPaneRef).then(function(doc){
+
+                    //populate map
+                    var entityMap = {};
+                    for(var i=0; i<entities.length;i++){
+                        entityMap[entities[i].title] = '';
+                    }
+                    //populate arr
+                    var entityArr = [];
+                    if(doc.exists){
+                        entityArr = doc.data().entities;
+                        for(var i=0;i<entityArr.length;i++){
+                            if(entityArr[i].label in entityMap){
+                                entityArr[i].canRemove = false;
+                                delete entityMap[entityArr[i].label];
+                            }
+                        }
+                    }
+                    Object.keys(entityMap).forEach(function(entityLabel) {
+                        entityArr.push({
+                            label: entityLabel,
+                            canRemove: false
+                        });
+                    });
+                    
+                    // console.log(entityArr);
+                    //commit array
+                     transaction.update(entityPaneRef, {entities: entityArr});
+
+                })
+            });
+        }
+    }
+
     addDraftBlock(block){
         if(isNullOrUndefined(block.timestamp))
             block.timestamp = Date.now();
@@ -311,6 +355,8 @@ class UserBlocksComponent extends React.Component {
         doc(block.key).set(block);
 
         this.setState({isCreateBlockClicked:false});
+
+        this.updateStoryEntities(block);
     }
 
     submitDraftBlock(block){
