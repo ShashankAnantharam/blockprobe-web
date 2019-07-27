@@ -196,7 +196,10 @@ class EntityPaneView extends React.Component {
 
         var entities = this.state.entities;
         // console.log(entities);
-        var isEntityPresent = this.state.entityPresent;
+        var isEntityPresent = {};
+        for(var i=0; i<entities.length; i++){
+            isEntityPresent[entities[i].label]=entities[i].canRemove;
+        }
         if(this.props.investigationGraph !=null){
             Object.keys(this.props.investigationGraph).forEach(function(entityLabel) {
                 if(!(entityLabel in isEntityPresent)){
