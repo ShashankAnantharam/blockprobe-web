@@ -11,6 +11,7 @@ import Img from 'react-image';
 import JournalistLogo from "./icons/journalist.png";
 import PoliceLogo from "./icons/police.png";
 import PoliticianLogo from "./icons/political.png";
+import MainLogo from "./icons/logo.png";
 import Joyride from 'react-joyride';
 import {Container, Row, Col} from 'react-bootstrap';
 import {
@@ -387,9 +388,14 @@ class UserSession extends React.Component {
 
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
+          var mainLogoList = [MainLogo]
           return (
               <div>                
                 <main style={{paddingTop:'10px',minHeight:'100vh'}} className="body-color-backup">
+                <div style={{marginTop:'10px', textAlign:'center'}}>
+                                    <Img src={mainLogoList}
+                                    style={{width:'70%'}}></Img>
+                                </div>
                     <div style={{display:'flex'}}>
                         <GoogleFontLoader
                             fonts={[
@@ -414,7 +420,8 @@ class UserSession extends React.Component {
                             />                        
 
                         <div className="landing-view-container">                       
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold', marginTop:'10px'}}><span>Visually engage your audience and yourself with your work.</span></div>
+                                
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}><span>Visually engage your audience and yourself with your work.</span></div>
                                 <div style={{marginTop:'16px'}}>
                                     {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
                                     {this.cueCardView(this.state.landingPage.police.logo, this.state.landingPage.police.text)}

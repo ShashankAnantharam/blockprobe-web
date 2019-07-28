@@ -125,7 +125,7 @@
     .landing-view-container{
         width: 60%; 
         padding: 0 10px 30px 10px; 
-        margin: 2%;
+        margin: 0 2% 2% 2%;
         border-radius: 20px;
     }
 
@@ -138,7 +138,6 @@
 
     .user-session-login-container{
         margin: 2%;
-        position: fixed;
     }
 
     .mobile-landing-page{
