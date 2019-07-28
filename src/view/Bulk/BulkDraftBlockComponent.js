@@ -29,22 +29,22 @@ class BulkDraftBlockComponent extends React.Component {
             value:'',
             isSavingBlocks: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
-            placeholder: "Input or Paste the text here",
+            placeholder: "Input your story (broken into paragraphs) here",
             tooltipText:{
                 addBlocks:[
                     {
-                        title: 'Add your blocks!',
-                        target: '.copyBlockBulkText',
-                        content: 'You are going to add your first blocks to your story. Copy-paste ALL the red colored text into the input and save your content.',
+                        title: 'Write your story as short paragraphs and save!',
+                        target: '.addBlocksPaneInput',
+                        content: '',
                         disableBeacon: true
-                    },
+                    }/*,
                     {
                         title: 'Additional info!',
                         target: '.bulkdraft-list',
                         content: 'You can learn more by clicking the info icons in blue',
                         disableBeacon: true
                     }
-                   /* ,
+                    ,
                     {
                         title: 'Save your blocks!',
                         target: '.saveBlocksInBulk',
