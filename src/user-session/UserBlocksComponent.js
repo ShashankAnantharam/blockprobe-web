@@ -633,9 +633,18 @@ class UserBlocksComponent extends React.Component {
                             Click on the menu icon (top-left) and choose 'Dashboard' to visualise your contributions.
                         </p>
                         :
-                        <p className="contributeOpenTooltipText">
-                            Click on 'Contribute' to add content to your story.
-                        </p>}
+                        <div>
+                            {Object.keys(this.state.draftBlocks).length>0?
+                                <p className="contributeOpenTooltipText">
+                                    Click on any block (para) that you just added from the Draft list.
+                                </p>
+                                :
+                                <p className="contributeOpenTooltipText">
+                                    Click on 'Contribute' to add content to your story.
+                                </p>
+                            }
+                        </div>
+                        }
                 </div>   
         </div>
         )
