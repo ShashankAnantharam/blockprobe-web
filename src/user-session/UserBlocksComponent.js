@@ -51,17 +51,17 @@ class UserBlocksComponent extends React.Component {
                 ],
                 addBlocks:[                    
                     {                    
-                        title: 'Add your first block!',
+                        title: 'Click on \'Contribute\' to start adding content to your story!',
                         target: '.addBulkBlockButton',
-                        content: 'Now lets add the content to your story. Click on \'Contribute\' to start adding content to your story',
+                        content: '',
                         disableBeacon: true
                     }             
                 ],
                 draftBlock:[
                     {
-                        title: 'Click on any block for the final touches!',
+                        title: 'Click on any block (para) that you just added from the Draft list!',
                         target: '.draftBlocksList',
-                        content: 'Your newly created blocks are in draft and you can edit them.',
+                        content: '',
                         disableBeacon: true
                     }
                 ],
@@ -81,7 +81,7 @@ class UserBlocksComponent extends React.Component {
                 commitBlock: false
             }
         }
-
+        
         //props include bpId, uId
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');

@@ -59,7 +59,7 @@ class UserBlockprobesComponent extends React.Component {
                 addTitleAndSummary: false,
                 clickOnStory: false,
                 clickOnStoryEnabler: false,
-                buildStory: false
+                buildStory: JSON.parse(JSON.stringify(props.buildStorytooltip))
             },
             isBlockprobeBeingCreated: false
         };
