@@ -424,7 +424,6 @@ class UserSession extends React.Component {
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}><span>Visually engage your audience and yourself with your work.</span></div>
                                 <div style={{marginTop:'16px'}}>
                                     {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
-                                    {this.cueCardView(this.state.landingPage.police.logo, this.state.landingPage.police.text)}
                                     {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
                                 </div>                        
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
@@ -452,7 +451,6 @@ class UserSession extends React.Component {
                                     <div className='mobile-landing-page'>
                                         <div style={{marginTop:'16px'}}>
                                             {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
-                                            {this.cueCardView(this.state.landingPage.police.logo, this.state.landingPage.police.text)}
                                             {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
                                         </div> 
                                     </div>
