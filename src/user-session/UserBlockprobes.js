@@ -392,7 +392,14 @@ class UserBlockprobesComponent extends React.Component {
         const script = document.createElement("script");
         const scriptText = document.createTextNode("gtag('event', 'conversion', {'send_to': 'AW-734513637/5XMVCJjI2qUBEOWTn94C'});");
         script.appendChild(scriptText);
-        document.head.appendChild(script);;
+        document.head.appendChild(script);
+
+        const scriptFb = document.createElement("script");
+        const scriptFbText = document.createTextNode("fbq('track', 'ViewContent', {value: 1, content_type: 'login', currency: 'INR', content_id:'1', product:'none'});");
+        scriptFb.appendChild(scriptFbText);
+        document.head.appendChild(scriptFb);
+
+
     }
 
     render(){
