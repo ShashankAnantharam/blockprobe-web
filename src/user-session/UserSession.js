@@ -220,7 +220,9 @@ class UserSession extends React.Component {
                         firebase.firestore().collection("Users").
                                 doc(uId).set(userData);
                         var tooltip = scope.state.tooltip;
-                        tooltip.buildStory = true;
+
+                        //Toggle tooltip here for new logins
+                        tooltip.buildStory = false; //true;
                         scope.setState({tooltip: tooltip});
                     }
                     else{
