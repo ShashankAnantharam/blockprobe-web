@@ -330,7 +330,6 @@ class UserBlocksComponent extends React.Component {
                         });
                     });
                     
-                    // console.log(entityArr);
                     //commit array
                     if(doc.exists)
                          transaction.update(entityPaneRef, {entities: entityArr});
@@ -484,7 +483,7 @@ class UserBlocksComponent extends React.Component {
         this.setState({isCreateBlockClicked:false});
     }
 
-    initEntityPane(){
+    initEntityPane(){        
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("users").doc(this.state.uIdHash).collection("session")
         .doc("entityPane").get().then((snapshot) => {
@@ -499,12 +498,13 @@ class UserBlocksComponent extends React.Component {
 
     async commitBlockToBlockprobe(block){
         await this.props.commitBlockToBlockprobe(block);
+        await this.updateStoryEntities(block);
         this.finishTooltip('commitBlock');
         ReactGA.event({
             category: 'commit_blocks',
             action: 'Committed blocks',
             label: this.props.bId
-          });
+          });          
     }
 
     finishTooltip(tooltip){
