@@ -528,16 +528,17 @@ class UserBlocksComponent extends React.Component {
                 showTooltip.addBlocks = false;
                 showTooltip.draftBlock = false;
                 showTooltip.commitBlock = true;
-
                 this.props.finishBuildingStoryTooltip();
             }
         } 
         else if(tooltip == 'commitBlock'){
-            showTooltip.entityPane = false;
-            showTooltip.addBlocks = false;
-            showTooltip.draftBlock = false;
-            showTooltip.commitBlock = false;
-            this.props.finishAddingBlockToStoryTooltip();
+            if(showTooltip.draftBlock){
+                showTooltip.entityPane = false;
+                showTooltip.addBlocks = false;
+                showTooltip.draftBlock = false;
+                showTooltip.commitBlock = false;
+                this.props.finishAddingBlockToStoryTooltip();
+            }
         }
 
         this.setState({

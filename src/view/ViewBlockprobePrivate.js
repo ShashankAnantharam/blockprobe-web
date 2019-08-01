@@ -826,6 +826,12 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
     async commitBlockToBlockprobe(block){
 
+        var loadingState = this.state.isloading;
+        loadingState.blockprobe = true;
+        this.setState({            
+            isloading: loadingState
+        });
+
         const oldKey = block.key;
             
 
