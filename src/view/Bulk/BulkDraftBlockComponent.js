@@ -298,6 +298,17 @@ class BulkDraftBlockComponent extends React.Component {
                 } 
              }
 
+             if(newDraftBlock.entities){
+                 //Dedup done here
+                var result = newDraftBlock.entities.reduce((unique, o) => {
+                    if(!unique.some(obj => obj.title === o.title)) {
+                      unique.push(o);
+                    }
+                    return unique;
+                },[]); 
+                newDraftBlock.entities = result;
+            }
+
              
              
              draftBlocks.push(newDraftBlock);             
