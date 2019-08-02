@@ -272,10 +272,27 @@ class UserBlocksComponent extends React.Component {
 
     addDraftBlocksInBulk(blocks){
 
+        var allEntitiesMap = {};
+        var allEntities = [];
+        for(var i=0; i<blocks.length; i++){
+            if(blocks[i].entities){
+                for(var j=0;j<blocks[i].entities.length;j++){
+                    var currEntity = blocks[i].entities[j];
+                    if(!(currEntity.title in allEntitiesMap)){
+                        //new entity
+                        allEntitiesMap[currEntity.title] = '';
+                        allEntities.push(currEntity);
+                    }
+                }
+            }
+        }
+        var dummyBlock = {entities:allEntities};
+        this.updateStoryEntities(dummyBlock);
+
         var currTime = Date.now();
         for(var i =0;i<blocks.length; i++){
             blocks[i].timestamp = currTime + 1000*i;
-            this.addDraftBlock(blocks[i]);
+            this.addDraftBlock(blocks[i], true);
         }
         this.setState({isCreateBulkBlockClicked: false});
 
@@ -341,7 +358,7 @@ class UserBlocksComponent extends React.Component {
         }
     }
 
-    addDraftBlock(block){
+    addDraftBlock(block, isBulk=false){
         if(isNullOrUndefined(block.timestamp))
             block.timestamp = Date.now();
         var newDraftBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(block.timestamp)).digest('hex');
@@ -360,7 +377,9 @@ class UserBlocksComponent extends React.Component {
 
         this.setState({isCreateBlockClicked:false});
 
-        this.updateStoryEntities(block);
+        if(!isBulk){
+            this.updateStoryEntities(block);
+        }
     }
 
     submitDraftBlock(block){
