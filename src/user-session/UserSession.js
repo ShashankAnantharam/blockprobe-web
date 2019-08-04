@@ -435,11 +435,11 @@ class UserSession extends React.Component {
                                     To use blockprobe, login with your mobile and get started!
                                 </div>
                                 <div style={{marginTop:'3%'}}>
+                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/privacy-policy" target="blank">Privacy Policy</a>
-                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>
-                                </div>
-                                
+                                    <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>                                    
+                                </div>                                
                             </div>
                             <div>                        
                             {this.state.showLogin?
@@ -455,6 +455,12 @@ class UserSession extends React.Component {
                                             {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
                                             {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
                                         </div> 
+                                        <div style={{marginTop:'3%'}}>
+                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
+                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
+                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/privacy-policy" target="blank">Privacy Policy</a>
+                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>
+                                        </div>
                                     </div>
                                 </div> : null 
                             }
