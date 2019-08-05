@@ -1,3 +1,7 @@
+.tooltip-selection{
+    color:blue; 
+    cursor: pointer;
+}
 
 .block-list-title{
     text-align: left;

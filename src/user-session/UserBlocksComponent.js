@@ -650,8 +650,10 @@ class UserBlocksComponent extends React.Component {
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
                         <p className="contributeOpenTooltipText">
-                            Click on the menu icon (top-left) and choose 'Dashboard' to visualise your contributions.
+                            Click on the menu icon (top-left) and choose 'Dashboard' to visualise your contributions. <br/><br/>
+                            Click on <a className='tooltip-selection' onClick={this.createBulkBlock}>Contribute</a> to add content to your story.
                         </p>
+                        
                         :
                         <div>
                             {Object.keys(this.state.draftBlocks).length>0?
@@ -660,7 +662,7 @@ class UserBlocksComponent extends React.Component {
                                 </p>
                                 :
                                 <p className="contributeOpenTooltipText">
-                                    Click on 'Contribute' to add content to your story.
+                                    Click on <a className='tooltip-selection' onClick={this.createBulkBlock}>Contribute</a> to add content to your story.
                                 </p>
                             }
                         </div>
