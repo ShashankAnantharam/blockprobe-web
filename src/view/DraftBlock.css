@@ -8,6 +8,14 @@
     border: 1px black solid;
 }
 
+.openTooltipTextContainer{
+    margin: 0; 
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size:13px;
+    font-style: italic;
+}
+
 .draftBlocksPaneTitle{
     text-align: center;
     margin-bottom: 10px;

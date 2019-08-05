@@ -566,7 +566,16 @@ class DraftBlockComponent extends React.Component {
                         onClick={this.removeDraftBlock}>
                             <div>Delete</div>
                     </button>    
-                </div>   
+                </div> 
+                {this.props.bpDetails.criterion == 0?
+                                    <div>
+                                        <p className="openTooltipTextContainer">
+                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
+                                        </p>
+                                    </div>
+                                    :
+                                    null
+                }   
                 <form>
                 <label>
                     <Textarea 
@@ -767,6 +776,15 @@ class DraftBlockComponent extends React.Component {
                             <div>Delete</div>
                     </button>    
                 </div>
+                {this.props.bpDetails.criterion == 0?
+                                    <div>
+                                        <p className="openTooltipTextContainer">
+                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
+                                        </p>
+                                    </div>
+                                    :
+                                    null
+                }                                
             </div>
 
         );
