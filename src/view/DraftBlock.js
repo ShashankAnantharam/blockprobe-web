@@ -534,7 +534,16 @@ class DraftBlockComponent extends React.Component {
         return(
 
             <div className="draft-block-container">      
-                <div className='draftBlocksPaneTitle'>Edit block</div>       
+                <div className='draftBlocksPaneTitle'>Edit block</div>
+                {this.props.bpDetails.criterion == 0?
+                                    <div>
+                                        <p className="openTooltipTextContainer">
+                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
+                                        </p>
+                                    </div>
+                                    :
+                                    null
+                }       
                 <div className="draft-options-container" style={{marginTop:'0.1em'}}>
                 {this.props.bpDetails.criterion == 0?
                                     <button 
@@ -566,16 +575,7 @@ class DraftBlockComponent extends React.Component {
                         onClick={this.removeDraftBlock}>
                             <div>Delete</div>
                     </button>    
-                </div> 
-                {this.props.bpDetails.criterion == 0?
-                                    <div>
-                                        <p className="openTooltipTextContainer">
-                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
-                                        </p>
-                                    </div>
-                                    :
-                                    null
-                }   
+                </div>                    
                 <form>
                 <label>
                     <Textarea 
