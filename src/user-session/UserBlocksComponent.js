@@ -114,6 +114,7 @@ class UserBlocksComponent extends React.Component {
         this.initEntityPane = this.initEntityPane.bind(this); 
         this.finishTooltip = this.finishTooltip.bind(this);
         this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
+        this.setDashboardVisualisation = this.setDashboardVisualisation.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -650,7 +651,7 @@ class UserBlocksComponent extends React.Component {
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
                         <p className="contributeOpenTooltipText">
-                            Click on the menu icon (top-left) and choose 'Dashboard' to visualise your contributions. <br/><br/>
+                            Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setDashboardVisualisation}>Dashboard</a> to visualise your contributions. <br/><br/>
                             Click on <a className='tooltip-selection' onClick={this.createBulkBlock}>Contribute</a> to add content to your story.
                         </p>
                         
@@ -670,6 +671,10 @@ class UserBlocksComponent extends React.Component {
                 </div>   
         </div>
         )
+    }
+
+    setDashboardVisualisation(){
+        this.props.setNewVisualisation('dashboard');
     }
 
     render(){
