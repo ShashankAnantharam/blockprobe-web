@@ -222,7 +222,7 @@ class UserSession extends React.Component {
                         var tooltip = scope.state.tooltip;
 
                         //Toggle tooltip here for new logins
-                        tooltip.buildStory = false; //true;
+                        tooltip.buildStory = true;
                         scope.setState({tooltip: tooltip});
                     }
                     else{
