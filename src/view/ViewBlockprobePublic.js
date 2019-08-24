@@ -142,7 +142,7 @@ class ViewBlockprobePublicComponent extends React.Component {
     }
 
     sortTimeline(timelineList){
-        timelineList.sort(function(a,b){
+        timelineList.sort(function(b,a){
             if(a.blockDate.year!==b.blockDate.year)
             return a.blockDate.year - b.blockDate.year;        
 
