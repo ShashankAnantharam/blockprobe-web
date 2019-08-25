@@ -279,7 +279,7 @@ class GraphComponent extends React.Component {
                     && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
                         var edgeMap = this.props.investigationGraph[currEntityKey].edges;
                         Object.keys(edgeMap).forEach(function(edgeKey) {
-                            if(edgeKey in selectedEntityLabels && nodesMap[selectedEntityLabels[edgeKey]]){
+                            if(edgeKey in selectedEntityLabels){
                                 //edge is a selection, add it
                                 //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
                                 newGraph[selectedEntityLabels[edgeKey]].link.push(count);
