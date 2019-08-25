@@ -7,6 +7,9 @@ import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 
+
+import AmGraph from './amGraph/amGraph';
+
 class GraphComponent extends React.Component {
 
     constructor(props){
@@ -71,6 +74,8 @@ class GraphComponent extends React.Component {
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
         this.removeHashedIndex = this.removeHashedIndex.bind(this);
+
+        this.generateAmGraph = this.generateAmGraph.bind(this);
     }
 
     isValidBlock(block){
@@ -240,6 +245,65 @@ class GraphComponent extends React.Component {
         this.setState({
             graphEvents: events
         })
+    }
+
+    generateAmGraph(){
+        var isAllSelected = this.props.multiSelectEntityList[0].value;
+        var newGraph = [];
+        var nodesMap = {};
+
+        if(!this.props.multiSelectEntityList[1].value)
+        {
+            //If None is not selected only display graph
+            var selectedEntityLabels = {};
+
+            var count=0;
+            for(var i=2; i<this.props.multiSelectEntityList.length;i++){
+                var currEntity = this.props.multiSelectEntityList[i];
+                if(currEntity.value || isAllSelected){
+                    //selected Node
+                    selectedEntityLabels[currEntity.label]=count;
+                    
+                    //Add Node
+                    newGraph.push({
+                        id:count,
+                        label:currEntity.label,
+                        link: []
+                    });
+                    nodesMap[count] = currEntity.label;
+
+                    //Add edge
+                    var currEntityKey = currEntity.label;
+
+                    if(!isNullOrUndefined(this.props.investigationGraph)
+                    && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
+                        var edgeMap = this.props.investigationGraph[currEntityKey].edges;
+                        Object.keys(edgeMap).forEach(function(edgeKey) {
+                            if(edgeKey in selectedEntityLabels && nodesMap[selectedEntityLabels[edgeKey]]){
+                                //edge is a selection, add it
+                                //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
+                                newGraph[selectedEntityLabels[edgeKey]].link.push(count);
+                            }
+                        });
+                    }
+                    count++;
+                }
+            }
+        }
+
+        var newGraphHelper = {
+            nodes: nodesMap,
+            edges: {}
+        }
+
+        return(
+            <div className="graph-main">
+                <AmGraph 
+                        graph={newGraph}                          
+                        />
+            </div>
+        );
+
     }
 
     generateGraph(){
@@ -452,9 +516,8 @@ class GraphComponent extends React.Component {
 
     componentDidMount(){
         this.initializeGraphEvents();
-        //this.generateGraph();
-
     }
+
 
     render(){
 
@@ -474,8 +537,8 @@ class GraphComponent extends React.Component {
 
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
-           );            
-        
+           );      
+            
         return (
             <div>
                 <div className='filter-container'>                
@@ -493,7 +556,7 @@ class GraphComponent extends React.Component {
 
                 </div>
                 <div className='graph-container'>
-                        {this.generateGraph()}
+                        {this.generateAmGraph()/*this.generateGraph()*/}                        
                         {this.state.currentSelectedBlocks.length > 0? 
                         <div className="graph-block-list">
                             <div className='graph-block-list-title'>Graph selections</div> 
