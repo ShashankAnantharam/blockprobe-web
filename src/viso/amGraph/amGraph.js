@@ -38,7 +38,6 @@ class AmGraph extends React.Component {
     }
 
     generateAmForceDirectedGraph(){
-        console.log('here');
         // Create chart
         var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
 
@@ -48,28 +47,7 @@ class AmGraph extends React.Component {
 
        //console.log(graph);
         series.data = this.prepareData(this.props.graph);
-        /*series.data = this.prepareData([{
-            "name": "Chrome",
-            "value": 1,
-            "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_chrome.svg"
-        }, {
-            "name": "Firefox",
-            "value": 1,
-            "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_firefox.svg"
-        }, {
-            "name": "Internet Explorer",
-            "value": 1,
-            "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_ie.svg"
-        }, {
-            "name": "Safari",
-            "value": 1,
-            "image": "https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-160/icon_safari.svg"
-        }, {
-            "name": "Opera",
-            "value": 1,
-            "image": ""
-        }]);
-*/
+ 
         // Set up data fields
         series.dataFields.value = "value";
         series.dataFields.name = "label";
@@ -110,6 +88,9 @@ class AmGraph extends React.Component {
       this.generateAmForceDirectedGraph();
     }
 
+    componentDidUpdate(){
+        this.generateAmForceDirectedGraph();
+    }
 
     render(){
         return(
