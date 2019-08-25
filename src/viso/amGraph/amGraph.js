@@ -72,7 +72,7 @@ class AmGraph extends React.Component {
         series.nodes.template.label.truncate = true;
         */
 
-        series.fontSize = 10;
+        series.fontSize = 13;
         series.minRadius = 10;
         series.maxRadius = 10;
         series.nodes.template.label.propertyFields.disabled = 'circleDisabled';
@@ -90,7 +90,7 @@ class AmGraph extends React.Component {
         icon.height = 60;
         
 
-        series.centerStrength = 0.5;
+        series.centerStrength = 0.2;
         series.links.template.strokeWidth = 5;
 
         var scope = this;
@@ -132,7 +132,7 @@ class AmGraph extends React.Component {
 
     render(){
         return(
-            <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+            <div id="chartdiv" style={{ width: "100%", height: "100%" }}></div>
         );
     }
 }
