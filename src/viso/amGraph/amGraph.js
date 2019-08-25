@@ -59,16 +59,20 @@ class AmGraph extends React.Component {
 
         // Add labels
         series.nodes.template.label.text = "{name}";
-        //series.nodes.template.label.valign = "bottom";
-        //series.nodes.template.label.fill = am4core.color("#000");
-        //series.nodes.template.label.dy = 10;
         series.nodes.template.tooltipText = "{name}";
+
+        series.nodes.template.label.valign = "bottom";
+        series.nodes.template.label.fill = am4core.color("#000");
+        series.nodes.template.label.dy = 10;
+        
+        /*
         series.nodes.template.label.hideOversized = true;
         series.nodes.template.label.truncate = true;
-        
+        */
+
         series.fontSize = 10;
-        series.minRadius = 30;
-        series.maxRadius = 30;
+        series.minRadius = 20;
+        series.maxRadius = 20;
         series.nodes.template.label.propertyFields.disabled = 'circleDisabled';
 
          // Configure circles
@@ -91,6 +95,7 @@ class AmGraph extends React.Component {
 
         series.links.template.interactionsEnabled = true;        
         series.links.template.clickable = true;
+        series.links.template.distance = 3;
         series.links.template.events.on("hit", function (event) {                
             var link = event.target;            
             link.strokeWidth = 9;        
