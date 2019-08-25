@@ -76,6 +76,7 @@ class GraphComponent extends React.Component {
         this.removeHashedIndex = this.removeHashedIndex.bind(this);
 
         this.generateAmGraph = this.generateAmGraph.bind(this);
+        this.selectEdge = this.selectEdge.bind(this);
     }
 
     isValidBlock(block){
@@ -84,6 +85,22 @@ class GraphComponent extends React.Component {
         return true;
     }
 
+    selectEdge(from, to){
+        var blocksToBeSelected =[];
+        var blocksAdded = {};
+        var edge={
+            to: to,
+            from: from
+        };
+        this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+
+        this.setState({
+            currentSelectedBlocks: blocksToBeSelected
+        });
+    }
+
+    //edg:from,to,
     addBlocksForEdge(edge, blocksToBeSelected, blocksAdded){
         var edgeBlockList = this.props.investigationGraph[edge.from].edges[edge.to];
 
@@ -251,6 +268,7 @@ class GraphComponent extends React.Component {
         var isAllSelected = this.props.multiSelectEntityList[0].value;
         var newGraph = [];
         var nodesMap = {};
+        console.log('here');
 
         if(!this.props.multiSelectEntityList[1].value)
         {
@@ -299,7 +317,8 @@ class GraphComponent extends React.Component {
         return(
             <div className="graph-main">
                 <AmGraph 
-                        graph={newGraph}                          
+                        graph={newGraph}  
+                        selectEdge = {this.selectEdge}                        
                         />
             </div>
         );
