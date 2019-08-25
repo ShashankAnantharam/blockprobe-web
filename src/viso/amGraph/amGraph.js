@@ -59,10 +59,13 @@ class AmGraph extends React.Component {
 
         // Add labels
         series.nodes.template.label.text = "{name}";
-        series.nodes.template.label.valign = "bottom";
-        series.nodes.template.label.fill = am4core.color("#000");
-        series.nodes.template.label.dy = 10;
+        //series.nodes.template.label.valign = "bottom";
+        //series.nodes.template.label.fill = am4core.color("#000");
+        //series.nodes.template.label.dy = 10;
         series.nodes.template.tooltipText = "{name}";
+        series.nodes.template.label.hideOversized = true;
+        series.nodes.template.label.truncate = true;
+        
         series.fontSize = 10;
         series.minRadius = 30;
         series.maxRadius = 30;
