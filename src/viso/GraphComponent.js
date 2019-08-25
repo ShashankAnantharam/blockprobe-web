@@ -77,6 +77,7 @@ class GraphComponent extends React.Component {
 
         this.generateAmGraph = this.generateAmGraph.bind(this);
         this.selectEdge = this.selectEdge.bind(this);
+        this.selectNode = this.selectNode.bind(this);
     }
 
     isValidBlock(block){
@@ -120,6 +121,29 @@ class GraphComponent extends React.Component {
             }
         }
 
+    }
+
+    selectNode(node){
+        var blocksToBeSelected =[];
+        var blocksAdded = {};
+        
+        this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
+
+        var edges =  this.props.investigationGraph[node].edges;
+        var scope = this;
+        Object.keys(edges).forEach(function(edgeKey) {
+                var edge={
+                    to: node,
+                    from: edgeKey
+                };
+                scope.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);           
+        });
+
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+
+        this.setState({
+            currentSelectedBlocks: blocksToBeSelected
+        });
     }
 
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
@@ -268,7 +292,6 @@ class GraphComponent extends React.Component {
         var isAllSelected = this.props.multiSelectEntityList[0].value;
         var newGraph = [];
         var nodesMap = {};
-        console.log('here');
 
         if(!this.props.multiSelectEntityList[1].value)
         {
@@ -318,7 +341,8 @@ class GraphComponent extends React.Component {
             <div className="graph-main">
                 <AmGraph 
                         graph={newGraph}  
-                        selectEdge = {this.selectEdge}                        
+                        selectEdge = {this.selectEdge}    
+                        selectNode = {this.selectNode}                    
                         />
             </div>
         );

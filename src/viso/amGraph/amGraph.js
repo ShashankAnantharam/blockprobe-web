@@ -89,17 +89,22 @@ class AmGraph extends React.Component {
         series.links.template.interactionsEnabled = true;        
         series.links.template.clickable = true;
         series.links.template.events.on("hit", function (event) {                
-        var link = event.target;
-        console.log(link);
-        console.log(scope.selectedLink);
-        console.log(link.source.label.currentText);
-        console.log(link.target.label.currentText);
-        link.strokeWidth = 9;        
-        if(scope.selectedLink)
-            scope.selectedLink.strokeWidth = 5;
-        scope.selectedLink = link;    
-        scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
+            var link = event.target;            
+            link.strokeWidth = 9;        
+            if(scope.selectedLink)
+                scope.selectedLink.strokeWidth = 5;
+            scope.selectedLink = link;    
+            scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
         });
+
+        series.nodes.template.events.on("hit", function (event) {                
+            var node = event.target;      
+            if(scope.selectedLink)
+                scope.selectedLink.strokeWidth = 5;
+            scope.selectedLink = null;    
+            scope.props.selectNode(node.label.currentText);
+        });
+
         this.chart =  chart;
     }
 
@@ -109,13 +114,10 @@ class AmGraph extends React.Component {
     }
 
     componentDidUpdate(){
-        console.log(this.previousChart);
-        console.log(this.props.graph);
         if(JSON.stringify(this.previousChart) != JSON.stringify(this.props.graph)){
             this.generateAmForceDirectedGraph();
             this.previousChart = JSON.parse(JSON.stringify(this.props.graph));
         }
-        //
     }
 
     render(){
