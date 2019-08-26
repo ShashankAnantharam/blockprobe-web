@@ -467,22 +467,27 @@ class GraphComponent extends React.Component {
                this.BlockEntity(blockEntity)
            );            
        }
-       /*
-       */
 
         return(
+            <div className="graph-block-para-div"
+            onClick={() => { this.clickBlockFromList(singleBlock)}}>
+                <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
+                <p className="graph-block-text">
+                    {singleBlock.summary}
+                </p>                        
+            </div>
+            );
+
+     /*   return(
         <div className="graph-block-div"
         onClick={() => { this.clickBlockFromList(singleBlock)}}>
             <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
             <p className="graph-block-text">
                 {singleBlock.summary}
-            </p>
-            <div>
-                {renderBlockEntities}
-            </div>
-            
+            </p>                        
         </div>
         );
+        */
     }
 
     handleAllAndNoneOptions(){

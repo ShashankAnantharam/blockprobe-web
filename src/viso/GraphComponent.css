@@ -16,12 +16,13 @@
     color:darkcyan;
     margin-left: 9px; 
     margin-top: 9px;
-    margin-bottom: 15px;
+    margin-bottom: 2px !important;
     font-weight: bold;
 }
 
 .graph-block-text{
     text-align: justify;
+    margin-top: 2px !important;
     margin-left: 9px; 
 }
 
@@ -37,9 +38,18 @@
     transition: padding 0.5s;
 }
 
+.graph-block-para-div{
+    transition: 0.5s;
+    padding: 5px;
+}
+
 .graph-block-div:hover{
     background: #efd1f8;  
     padding: 10px 5px 10px 5px;  
+}
+
+.graph-block-para-div:hover{
+    background: #efd1f8;  
 }
 
 .graph-main:hover{
