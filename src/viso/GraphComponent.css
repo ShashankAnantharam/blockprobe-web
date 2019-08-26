@@ -14,7 +14,8 @@
 
 .graph-block-title{
     color:darkcyan;
-    margin-left: 9px; 
+    margin-left: 9px;
+    margin-right: 9px; 
     margin-top: 9px;
     margin-bottom: 2px !important;
     font-weight: bold;
@@ -24,6 +25,7 @@
     text-align: justify;
     margin-top: 2px !important;
     margin-left: 9px; 
+    margin-right: 9px;
 }
 
 .graph-block-div{
