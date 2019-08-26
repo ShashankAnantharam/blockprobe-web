@@ -415,7 +415,7 @@ class FindConnectionsComponent extends React.Component {
         var nodesMap = {};
 
         var selectedEntityList = this.findConnections();
-        console.log(selectedEntityList);
+        //console.log(selectedEntityList);
 
         if(selectedEntityList.length >= 2)
         {
