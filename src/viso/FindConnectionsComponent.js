@@ -7,11 +7,14 @@ import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 
+import AmGraph from './amGraph/amGraph';
+
 class FindConnectionsComponent extends React.Component {
 
     constructor(props){
       super(props);
       this.state={
+        amGraph:{},
         graph: {
             nodes: [
               ],
@@ -72,12 +75,33 @@ class FindConnectionsComponent extends React.Component {
         this.addBlocksForEdge = this.addBlocksForEdge.bind(this);
         this.isValidBlock = this.isValidBlock.bind(this);
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
+        this.sortBlocks = this.sortBlocks.bind(this);
+        this.removeHashedIndex = this.removeHashedIndex.bind(this);
+
+        this.generateAmGraph = this.generateAmGraph.bind(this);
+        this.selectEdge = this.selectEdge.bind(this);
+        this.selectNode = this.selectNode.bind(this);
     }
 
     isValidBlock(block){
         if(isNullOrUndefined(block.title) || block.title=='')
             return false;
         return true;
+    }
+
+    selectEdge(from, to){
+        var blocksToBeSelected =[];
+        var blocksAdded = {};
+        var edge={
+            to: to,
+            from: from
+        };
+        this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+
+        this.setState({
+            currentSelectedBlocks: blocksToBeSelected
+        });
     }
 
     addBlocksForEdge(edge, blocksToBeSelected, blocksAdded){
@@ -100,6 +124,29 @@ class FindConnectionsComponent extends React.Component {
 
     }
 
+    selectNode(node){
+        var blocksToBeSelected =[];
+        var blocksAdded = {};
+        
+        this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
+
+        var edges =  this.props.investigationGraph[node].edges;
+        var scope = this;
+        Object.keys(edges).forEach(function(edgeKey) {
+                var edge={
+                    to: node,
+                    from: edgeKey
+                };
+                scope.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);           
+        });
+
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+
+        this.setState({
+            currentSelectedBlocks: blocksToBeSelected
+        });
+    }
+
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
         var charBlockList = this.props.investigationGraph[node].char;
 
@@ -118,6 +165,73 @@ class FindConnectionsComponent extends React.Component {
                 blocksAdded[blockKey]=true;
             }
         }
+    }
+
+    sortBlocks(a, b){
+        a = a.trim();        
+        b = b.trim();
+
+        var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
+        if(a.length>0 && a.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<a.length; i++){
+                
+                if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                    num += a.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        aIndex = parseFloat(num);
+                        isAExist = true;
+                    }
+                }
+            }
+            if(num.length > 0){
+                aIndex = parseFloat(num);
+                isAExist = true;
+            }    
+        }
+
+        if(b.length>0 && b.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<b.length; i++){
+                
+                if((!isNaN(parseInt(b.charAt(i), 10))) || b[i]==='.'){
+                    num += b.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        bIndex = parseFloat(num);
+                        isBExist = true;
+                    }
+                }
+            }    
+            if(num.length > 0){
+                bIndex = parseFloat(num);
+                isBExist = true;
+            }
+        
+        }
+
+        // A comes after b
+        if(!isAExist && isBExist)
+            return 1;
+
+        // A comes before b
+        if(isAExist && !isBExist)
+            return -1;
+
+        // A comes before b
+        if(isAExist && isBExist){
+            if(aIndex > bIndex)
+                return 1;
+            return -1;
+        }
+
+        if(a > b)
+            return 1;
+
+        return -1;
     }
 
     onSelectGraph(event){
@@ -296,6 +410,60 @@ class FindConnectionsComponent extends React.Component {
 
     }
 
+    async generateAmGraph(){
+        var newGraph = [];
+        var nodesMap = {};
+
+        var selectedEntityList = this.findConnections();
+        console.log(selectedEntityList);
+
+        if(selectedEntityList.length >= 2)
+        {
+            //If None is not selected only display graph
+            var selectedEntityLabels = {};
+
+            var count=0;
+            for(var i=0; i<selectedEntityList.length;i++){
+                var currEntity = selectedEntityList[i];
+                if(currEntity.value){
+                    //selected Node
+                    selectedEntityLabels[currEntity.label]=count;
+                    
+                    //Add Node
+                    newGraph.push({
+                        id:count,
+                        label:currEntity.label,
+                        link: []
+                    });
+                    nodesMap[count] = currEntity.label;
+
+                    //Add edge
+                    var currEntityKey = currEntity.label;
+
+                    if(!isNullOrUndefined(this.props.investigationGraph)
+                    && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
+                        var edgeMap = this.props.investigationGraph[currEntityKey].edges;
+                        Object.keys(edgeMap).forEach(function(edgeKey) {
+                            if(edgeKey in selectedEntityLabels){
+                                //edge is a selection, add it
+                                //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
+                                newGraph[selectedEntityLabels[edgeKey]].link.push(count);
+                            }
+                        });
+                    }
+                    count++;
+                }
+            }
+        }        
+
+        var newGraphHelper = {
+            nodes: nodesMap,
+            edges: {}
+        }
+
+        this.setState({amGraph:newGraph});
+    }
+
     async generateGraph(){
         var newGraph = {
             nodes: [],
@@ -403,6 +571,21 @@ class FindConnectionsComponent extends React.Component {
             firstEntitySelectList: firstEntityList,
             secondEntitySelectList: secondEntityList
         });
+    }
+
+    removeHashedIndex(a){
+        a = a.trim();
+        var startI = 0;
+        if(a.length>0 && a[0]=='#'){
+            for(var i=1; i<a.length; i++){
+                startI = i;
+                if(a.charAt(i)==' '){
+                    return a.substring(startI).trim();
+                }
+            } 
+            return '';   
+        }
+        return a;
     }
 
     BlockEntity(entity){
@@ -520,14 +703,15 @@ class FindConnectionsComponent extends React.Component {
                         />    
                     </div>
 
-                    <button className="filterButton" onClick={this.generateGraph}>Find Connection</button>
+                    <button className="filterButton" onClick={this.generateAmGraph}>Find Connection</button>
                 </div>
                 <div className='graph-container'>
+                       
                     <div className="graph-main">
-                        <Graph 
-                                 graph={this.state.graph} 
-                                 options={this.state.graphOptions} 
-                                 events={this.state.graphEvents} 
+                        <AmGraph 
+                                graph={this.state.amGraph}  
+                                selectEdge = {this.selectEdge}    
+                                selectNode = {this.selectNode}                    
                                 />
                     </div>                    
 
@@ -548,3 +732,12 @@ class FindConnectionsComponent extends React.Component {
 
 }
 export default FindConnectionsComponent;
+
+
+/* <div className="graph-main">
+                        <Graph 
+                                 graph={this.state.graph} 
+                                 options={this.state.graphOptions} 
+                                 events={this.state.graphEvents} 
+                                />
+                    </div> */
