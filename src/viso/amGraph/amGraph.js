@@ -3,6 +3,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4plugins_forceDirected from "@amcharts/amcharts4/plugins/forceDirected"; 
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import * as am4plugins_bullets from "@amcharts/amcharts4/plugins/bullets";
 
 am4core.useTheme(am4themes_animated);
 
@@ -82,7 +83,7 @@ class AmGraph extends React.Component {
          series.nodes.template.outerCircle.propertyFields.disabled = 'circleDisabled';
 
         // Configure icons
-       var icon = series.nodes.template.createChild(am4core.Image);
+        var icon = series.nodes.template.createChild(am4core.Image);
         icon.propertyFields.href = "image";
         icon.horizontalCenter = "middle";
         icon.verticalCenter = "middle";
