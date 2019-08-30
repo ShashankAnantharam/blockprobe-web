@@ -11,6 +11,8 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
+import ImagePaneView from "../view/ImagePane/ImagePane";
+
 import Joyride from 'react-joyride';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
@@ -40,6 +42,7 @@ class UserBlocksComponent extends React.Component {
             isCreateBlockClicked:false,
             isCreateBulkBlockClicked: false,
             isEntityPaneOpen: false,
+            isImagePaneOpen: false,
             tooltipText:{
                 entityPane:[                    
                     {                    
@@ -101,6 +104,8 @@ class UserBlocksComponent extends React.Component {
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.openEntityPane = this.openEntityPane.bind(this);
         this.closeEntityPane = this.closeEntityPane.bind(this);
+        this.openImagePane = this.openImagePane.bind(this);
+        this.closeImagePane = this.closeImagePane.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
@@ -486,6 +491,14 @@ class UserBlocksComponent extends React.Component {
         this.setState({isEntityPaneOpen: false});
     }
 
+    openImagePane(){
+        this.setState({isImagePaneOpen: true});
+    }
+
+    closeImagePane(){
+        this.setState({isImagePaneOpen: false});
+    }
+
     createBulkBlock(){
         ReactGA.event({
             category: 'bulk block pane',
@@ -603,6 +616,19 @@ class UserBlocksComponent extends React.Component {
             );
         }
 
+        if(this.state.isImagePaneOpen){
+            return (
+                <ImagePaneView
+                    closeImagePane = {this.closeImagePane}
+                    investigationGraph = {this.props.investigationGraph}
+                    bId = {this.props.bId}
+                    uIdHash={this.state.uIdHash}
+                    />
+            );
+        }
+
+        
+
         return (
         <div className="userblocks-header-container">
                 <div className="userblocks-options-container">   
@@ -650,7 +676,7 @@ class UserBlocksComponent extends React.Component {
 
                     <button 
                     className="editEntitiesButton entityPaneButtonTooltip" 
-                    onClick={this.openEntityPane}>
+                    onClick={this.openImagePane}>
                         <div>Manage story images</div>
                     </button>
                 </div>
