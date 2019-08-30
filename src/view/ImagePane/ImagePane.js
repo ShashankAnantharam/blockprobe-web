@@ -4,7 +4,7 @@ import './ImagePane.css';
 import Textarea from 'react-textarea-autosize';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
-
+import Img from 'react-image';
 
 class ImagePaneView extends React.Component {
 
@@ -19,6 +19,7 @@ class ImagePaneView extends React.Component {
                     id: -1
                 }
             ],
+            selectedEntityUrl: '',
             selectedEntity: ''
         }
 
@@ -79,10 +80,9 @@ class ImagePaneView extends React.Component {
         }
 
         if(shouldUpdate){
-            var selectedEntity = this.state.selectedEntity;
             if(type=="entity"){
-                selectedEntity = event.target.value;
-                this.setState({selectedEntity: selectedEntity});
+                var selectedEntityUrl = event.target.value;
+                this.setState({selectedEntityUrl: selectedEntityUrl});
             }
         }
            
@@ -123,28 +123,38 @@ class ImagePaneView extends React.Component {
                     <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm image</button>
                     <button className="imagePaneButton" onClick={this.props.closeImagePane}>Close</button>              
                 </div>
-                <div className="imagepane-url-container">
-                        <form>
-                            <label>
-                                <Textarea 
-                                    type="text"
-                                    placeholder = "Image url"
-                                    value={this.state.selectedEntity}
-                                    onChange={(e) => { this.handleChange(e,"entity")}}
-                                    maxRows="2"
-                                    minRows="1"
-                                    style={{
-                                        background: 'white',
-                                        borderWidth:'2px', 
-                                        borderStyle:'solid', 
-                                        borderColor:'black',
-                                        paddingTop:'6px',
-                                        paddingBottom:'6px',
-                                        width:'95%'
-                                        }}/>
-                            </label>
-                        </form>
+                {this.state.selectedEntity == 'None'?
+                    null   
+                        :
+                    <div>
+                        <div className="imagepane-url-container">
+                                <form>
+                                    <label>
+                                        <Textarea 
+                                            type="text"
+                                            placeholder = "Image url"
+                                            value={this.state.selectedEntityUrl}
+                                            onChange={(e) => { this.handleChange(e,"entity")}}
+                                            maxRows="2"
+                                            minRows="1"
+                                            style={{
+                                                background: 'white',
+                                                borderWidth:'2px', 
+                                                borderStyle:'solid', 
+                                                borderColor:'black',
+                                                paddingTop:'6px',
+                                                paddingBottom:'6px',
+                                                width:'95%'
+                                                }}/>
+                                    </label>
+                                </form>
+                        </div>
+                        <div>
+                            <Img src={[this.state.selectedEntityUrl]}
+                                style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                        </div>
                     </div>
+                }
             </div>
         );
     }
