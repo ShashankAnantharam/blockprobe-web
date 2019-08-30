@@ -647,6 +647,12 @@ class UserBlocksComponent extends React.Component {
                     onClick={this.openEntityPane}>
                         <div>Manage story entities</div>
                     </button>
+
+                    <button 
+                    className="editEntitiesButton entityPaneButtonTooltip" 
+                    onClick={this.openEntityPane}>
+                        <div>Manage story images</div>
+                    </button>
                 </div>
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
