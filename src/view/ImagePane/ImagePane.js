@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
 import './ImagePane.css';
+import Textarea from 'react-textarea-autosize';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 
@@ -17,10 +18,12 @@ class ImagePaneView extends React.Component {
                     label: "None", 
                     id: -1
                 }
-            ]
+            ],
+            selectedEntity: ''
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
     }
 
@@ -65,6 +68,26 @@ class ImagePaneView extends React.Component {
         this.generateEntityLists();
     }
 
+    handleChange(event, type) {
+
+        var shouldUpdate = true;
+        if(type!="date" && type!="time"){
+            var lastChar = event.target.value[event.target.value.length-1];
+            if(lastChar=='\n' || lastChar=='\t'){
+                shouldUpdate=false;
+            }
+        }
+
+        if(shouldUpdate){
+            var selectedEntity = this.state.selectedEntity;
+            if(type=="entity"){
+                selectedEntity = event.target.value;
+                this.setState({selectedEntity: selectedEntity});
+            }
+        }
+           
+      }
+
     render(){
 
         const selectedOptionsStyles = {
@@ -95,8 +118,33 @@ class ImagePaneView extends React.Component {
                         isTextWrap={false} 
                         />
                         
-                    </div>
+                    </div>     
+
+                    <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm image</button>
+                    <button className="imagePaneButton" onClick={this.props.closeImagePane}>Close</button>              
                 </div>
+                <div className="imagepane-url-container">
+                        <form>
+                            <label>
+                                <Textarea 
+                                    type="text"
+                                    placeholder = "Image url"
+                                    value={this.state.selectedEntity}
+                                    onChange={(e) => { this.handleChange(e,"entity")}}
+                                    maxRows="2"
+                                    minRows="1"
+                                    style={{
+                                        background: 'white',
+                                        borderWidth:'2px', 
+                                        borderStyle:'solid', 
+                                        borderColor:'black',
+                                        paddingTop:'6px',
+                                        paddingBottom:'6px',
+                                        width:'95%'
+                                        }}/>
+                            </label>
+                        </form>
+                    </div>
             </div>
         );
     }
