@@ -790,6 +790,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     permit = {this.props.permit}
                     bpDetails = {this.state.bpDetails}    
                     selectBlock={this.changeSelectedBlock}
+                    imageMapping = {this.state.imageMapping}
                     investigationGraph = {this.state.investigationGraph}
                     buildStory = {this.state.showTooltip.buildStory}
                     finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}

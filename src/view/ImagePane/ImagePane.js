@@ -72,23 +72,37 @@ class ImagePaneView extends React.Component {
     }
 
     firstEntityClicked(entityList) {
-        var selectedEntity = '';
+        var selectedEntity = '', url = '';
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
                 selectedEntity = entityList[i].label;
+                if(selectedEntity in this.props.imageMapping){
+                    url = this.props.imageMapping[selectedEntity];
+                }
             }
         }
-        this.setState({ firstEntitySelectList: entityList, selectedEntity: selectedEntity });
+        this.setState({ 
+            firstEntitySelectList: entityList, 
+            selectedEntity: selectedEntity,
+            selectedEntityUrl: url 
+        });
     }
     
     firstSelectedBadgeClicked(entityList) {
-        var selectedEntity = '';
+        var selectedEntity = '', url = '';
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
                 selectedEntity = entityList[i].label;
+                if(selectedEntity in this.props.imageMapping){
+                    url = this.props.imageMapping[selectedEntity];
+                }
             }
         }
-        this.setState({ firstEntitySelectList: entityList, selectedEntity: selectedEntity });
+        this.setState({ 
+            firstEntitySelectList: entityList, 
+            selectedEntity: selectedEntity,
+            selectedEntityUrl: url 
+        });
     }
 
     componentDidMount(){
