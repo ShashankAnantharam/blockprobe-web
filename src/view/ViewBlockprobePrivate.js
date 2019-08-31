@@ -670,6 +670,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     refreshBlockprobe(){
         var loadingState = this.state.isloading;
         loadingState.blockprobe = true;
+        loadingState.images = true;
         this.setState({
             blockTree: {},
             investigationGraph: {},
@@ -682,6 +683,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
             this.createBlockprobe(snapshot);
             var loadingState = this.state.isloading;
             loadingState.blockprobe = false;
+            this.setState({
+                isloading: loadingState
+            });
+        });
+
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("images").get().then((snapshot) => {
+            this.getImages(snapshot);
+            var loadingState = this.state.isloading;
+            loadingState.images = false;
             this.setState({
                 isloading: loadingState
             });
@@ -753,6 +764,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                         summaryBlocks = {this.state.summaryList}
                         blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
+                        imageMapping = {this.state.imageMapping}
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
                         timeline={this.state.timeline}                     
@@ -777,6 +789,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <FindConnectionsComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
+                        imageMapping = {this.state.imageMapping}
                     />
                 </div>
             );
@@ -796,7 +809,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}
                     commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
                     finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
-                    setNewVisualisation = {this.setNewVisualisation}                    
+                    setNewVisualisation = {this.setNewVisualisation}   
+                    refreshBlockprobe = {this.refreshBlockprobe}                 
                     />
                 </div>
             );

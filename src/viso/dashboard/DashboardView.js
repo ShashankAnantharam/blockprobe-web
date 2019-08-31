@@ -50,11 +50,13 @@ class DashboardViewComponent extends React.Component {
                         <GraphComponent blockTree={this.props.blockTree} 
                             investigationGraph={this.props.investigationGraph}
                             selectBlock={this.props.selectBlock}
+                            imageMapping = {this.props.imageMapping}
                             multiSelectEntityList = {this.props.multiSelectEntityList}/>
                     </TabPanel>
                     <TabPanel>
                         <FindConnectionsComponent blockTree={this.props.blockTree} 
                             investigationGraph={this.props.investigationGraph}
+                            imageMapping = {this.props.imageMapping}
                             selectBlock={this.props.selectBlock}
                         />
                     </TabPanel>

@@ -38,6 +38,8 @@ class ImagePaneView extends React.Component {
             doc(this.props.bId).
             collection("images").
             doc(newImage.entity).set(newImage);
+
+            this.props.refreshBlockprobe();
         }
 
     }

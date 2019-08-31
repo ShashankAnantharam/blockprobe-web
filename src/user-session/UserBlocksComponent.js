@@ -625,6 +625,7 @@ class UserBlocksComponent extends React.Component {
                     uIdHash={this.state.uIdHash}
                     imageMapping = {this.props.imageMapping}
                     permit = {this.props.permit}
+                    refreshBlockprobe = {this.props.refreshBlockprobe}
                     />
             );
         }

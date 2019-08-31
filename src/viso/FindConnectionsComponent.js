@@ -428,12 +428,21 @@ class FindConnectionsComponent extends React.Component {
                 if(currEntity.value){
                     //selected Node
                     selectedEntityLabels[currEntity.label]=count;
+
+                    var image = null;
+                    if(this.props.imageMapping){
+                        //Add image
+                        if(currEntity.label in this.props.imageMapping){
+                            image = this.props.imageMapping[currEntity.label];
+                        }
+                    }
                     
                     //Add Node
                     newGraph.push({
                         id:count,
                         label:currEntity.label,
-                        link: []
+                        link: [],
+                        image: image
                     });
                     nodesMap[count] = currEntity.label;
 

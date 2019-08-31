@@ -306,9 +306,11 @@ class GraphComponent extends React.Component {
                     selectedEntityLabels[currEntity.label]=count;
                     
                     var image = null;
-                    //Add image
-                    if(currEntity.label in this.props.imageMapping){
-                        image = this.props.imageMapping[currEntity.label];
+                    if(this.props.imageMapping){
+                        //Add image
+                        if(currEntity.label in this.props.imageMapping){
+                            image = this.props.imageMapping[currEntity.label];
+                        }
                     }
 
                     //Add Node
