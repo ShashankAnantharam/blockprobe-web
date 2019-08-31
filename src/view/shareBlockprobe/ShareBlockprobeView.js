@@ -267,7 +267,7 @@ class ShareBlockprobeComponent extends React.Component {
         }
         if(allImages.length>0){
 
-            console.log(allImages);
+            //console.log(allImages);
 
             firebase.firestore().collection("public").doc(this.props.bpId)
                 .collection("images").get().then((snapshot) => {
@@ -276,7 +276,6 @@ class ShareBlockprobeComponent extends React.Component {
                             .collection("images").doc(doc.id).delete();
                     });
                     for(var i=0; i<allImages.length; i++){
-                        console.log(allImages[i]);
                         firebase.firestore().collection('public').doc(this.props.bpId)
                         .collection('images').doc(String(i)).set(allImages[i]);        
                     }
