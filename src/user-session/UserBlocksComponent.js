@@ -623,6 +623,7 @@ class UserBlocksComponent extends React.Component {
                     investigationGraph = {this.props.investigationGraph}
                     bId = {this.props.bId}
                     uIdHash={this.state.uIdHash}
+                    permit = {this.props.permit}
                     />
             );
         }

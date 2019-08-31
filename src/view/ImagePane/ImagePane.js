@@ -13,11 +13,7 @@ class ImagePaneView extends React.Component {
 
         this.state={
             firstEntitySelectList: [
-                {
-                    value: true, 
-                    label: "None", 
-                    id: -1
-                }
+
             ],
             selectedEntityUrl: '',
             selectedEntity: ''
@@ -25,6 +21,25 @@ class ImagePaneView extends React.Component {
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.submitEntityImage = this.submitEntityImage.bind(this);
+        this.canSubmit = this.canSubmit.bind(this);
+
+    }
+
+    async submitEntityImage(){
+        if(this.state.selectedEntity.length > 0){
+            var newImage = {
+                entity: this.state.selectedEntity,
+                url: this.state.selectedEntityUrl,
+                timestamp: Date.now()
+            }
+
+            await firebase.firestore().collection("Blockprobes").
+            doc(this.props.bId).
+            collection("images").
+            doc(newImage.entity).set(newImage);
+
+        }
 
     }
 
@@ -58,11 +73,23 @@ class ImagePaneView extends React.Component {
     }
 
     firstEntityClicked(entityList) {
-        this.setState({ firstEntitySelectList: entityList });
+        var selectedEntity = '';
+        for(var i=0; i<entityList.length; i++){
+            if(entityList[i].value){
+                selectedEntity = entityList[i].label;
+            }
+        }
+        this.setState({ firstEntitySelectList: entityList, selectedEntity: selectedEntity });
     }
     
     firstSelectedBadgeClicked(entityList) {
-        this.setState({ firstEntitySelectList: entityList });
+        var selectedEntity = '';
+        for(var i=0; i<entityList.length; i++){
+            if(entityList[i].value){
+                selectedEntity = entityList[i].label;
+            }
+        }
+        this.setState({ firstEntitySelectList: entityList, selectedEntity: selectedEntity });
     }
 
     componentDidMount(){
@@ -87,6 +114,12 @@ class ImagePaneView extends React.Component {
         }
            
       }
+
+    canSubmit(){
+        if(this.props.permit == 'CREATOR' && this.state.selectedEntity.length > 0)
+            return true;
+        return false;
+    }  
 
     render(){
 
@@ -120,10 +153,15 @@ class ImagePaneView extends React.Component {
                         
                     </div>     
 
-                    <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm image</button>
+                    {this.canSubmit()?
+                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm image</button>
+                        :
+                        null
+                    }
+                    
                     <button className="imagePaneButton" onClick={this.props.closeImagePane}>Close</button>              
                 </div>
-                {this.state.selectedEntity == 'None'?
+                {this.state.selectedEntity == ''?
                     null   
                         :
                     <div>
