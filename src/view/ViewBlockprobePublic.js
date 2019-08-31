@@ -34,6 +34,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             selectedBlock:"", 
             blockTree: {},
             investigationGraph: {},
+            imageMapping: {},
             timeline: [],
             summaryList: [],
             selectedBlockSidebarOpen: false,
@@ -357,6 +358,16 @@ class ViewBlockprobePublicComponent extends React.Component {
         });
     }
 
+    getImages(snapshot){
+        var imageMapping = this.state.imageMapping;
+        snapshot.forEach((doc) => {
+            doc.data().images.forEach(image => {
+                imageMapping[image.entity] = image.url;
+            });            
+        });
+        this.setState({imageMapping: imageMapping});
+    }
+
     createBlockprobe(snapshot){
         snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
         var timelineList = [];
@@ -421,6 +432,13 @@ class ViewBlockprobePublicComponent extends React.Component {
                 isPageLoading: false
             })
         });
+
+        firebase.firestore().collection("public").doc(this.props.match.params.bId)
+        .collection("images").get().then((snapshot) => {
+            if(snapshot && !snapshot.empty){
+                this.getImages(snapshot);
+            }
+        });
     }
 
     renderVisualisation(){
@@ -440,7 +458,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
-                        multiSelectEntityList = {this.state.multiSelectEntityList}/>
+                        multiSelectEntityList = {this.state.multiSelectEntityList}
+                        imageMapping={this.state.imageMapping}/>
                 </div>
             );
         }
@@ -450,6 +469,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                     <FindConnectionsComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
+                        imageMapping={this.state.imageMapping}
                     />
                 </div>
             );
@@ -499,7 +519,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                             investigationGraph={this.state.investigationGraph}
                             selectBlock={this.changeSelectedBlock}
                             multiSelectEntityList = {this.state.multiSelectEntityList}
-                            timeline={this.state.timeline}                     
+                            timeline={this.state.timeline}    
+                            imageMapping={this.state.imageMapping}                 
                         />
                 </Sidebar>
                 </div>            
