@@ -609,7 +609,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var imageMapping = this.state.imageMapping;
         snapshot.forEach((doc) => {
             imageMapping[doc.data()['entity']] = doc.data()['url'];
-            console.log(imageMapping);
         });
         this.setState({imageMapping: imageMapping});
     }
@@ -837,6 +836,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     details = {this.state.bpDetails}
                     permit = {this.props.permit}
                     blockTree = {this.state.blockTree}
+                    imageMapping = {this.state.imageMapping}
                     />
                 </div>
             )

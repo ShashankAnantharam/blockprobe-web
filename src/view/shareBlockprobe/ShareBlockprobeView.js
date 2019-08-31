@@ -55,6 +55,7 @@ class ShareBlockprobeComponent extends React.Component {
       this.state = {
           urlPrefix: 'https://blockprobe-32644.firebaseapp.com/view/',
           blocksUploaded: false,
+          imageUploaded: false,
           adhocTooltip:{
             publicLink:{
                 flag: false,
@@ -232,12 +233,67 @@ class ShareBlockprobeComponent extends React.Component {
                 );
 
         }
+
+        //Add images
+        var imageMap = this.props.imageMapping;
+        let countI=0;
+        let allImages = [], currImagePage = [];
+        if(imageMap!=null){
+            Object.keys(imageMap).map((key, index) => {
+                if(countI==100){
+                    let page = {
+                        images: currImagePage
+                    };
+                    allImages.push(page);
+                    currImagePage = [];
+                }
+                var image = {
+                    url: imageMap[key],
+                    entity: key
+                };
+                if(image!=null){                   
+                    currImagePage.push(image);
+                    countI++;
+                }
+            } 
+            );
+        }
+        if(currImagePage.length > 0){
+            let page = {
+                images: currImagePage
+            };
+            allImages.push(page);
+            currImagePage = [];
+        }
+        if(allImages.length>0){
+
+            console.log(allImages);
+
+            firebase.firestore().collection("public").doc(this.props.bpId)
+                .collection("images").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bpId)
+                            .collection("images").doc(doc.id).delete();
+                    });
+                    for(var i=0; i<allImages.length; i++){
+                        console.log(allImages[i]);
+                        firebase.firestore().collection('public').doc(this.props.bpId)
+                        .collection('images').doc(String(i)).set(allImages[i]);        
+                    }
+        
+                }).then(
+                    this.setState({imageUploaded: true})
+                );
+
+        }
+
+
     }
 
     render(){
         return (
             <div>
-                {this.state.blocksUploaded?
+                {this.state.blocksUploaded && this.state.imageUploaded?
                     this.renderShareScreen()
                     :
                     <Loader 
