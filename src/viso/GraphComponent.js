@@ -305,13 +305,21 @@ class GraphComponent extends React.Component {
                     //selected Node
                     selectedEntityLabels[currEntity.label]=count;
                     
+                    var image = null;
+                    //Add image
+                    if(currEntity.label in this.props.imageMapping){
+                        image = this.props.imageMapping[currEntity.label];
+                    }
+
                     //Add Node
                     newGraph.push({
                         id:count,
                         label:currEntity.label,
-                        link: []
+                        link: [],
+                        image: image
                     });
                     nodesMap[count] = currEntity.label;
+
 
                     //Add edge
                     var currEntityKey = currEntity.label;

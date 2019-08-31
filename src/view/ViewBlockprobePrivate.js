@@ -41,6 +41,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             selectedBlock:"", 
             blockTree: {},
             investigationGraph: {},
+            imageMapping: {},
             timeline: [],
             summaryList: [],
             latestBlock: null,
@@ -62,7 +63,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
             testList: [],
             isloading: {
                 bpDetails: true,
-                blockprobe: true
+                blockprobe: true,
+                images: true
             },
             tooltipText:{
                 menuClickFirst:[
@@ -117,6 +119,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.addEdge = this.addEdge.bind(this);
         this.createInvestigationGraph = this.createInvestigationGraph.bind(this);
         this.closeSelectedBlockSidebar = this.closeSelectedBlockSidebar.bind(this);
+        this.getImages = this.getImages.bind(this);
         this.refreshBlockprobe = this.refreshBlockprobe.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
         this.isSummaryBlock = this.isSummaryBlock.bind(this);
@@ -602,6 +605,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
     }
 
+    getImages(snapshot){
+        var imageMapping = this.state.imageMapping;
+        snapshot.forEach((doc) => {
+            imageMapping[doc.data()['entity']] = doc.data()['url'];
+            console.log(imageMapping);
+        });
+        this.setState({imageMapping: imageMapping});
+    }
+
     createBlockprobe(snapshot){
         snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
         var timelineList = [];
@@ -702,6 +714,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 isloading: loadingState
             });
         });
+
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("images").get().then((snapshot) => {
+            this.getImages(snapshot);
+            var loadingState = this.state.isloading;
+            loadingState.images = false;
+            this.setState({
+                isloading: loadingState
+            });
+        });
     }
 
     componentWillUnmount(){
@@ -744,6 +766,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <GraphComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
+                        imageMapping = {this.state.imageMapping}
                         multiSelectEntityList = {this.state.multiSelectEntityList}/>
                 </div>
             );
