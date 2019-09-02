@@ -93,14 +93,16 @@ class AmGraph extends React.Component {
         icon.background.disabled = true;
         
 
-        series.centerStrength = 0.2;
+        series.centerStrength = 0.25;
+        series.manyBodyStrength = -38;
+        series.links.template.strength = 0.5;
         series.links.template.strokeWidth = 5;
 
         var scope = this;
 
         series.links.template.interactionsEnabled = true;        
         series.links.template.clickable = true;
-        series.links.template.distance = 8;
+        series.links.template.distance = 8.5;
         series.links.template.events.on("hit", function (event) {                
             var link = event.target;            
             link.strokeWidth = 9;        
