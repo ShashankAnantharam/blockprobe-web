@@ -106,6 +106,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.saveDraftInBulk = this.saveDraftInBulk.bind(this);
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
+        this.makeEntityUppercase = this.makeEntityUppercase.bind(this);
 
     }
 
@@ -221,6 +222,10 @@ class BulkDraftBlockComponent extends React.Component {
         return false;
      }
 
+     makeEntityUppercase(value){
+        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(); 
+        }  
+
      async saveDraftInBulk(){
         this.setState({isSavingBlocks: true});
         var bulkBlocks = [];
@@ -240,10 +245,11 @@ class BulkDraftBlockComponent extends React.Component {
                 if(result.data){
                     //console.log(result.data);
                     for(var j=0;j<result.data.length;j++){
+                        result.data[j].name = this.makeEntityUppercase(result.data[j].name);
                         if(this.isValidNlpEntity(result.data[j],'PROPER') &&  !this.isRepeatedNlpEntity(result.data[j])){
                             nlpEntities.push(result.data[j]);
                         }
-                        if(this.isValidNlpEntity(result.data[j],'COMMON')){
+                        if(this.isValidNlpEntity(result.data[j],'COMMON') &&  !this.isRepeatedNlpEntity(result.data[j])){
                             nlpCommonNounEntities.push(result.data[j]);
                         }
                     }
