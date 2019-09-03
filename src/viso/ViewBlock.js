@@ -128,7 +128,7 @@ class ViewBlockComponent extends React.Component {
            
             
             return (
-                <div>
+                <div style={{marginBottom:'10px'}}>
                     <h3 style={{marginBottom:'5px',textAlign:"center"}}>CHAT</h3>
                     <ChatBox selectedBlock={this.props.selectedBlock} 
                     uId={this.props.uId}
