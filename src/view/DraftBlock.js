@@ -115,6 +115,7 @@ class DraftBlockComponent extends React.Component {
         this.renderTime = this.renderTime.bind(this);
         this.renderTimeOption = this.renderTimeOption.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+        this.makeEntityUppercase = this.makeEntityUppercase.bind(this);
         this.addEntityToList = this.addEntityToList.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
@@ -256,7 +257,12 @@ class DraftBlockComponent extends React.Component {
           }
     }
 
+    makeEntityUppercase(value){
+        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(); 
+    }  
+
     addEntityToList(entityLabel){
+        entityLabel = this.makeEntityUppercase(entityLabel);
         var isEntityAlreadyPresent = false;
         var entityList = this.state.multiSelectEntityList;
         var block = this.state.newBlock;

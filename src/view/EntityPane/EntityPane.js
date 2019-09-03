@@ -47,6 +47,7 @@ class EntityPaneView extends React.Component {
         }
 
         this.addEntityToList = this.addEntityToList.bind(this);
+        this.makeEntityUppercase = this.makeEntityUppercase.bind(this);
         this.initEntities = this.initEntities.bind(this);
         this.getEntities = this.getEntities.bind(this);
         this.removeEntity = this.removeEntity.bind(this);
@@ -137,11 +138,14 @@ class EntityPaneView extends React.Component {
 
         }
       }
+    makeEntityUppercase(value){
+        return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase(); 
+    }  
 
     addEntityToList(entityLabel){
         var entityList = this.state.entities;
         var isEntityPresent = this.state.entityPresent;
-        
+        entityLabel = this.makeEntityUppercase(entityLabel);
         if(!(entityLabel in isEntityPresent)){
             entityList.push({                
                 canRemove: true, 
