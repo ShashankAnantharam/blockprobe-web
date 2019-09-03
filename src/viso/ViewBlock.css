@@ -63,9 +63,10 @@
 }
 
 .block-div{
-    max-height: 100%;
-    overflow: auto;
+    max-height: 100vh;
+    overflow-y: scroll !important;
     padding: 5px;
+    padding-bottom: 20px;
 }
 
 .hover-template{
