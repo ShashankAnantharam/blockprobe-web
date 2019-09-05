@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
 import { Button, withStyles } from '@material-ui/core';
 import Graph from "react-graph-vis";
+import Img from 'react-image';
 import './GraphComponent.css';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
@@ -605,6 +606,17 @@ class FindConnectionsComponent extends React.Component {
         );  
     }
 
+    BlockEvidence(evidence, index){
+        const WebView = require('react-electron-web-view');
+        var evidenceList = [evidence.evidenceLink];
+        return(
+            <div >
+                <Img src={evidenceList}
+                style={{width:'80%',marginLeft: '10%', marginRight: '10%'}}></Img>
+            </div>
+        );
+    } 
+
     SingleBlock(singleBlock){
         
         /*
@@ -616,13 +628,22 @@ class FindConnectionsComponent extends React.Component {
                this.BlockEntity(blockEntity)
            );            
        }
+
+       var renderBlockEvidences="";
+       if(singleBlock.evidences!=null && singleBlock.evidences.length>0){            
+        renderBlockEvidences = singleBlock.evidences.map((blockEvidence, index) => 
+           this.BlockEvidence(blockEvidence, index)
+       );            
+       }
+
        return(
         <div className="graph-block-para-div"
         onClick={() => { this.clickBlockFromList(singleBlock)}}>
             <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
             <p className="graph-block-text">
                 {singleBlock.summary}
-            </p>                        
+            </p>     
+            {renderBlockEvidences}                   
         </div>
         );
     }
