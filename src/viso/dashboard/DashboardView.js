@@ -26,11 +26,10 @@ class DashboardViewComponent extends React.Component {
 
     render(){
         return (
-            <div>
+            <div style={{paddingBottom:'15px'}}>
 
                 {this.isSummaryBlocksAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">Summary</div>
                         <SummaryViewComponent
                                 summaryBlocks = {this.props.summaryBlocks}
                                 selectBlock={this.props.selectBlock}/>
@@ -61,11 +60,20 @@ class DashboardViewComponent extends React.Component {
                         />
                     </TabPanel>
                 </Tabs>
+
+                {this.props.timeline && this.props.timeline.length > 0?
+
+                    <div>
+                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline</div> 
+                            <TimelineComponent 
+                                timeline={this.props.timeline} 
+                                selectBlock={this.props.selectBlock}/>
+                    </div>
+                        :
+                        null
+                }
           
-                <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline</div> 
-                <TimelineComponent 
-                    timeline={this.props.timeline} 
-                    selectBlock={this.props.selectBlock}/>
+                
 
             </div>
         );
