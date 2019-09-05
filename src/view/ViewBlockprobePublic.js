@@ -10,6 +10,7 @@ import GraphComponent from '../viso/GraphComponent';
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
+import GoogleFontLoader from 'react-google-font-loader';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
@@ -506,10 +507,19 @@ class ViewBlockprobePublicComponent extends React.Component {
                     defaultSidebarWidth='200px'
                     styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
                 >
-
+                   
 
                     <div className="blockprobe-header"> 
-                        <h2>{this.state.blockprobeTitle}</h2>
+                    <GoogleFontLoader
+                            fonts={[                             
+                                {
+                                    font:'Lora',
+                                    weights: [400]
+                                }
+                            ]}
+                            subsets={['cyrillic-ext', 'greek']}
+                            />   
+                        <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
                         <h4>{this.state.blockprobeSummary}</h4>
                     </div>
                     
