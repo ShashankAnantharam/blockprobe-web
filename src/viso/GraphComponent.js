@@ -6,7 +6,7 @@ import './GraphComponent.css';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
-
+import Img from 'react-image';
 
 import AmGraph from './amGraph/amGraph';
 
@@ -466,6 +466,17 @@ class GraphComponent extends React.Component {
         );   
     }
 
+    BlockEvidence(evidence, index){
+        const WebView = require('react-electron-web-view');
+        var evidenceList = [evidence.evidenceLink];
+        return(
+            <div >
+                <Img src={evidenceList}
+                style={{width:'80%',marginLeft: '10%', marginRight: '10%'}}></Img>
+            </div>
+        );
+    } 
+
     SingleBlock(singleBlock){
         
         /*
@@ -478,13 +489,21 @@ class GraphComponent extends React.Component {
            );            
        }
 
+       var renderBlockEvidences="";
+       if(singleBlock.evidences!=null && singleBlock.evidences.length>0){            
+        renderBlockEvidences = singleBlock.evidences.map((blockEvidence, index) => 
+           this.BlockEvidence(blockEvidence, index)
+       );            
+       }
+
         return(
             <div className="graph-block-para-div"
             onClick={() => { this.clickBlockFromList(singleBlock)}}>
                 <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
                 <p className="graph-block-text">
                     {singleBlock.summary}
-                </p>                        
+                </p> 
+                {renderBlockEvidences}                       
             </div>
             );
 
