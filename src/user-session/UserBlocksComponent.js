@@ -120,6 +120,8 @@ class UserBlocksComponent extends React.Component {
         this.finishTooltip = this.finishTooltip.bind(this);
         this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
         this.setDashboardVisualisation = this.setDashboardVisualisation.bind(this);
+        this.convertBlockMapToList = this.convertBlockMapToList.bind(this);
+        this.sortBlocks = this.sortBlocks.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -712,14 +714,113 @@ class UserBlocksComponent extends React.Component {
         this.props.setNewVisualisation('dashboard');
     }
 
+    sortBlocks(a, b){
+        a = a.trim();        
+        b = b.trim();
+
+        var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
+        if(a.length>0 && a.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<a.length; i++){
+                
+                if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                    num += a.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        aIndex = parseFloat(num);
+                        isAExist = true;
+                    }
+                }
+            }
+            if(num.length > 0){
+                aIndex = parseFloat(num);
+                isAExist = true;
+            }    
+        }
+
+        if(b.length>0 && b.charAt(0)==='#'){
+            var num = '';
+            for(var i=1; i<b.length; i++){
+                
+                if((!isNaN(parseInt(b.charAt(i), 10))) || b[i]==='.'){
+                    num += b.charAt(i);
+                }
+                else{
+                    if(num.length > 0){
+                        bIndex = parseFloat(num);
+                        isBExist = true;
+                    }
+                }
+            }    
+            if(num.length > 0){
+                bIndex = parseFloat(num);
+                isBExist = true;
+            }
+        
+        }
+
+        // A comes after b
+        if(!isAExist && isBExist)
+            return 1;
+
+        // A comes before b
+        if(isAExist && !isBExist)
+            return -1;
+
+        // A comes before b
+        if(isAExist && isBExist){
+            if(aIndex > bIndex)
+                return 1;
+            return -1;
+        }
+
+        if(a > b)
+            return 1;
+
+        return -1;
+    }
+
+    convertBlockMapToList(blockMap){
+        var blockTempList = [];
+        for (var blockId in blockMap) {
+            // check if the property/key is defined in the object itself, not in parent
+            if (blockId in blockMap) {           
+                blockTempList.push(blockMap[blockId]);
+            }
+        }
+        var scope = this;
+        blockTempList.sort(function(a, b){return scope.sortBlocks(a.title,b.title);});
+        return blockTempList;
+    }
+
     render(){
 
         const scope = this;
-        const successBlocksListRender = Object.keys(this.state.successBlocks).
+
+        var successBlocksList = this.convertBlockMapToList(this.state.successBlocks);
+        const successBlocksListRender = successBlocksList.map((block) => 
+                    (scope.renderSingleBlock(block, scope, false)));
+
+        var toReviewBlocksList = this.convertBlockMapToList(this.state.toReviewBlocks);
+        const toReviewBlocksListRender = toReviewBlocksList.map((block) => 
+                                (scope.renderSingleBlock(block, scope, false)));
+
+        var draftBlocksList = this.convertBlockMapToList(this.state.draftBlocks);
+        const draftBlocksListRender = draftBlocksList.map((block) => 
+                                            (scope.renderSingleBlock(block, scope, false)));
+                        
+        var inReviewBlocksList = this.convertBlockMapToList(this.state.inReviewBlocks);
+        const inReviewBlocksListRender = inReviewBlocksList.map((block) => 
+                                                        (scope.renderSingleBlock(block, scope, false)));
+                                                        
+                                
+
+      /*  const successBlocksListRender = Object.keys(this.state.successBlocks).
         map((blockId) => (
             scope.renderSingleBlock(scope.state.successBlocks[blockId], scope, false)
         ));
-
+            
         const toReviewBlocksListRender = Object.keys(this.state.toReviewBlocks).
         map((blockId) => (
             scope.renderSingleBlock(scope.state.toReviewBlocks[blockId], scope, false)
@@ -729,12 +830,13 @@ class UserBlocksComponent extends React.Component {
         map((blockId) => (
             scope.renderSingleBlock(scope.state.inReviewBlocks[blockId], scope, false)
         ));
+        
 
         const draftBlocksListRender = Object.keys(this.state.draftBlocks).
         map((blockId) => (
             scope.renderSingleBlock(scope.state.draftBlocks[blockId], scope, false)
         ));
-
+*/
 
         return(
             <div>
