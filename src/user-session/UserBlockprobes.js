@@ -420,7 +420,6 @@ class UserBlockprobesComponent extends React.Component {
         //console.log(this.props.blockprobes)
 
         var blockprobeTempList = this.convertBlockprobeMapToList(scope.props.blockprobes);
-        console.log(blockprobeTempList);
 
         const blockprobeListRender = blockprobeTempList.map((blockprobe) => 
                     (scope.renderSingleBlockprobeItem(blockprobe, scope)));
