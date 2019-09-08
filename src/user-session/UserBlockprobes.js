@@ -80,7 +80,7 @@ class UserBlockprobesComponent extends React.Component {
         this.createBlockprobe = this.createBlockprobe.bind(this);
         this.handleCreateStoryJoyrideCallback = this.handleCreateStoryJoyrideCallback.bind(this);
         this.handleClickOnStoryJoyrideCallback = this.handleClickOnStoryJoyrideCallback.bind(this);
-        
+        this.convertBlockprobeMapToList = this.convertBlockprobeMapToList.bind(this);
     }
 
     selectBlockprobe(blockprobeId){
@@ -402,15 +402,34 @@ class UserBlockprobesComponent extends React.Component {
 
     }
 
+    convertBlockprobeMapToList(blockprobeMap){
+        var blockprobeTempList = [];
+        for (var blockprobeId in blockprobeMap) {
+            // check if the property/key is defined in the object itself, not in parent
+            if (blockprobeId in blockprobeMap) {           
+                blockprobeTempList.push(blockprobeMap[blockprobeId]);
+            }
+        }
+        blockprobeTempList.sort(function(a, b){if(a.title.toLowerCase()>b.title.toLowerCase()){return 1} return -1;});
+        return blockprobeTempList;
+    }
+
     render(){
 
         const scope = this;
         //console.log(this.props.blockprobes)
-        const blockprobeListRender = Object.keys(this.props.blockprobes).
-        map((blockprobeId) => (
-            scope.renderSingleBlockprobeItem(scope.props.blockprobes[blockprobeId], scope)
-        ));
 
+        var blockprobeTempList = this.convertBlockprobeMapToList(scope.props.blockprobes);
+        console.log(blockprobeTempList);
+
+        const blockprobeListRender = blockprobeTempList.map((blockprobe) => 
+                    (scope.renderSingleBlockprobeItem(blockprobe, scope)));
+
+/*        const blockprobeListRender = Object.keys(this.props.blockprobes).
+        map((blockprobeId) => (
+            scope.renderSingleBlockprobeItem(blockprobe, scope)
+        ));
+*/
         return (
             <div>
                 <Joyride
