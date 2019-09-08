@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './TimelineComponent.css';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
+import Img from 'react-image';
 import 'react-vertical-timeline-component/style.min.css';
 
 class TimelineComponent extends React.Component {
@@ -11,6 +12,17 @@ class TimelineComponent extends React.Component {
       this.selectTimelineBlock = this.selectTimelineBlock.bind(this);
       this.removeHashedIndex = this.removeHashedIndex.bind(this);
     }
+
+    BlockEvidence(evidence, index){
+        const WebView = require('react-electron-web-view');
+        var evidenceList = [evidence.evidenceLink];
+        return(
+            <div >
+                <Img src={evidenceList}
+                style={{width:'80%',marginLeft: '10%', marginRight: '10%'}}></Img>
+            </div>
+        );
+    } 
 
     BlockEntity(entity){
       return(
@@ -85,7 +97,14 @@ class TimelineComponent extends React.Component {
              renderBlockEntities = timelineBlock.entities.map((blockEntity) => 
                 this.BlockEntity(blockEntity)
             );            
-        }        
+        } 
+        
+        var renderBlockEvidences="";
+        if(timelineBlock.evidences && timelineBlock.evidences.length>0){            
+            renderBlockEvidences = timelineBlock.evidences.map((blockEvidence, index) => 
+            this.BlockEvidence(blockEvidence, index)
+        );            
+        }
 
        //TODO add function here to get DateTime
        const blockDateTime = this.getDateTimeString(timelineBlock);
@@ -110,8 +129,9 @@ class TimelineComponent extends React.Component {
         <p className="timeline-block-text">
             {timelineBlock.summary}
         </p>
-        <div className="timeline-block-text">
-            {renderBlockEntities}
+        
+        <div>
+            {renderBlockEvidences}
         </div>
         <div>
         <button onClick={() => { this.selectTimelineBlock(timelineBlock)}}>
