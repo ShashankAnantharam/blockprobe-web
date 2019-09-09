@@ -98,7 +98,7 @@ class FindConnectionsComponent extends React.Component {
             from: from
         };
         this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
-        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected
@@ -141,7 +141,7 @@ class FindConnectionsComponent extends React.Component {
                 scope.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);           
         });
 
-        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
+        blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected
@@ -168,7 +168,7 @@ class FindConnectionsComponent extends React.Component {
         }
     }
 
-    sortBlocks(a, b){
+    sortBlocks(a, b, a_ts = 0, b_ts = 0){
         a = a.trim();        
         b = b.trim();
 
@@ -228,6 +228,11 @@ class FindConnectionsComponent extends React.Component {
                 return 1;
             return -1;
         }
+
+        if(a_ts > b_ts)
+            return 1;
+        else if(b_ts > a_ts)
+            return -1;
 
         if(a > b)
             return 1;

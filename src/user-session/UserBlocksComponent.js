@@ -714,7 +714,7 @@ class UserBlocksComponent extends React.Component {
         this.props.setNewVisualisation('dashboard');
     }
 
-    sortBlocks(a, b){
+    sortBlocks(a, b, a_ts = 0, b_ts = 0){
         a = a.trim();        
         b = b.trim();
 
@@ -775,6 +775,11 @@ class UserBlocksComponent extends React.Component {
             return -1;
         }
 
+        if(a_ts > b_ts)
+            return 1;
+        else if(b_ts > a_ts)
+            return -1;
+
         if(a > b)
             return 1;
 
@@ -790,7 +795,7 @@ class UserBlocksComponent extends React.Component {
             }
         }
         var scope = this;
-        blockTempList.sort(function(a, b){return scope.sortBlocks(a.title,b.title);});
+        blockTempList.sort(function(a, b){return scope.sortBlocks(a.title,b.title,a.timestamp,b.timestamp);});
         return blockTempList;
     }
 
