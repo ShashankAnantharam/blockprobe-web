@@ -87,11 +87,18 @@ class AmGraph extends React.Component {
         var icon = series.nodes.template.createChild(am4plugins_bullets.PinBullet);
         icon.image = new am4core.Image();
         icon.image.propertyFields.href = "image";
-        icon.circle.radius = am4core.percent(100);
-        icon.circle.strokeWidth = 0;
+        icon.circle.radius = 25;
+        icon.circle.strokeWidth = 0;        
         icon.background.pointerLength = 0;
         icon.background.disabled = true;
         
+        var outlineCircle = icon.createChild(am4core.Circle);
+        outlineCircle.adapter.add("radius", function (radius, target) {
+            var circleBullet = target.parent;
+            console.log(circleBullet.circle.currentRadius);
+            return circleBullet.circle.radius + 2;
+        });
+        outlineCircle.propertyFields.disabled = 'imageDisabled';        
 
         series.centerStrength = 0.25;
         series.manyBodyStrength = -38;
