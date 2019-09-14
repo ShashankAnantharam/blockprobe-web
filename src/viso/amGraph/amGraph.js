@@ -95,7 +95,6 @@ class AmGraph extends React.Component {
         var outlineCircle = icon.createChild(am4core.Circle);
         outlineCircle.adapter.add("radius", function (radius, target) {
             var circleBullet = target.parent;
-            console.log(circleBullet.circle.currentRadius);
             return circleBullet.circle.radius + 2;
         });
         outlineCircle.propertyFields.disabled = 'imageDisabled';        

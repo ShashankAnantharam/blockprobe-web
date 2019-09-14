@@ -11,6 +11,10 @@ class App extends Component {
       <div className="App">
         <Router>
           <Switch>
+            <Route path="/view/:bId/:viewType"  
+                        component={ViewBlockprobePublicComponent}
+              />
+
             <Route path="/view/:bId"  
                         component={ViewBlockprobePublicComponent}
               />

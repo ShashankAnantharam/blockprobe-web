@@ -40,7 +40,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             summaryList: [],
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
-            selectedVisualisation: "graph",
+            selectedVisualisation: "dashboard",
             multiSelectEntityList: [
                 {
                     value: true, 
@@ -54,11 +54,16 @@ class ViewBlockprobePublicComponent extends React.Component {
                 }
             ],
             testList: [],
-            isPageLoading: true
+            isPageLoading: true        
         }
 
         ReactGA.initialize('UA-143383035-1');   
         ReactGA.pageview('/viewBlockprobePublic');
+
+        if(this.props.match.params.viewType && 
+            this.props.match.params.viewType == 'graph'){
+                this.state.selectedVisualisation = 'graph';
+        }
 
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
         this.onSetSelectedBlockSidebarOpen = this.onSetSelectedBlockSidebarOpen.bind(this);
@@ -483,7 +488,26 @@ class ViewBlockprobePublicComponent extends React.Component {
         );
     }
 
-    render(){
+    renderSingularPage(){
+        return (
+            <div>
+                {this.state.isPageLoading?
+                <div style={{width:'50px',margin:'auto'}}>
+                    <Loader 
+                    type="TailSpin"
+                    color="#00BFFF"
+                    height="50"	
+                    width="50"              
+                    /> 
+                </div>
+                :    
+                this.renderVisualisation()
+                }
+            </div>
+        )
+    }
+
+    renderFullDashboard(){
         return (
             <div>
             {this.state.isPageLoading?
@@ -537,6 +561,18 @@ class ViewBlockprobePublicComponent extends React.Component {
             }
             </div>
             );
+    }
+
+    render(){
+        return (
+            <div>
+                {this.state.selectedVisualisation == 'dashboard'?
+                    this.renderFullDashboard()
+                    :
+                    this.renderSingularPage()
+                }
+            </div>
+        )
     }
 
 
