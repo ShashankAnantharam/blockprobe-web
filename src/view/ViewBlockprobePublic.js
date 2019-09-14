@@ -465,6 +465,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
+                        isPublic = {true}
                         imageMapping={this.state.imageMapping}/>
                 </div>
             );
@@ -501,7 +502,21 @@ class ViewBlockprobePublicComponent extends React.Component {
                     /> 
                 </div>
                 :    
-                this.renderVisualisation()
+                <div>
+                <Sidebar
+                    sidebar={<div className="right-sidebar">
+                    <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                    </div>}
+                    open={this.state.selectedBlockSidebarOpen}
+                    onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                    pullRight={true}
+                    defaultSidebarWidth='200px'
+                    styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
+                >
+                    {this.renderVisualisation()}
+
+                </Sidebar>
+                </div>      
                 }
             </div>
         )

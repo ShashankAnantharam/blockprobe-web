@@ -13,6 +13,7 @@ import AmGraph from './amGraph/amGraph';
 class GraphComponent extends React.Component {
 
     constructor(props){
+        //props: isPublic
       super(props);
       this.state={
         graph: {
@@ -623,9 +624,23 @@ class GraphComponent extends React.Component {
             
         return (
             <div>
-                <div className='filter-container'>                
-                
-                    <div className="dropdown-container">
+                {this.props.isPublic == undefined || !this.props.isPublic?
+                    <div className='filter-container'>                
+                    
+                        <div className="dropdown-container">
+                            <MultiSelectReact 
+                            options={this.props.multiSelectEntityList}
+                            optionClicked={this.entityClicked.bind(this)}
+                            selectedBadgeClicked={this.selectedBadgeClicked.bind(this)}
+                            selectedOptionsStyles={selectedOptionsStyles}
+                            optionsListStyles={optionsListStyles} 
+                            isTextWrap={false} 
+                            />
+                        </div>
+
+                    </div>
+                    :
+                    <div className="dropdown-container" style={{marginBottom: '1em', marginTop:'0'}}>
                         <MultiSelectReact 
                         options={this.props.multiSelectEntityList}
                         optionClicked={this.entityClicked.bind(this)}
@@ -636,7 +651,8 @@ class GraphComponent extends React.Component {
                         />
                     </div>
 
-                </div>
+                }
+                
                 <div className='graph-container'>
                         {this.generateAmGraph()/*this.generateGraph()*/}                        
                         {this.state.currentSelectedBlocks.length > 0? 

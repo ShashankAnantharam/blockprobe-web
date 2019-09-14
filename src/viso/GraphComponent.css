@@ -70,7 +70,7 @@
     .graph-container{
         display:flex; 
         flex-direction:row;
-        margin-left:1em;
+        margin-left:20px;
         cursor: pointer;
     }
 
@@ -104,7 +104,7 @@
         width:35%; 
         height:auto; 
         font-size:1.4em; 
-        margin-left:1em;
+        margin-left:20px;
         margin-top:0.5em;
     }
 
@@ -112,7 +112,7 @@
         width:75%; 
         height:auto; 
         font-size:1.4em; 
-        margin-left:1em;
+        margin-left:20px;
         margin-top:0.5em;
     }
 
@@ -144,7 +144,7 @@
     }
 
     .graph-container{
-        margin-left:1em;
+        margin-left:20px;
         cursor: pointer;
     }
 
@@ -157,7 +157,7 @@
     .filter-container{
         margin-top:4em;
         margin-bottom:1em;
-        margin-left: 1em;
+        margin-left:20px;
     }
 
     .find-connections-dropdown-container{
