@@ -9,6 +9,7 @@ import UndoIcon from '@material-ui/icons/Undo';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp'; 
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
@@ -213,6 +214,26 @@ class ViewBlockListComponent extends React.Component {
             option = "can_commit";
 
         }
+        else if(option == 'modify'){
+            var timestamp = Date.now();
+            var softBlock = JSON.parse(JSON.stringify(this.props.selectedBlock));
+            softBlock.actionType = 'MODIFY';
+            softBlock.referenceBlock = this.props.selectedBlock.key;
+            softBlock.previousKey = this.props.selectedBlock.key;
+            softBlock.timestamp = timestamp;
+            softBlock.blockState = 'DRAFT';
+
+            var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(timestamp)).digest('hex');
+            softBlock.verificationHash = newBlockId;
+            var newKey = this.state.shajs('sha256').update(newBlockId + softBlock.previousKey).digest('hex');
+            softBlock.key = newKey;
+
+            firebase.firestore().collection("Blockprobes").
+                doc(softBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(softBlock.key).set(softBlock);
+        }
 
         this.props.selectOption(option);
     }
@@ -296,7 +317,16 @@ class ViewBlockListComponent extends React.Component {
                         <Avatar>
                             <DeleteIcon />
                         </Avatar>
-                            <ListItemText primary="Remove Block from Investigation"/>
+                            <ListItemText primary="Remove Block"/>
+                    </ListItem>
+
+                    <ListItem button 
+                        onClick={() => { this.selectOption("modify")}}
+                    >
+                        <Avatar>
+                            <EditIcon />
+                        </Avatar>
+                            <ListItemText primary="Modify Block"/>
                     </ListItem>
                         
                 </List>
