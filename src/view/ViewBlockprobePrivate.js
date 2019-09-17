@@ -690,12 +690,13 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     changeSelectedBlock = (block) =>{
-        
+        console.log(block);
         //check if block is modified. Then show latest
         if(this.state.modifyRef[block.key]){
             block = this.state.blockTree[this.state.modifyRef[this.state.modifyRef[block.key]]];
         }
         block.blockState = 'SUCCESSFUL';
+        block.bpID = this.props.bId;
         this.setState({
             selectedBlock:block
         }); 
