@@ -355,7 +355,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
          
     }
 
-    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus){
+    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef){
         var currBlock = this.state.blockTree[nodeId];
 
         // console.log(nodeId);
@@ -363,7 +363,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         //Generic block
         if(currBlock.actionType!="REMOVE"){
             blockList.push(currBlock.key);
-            blockStatus[currBlock.key]=true;
+            blockStatus[currBlock.key]=true;            
         }
         else{
             blockStatus[currBlock.referenceBlock]=false;
@@ -381,12 +381,36 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 // console.log("REM "+ nodeId);
             }
         }
+
+        if(currBlock.actionType == "MODIFY"){
+            let prevKey = modifyRef[currBlock.referenceBlock]; 
+            let currKey = currBlock.key;
+            let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
+            let currTs = currBlock.timestamp;
+            if(currTs > prevTs){
+                //remove the older block
+                blockStatus[prevKey] = false;
+                timelineBlockStatus[prevKey] = false;
+                modifyRef[currBlock.referenceBlock] = currKey;
+            }
+            else{
+                //remove the new block
+                blockStatus[currKey] = false;
+                timelineBlockStatus[currKey] = false;
+                modifyRef[currBlock.referenceBlock] = prevKey;                
+            }
+        }
+        else{
+            //Set current block as modify reference
+            modifyRef[currBlock.key] = currBlock.key;
+        }
+
         this.setState({
             timeline:timelineList
         });
         if(!isNullOrUndefined(currBlock.children)){
             currBlock.children.forEach((childBlockId) => {
-                this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus);
+                this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
             });
         }
     }
@@ -619,6 +643,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var timelineBlockStatus = {};
         var blockList = [];
         var blockStatus = {};
+        var modifyRef = {};
 
         // console.log(this.state.blockTree);
         this.traverseBlockTree(
@@ -626,7 +651,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
             timelineList, 
             timelineBlockStatus,
             blockList,
-            blockStatus);
+            blockStatus,
+            modifyRef);
 
         // console.log(blockList);
         // console.log(blockStatus);
