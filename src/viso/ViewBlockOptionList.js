@@ -219,6 +219,9 @@ class ViewBlockListComponent extends React.Component {
             var softBlock = JSON.parse(JSON.stringify(this.props.selectedBlock));
             softBlock.actionType = 'MODIFY';
             softBlock.referenceBlock = this.props.selectedBlock.key;
+            if(this.props.selectedBlock.referenceBlock != undefined && this.props.selectedBlock.referenceBlock != null){
+                softBlock.referenceBlock = this.props.selectedBlock.referenceBlock;
+            }
             softBlock.previousKey = this.props.selectedBlock.key;
             softBlock.timestamp = timestamp;
             softBlock.blockState = 'DRAFT';
@@ -424,7 +427,7 @@ class ViewBlockListComponent extends React.Component {
                 this.renderSubmitterOptionList():
                 null}
 
-                {this.props.blockState == 'SUCCESSFUL' && this.props.selectedBlock.actionType == "ADD"?
+                {this.props.blockState == 'SUCCESSFUL' && (this.props.selectedBlock.actionType == "ADD"|| this.props.selectedBlock.actionType == "MODIFY")?
                 this.renderSuccessfulOptionList():
                 null}
 

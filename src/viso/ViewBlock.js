@@ -205,7 +205,6 @@ class ViewBlockComponent extends React.Component {
     }
 
     renderOptions(){
-
         if(!isNullOrUndefined(this.props.selectedBlock.blockState)){
             return(
                 <ViewBlockListComponent 
