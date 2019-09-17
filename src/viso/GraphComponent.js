@@ -130,15 +130,17 @@ class GraphComponent extends React.Component {
         
         this.addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded);
 
-        var edges =  this.props.investigationGraph[node].edges;
-        var scope = this;
-        Object.keys(edges).forEach(function(edgeKey) {
-                var edge={
-                    to: node,
-                    from: edgeKey
-                };
-                scope.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);           
-        });
+        if(this.props.investigationGraph[node]){
+            var edges =  this.props.investigationGraph[node].edges;
+            var scope = this;
+            Object.keys(edges).forEach(function(edgeKey) {
+                    var edge={
+                        to: node,
+                        from: edgeKey
+                    };
+                    scope.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);           
+            });
+        }
 
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
 
