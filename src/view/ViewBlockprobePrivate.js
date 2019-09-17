@@ -38,6 +38,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             blockprobeTitle: "",
             blockprobeSummary: "",
             bpDetails: {},
+            modifyRef: {},
             selectedBlock:"", 
             blockTree: {},
             investigationGraph: {},
@@ -388,15 +389,18 @@ class ViewBlockprobePrivateComponent extends React.Component {
             let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
             let currTs = currBlock.timestamp;
             if(currTs > prevTs){
-                //remove the older block
+                //remove the older block; Also save the older version with later one 
                 blockStatus[prevKey] = false;
                 timelineBlockStatus[prevKey] = false;
-                modifyRef[currBlock.referenceBlock] = currKey;
+                modifyRef[prevKey] = currBlock.referenceBlock;
+                modifyRef[currBlock.referenceBlock] = currKey;   
+                modifyRef[currKey] = currKey;          
             }
             else{
                 //remove the new block
                 blockStatus[currKey] = false;
                 timelineBlockStatus[currKey] = false;
+                modifyRef[currKey] = currBlock.referenceBlock;
                 modifyRef[currBlock.referenceBlock] = prevKey;                
             }
         }
@@ -666,7 +670,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         });
         this.sortTimeline(finalTimelineList);
         this.setState({
-            timeline:[...finalTimelineList]
+            timeline:[...finalTimelineList],
+            modifyRef: modifyRef
         });
 
         var finalBlockList = [];
@@ -685,7 +690,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     changeSelectedBlock = (block) =>{
-        // console.log(block);        
+        // console.log(block); 
+        
+        //check if block is modified. Then show latest
+        console.log(this.state.modifyRef);
+        console.log(block.key);
+        if(this.state.modifyRef[block.key]){
+            block = this.state.blockTree[this.state.modifyRef[this.state.modifyRef[block.key]]];
+        }
+        
         this.setState({
             selectedBlock:block
         }); 
