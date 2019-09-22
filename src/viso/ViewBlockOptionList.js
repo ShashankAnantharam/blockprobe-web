@@ -166,6 +166,11 @@ class ViewBlockListComponent extends React.Component {
 
             var timestamp = Date.now();
             var newTitle = "CHALLENGE TO {" + this.props.selectedBlock.title +"}";
+            let blockToRemove = this.props.selectedBlock.key;
+            if(this.props.selectedBlock.referenceBlock != null && this.props.selectedBlock.referenceBlock != undefined){
+                //If this is a modified block, remove the original reference
+                blockToRemove = this.props.selectedBlock.referenceBlock;
+            }
             var committedBlock = {
                 key:'',
                 title: newTitle,
@@ -176,7 +181,7 @@ class ViewBlockListComponent extends React.Component {
                 evidences:[],
                 actionType:'REMOVE',
                 previousKey: this.props.selectedBlock.key,
-                referenceBlock: this.props.selectedBlock.key,
+                referenceBlock: blockToRemove,
                 timestamp: timestamp,
                 verificationHash: ''
             }

@@ -368,6 +368,12 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
         else{
             blockStatus[currBlock.referenceBlock]=false;
+            
+            //CHECK HERE
+            // If block is modified, then remove latest modification also
+            if(modifyRef[currBlock.referenceBlock]!=null && modifyRef[currBlock.referenceBlock]!=undefined){
+                blockStatus[modifyRef[currBlock.referenceBlock]]=false
+            }
         }
         
 
@@ -388,7 +394,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
             let currKey = currBlock.key;
             let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
             let currTs = currBlock.timestamp;
-            if(currTs > prevTs){
+            if(!blockStatus[prevKey]){
+                //TO CHECK
+                //The modified block has already been removed
+                //Remove current block also
+                blockStatus[currBlock.key] = false;
+                timelineBlockStatus[currBlock.key] = false;
+                modifyRef[currKey] = currBlock.referenceBlock;
+            }
+            else if(currTs > prevTs){
                 //remove the older block; Also save the older version with later one 
                 blockStatus[prevKey] = false;
                 timelineBlockStatus[prevKey] = false;
@@ -412,6 +426,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.setState({
             timeline:timelineList
         });
+
         if(!isNullOrUndefined(currBlock.children)){
             currBlock.children.forEach((childBlockId) => {
                 this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
@@ -677,7 +692,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var finalBlockList = [];
         blockList.forEach((id) => {
             if(blockStatus[id])
-            {
+            {                
                 finalBlockList.push(id);
             }
         });
@@ -690,7 +705,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     changeSelectedBlock = (block) =>{
-        console.log(block);
         //check if block is modified. Then show latest
         if(this.state.modifyRef[block.key]){
             block = this.state.blockTree[this.state.modifyRef[this.state.modifyRef[block.key]]];
@@ -935,6 +949,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var committedBlock = JSON.parse(JSON.stringify(newBlock));
         delete committedBlock["blockState"];
         delete committedBlock["bpID"];
+        delete committedBlock["children"];
         //console.log(newBlock);
         //console.log(committedBlock);
 
