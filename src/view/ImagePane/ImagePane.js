@@ -66,10 +66,18 @@ class ImagePaneView extends React.Component {
             return 1;
         });
        
-
-
+        let selectedEntity = '', url = '';
+        if(firstEntityList.length > 0){
+            selectedEntity = firstEntityList[0].label;
+            if(selectedEntity in this.props.imageMapping){
+                url = this.props.imageMapping[selectedEntity];
+            }
+            firstEntityList[0].value = true;
+        }
         this.setState({
             firstEntitySelectList: firstEntityList,
+            selectedEntity: selectedEntity,
+            selectedEntityUrl: url 
         });
     }
 

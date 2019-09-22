@@ -679,11 +679,14 @@ class UserBlocksComponent extends React.Component {
                         <div>Manage story entities</div>
                     </button>
 
-                    <button 
-                    className="editEntitiesButton entityPaneButtonTooltip" 
-                    onClick={this.openImagePane}>
-                        <div>Manage story images</div>
-                    </button>
+                    {Object.keys(this.props.investigationGraph).length > 0?
+                        <button 
+                        className="editEntitiesButton entityPaneButtonTooltip" 
+                        onClick={this.openImagePane}>
+                            <div>Manage story images</div>
+                        </button>
+                            :
+                        null}
                 </div>
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
