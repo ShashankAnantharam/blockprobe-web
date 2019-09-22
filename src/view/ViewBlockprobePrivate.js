@@ -369,7 +369,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         else{
             blockStatus[currBlock.referenceBlock]=false;
             
-            //CHECK HERE
             // If block is modified, then remove latest modification also
             if(modifyRef[currBlock.referenceBlock]!=null && modifyRef[currBlock.referenceBlock]!=undefined){
                 blockStatus[modifyRef[currBlock.referenceBlock]]=false
@@ -395,7 +394,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
             let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
             let currTs = currBlock.timestamp;
             if(!blockStatus[prevKey]){
-                //TO CHECK
                 //The modified block has already been removed
                 //Remove current block also
                 blockStatus[currBlock.key] = false;

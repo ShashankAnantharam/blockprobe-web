@@ -18,8 +18,14 @@ class UserBlockprobesComponent extends React.Component {
 
     constructor(props){
         
+
         //Probs include blockprobes, selectBlockprobe, selectedBlockprobe
         super(props);
+
+
+        this.maxBlockprobeTitleChar = 160;
+
+
         this.state={
             uIdHash:'',
             shajs:null,
@@ -301,6 +307,7 @@ class UserBlockprobesComponent extends React.Component {
             var blockProbe = this.state.draftBlockprobe;
             if(type=="title"){
                     blockProbe.title = event.target.value;
+                    blockProbe.title = blockProbe.title.substring(0, this.maxBlockprobeTitleChar - 1);
                     this.setState({draftBlockprobe: blockProbe});
                 }
             else if(type=="summary"){
