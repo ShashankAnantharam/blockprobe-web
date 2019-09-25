@@ -127,7 +127,6 @@ class SingleUserBlock extends React.Component {
         }
         else if(updateType=='SUBMIT'){
             //SUBMIT
-
             this.props.submitDraftBlock(newBlock);
 
             this.setState({
