@@ -127,6 +127,9 @@ class SingleUserBlock extends React.Component {
         }
         else if(updateType=='SUBMIT'){
             //SUBMIT
+
+            //Remove children
+            delete newBlock["children"];
             this.props.submitDraftBlock(newBlock);
 
             this.setState({

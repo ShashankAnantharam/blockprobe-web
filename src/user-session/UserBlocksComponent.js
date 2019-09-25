@@ -21,7 +21,7 @@ class UserBlocksComponent extends React.Component {
     
     constructor(props){
         super(props);
-        //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip
+        //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip, blockStatus
 
         this.state={
             uIdHash:'',
@@ -194,7 +194,7 @@ class UserBlocksComponent extends React.Component {
     modifyBlockList(block, add){
         if(block.blockState=="SUCCESSFUL"){
             var currMap = this.state.successBlocks;
-            if(add)
+            if(add && this.props.blockStatus[block.key])
                 currMap[block.key]=block;
             else
                 delete currMap[block.key];

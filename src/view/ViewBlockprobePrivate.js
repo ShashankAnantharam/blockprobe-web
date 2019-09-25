@@ -39,6 +39,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             blockprobeSummary: "",
             bpDetails: {},
             modifyRef: {},
+            blockStatus: {},
             selectedBlock:"", 
             blockTree: {},
             investigationGraph: {},
@@ -662,7 +663,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var blockStatus = {};
         var modifyRef = {};
 
-        // console.log(this.state.blockTree);
         this.traverseBlockTree(
             this.state.genesisBlockId, 
             timelineList, 
@@ -676,7 +676,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         
         var finalTimelineList = [];
         timelineList.forEach((id) => {
-            if(timelineBlockStatus[id]==true)
+            if(timelineBlockStatus[id] && blockStatus[id])
             {
                 finalTimelineList.push(this.state.blockTree[id]);
             }
@@ -684,7 +684,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.sortTimeline(finalTimelineList);
         this.setState({
             timeline:[...finalTimelineList],
-            modifyRef: modifyRef
+            modifyRef: modifyRef,
+            blockStatus: blockStatus
         });
 
         var finalBlockList = [];
@@ -859,7 +860,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
                     finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
                     setNewVisualisation = {this.setNewVisualisation}   
-                    refreshBlockprobe = {this.refreshBlockprobe}                 
+                    refreshBlockprobe = {this.refreshBlockprobe}  
+                    blockStatus = {this.state.blockStatus}               
                     />
                 </div>
             );

@@ -202,6 +202,9 @@ class ViewBlockListComponent extends React.Component {
             committedBlock.key = newKey;
             softBlock.key = newKey;
 
+            delete softBlock["children"];
+            delete committedBlock["children"];
+
             // console.log(committedBlock);
             // console.log(softBlock);
 
@@ -235,7 +238,7 @@ class ViewBlockListComponent extends React.Component {
             softBlock.verificationHash = newBlockId;
             var newKey = this.state.shajs('sha256').update(newBlockId + softBlock.previousKey).digest('hex');
             softBlock.key = newKey;
-            console.log(softBlock);
+            delete softBlock["children"];
             firebase.firestore().collection("Blockprobes").
                 doc(softBlock.bpID).
                 collection("users").doc(this.state.uIdHash).
