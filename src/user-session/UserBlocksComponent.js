@@ -820,32 +820,8 @@ class UserBlocksComponent extends React.Component {
                         
         var inReviewBlocksList = this.convertBlockMapToList(this.state.inReviewBlocks);
         const inReviewBlocksListRender = inReviewBlocksList.map((block) => 
-                                                        (scope.renderSingleBlock(block, scope, false)));
-                                                        
+                                                        (scope.renderSingleBlock(block, scope, false)));                                                       
                                 
-
-      /*  const successBlocksListRender = Object.keys(this.state.successBlocks).
-        map((blockId) => (
-            scope.renderSingleBlock(scope.state.successBlocks[blockId], scope, false)
-        ));
-            
-        const toReviewBlocksListRender = Object.keys(this.state.toReviewBlocks).
-        map((blockId) => (
-            scope.renderSingleBlock(scope.state.toReviewBlocks[blockId], scope, false)
-        ));
-
-        const inReviewBlocksListRender = Object.keys(this.state.inReviewBlocks).
-        map((blockId) => (
-            scope.renderSingleBlock(scope.state.inReviewBlocks[blockId], scope, false)
-        ));
-        
-
-        const draftBlocksListRender = Object.keys(this.state.draftBlocks).
-        map((blockId) => (
-            scope.renderSingleBlock(scope.state.draftBlocks[blockId], scope, false)
-        ));
-*/
-
         return(
             <div>
                      

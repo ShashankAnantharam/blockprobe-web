@@ -198,21 +198,33 @@ class DraftBlockComponent extends React.Component {
         var oldEntities = this.props.draftBlock.entities;
         var oldEntitiesDict = {};
         var consideredEntitiesDict = {};
+        
 
         for(var i=0;i<oldEntities.length;i++){
-            if(!(oldEntities[i].title in this.props.investigationGraph)){
-                entityList.push({
-                    value: true,
-                    label: oldEntities[i].title,
-                    id: count
-                });
-                count++;
-                consideredEntitiesDict[oldEntities[i].title] = "";
-            }
+            entityList.push({
+                value: true,
+                label: oldEntities[i].title,
+                id: count
+            });
+            count++;
+            consideredEntitiesDict[oldEntities[i].title] = "";
             oldEntitiesDict[oldEntities[i].title]="";
         }
 
-        //MARK HERE
+        //Enter investigation graph entities that are not selected
+        Object.keys(this.props.investigationGraph).forEach(function(entityKey) {           
+            if(!(entityKey in oldEntitiesDict)){
+                entityList.push({
+                    value: false,
+                    label: entityKey,
+                    id: count
+                });
+                count++;
+                consideredEntitiesDict[entityKey] = "";           
+            }
+        });
+
+        //Get from Entity pane extra entities not added
         var entityPane = this.props.entityPane;
         // console.log(entityPane);
         for(var i=0; i<entityPane.length; i++){
@@ -238,9 +250,7 @@ class DraftBlockComponent extends React.Component {
         });
         this.setState({
             multiSelectEntityList: entityList
-        });
-
-        
+        });        
     }
 
     handleKeyDown(event){
@@ -287,7 +297,7 @@ class DraftBlockComponent extends React.Component {
             block.entities.push({
                 title:entityLabel
             });
-            // console.log(entityList);
+             console.log(entityList);
             // console.log(block);
             this.setState({
                 multiSelectEntityList: entityList,
