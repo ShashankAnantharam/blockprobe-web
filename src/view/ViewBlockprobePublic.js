@@ -17,6 +17,7 @@ import VisualizeOptionsList from '../viso/VisoList';
 import VisualizeOptionsListComponent from '../viso/VisoList';
 import { red } from '@material-ui/core/colors';
 import { timingSafeEqual } from 'crypto';
+import { isNullOrUndefined } from 'util';
 import Loader from 'react-loader-spinner';
 
 
@@ -34,6 +35,8 @@ class ViewBlockprobePublicComponent extends React.Component {
             blockprobeSummary: "",
             selectedBlock:"", 
             blockTree: {},
+            modifyRef: {},
+            blockStatus: {},
             investigationGraph: {},
             imageMapping: {},
             timeline: [],
@@ -115,7 +118,7 @@ class ViewBlockprobePublicComponent extends React.Component {
          });
     }
 
-    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus){
+    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef){
         var currBlock = this.state.blockTree[nodeId];
 
         // console.log(nodeId);
@@ -123,11 +126,17 @@ class ViewBlockprobePublicComponent extends React.Component {
         //Generic block
         if(currBlock.actionType!="REMOVE"){
             blockList.push(currBlock.key);
-            blockStatus[currBlock.key]=true;
+            blockStatus[currBlock.key]=true;            
         }
         else{
             blockStatus[currBlock.referenceBlock]=false;
+            
+            // If block is modified, then remove latest modification also
+            if(modifyRef[currBlock.referenceBlock]!=null && modifyRef[currBlock.referenceBlock]!=undefined){
+                blockStatus[modifyRef[currBlock.referenceBlock]]=false
+            }
         }
+        
 
         if(currBlock.blockDate!=null || currBlock.blockTime!=null){
             if(currBlock.actionType!="REMOVE"){
@@ -140,12 +149,54 @@ class ViewBlockprobePublicComponent extends React.Component {
                 // console.log("REM "+ nodeId);
             }
         }
+
+        if(currBlock.actionType == "MODIFY"){
+            let prevKey = modifyRef[currBlock.referenceBlock]; 
+            let currKey = currBlock.key;
+            let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
+            let currTs = currBlock.timestamp;
+            if(!blockStatus[prevKey]){
+                //The modified block has already been removed
+                //Remove current block also
+                blockStatus[currBlock.key] = false;
+                timelineBlockStatus[currBlock.key] = false;
+                modifyRef[currKey] = currBlock.referenceBlock;
+            }
+            else if(currTs > prevTs){
+                //remove the older block; Also save the older version with later one 
+                blockStatus[prevKey] = false;
+                timelineBlockStatus[prevKey] = false;
+                modifyRef[prevKey] = currBlock.referenceBlock;
+                modifyRef[currBlock.referenceBlock] = currKey;   
+                modifyRef[currKey] = currKey;          
+            }
+            else{
+                //remove the new block
+                blockStatus[currKey] = false;
+                timelineBlockStatus[currKey] = false;
+                modifyRef[currKey] = currBlock.referenceBlock;
+                modifyRef[currBlock.referenceBlock] = prevKey;                
+            }
+        }
+        else{
+            //Set current block as modify reference
+            modifyRef[currBlock.key] = currBlock.key;
+        }
+
         this.setState({
             timeline:timelineList
         });
-        currBlock.children.forEach((childBlockId) => {
-            this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus);
-        });
+
+        var checkedChildren = {};
+        if(!isNullOrUndefined(currBlock.children)){
+            currBlock.children.forEach((childBlockId) => {
+                
+                // Check for false children and duplicate children 
+                if(this.state.blockTree[childBlockId].previousKey == nodeId && !(childBlockId in checkedChildren))
+                    this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                checkedChildren[childBlockId] = true;
+            });
+        }
     }
 
     sortTimeline(timelineList){
@@ -380,32 +431,37 @@ class ViewBlockprobePublicComponent extends React.Component {
         var timelineBlockStatus = {};
         var blockList = [];
         var blockStatus = {};
+        var modifyRef = {};
+
         this.traverseBlockTree(
             this.state.genesisBlockId, 
             timelineList, 
             timelineBlockStatus,
             blockList,
-            blockStatus);
+            blockStatus,
+            modifyRef);
 
         // console.log(blockList);
         // console.log(blockStatus);
         
         var finalTimelineList = [];
         timelineList.forEach((id) => {
-            if(timelineBlockStatus[id]==true)
+            if(timelineBlockStatus[id] && blockStatus[id])
             {
                 finalTimelineList.push(this.state.blockTree[id]);
             }
         });
         this.sortTimeline(finalTimelineList);
         this.setState({
-            timeline:[...finalTimelineList]
+            timeline:[...finalTimelineList],
+            modifyRef: modifyRef,
+            blockStatus: blockStatus
         });
 
         var finalBlockList = [];
         blockList.forEach((id) => {
             if(blockStatus[id])
-            {
+            {                
                 finalBlockList.push(id);
             }
         });

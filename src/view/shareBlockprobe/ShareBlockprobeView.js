@@ -231,7 +231,9 @@ class ShareBlockprobeComponent extends React.Component {
                 }).then(
                     this.setState({blocksUploaded: true})
                 );
-
+        }
+        else{
+            this.setState({blocksUploaded: true});
         }
 
         //Add images
@@ -285,6 +287,9 @@ class ShareBlockprobeComponent extends React.Component {
                 );
 
         }
+        else{
+            this.setState({imageUploaded: true});
+        }
 
 
     }
@@ -295,12 +300,14 @@ class ShareBlockprobeComponent extends React.Component {
                 {this.state.blocksUploaded && this.state.imageUploaded?
                     this.renderShareScreen()
                     :
-                    <Loader 
-                        type="TailSpin"
-                        color="#00BFFF"
-                        height="200"	
-                        width="200"
-                    />   
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                            type="TailSpin"
+                            color="#00BFFF"
+                            height="50"	
+                            width="50"
+                        />   
+                    </div>
                 }                
             </div>
         );
