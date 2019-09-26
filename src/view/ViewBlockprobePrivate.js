@@ -426,9 +426,14 @@ class ViewBlockprobePrivateComponent extends React.Component {
             timeline:timelineList
         });
 
+        var checkedChildren = {};
         if(!isNullOrUndefined(currBlock.children)){
             currBlock.children.forEach((childBlockId) => {
-                this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                
+                // Check for false children and duplicate children 
+                if(this.state.blockTree[childBlockId].previousKey == nodeId && !(childBlockId in checkedChildren))
+                    this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                checkedChildren[childBlockId] = true;
             });
         }
     }
