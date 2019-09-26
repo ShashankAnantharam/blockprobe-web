@@ -13,7 +13,7 @@ class ViewBlockComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //closeSideBar, bpDetails, refreshBlockprobe, commitToStoryTooltip, finishAddingBlockToStoryTooltip
+        //closeSideBar, bpDetails, refreshBlockprobe, commitToStoryTooltip, finishAddingBlockToStoryTooltip, isPublicView
 
 
         this.state={
@@ -273,11 +273,19 @@ class ViewBlockComponent extends React.Component {
                 {renderBlockEvidences}
             </div>
 
-            {this.renderUpvoteStatus()}
+            {this.props.isPublicView?
+                null
+                :
+                <div>
 
-            {this.renderOptions()}
+                    {this.renderUpvoteStatus()}
 
-            {this.renderChat(this.props.selectedBlock.key)}
+                    {this.renderOptions()}
+
+                    {this.renderChat(this.props.selectedBlock.key)}
+
+                </div>
+            }
 
             <ReactTooltip id='dateTime' type='error' place="left" className="hover-template">
                 <span>Date and Time associated with the event described by this block.</span>

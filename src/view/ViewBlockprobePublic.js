@@ -594,7 +594,8 @@ class ViewBlockprobePublicComponent extends React.Component {
             <div>
                 <Sidebar
                     sidebar={<div className="right-sidebar">
-                    <ViewBlockComponent selectedBlock={this.state.selectedBlock}/>
+                    <ViewBlockComponent selectedBlock={this.state.selectedBlock}
+                                        isPublicView={true}/>
                     </div>}
                     open={this.state.selectedBlockSidebarOpen}
                     onSetOpen={this.onSetSelectedBlockSidebarOpen}
