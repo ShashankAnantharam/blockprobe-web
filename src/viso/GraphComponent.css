@@ -58,38 +58,45 @@
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95); 
 }
 
+.graph-main{
+    height: 550px; 
+    width: 98%; 
+    margin: 1% 1% 0 1%;
+    box-shadow: 2px 2px 10px 2px lightgrey; 
+    border: 1px solid lightgrey;
+}
+
+.graph-block-list{
+    width: 98%;
+    border: 1px solid lightgrey;
+    border-top: none;
+    margin: 0 1% 1% 1%;
+    padding-left:0;
+    padding-right:0;
+}
+
+.graph-block-list-title{
+    margin-bottom: 6px;
+    font-weight: 600;
+    padding: 2px;
+    text-align: center;
+    background-color: #efefef;
+    cursor: pointer;
+}
+
+.graph-block-list-container{
+    overflow-y:scroll;
+    max-height: 500px;
+}
 
 @media only screen and (min-width: 601px) {
-    .graph-main{
-        height: 500px; 
-        width: 50%; 
-        box-shadow: 2px 2px 10px 2px lightgrey; 
-        border: 1px solid lightgrey;
-    }
+    
 
     .graph-container{
         display:flex; 
         flex-direction:row;
         margin-left:20px;
         cursor: pointer;
-    }
-
-    .graph-block-list-container{
-        border: 0.5px black solid;
-        height: 500px;
-        overflow-y:scroll;
-    }
-
-    .graph-block-list{
-        margin-left:2%;
-        width:45%;
-        padding-left:0;
-        padding-right:0;
-    }
-
-
-    .graph-block-list-title{
-        display: none;
     }
 
     .filter-container{
@@ -124,33 +131,10 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .graph-main{
-        height: 500px; 
-        width: 80%; 
-        box-shadow: 2px 2px 10px 2px lightgrey; 
-        border: 1px solid lightgrey;
-    }
-
-    .graph-block-list{
-        margin-left:0;
-        width:80%;
-        padding:1%;
-    }
-
-    .graph-block-list-container{
-        border: 0.5px black solid;
-        height: 500px;
-        overflow-y:scroll;
-    }
 
     .graph-container{
         margin-left:20px;
         cursor: pointer;
-    }
-
-    .graph-block-list-title{
-        margin-bottom: 6px;
-        font-weight: 600;
     }
 
 
