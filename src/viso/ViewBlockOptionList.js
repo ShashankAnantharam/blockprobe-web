@@ -18,8 +18,8 @@ class ViewBlockListComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //props: blockState, selectOption, canCommit, uId, selectedBlock, latestBlock, 
-        //reviewersMap, commitToStoryTooltip
+        //props: blockState, selectOption, canCommit, uId, selectedBlock, latestBlock, bpId,
+        //reviewersMap, commitToStoryTooltip, bpDetails
 
         this.state={
             shajs: '',
@@ -192,13 +192,14 @@ class ViewBlockListComponent extends React.Component {
             softBlock.previousKey = this.props.selectedBlock.key;
             softBlock.title = newTitle;
             softBlock.timestamp = timestamp;
-
+            
             var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(timestamp)).digest('hex');
             committedBlock.verificationHash = newBlockId;
             softBlock.verificationHash = newBlockId;
             var newKey = this.state.shajs('sha256').update(newBlockId + committedBlock.previousKey).digest('hex');
             committedBlock.key = newKey;
             softBlock.key = newKey;
+            softBlock.bpID = this.props.bpId;
 
             delete softBlock["children"];
             delete committedBlock["children"];
@@ -231,6 +232,7 @@ class ViewBlockListComponent extends React.Component {
             softBlock.previousKey = this.props.selectedBlock.key;
             softBlock.timestamp = timestamp;
             softBlock.blockState = 'DRAFT';
+            softBlock.bpID = this.props.bpId;
 
             var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(timestamp)).digest('hex');
             softBlock.verificationHash = newBlockId;

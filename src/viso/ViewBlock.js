@@ -219,6 +219,7 @@ class ViewBlockComponent extends React.Component {
                 canCommit={this.state.canCommit}
                 selectOption = {this.selectOption}
                 uId={this.props.uId}
+                bpId = {this.props.bpId}
                 selectedBlock={this.props.selectedBlock}
                 bpDetails={this.props.bpDetails}
                 reviewersMap={this.state.reviewersMap}
