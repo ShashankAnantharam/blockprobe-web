@@ -52,6 +52,7 @@ class GraphComponent extends React.Component {
         ],
         currentSelectedBlocks: [
         ],
+        selectedNodes:[],
         openSelectedBlocks: false,
         wasAllOptionSelected: true,
         wasNoneOptionSelected:false,
@@ -107,7 +108,8 @@ class GraphComponent extends React.Component {
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
-            openSelectedBlocks: true
+            openSelectedBlocks: true,
+            selectedNodes: [from, to]
         });
     }
 
@@ -156,10 +158,11 @@ class GraphComponent extends React.Component {
         }
 
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
-
+        
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
-            openSelectedBlocks: true
+            openSelectedBlocks: true,
+            selectedNodes: [node]
         });
     }
 
@@ -263,7 +266,7 @@ class GraphComponent extends React.Component {
         this.setState({
             openSelectedBlocks: false
         });
-        
+
         var { nodes, edges } = event;
         
       /*  
@@ -649,6 +652,14 @@ class GraphComponent extends React.Component {
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
            );      
+        
+        let selectedNodesString = ': ';
+        for(let i=0; i<this.state.selectedNodes.length; i++){
+            selectedNodesString += this.state.selectedNodes[i] + ', ';
+        }
+        if(selectedNodesString.length > 0)
+            selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
+
             
         return (
             <div>
@@ -684,7 +695,10 @@ class GraphComponent extends React.Component {
                         {this.generateAmGraph()/*this.generateGraph()*/}                        
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>Graph selections</div> 
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
+                                <span>Graph selections</span>  
+                                <span>{selectedNodesString}</span>
+                            </div> 
                             <Expand 
                                 open={this.state.openSelectedBlocks}
                                 duration={1000}
