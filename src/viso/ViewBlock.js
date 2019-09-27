@@ -205,10 +205,17 @@ class ViewBlockComponent extends React.Component {
     }
 
     renderOptions(){
-        if(!isNullOrUndefined(this.props.selectedBlock.blockState)){
+        let blockState = this.props.selectedBlock.blockState;
+        if(isNullOrUndefined(this.props.selectedBlock.blockState)){
+            /*
+                If blockstate does not exist, it has to be successful (blocktree block)
+            */
+            blockState = 'SUCCESSFUL';
+        }
+
             return(
                 <ViewBlockListComponent 
-                blockState={this.props.selectedBlock.blockState}
+                blockState={blockState}
                 canCommit={this.state.canCommit}
                 selectOption = {this.selectOption}
                 uId={this.props.uId}
@@ -219,8 +226,6 @@ class ViewBlockComponent extends React.Component {
                 commitToStoryTooltip = {this.props.commitToStoryTooltip}
                 />
             )
-        }
-        return null;
     }
 
     renderUpvoteStatus(){

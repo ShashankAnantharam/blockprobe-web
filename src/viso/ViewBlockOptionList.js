@@ -137,8 +137,6 @@ class ViewBlockListComponent extends React.Component {
             var committedBlock = JSON.parse(JSON.stringify(newBlock));
             delete committedBlock["blockState"];
             delete committedBlock["bpID"];
-            //console.log(newBlock);
-            //console.log(committedBlock);
 
             firebase.database().ref("Blockprobes/"+newBlock.bpID
             +"/reviewBlocks/"+oldKey).remove();
