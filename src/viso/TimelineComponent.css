@@ -19,6 +19,20 @@
     text-align: center;
 }
 
+.timeline-block-container{
+    cursor: pointer;
+    margin: -12px;
+    padding: 2px;
+    background: #ffffef;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.timeline-block-container:hover{
+    padding: 7px 2px 7px 2px;
+    background: #dfdddd;
+}
+
 button {
     margin-top: 10px;
     font-size: 12px;

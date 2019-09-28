@@ -123,20 +123,25 @@ class TimelineComponent extends React.Component {
          <VerticalTimelineElement
          className="vertical-timeline-element--work"
          date={blockDateTime}
-         iconStyle={{ background: backgroundColor, color: '#fff' }}
+         iconStyle={{ background: backgroundColor, color: '#fff' }}         
        >
-        <h4 className="vertical-timeline-element-title timeline-block-title timeline-block-text">{this.removeHashedIndex(timelineBlock.title)}</h4>
-        <p className="timeline-block-text">
-            {timelineBlock.summary}
-        </p>
-        
-        <div>
-            {renderBlockEvidences}
-        </div>
-        <div>
-        <button onClick={() => { this.selectTimelineBlock(timelineBlock)}}>
-            View Block
-        </button>    
+       <div onClick={() => { this.selectTimelineBlock(timelineBlock)}} className="timeline-block-container">
+            
+            {this.removeHashedIndex(timelineBlock.title).length > 0? 
+                        <h4 className="vertical-timeline-element-title timeline-block-title timeline-block-text">{this.removeHashedIndex(timelineBlock.title)}</h4>
+                        :
+                        null
+            }
+            <p className="timeline-block-text">
+                {timelineBlock.summary}
+            </p>
+            
+            {renderBlockEvidences.length !== ''?
+                        <div>
+                            {renderBlockEvidences}
+                        </div>
+                        :
+                        null}        
 
         </div>
           
