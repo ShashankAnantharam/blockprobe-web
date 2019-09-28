@@ -9,6 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 
 import AmGraph from './amGraph/amGraph';
+import Expand from 'react-expand-animated';
 
 class FindConnectionsComponent extends React.Component {
 
@@ -61,6 +62,8 @@ class FindConnectionsComponent extends React.Component {
         ],
         currentSelectedBlocks: [
         ],
+        selectedNodes:[],
+        openSelectedBlocks: false,
         wasAllOptionSelected: true,
         wasNoneOptionSelected:false,
         testVar: -1
@@ -82,6 +85,7 @@ class FindConnectionsComponent extends React.Component {
         this.generateAmGraph = this.generateAmGraph.bind(this);
         this.selectEdge = this.selectEdge.bind(this);
         this.selectNode = this.selectNode.bind(this);
+        this.toggleSelectedBlocksPane = this.toggleSelectedBlocksPane.bind(this);
     }
 
     isValidBlock(block){
@@ -91,6 +95,10 @@ class FindConnectionsComponent extends React.Component {
     }
 
     selectEdge(from, to){
+        this.setState({
+            openSelectedBlocks: false
+        });
+
         var blocksToBeSelected =[];
         var blocksAdded = {};
         var edge={
@@ -101,7 +109,9 @@ class FindConnectionsComponent extends React.Component {
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
 
         this.setState({
-            currentSelectedBlocks: blocksToBeSelected
+            currentSelectedBlocks: blocksToBeSelected,
+            openSelectedBlocks: true,
+            selectedNodes: [from, to]
         });
     }
 
@@ -126,6 +136,11 @@ class FindConnectionsComponent extends React.Component {
     }
 
     selectNode(node){
+
+        this.setState({
+            openSelectedBlocks: false
+        });
+
         var blocksToBeSelected =[];
         var blocksAdded = {};
         
@@ -144,7 +159,9 @@ class FindConnectionsComponent extends React.Component {
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
 
         this.setState({
-            currentSelectedBlocks: blocksToBeSelected
+            currentSelectedBlocks: blocksToBeSelected,
+            openSelectedBlocks: true,
+            selectedNodes: [node]
         });
     }
 
@@ -241,6 +258,11 @@ class FindConnectionsComponent extends React.Component {
     }
 
     onSelectGraph(event){
+
+        this.setState({
+            openSelectedBlocks: false
+        });
+        
         var { nodes, edges } = event;
         var blocksToBeSelected = [];
         var blocksAdded = {};
@@ -262,7 +284,8 @@ class FindConnectionsComponent extends React.Component {
         }
 
         this.setState({
-            currentSelectedBlocks: blocksToBeSelected
+            currentSelectedBlocks: blocksToBeSelected,
+            openSelectedBlocks: true
         });
     }
 
@@ -682,6 +705,12 @@ class FindConnectionsComponent extends React.Component {
 
     }
 
+    toggleSelectedBlocksPane(){
+        this.setState({
+            openSelectedBlocks: !this.state.openSelectedBlocks
+        });        
+    }
+
     render(){
 
 
@@ -697,10 +726,18 @@ class FindConnectionsComponent extends React.Component {
             color: "white",
 
         };
+        const transitions = ["height", "opacity", "background"];
 
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
-           );            
+           );     
+           
+        let selectedNodesString = ': ';
+        for(let i=0; i<this.state.selectedNodes.length; i++){
+            selectedNodesString += this.state.selectedNodes[i] + ', ';
+        }
+        if(selectedNodesString.length > 0)
+            selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
         
         return (
             <div>
@@ -733,7 +770,6 @@ class FindConnectionsComponent extends React.Component {
 
                     <button className="filterButton" onClick={this.generateAmGraph}>Find Connection</button>
                 </div>
-                <div className='graph-container'>
                        
                     <div className="graph-main">
                         <AmGraph 
@@ -741,19 +777,26 @@ class FindConnectionsComponent extends React.Component {
                                 selectEdge = {this.selectEdge}    
                                 selectNode = {this.selectNode}                    
                                 />
-                    </div>                    
+                    </div>   
 
-                    {this.state.currentSelectedBlocks.length > 0?
+                    {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
-                            <div className='graph-block-list-title'>Graph selections</div> 
-                            <div className='graph-block-list-container' id="graph-selected-block-list">
-                                {renderBlocks}
-                            </div>
-                        </div>                            
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
+                                <span>Graph selections</span>  
+                                <span>{selectedNodesString}</span>
+                            </div> 
+                            <Expand 
+                                open={this.state.openSelectedBlocks}
+                                duration={1000}
+                                transitions={transitions}>
+                                <div className='graph-block-list-container' id="graph-selected-block-list">
+                                    {renderBlocks}
+                                </div>
+                            </Expand>
+                        </div>                      
                         :
-                        null}  
+                        null}                      
                       
-                </div>
             </div>
         );
     }

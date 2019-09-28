@@ -76,12 +76,15 @@
 }
 
 .graph-block-list-title{
-    margin-bottom: 6px;
     font-weight: 600;
     padding: 2px;
     text-align: center;
     background-color: #efefef;
     cursor: pointer;
+}
+
+.graph-block-list-title:hover{
+    background-color: #afafaf;
 }
 
 .graph-block-list-container{
