@@ -89,7 +89,23 @@
 
 .graph-block-list-container{
     overflow-y:scroll;
+    overflow-x: none;
     max-height: 500px;
+}
+
+.graph-block-evidence-container{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.graph-block-evidence{
+    margin-bottom: 3%;
+}
+
+.graph-block-evidence-image{
+    border: 0.5px black solid;
+    width: 100%;
+
 }
 
 @media only screen and (min-width: 601px) {
@@ -131,6 +147,14 @@
         margin-top:0.5em;
         height:3.6em;
     }
+
+    .graph-block-evidence{
+        width: 30%;
+        margin-left: 5%; 
+        margin-right: 5%;
+    }
+
+
 }
 
 @media only screen and (max-width: 600px) {
@@ -164,6 +188,12 @@
     .filterButton{
         margin-top:0.5em;
         height:3.6em;
+    }
+
+    .graph-block-evidence{
+        width: 80%;
+        margin-left: 10%; 
+        margin-right: 10%;
     }
 }
 

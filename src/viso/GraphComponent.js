@@ -501,9 +501,8 @@ class GraphComponent extends React.Component {
         const WebView = require('react-electron-web-view');
         var evidenceList = [evidence.evidenceLink];
         return(
-            <div >
-                <Img src={evidenceList}
-                style={{width:'80%',marginLeft: '10%', marginRight: '10%'}}></Img>
+            <div className='graph-block-evidence'>
+                <Img src={evidenceList} className="graph-block-evidence-image"></Img>
             </div>
         );
     } 
@@ -531,10 +530,14 @@ class GraphComponent extends React.Component {
             <div className="graph-block-para-div"
             onClick={() => { this.clickBlockFromList(singleBlock)}}>
                 <h4 className="graph-block-title">{this.removeHashedIndex(singleBlock.title)}</h4>
-                <p className="graph-block-text">
-                    {singleBlock.summary}
-                </p> 
-                {renderBlockEvidences}                       
+                <div className="graph-content-container">
+                    <p className="graph-block-text">
+                        {singleBlock.summary}
+                    </p> 
+                    <div class="graph-block-evidence-container">
+                        {renderBlockEvidences}                       
+                    </div>
+                </div> 
             </div>
             );
 
