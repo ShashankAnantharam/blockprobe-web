@@ -695,7 +695,6 @@ class GraphComponent extends React.Component {
 
                 }
                 
-                        {this.generateAmGraph()/*this.generateGraph()*/}                        
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
@@ -712,8 +711,9 @@ class GraphComponent extends React.Component {
                             </Expand>
                         </div>                      
                         :
-                        null}                        
-                
+                        null}
+                        {this.generateAmGraph()/*this.generateGraph()*/}                        
+                                        
             </div>
         );
     }

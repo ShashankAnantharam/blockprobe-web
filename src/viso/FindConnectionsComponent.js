@@ -773,15 +773,7 @@ class FindConnectionsComponent extends React.Component {
 
                     <button className="filterButton" onClick={this.generateAmGraph}>Find Connection</button>
                 </div>
-                       
-                    <div className="graph-main">
-                        <AmGraph 
-                                graph={this.state.amGraph}  
-                                selectEdge = {this.selectEdge}    
-                                selectNode = {this.selectNode}                    
-                                />
-                    </div>   
-
+                                           
                     {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
@@ -799,7 +791,13 @@ class FindConnectionsComponent extends React.Component {
                         </div>                      
                         :
                         null}                      
-                      
+                    <div className="graph-main">
+                        <AmGraph 
+                                graph={this.state.amGraph}  
+                                selectEdge = {this.selectEdge}    
+                                selectNode = {this.selectNode}                    
+                                />
+                    </div>  
             </div>
         );
     }
