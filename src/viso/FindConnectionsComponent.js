@@ -86,6 +86,18 @@ class FindConnectionsComponent extends React.Component {
         this.selectEdge = this.selectEdge.bind(this);
         this.selectNode = this.selectNode.bind(this);
         this.toggleSelectedBlocksPane = this.toggleSelectedBlocksPane.bind(this);
+        this.resetScroll = this.resetScroll.bind(this);
+
+        this.findConnectionRef = React.createRef();
+    }
+
+    resetScroll(){
+        let amount = null;
+        if(this.findConnectionRef){
+            amount = this.findConnectionRef.current.offsetTop;
+        }
+        if(this.props.setScrollToGraphList)
+            this.props.setScrollToGraphList(amount);
     }
 
     isValidBlock(block){
@@ -113,6 +125,8 @@ class FindConnectionsComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [from, to]
         });
+
+        this.resetScroll();
     }
 
     addBlocksForEdge(edge, blocksToBeSelected, blocksAdded){
@@ -163,6 +177,8 @@ class FindConnectionsComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [node]
         });
+
+        this.resetScroll();
     }
 
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
@@ -776,7 +792,7 @@ class FindConnectionsComponent extends React.Component {
                                            
                     {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.findConnectionRef}>
                                 <span>Graph selections</span>  
                                 <span>{selectedNodesString}</span>
                             </div> 

@@ -79,6 +79,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.isSummaryBlock = this.isSummaryBlock.bind(this);
         this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
+        this.setScrollToGraphList = this.setScrollToGraphList.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -522,6 +523,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
                         isPublic = {true}
+                        setScrollToGraphList ={this.setScrollToGraphList}                 
                         imageMapping={this.state.imageMapping}/>
                 </div>
             );
@@ -532,6 +534,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                     <FindConnectionsComponent blockTree={this.state.blockTree} 
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
+                        setScrollToGraphList ={this.setScrollToGraphList}                 
                         imageMapping={this.state.imageMapping}
                     />
                 </div>
@@ -580,6 +583,13 @@ class ViewBlockprobePublicComponent extends React.Component {
         )
     }
 
+    setScrollToGraphList(value){
+        if(value)
+            document.getElementById('main_body').parentElement.scrollTop = value;
+        else    
+            document.getElementById('main_body').parentElement.scrollTop = 200;
+    }
+
     renderFullDashboard(){
         return (
             <div>
@@ -607,29 +617,32 @@ class ViewBlockprobePublicComponent extends React.Component {
                 >
                    
 
-                    <div className="blockprobe-header"> 
-                    <GoogleFontLoader
-                            fonts={[                             
-                                {
-                                    font:'Lora',
-                                    weights: [400]
-                                }
-                            ]}
-                            subsets={['cyrillic-ext', 'greek']}
-                            />   
-                        <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
-                        <h4>{this.state.blockprobeSummary}</h4>
+                    <div id="main_body">
+                        <div className="blockprobe-header"> 
+                        <GoogleFontLoader
+                                fonts={[                             
+                                    {
+                                        font:'Lora',
+                                        weights: [400]
+                                    }
+                                ]}
+                                subsets={['cyrillic-ext', 'greek']}
+                                />   
+                            <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
+                            <h4>{this.state.blockprobeSummary}</h4>
+                        </div>
+                        
+                        <DashboardViewComponent
+                                summaryBlocks = {this.state.summaryList}
+                                blockTree={this.state.blockTree} 
+                                investigationGraph={this.state.investigationGraph}
+                                selectBlock={this.changeSelectedBlock}
+                                multiSelectEntityList = {this.state.multiSelectEntityList}
+                                timeline={this.state.timeline}    
+                                imageMapping={this.state.imageMapping}
+                                setScrollToGraphList ={this.setScrollToGraphList}                 
+                            />
                     </div>
-                    
-                    <DashboardViewComponent
-                            summaryBlocks = {this.state.summaryList}
-                            blockTree={this.state.blockTree} 
-                            investigationGraph={this.state.investigationGraph}
-                            selectBlock={this.changeSelectedBlock}
-                            multiSelectEntityList = {this.state.multiSelectEntityList}
-                            timeline={this.state.timeline}    
-                            imageMapping={this.state.imageMapping}                 
-                        />
                 </Sidebar>
                 </div>            
             }

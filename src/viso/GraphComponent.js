@@ -83,6 +83,18 @@ class GraphComponent extends React.Component {
         this.selectEdge = this.selectEdge.bind(this);
         this.selectNode = this.selectNode.bind(this);
         this.toggleSelectedBlocksPane = this.toggleSelectedBlocksPane.bind(this);
+        this.resetScroll = this.resetScroll.bind(this);
+
+        this.graphRef = React.createRef();
+    }
+
+    resetScroll(){
+        let amount = null;
+        if(this.graphRef){
+            amount = this.graphRef.current.offsetTop;
+        }
+        if(this.props.setScrollToGraphList)
+            this.props.setScrollToGraphList(amount);
     }
 
     isValidBlock(block){
@@ -111,6 +123,8 @@ class GraphComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [from, to]
         });
+
+        this.resetScroll();
     }
 
     //edg:from,to,
@@ -164,6 +178,8 @@ class GraphComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [node]
         });
+
+        this.resetScroll();
     }
 
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){
@@ -629,7 +645,7 @@ class GraphComponent extends React.Component {
         this.initializeGraphEvents();
     }
 
-    toggleSelectedBlocksPane(){
+    toggleSelectedBlocksPane(){        
         this.setState({
             openSelectedBlocks: !this.state.openSelectedBlocks
         });        
@@ -697,7 +713,7 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.graphRef}>
                                 <span>Graph selections</span>  
                                 <span>{selectedNodesString}</span>
                             </div> 

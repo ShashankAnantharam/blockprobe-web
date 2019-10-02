@@ -50,6 +50,7 @@ class DashboardViewComponent extends React.Component {
                             investigationGraph={this.props.investigationGraph}
                             selectBlock={this.props.selectBlock}
                             imageMapping = {this.props.imageMapping}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
                             multiSelectEntityList = {this.props.multiSelectEntityList}/>
                     </TabPanel>
                     <TabPanel>
@@ -57,6 +58,7 @@ class DashboardViewComponent extends React.Component {
                             investigationGraph={this.props.investigationGraph}
                             imageMapping = {this.props.imageMapping}
                             selectBlock={this.props.selectBlock}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
                         />
                     </TabPanel>
                 </Tabs>
