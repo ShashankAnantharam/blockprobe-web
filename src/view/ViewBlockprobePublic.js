@@ -574,7 +574,9 @@ class ViewBlockprobePublicComponent extends React.Component {
                     defaultSidebarWidth='200px'
                     styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
                 >
-                    {this.renderVisualisation()}
+                    <div id="main_body">
+                        {this.renderVisualisation()}
+                    </div>
 
                 </Sidebar>
                 </div>      
