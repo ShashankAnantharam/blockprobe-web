@@ -115,7 +115,6 @@
     display: flex; 
     align-items: center;
     width: 90%;
-    overflow: hidden;
   }
 
   .summaryContent-nav{
@@ -132,6 +131,7 @@
     transition: 0.33s;
     width: 90%;
     cursor: pointer;
+    overflow: hidden;
   }
 }
 
