@@ -360,31 +360,33 @@ class GraphComponent extends React.Component {
                         }
                     }
 
-                    //Add Node
-                    newGraph.push({
-                        id:count,
-                        label:currEntity.label,
-                        link: [],
-                        image: image
-                    });
-                    nodesMap[count] = currEntity.label;
-
-
-                    //Add edge
-                    var currEntityKey = currEntity.label;
-
-                    if(!isNullOrUndefined(this.props.investigationGraph)
-                    && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
-                        var edgeMap = this.props.investigationGraph[currEntityKey].edges;
-                        Object.keys(edgeMap).forEach(function(edgeKey) {
-                            if(edgeKey in selectedEntityLabels){
-                                //edge is a selection, add it
-                                //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
-                                newGraph[selectedEntityLabels[edgeKey]].link.push(count);
-                            }
+                    if(this.props.investigationGraph[currEntity.label]){
+                        //Add Node
+                        newGraph.push({
+                            id:count,
+                            label:currEntity.label,
+                            link: [],
+                            image: image
                         });
-                    }
-                    count++;
+                        nodesMap[count] = currEntity.label;
+
+
+                        //Add edge
+                        var currEntityKey = currEntity.label;
+
+                        if(!isNullOrUndefined(this.props.investigationGraph)
+                        && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
+                            var edgeMap = this.props.investigationGraph[currEntityKey].edges;
+                            Object.keys(edgeMap).forEach(function(edgeKey) {
+                                if(edgeKey in selectedEntityLabels){
+                                    //edge is a selection, add it
+                                    //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
+                                    newGraph[selectedEntityLabels[edgeKey]].link.push(count);
+                                }
+                            });
+                        }
+                        count++;
+                    }                    
                 }
             }
         }
