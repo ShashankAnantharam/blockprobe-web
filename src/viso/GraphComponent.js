@@ -7,6 +7,7 @@ import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 import Img from 'react-image';
+import IsImageUrl from 'is-image-url';
 
 import AmGraph from './amGraph/amGraph';
 import Expand from 'react-expand-animated';
@@ -517,10 +518,18 @@ class GraphComponent extends React.Component {
 
     BlockEvidence(evidence, index){
         const WebView = require('react-electron-web-view');
-        var evidenceList = [evidence.evidenceLink];
+        let evidenceList = [evidence.evidenceLink];
+        let isImageUrl = IsImageUrl(evidence.evidenceLink);
         return(
-            <div className='graph-block-evidence'>
-                <Img src={evidenceList} className="graph-block-evidence-image"></Img>
+            <div>
+                {
+                    isImageUrl?
+                    <div className='graph-block-evidence'>
+                        <Img src={evidenceList} className="graph-block-evidence-image"></Img>
+                    </div>
+                    :
+                    null
+                }
             </div>
         );
     } 
