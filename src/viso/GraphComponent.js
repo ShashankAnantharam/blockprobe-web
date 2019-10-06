@@ -520,17 +520,15 @@ class GraphComponent extends React.Component {
         const WebView = require('react-electron-web-view');
         let evidenceList = [evidence.evidenceLink];
         let isImageUrl = IsImageUrl(evidence.evidenceLink);
-        return(
-            <div>
-                {
-                    isImageUrl?
-                    <div className='graph-block-evidence'>
+        if(isImageUrl){
+            return (
+                <div className='graph-block-evidence'>
                         <Img src={evidenceList} className="graph-block-evidence-image"></Img>
-                    </div>
-                    :
+                </div>
+            );
+        }
+        return(
                     null
-                }
-            </div>
         );
     } 
 
