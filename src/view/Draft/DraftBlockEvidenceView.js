@@ -11,7 +11,7 @@ class DraftBlockEvidenceView extends React.Component {
 
     constructor(props){
         super(props);
-        //props: isClicked; updateEvidence; evidence: supportingDetails, evidenceLink;
+        //props: isClicked; updateEvidence, index; evidence: supportingDetails, evidenceLink;
 
         //console.log('Here');
         //console.log(this.props.evidence);
@@ -20,7 +20,6 @@ class DraftBlockEvidenceView extends React.Component {
             newEvidence: JSON.parse(JSON.stringify(this.props.evidence))
         }
         
-
         this.getEvidenceViewOnly = this.getEvidenceViewOnly.bind(this);
         this.clickEvidenceNotInDraft = this.clickEvidenceNotInDraft.bind(this);
         this.getEvidenceDraft = this.getEvidenceDraft.bind(this);
@@ -46,14 +45,14 @@ class DraftBlockEvidenceView extends React.Component {
     removeEvidence(){
         // console.log(this.state.newEvidence);
         // console.log(this.props.evidence);
-        this.props.updateEvidence(this.props.evidence, null, false, true);
+        this.props.updateEvidence(this.props.evidence, null, false, true, this.props.index);
         this.setState({
             isClicked: false
         });
     }
 
     updateEvidence(){
-        this.props.updateEvidence(this.props.evidence, this.state.newEvidence, true, false);
+        this.props.updateEvidence(this.props.evidence, this.state.newEvidence, true, false, this.props.index);
         this.setState({
             isClicked: false
         });
@@ -150,7 +149,7 @@ class DraftBlockEvidenceView extends React.Component {
         return(
             <ListItem button 
                     onClick={() => { this.clickEvidenceNotInDraft()}}
-                    style={{width:'100%'}}
+                    style={{width:'100%', minHeight:'70px', borderTop:'1px solid darkgrey'}}
                     >
                     <ListItemText
                     style={{overflow:'hidden'}} 

@@ -297,7 +297,6 @@ class DraftBlockComponent extends React.Component {
             block.entities.push({
                 title:entityLabel
             });
-             console.log(entityList);
             // console.log(block);
             this.setState({
                 multiSelectEntityList: entityList,
@@ -357,7 +356,7 @@ class DraftBlockComponent extends React.Component {
         }
       }
 
-    updateEvidence(oldEvidence, newEvidence, isUpdate, isDelete){
+    updateEvidence(oldEvidence, newEvidence, isUpdate, isDelete, index){
           var block = this.state.newBlock;
 
           if(isNullOrUndefined(block.evidences)){
@@ -365,19 +364,16 @@ class DraftBlockComponent extends React.Component {
           }
           if(isDelete){
               
-                block.evidences = block.evidences.filter(
-                    ev => ((ev.evidenceLink != oldEvidence.evidenceLink) ||
-                    (ev.supportingDetails != oldEvidence.supportingDetails))
-                )              
+                let newEv = [];
+                for(let i=0;i<block.evidences.length;i++){
+                    if(i != index){
+                        newEv.push(block.evidences[i]);
+                    }
+                }
+                block.evidences = newEv;                
           }
-          else if(isUpdate){
-          for(var i=0;i<block.evidences.length;i++){
-              if(block.evidences[i].supportingDetails == oldEvidence.supportingDetails
-                 && block.evidences[i].evidenceLink == oldEvidence.evidenceLink){
-                    
-                    block.evidences[i] = newEvidence;
-                 }
-          }
+          else if(isUpdate){            
+            block.evidences[index] = newEvidence;
         }
 
         this.setState({newBlock: block});
@@ -397,13 +393,14 @@ class DraftBlockComponent extends React.Component {
         this.setState({newBlock: block});
       }
 
-    singleBlockEvidence(blockEvidence){
+    singleBlockEvidence(blockEvidence, index){
         var isClicked = (blockEvidence.supportingDetails =='' && blockEvidence.evidenceLink == '');
         return(
                 <DraftBlockEvidenceView
                     isClicked={isClicked}
                     evidence={blockEvidence}
-                    updateEvidence = {this.updateEvidence} 
+                    updateEvidence = {this.updateEvidence}
+                    index = {index} 
                 />
         );
     }
@@ -543,7 +540,7 @@ class DraftBlockComponent extends React.Component {
         if(!isNullOrUndefined(this.state.newBlock.evidences)){
             // console.log(this.state.newBlock.evidences);
             renderEvidenceList = this.state.newBlock.evidences.map((blockEvidence, index) => 
-                this.singleBlockEvidence(blockEvidence)
+                this.singleBlockEvidence(blockEvidence, index)
             );            
         }
 
