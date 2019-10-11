@@ -202,7 +202,15 @@ class BulkDraftBlockComponent extends React.Component {
       }
 
      isValidNlpEntity(nlpItem, nounType){
-         var mentions = nlpItem.mentions;
+
+        if(isNullOrUndefined(nlpItem))
+            return false;
+
+         let mentions = nlpItem.mentions;
+
+         if(!isNullOrUndefined(nlpItem.name) && (nlpItem.name.toLowerCase() == 'all' ||(nlpItem.name.toLowerCase() == 'none')))
+            return false;
+
          for(var i=0;i<mentions.length;i++){
              if(mentions[i].type == nounType)
                 return true;

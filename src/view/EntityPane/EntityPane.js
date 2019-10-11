@@ -146,7 +146,7 @@ class EntityPaneView extends React.Component {
         var entityList = this.state.entities;
         var isEntityPresent = this.state.entityPresent;
         entityLabel = this.makeEntityUppercase(entityLabel);
-        if(!(entityLabel in isEntityPresent)){
+        if(!(entityLabel in isEntityPresent) && entityLabel.toLowerCase()!='all' && entityLabel.toLowerCase()!='none'){
             entityList.push({                
                 canRemove: true, 
                 label: entityLabel, 

@@ -283,7 +283,7 @@ class DraftBlockComponent extends React.Component {
                 break;
             }
         }
-        if(!isEntityAlreadyPresent){
+        if(!isEntityAlreadyPresent && entityLabel.toLowerCase()!='all' && entityLabel.toLowerCase()!='none'){
             var count = entityList.length;
             count = count + 1;
             entityList.push({                
