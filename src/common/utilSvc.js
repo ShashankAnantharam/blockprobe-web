@@ -88,7 +88,7 @@ export const getShortenedListOfImages = (imageMapping) => {
     let allImages = [], currImagePage = [];
     if(imageMap!=null){
         Object.keys(imageMap).map((key, index) => {
-            if(countI && countI%100==0){
+            if(countI && countI%200==0){
                 let page = {
                     images: currImagePage
                 };

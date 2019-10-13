@@ -3,6 +3,7 @@ import './ShareBlockprobe.css';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Loader from 'react-loader-spinner';
+import * as Utils from '../../common/utilSvc';
 import {
     FacebookShareButton,
     LinkedinShareButton,
@@ -183,38 +184,7 @@ class ShareBlockprobeComponent extends React.Component {
 
     componentDidMount(){
         var bTree = this.props.blockTree;
-        let count=0;
-        let allBlocks = [], currBlockPage = [];
-        if(bTree!=null){
-            Object.keys(bTree).map((key, index) => {
-                if(count==100){
-                    let page = {
-                        blocks: currBlockPage
-                    };
-                    allBlocks.push(page);
-                    currBlockPage = [];
-                }
-                var block = bTree[key];
-                if(block!=null){
-                    if(block.previousKey)
-                        block['parent']=block.previousKey;
-                    if(!block.children)
-                        block['children']=[];    
-                    if(block.actionType){    
-                    currBlockPage.push(block);
-                    count++;
-                    }
-                }
-            } 
-            );
-        }
-        if(currBlockPage.length > 0){
-            let page = {
-                blocks: currBlockPage
-            };
-            allBlocks.push(page);
-            currBlockPage = [];
-        }
+        let allBlocks = Utils.getShortenedListOfBlockTree(bTree);
         if(allBlocks.length>0){
 
             firebase.firestore().collection("public").doc(this.props.bpId)
@@ -238,35 +208,7 @@ class ShareBlockprobeComponent extends React.Component {
 
         //Add images
         var imageMap = this.props.imageMapping;
-        let countI=0;
-        let allImages = [], currImagePage = [];
-        if(imageMap!=null){
-            Object.keys(imageMap).map((key, index) => {
-                if(countI==100){
-                    let page = {
-                        images: currImagePage
-                    };
-                    allImages.push(page);
-                    currImagePage = [];
-                }
-                var image = {
-                    url: imageMap[key],
-                    entity: key
-                };
-                if(image!=null){                   
-                    currImagePage.push(image);
-                    countI++;
-                }
-            } 
-            );
-        }
-        if(currImagePage.length > 0){
-            let page = {
-                images: currImagePage
-            };
-            allImages.push(page);
-            currImagePage = [];
-        }
+        let allImages = Utils.getShortenedListOfImages(imageMap);         
         if(allImages.length>0){
 
             //console.log(allImages);
