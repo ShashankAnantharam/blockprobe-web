@@ -1,5 +1,39 @@
 
 
+export const getShortenedListOfBlockprobes = (blockprobes) => {
+    let allBlockprobes = [], currentBlockprobePage = [];
+    let count=0;
+    if(blockprobes!=null){
+        Object.keys(blockprobes).map((key, index) => {
+            if(count && count%100==0){
+                let page = {
+                    blockprobe: currentBlockprobePage
+                };
+                allBlockprobes.push(page);
+                currentBlockprobePage = [];
+            }
+            let blockprobe = blockprobes[key];
+            if(blockprobe!=null){  
+                Object.keys(blockprobe).map((bpKey) => {
+                    if(blockprobe[bpKey]==undefined){
+                        delete blockprobe[bpKey];
+                    }
+                });
+                currentBlockprobePage.push(blockprobe);
+                count++;
+            }
+        } 
+        );
+    }
+    if(currentBlockprobePage.length > 0){
+        let page = {
+            blockprobe: currentBlockprobePage
+        };
+        allBlockprobes.push(page);
+        currentBlockprobePage = [];
+    }    
+    return allBlockprobes;
+}
 
 export const getShortenedListOfBlockTree = (blockTree) => {
         let bTree = blockTree;
@@ -7,7 +41,7 @@ export const getShortenedListOfBlockTree = (blockTree) => {
         let allBlocks = [], currBlockPage = [];
         if(bTree!=null){
             Object.keys(bTree).map((key, index) => {
-                if(count==100){
+                if(count && count%100 == 0){
                     let page = {
                         blocks: currBlockPage
                     };
@@ -20,9 +54,14 @@ export const getShortenedListOfBlockTree = (blockTree) => {
                         block['parent']=block.previousKey;
                     if(!block.children)
                         block['children']=[];    
-                    if(block.actionType){    
-                    currBlockPage.push(block);
-                    count++;
+                    if(block.actionType){  
+                        Object.keys(block).map((bKey) => {
+                            if(block[bKey]==undefined){
+                                delete block[bKey];
+                            }
+                        });   
+                        currBlockPage.push(block);
+                        count++;
                     }
                 }
             } 
@@ -49,7 +88,7 @@ export const getShortenedListOfImages = (imageMapping) => {
     let allImages = [], currImagePage = [];
     if(imageMap!=null){
         Object.keys(imageMap).map((key, index) => {
-            if(countI==100){
+            if(countI && countI%100==0){
                 let page = {
                     images: currImagePage
                 };
@@ -60,7 +99,12 @@ export const getShortenedListOfImages = (imageMapping) => {
                 url: imageMap[key],
                 entity: key
             };
-            if(image!=null){                   
+            if(image!=null){   
+                Object.keys(image).map((imKey) => {
+                    if(image[imKey]==undefined){
+                        delete image[imKey];
+                    }
+                });                
                 currImagePage.push(image);
                 countI++;
             }

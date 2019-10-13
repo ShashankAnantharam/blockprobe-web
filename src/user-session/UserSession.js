@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { isNullOrUndefined } from 'util';
+import * as Utils from '../common/utilSvc';
 import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
@@ -193,11 +194,26 @@ class UserSession extends React.Component {
                                 //console.log('Removed block: ', change.doc.data());
                                 this.removeBlockprobeFromList(change.doc);
                               }
-                        })
-                    }
-                );    
-            
+                        });
 
+                        let allBlockprobes = Utils.getShortenedListOfBlockprobes(this.state.blockprobes);
+                        if(allBlockprobes &&  allBlockprobes.length>0){
+                            firebase.firestore().collection("Users").doc(this.state.userId)
+                                    .collection("shortBlockprobes").get().then((snapshot) => {
+                                    
+                                snapshot.forEach((doc) => {
+                                        var ref = firebase.firestore().collection("Users").doc(this.state.userId)
+                                        .collection("shortBlockprobes").doc(doc.id).delete();
+                                    });
+                                    
+                                for(var i=0; i<allBlockprobes.length; i++){
+                                    firebase.firestore().collection("Users").doc(this.state.userId)
+                                    .collection("shortBlockprobes").doc(String(i)).set(allBlockprobes[i]);        
+                                }       
+                                });
+                        }
+                    }
+                );               
         }
       }
 
