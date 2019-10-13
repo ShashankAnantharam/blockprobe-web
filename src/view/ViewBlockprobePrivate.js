@@ -24,6 +24,7 @@ import { isNullOrUndefined } from 'util';
 import UserBlocksComponent from '../user-session/UserBlocksComponent';
 import Joyride from 'react-joyride';
 import Loader from 'react-loader-spinner';
+import * as Utils from '../common/utilSvc';
 
 class ViewBlockprobePrivateComponent extends React.Component {
 
@@ -658,6 +659,22 @@ class ViewBlockprobePrivateComponent extends React.Component {
             imageMapping[doc.data()['entity']] = doc.data()['url'];
         });
         this.setState({imageMapping: imageMapping});
+
+        let allImages = Utils.getShortenedListOfImages(imageMapping);  
+        if(allImages.length>0){
+
+            firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+                        collection("users").doc(this.state.uIdHash).collection("shortImages").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+                        collection("users").doc(this.state.uIdHash).collection("shortImages").doc(doc.id).delete();
+                    });
+                    for(var i=0; i<allImages.length; i++){
+                        firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+                        collection("users").doc(this.state.uIdHash).collection("shortImages").doc(String(i)).set(allImages[i]);        
+                    }        
+                });
+        }      
     }
 
     createBlockprobe(snapshot){
@@ -705,6 +722,22 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createSummaryList(finalBlockList);
 
         // console.log(finalBlockList);
+        let allBlocks = Utils.getShortenedListOfBlockTree(this.state.blockTree);
+        if(allBlocks &&  allBlocks.length>0){
+            firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+            collection("users").doc(this.state.uIdHash).collection("shortBlockprobe").get().then((snapshot) => {
+                    
+                snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+                        collection("users").doc(this.state.uIdHash).collection("shortBlockprobe").doc(doc.id).delete();
+                    });
+                for(var i=0; i<allBlocks.length; i++){
+                        firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+                        collection("users").doc(this.state.uIdHash).collection("shortBlockprobe").
+                        doc(String(i)).set(allBlocks[i]);        
+                }       
+                });
+        }
         
     }
 
