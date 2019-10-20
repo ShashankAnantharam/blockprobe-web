@@ -120,7 +120,9 @@ class UserSession extends React.Component {
     uiConfig = {
         signInFlow: "popup",
         signInOptions: [
-          firebase.auth.PhoneAuthProvider.PROVIDER_ID
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            firebase.auth.PhoneAuthProvider.PROVIDER_ID
         ],
         callbacks:{
           signInSuccess: () => false,
@@ -293,6 +295,12 @@ class UserSession extends React.Component {
                 }
                 if(providerId=="phone"){
                     uId = firebase.auth().currentUser.phoneNumber;
+                }
+                else if(providerId=='google.com'){
+                    uId = firebase.auth().currentUser.email;
+                }
+                else if(providerId=='password'){
+                    uId = firebase.auth().currentUser.email;
                 }
 
                 this.setState({
