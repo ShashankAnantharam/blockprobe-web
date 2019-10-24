@@ -8,16 +8,19 @@ class ErrorBoundary extends React.Component {
       ReactGA.initialize('UA-143383035-1');  
     }
   
-    componentDidCatch(error, info) {
+    componentDidCatch(error, info) {      
+      let errorTitle = error.toString();
+      let errorTotal = errorTitle +": "+ JSON.stringify(info);
+
       ReactGA.exception({
-        description: error.toString(),
+        description: errorTotal,
         fatal: true
       });
 
       ReactGA.event({
         category: 'error',
-        action: error.toString(),
-        label: error.toString()
+        action: errorTotal,
+        label: errorTitle
       });
     }
   

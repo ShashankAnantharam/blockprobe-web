@@ -486,7 +486,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.onSetSelectedBlockSidebarOpen(true);
     }
 
-    componentDidMount(){      
+    componentDidMount(){    
         firebase.firestore().collection("public").doc(this.props.bId)
         .collection("aggBlocks").get().then((snapshot) => {
             this.createBlockprobe(snapshot);
