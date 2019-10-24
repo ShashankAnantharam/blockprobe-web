@@ -63,8 +63,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         ReactGA.initialize('UA-143383035-1');   
         ReactGA.pageview('/viewBlockprobePublic');
 
-        if(this.props.match.params.viewType && 
-            this.props.match.params.viewType == 'graph'){
+        if(this.props.visulationType == 'graph'){
                 this.state.selectedVisualisation = 'graph';
         }
 
@@ -473,7 +472,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         ReactGA.event({
             category: 'public_view',
             action: 'View blockprobe publicly',
-            label: this.props.match.params.bId
+            label: this.props.bId
           });
 
         // console.log(finalBlockList);
@@ -488,7 +487,7 @@ class ViewBlockprobePublicComponent extends React.Component {
     }
 
     componentDidMount(){      
-        firebase.firestore().collection("public").doc(this.props.match.params.bId)
+        firebase.firestore().collection("public").doc(this.props.bId)
         .collection("aggBlocks").get().then((snapshot) => {
             this.createBlockprobe(snapshot);
             this.setState({
@@ -496,7 +495,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             })
         });
 
-        firebase.firestore().collection("public").doc(this.props.match.params.bId)
+        firebase.firestore().collection("public").doc(this.props.bId)
         .collection("images").get().then((snapshot) => {
             if(snapshot && !snapshot.empty){
                 this.getImages(snapshot);
