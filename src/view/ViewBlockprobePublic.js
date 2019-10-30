@@ -79,6 +79,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.createSummaryList = this.createSummaryList.bind(this);
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.setScrollToGraphList = this.setScrollToGraphList.bind(this);
+        this.getDataWrapper = this.getDataWrapper.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -475,32 +476,37 @@ class ViewBlockprobePublicComponent extends React.Component {
             label: this.props.bId
           });
 
-        // console.log(finalBlockList);
     }
 
     changeSelectedBlock = (block) =>{
-        // console.log(block);
         this.setState({
             selectedBlock:block
         }); 
         this.onSetSelectedBlockSidebarOpen(true);
     }
 
-    componentDidMount(){    
-        firebase.firestore().collection("public").doc(this.props.bId)
-        .collection("aggBlocks").get().then((snapshot) => {
-            this.createBlockprobe(snapshot);
+    async getDataWrapper(){
+        let getBlockprobe = firebase.firestore().collection("public").doc(this.props.bId)
+        .collection("aggBlocks").get();
+        let images = firebase.firestore().collection("public").doc(this.props.bId)
+        .collection("images").get();
+
+        return Promise.all([getBlockprobe, images]).then(results => {
+            const [blockprobeSnapshot, imagesSnapshot] = results;
+            
+            this.createBlockprobe(blockprobeSnapshot);
+            if(imagesSnapshot && !imagesSnapshot.empty){
+                this.getImages(imagesSnapshot);
+            }
             this.setState({
                 isPageLoading: false
-            })
+            })    
+            return null;   
         });
+    }
 
-        firebase.firestore().collection("public").doc(this.props.bId)
-        .collection("images").get().then((snapshot) => {
-            if(snapshot && !snapshot.empty){
-                this.getImages(snapshot);
-            }
-        });
+    componentDidMount(){         
+        this.getDataWrapper();
     }
 
     renderVisualisation(){
