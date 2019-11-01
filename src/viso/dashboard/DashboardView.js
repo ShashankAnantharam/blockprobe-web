@@ -38,7 +38,7 @@ class DashboardViewComponent extends React.Component {
                     null
                 }
                 
-                <div className="dashboard-section-heading graph-heading">Graph</div>
+                <div className="dashboard-section-heading graph-heading">Mindmap</div>
                 <Tabs>
                     <TabList>
                     <Tab>Overview</Tab>

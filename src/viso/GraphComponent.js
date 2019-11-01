@@ -726,7 +726,7 @@ class GraphComponent extends React.Component {
                                 {selectedNodesString.length>0?
                                     <span> Selections</span>
                                     :
-                                    <span>Select any entity from the mind-map below</span>
+                                    <span>Select any entity/topic</span>
                                 }                                                                
                                 <span>{selectedNodesString}</span>
                             </div> 
