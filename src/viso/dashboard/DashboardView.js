@@ -42,7 +42,6 @@ class DashboardViewComponent extends React.Component {
                 <Tabs>
                     <TabList>
                     <Tab>Overview</Tab>
-                    <Tab>Find Connections</Tab>
                     </TabList>
                 
                     <TabPanel>
@@ -52,15 +51,7 @@ class DashboardViewComponent extends React.Component {
                             imageMapping = {this.props.imageMapping}
                             setScrollToGraphList ={this.props.setScrollToGraphList}
                             multiSelectEntityList = {this.props.multiSelectEntityList}/>
-                    </TabPanel>
-                    <TabPanel>
-                        <FindConnectionsComponent blockTree={this.props.blockTree} 
-                            investigationGraph={this.props.investigationGraph}
-                            imageMapping = {this.props.imageMapping}
-                            selectBlock={this.props.selectBlock}
-                            setScrollToGraphList ={this.props.setScrollToGraphList}
-                        />
-                    </TabPanel>
+                    </TabPanel>                  
                 </Tabs>
 
                 {this.props.timeline && this.props.timeline.length > 0?
@@ -82,3 +73,14 @@ class DashboardViewComponent extends React.Component {
     }
 }
 export default DashboardViewComponent;
+
+/*
+ <TabPanel>
+                        <FindConnectionsComponent blockTree={this.props.blockTree} 
+                            investigationGraph={this.props.investigationGraph}
+                            imageMapping = {this.props.imageMapping}
+                            selectBlock={this.props.selectBlock}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
+                        />
+                    </TabPanel>
+                    */

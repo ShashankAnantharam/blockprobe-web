@@ -694,7 +694,7 @@ class GraphComponent extends React.Component {
                 {this.props.isPublic == undefined || !this.props.isPublic?
                     <div className='filter-container'>                
                     
-                        <div className="dropdown-container">
+                        <div className="dropdown-container only-large-screen">
                             <MultiSelectReact 
                             options={this.props.multiSelectEntityList}
                             optionClicked={this.entityClicked.bind(this)}
@@ -707,7 +707,7 @@ class GraphComponent extends React.Component {
 
                     </div>
                     :
-                    <div className="dropdown-container" style={{marginBottom: '1em', marginTop:'0'}}>
+                    <div className="dropdown-container only-large-screen" style={{marginBottom: '1em', marginTop:'0'}}>
                         <MultiSelectReact 
                         options={this.props.multiSelectEntityList}
                         optionClicked={this.entityClicked.bind(this)}
@@ -722,8 +722,12 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.graphRef}>
-                                <span>Graph selections</span>  
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.graphRef}>                                
+                                {selectedNodesString.length>0?
+                                    <span> Selections</span>
+                                    :
+                                    <span>Select any entity from the mind-map below</span>
+                                }                                                                
                                 <span>{selectedNodesString}</span>
                             </div> 
                             <Expand 

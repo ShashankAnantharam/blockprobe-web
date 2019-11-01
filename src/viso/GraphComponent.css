@@ -109,8 +109,7 @@
 }
 
 @media only screen and (min-width: 601px) {
-    
-
+        
     .graph-container{
         display:flex; 
         flex-direction:row;
@@ -158,6 +157,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+
+    .only-large-screen{
+        display: none;
+    }
 
     .graph-container{
         margin-left:20px;
