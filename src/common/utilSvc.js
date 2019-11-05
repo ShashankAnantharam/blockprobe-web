@@ -121,3 +121,111 @@ export const getShortenedListOfImages = (imageMapping) => {
     return allImages;
 }
 
+export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
+    a = a.trim();        
+    b = b.trim();
+
+    var aIndex = 0, bIndex = 0, isAExist = false, isBExist = false;
+    if(a.length>0 && a.charAt(0)==='#'){
+        var num = '';
+        for(var i=1; i<a.length; i++){
+            
+            if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                num += a.charAt(i);
+            }
+            else{
+                if(num.length > 0){
+                    aIndex = parseFloat(num);
+                    isAExist = true;
+                }
+            }
+        }
+        if(num.length > 0){
+            aIndex = parseFloat(num);
+            isAExist = true;
+        }    
+    }
+
+    if(b.length>0 && b.charAt(0)==='#'){
+        var num = '';
+        for(var i=1; i<b.length; i++){
+            
+            if((!isNaN(parseInt(b.charAt(i), 10))) || b[i]==='.'){
+                num += b.charAt(i);
+            }
+            else{
+                if(num.length > 0){
+                    bIndex = parseFloat(num);
+                    isBExist = true;
+                }
+            }
+        }    
+        if(num.length > 0){
+            bIndex = parseFloat(num);
+            isBExist = true;
+        }
+    
+    }
+
+    // A comes after b
+    if(!isAExist && isBExist)
+        return 1;
+
+    // A comes before b
+    if(isAExist && !isBExist)
+        return -1;
+
+    // A comes before b
+    if(isAExist && isBExist){
+        if(aIndex > bIndex)
+            return 1;
+        return -1;
+    }
+
+    if(a_ts > b_ts)
+        return 1;
+    else if(b_ts > a_ts)
+        return -1;
+
+    if(a > b)
+        return 1;
+
+    return -1;
+}
+
+export const sortTimeline =(timelineList)=>{
+    timelineList.sort(function(b,a){
+    if(a.blockDate.year!==b.blockDate.year)
+        return a.blockDate.year - b.blockDate.year;        
+
+    if(a.blockDate.month!==b.blockDate.month)
+        return a.blockDate.month - b.blockDate.month;        
+
+    if(a.blockDate.date!==b.blockDate.date)
+        return a.blockDate.date - b.blockDate.date;
+
+     if(b.blockTime == null &&  a.blockTime!=null){
+         return 1;
+         //a is greater than or equal to if b has no time
+     }
+     else if(a.blockTime == null &&  b.blockTime!=null){
+        return -1;
+        //a is greater than or equal to if b has no time
+    }
+     
+     if(a.blockTime!=null && b.blockTime!=null){
+         if(a.blockTime.hours!==b.blockTime.hours){
+             return a.blockTime.hours - b.blockTime.hours;
+         }
+         if(a.blockTime.minutes!==b.blockTime.minutes){
+            return a.blockTime.minutes - b.blockTime.minutes;
+        }
+     }
+
+     //a is not null and b is not null OR both are fully equal
+     return sortBlocksCommon(a.title,b.title,a.timestamp,b.timestamp);
+    });
+
+    timelineList.reverse();
+}
+

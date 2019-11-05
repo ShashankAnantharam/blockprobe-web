@@ -439,37 +439,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
     }
 
-    sortTimeline(timelineList){
-        timelineList.sort(function(b,a){
-            if(a.blockDate.year!==b.blockDate.year)
-            return a.blockDate.year - b.blockDate.year;        
-
-        if(a.blockDate.month!==b.blockDate.month)
-            return a.blockDate.month - b.blockDate.month;        
-
-        if(a.blockDate.date!==b.blockDate.date)
-            return a.blockDate.date - b.blockDate.date;
-         
-         if(b.blockTime == null){
-             return 1;
-             //a is greater than or equal to if b has no time
-         }
-         
-         if(a.blockTime!==null){
-             if(a.blockTime.hours!==b.blockTime.hours){
-                 return a.blockTime.hours - b.blockTime.hours;
-             }
-             if(a.blockTime.minutes!==b.blockTime.minutes){
-                return a.blockTime.minutes - b.blockTime.minutes;
-            }
-         }
-
-         //a is null but b is not null OR both are fully equal, a is less than equal to b
-         return -1;
-        });
-        timelineList.reverse();
-    }
-
     addEdge(graph, block, entity_i, entity_j){
 
         // edge from i to j
@@ -703,7 +672,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 finalTimelineList.push(this.state.blockTree[id]);
             }
         });
-        this.sortTimeline(finalTimelineList);
+        Utils.sortTimeline(finalTimelineList);
         this.setState({
             timeline:[...finalTimelineList],
             modifyRef: modifyRef,
