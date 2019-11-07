@@ -278,7 +278,7 @@ class UserBlocksComponent extends React.Component {
 
     }
 
-    addDraftBlocksInBulk(blocks){
+     addDraftBlocksInBulk(blocks){
 
         var allEntitiesMap = {};
         var allEntities = [];
@@ -327,9 +327,10 @@ class UserBlocksComponent extends React.Component {
         .doc("entityPane");
         var entities = block.entities;
         
+        let scope = this;
         if(entities){
 
-            firebase.firestore().runTransaction(function(transaction){
+            let transc = firebase.firestore().runTransaction(function(transaction){
                 return transaction.get(entityPaneRef).then(function(doc){
 
                     //populate map
@@ -360,8 +361,8 @@ class UserBlocksComponent extends React.Component {
                          transaction.update(entityPaneRef, {entities: entityArr});
                     else
                         entityPaneRef.set({entities: entityArr});
-
-                })
+                    scope.initEntityPane();
+                });
             });
         }
     }
