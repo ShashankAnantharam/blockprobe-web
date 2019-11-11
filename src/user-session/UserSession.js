@@ -103,6 +103,7 @@ class UserSession extends React.Component {
         this.loggedOutView = this.loggedOutView.bind(this);
         this.clickLoginOption = this.clickLoginOption.bind(this);
         this.getBlockprobes = this.getBlockprobes.bind(this);
+        this.getBlockprobesShort = this.getBlockprobesShort.bind(this);        
         this.selectBlockprobe = this.selectBlockprobe.bind(this);
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
@@ -215,8 +216,27 @@ class UserSession extends React.Component {
                                 });
                         }
                     }
-                );               
+                );                
+                //this.getBlockprobesShort();
         }
+      }
+
+      getBlockprobesShort(){         
+        //Get short blockprobes
+        firebase.firestore().collection("Users").doc(this.state.userId)
+                                    .collection("shortBlockprobes").get().then((snapshot) => {
+
+                                let allBlockprobes = [];
+                                snapshot.forEach((doc) => {
+                                        let data = doc.data();
+                                        if(data.blockprobe){
+                                            for(let i=0; i<data.blockprobe.length; i++){
+                                                allBlockprobes.push(data.blockprobe[i]);
+                                            }
+                                        }
+                                    }); 
+                                // console.log(allBlockprobes);                                                                        
+                                });                               
       }
 
       selectBlockprobe(blockprobeId, buildStory){
