@@ -102,6 +102,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.getParas = this.getParas.bind(this);
         this.formatParas = this.formatParas.bind(this);
         this.isValidNlpEntity = this.isValidNlpEntity.bind(this);
+        this.isDate = this.isDate.bind(this);
         this.isRepeatedNlpEntity = this.isRepeatedNlpEntity.bind(this);
         this.saveDraftInBulk = this.saveDraftInBulk.bind(this);
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
@@ -218,6 +219,18 @@ class BulkDraftBlockComponent extends React.Component {
          return false;
      }
 
+     isDate(nlpEntity){
+        if(nlpEntity.type != 'DATE')
+            return false;
+
+        if(nlpEntity.metadata){
+            let date = nlpEntity.metadata;
+            if(!('day' in date) || !('month' in date) || !('year' in date))
+                return false;  
+        }
+        return true;
+     }
+
      isRepeatedNlpEntity(nlpItem){
         var entityPane = this.props.entityPane;
         var nlpKey = nlpItem.name;
@@ -244,6 +257,7 @@ class BulkDraftBlockComponent extends React.Component {
         var concatSummaryText = '';
         var nlpEntities = [];
         var nlpCommonNounEntities = [];
+        let nlpDates = [];
         for(var i=0;i<bulkBlocks.length;i++){
             concatSummaryText += bulkBlocks[i].body;
             concatSummaryText += '.';
@@ -251,7 +265,7 @@ class BulkDraftBlockComponent extends React.Component {
                 var entitiesFunc = this.functions.httpsCallable('entityExtraction');
                 var result = await entitiesFunc({text: concatSummaryText});   
                 if(result.data){
-                    //console.log(result.data);
+                    // console.log(result.data);
                     for(var j=0;j<result.data.length;j++){
                         result.data[j].name = this.makeEntityUppercase(result.data[j].name);
                         if(this.isValidNlpEntity(result.data[j],'PROPER') &&  !this.isRepeatedNlpEntity(result.data[j])){
@@ -259,6 +273,9 @@ class BulkDraftBlockComponent extends React.Component {
                         }
                         if(this.isValidNlpEntity(result.data[j],'COMMON') &&  !this.isRepeatedNlpEntity(result.data[j])){
                             nlpCommonNounEntities.push(result.data[j]);
+                        }
+                        if(this.isDate(result.data[j])){
+                            nlpDates.push(result.data[j]);
                         }
                     }
                 }
@@ -272,6 +289,7 @@ class BulkDraftBlockComponent extends React.Component {
 
          // console.log(nlpEntities);
          // console.log(nlpCommonNounEntities);
+         // console.log(nlpDates);
         
          for(var i=0;i<bulkBlocks.length;i++){
              var newDraftBlock = {
@@ -327,6 +345,18 @@ class BulkDraftBlockComponent extends React.Component {
                 newDraftBlock.entities = result;
             }
 
+            for(let j=0; j<nlpDates.length; j++){
+                let key = nlpDates[j].name;
+                if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
+                    let blockDate = {
+                        date: Number(nlpDates[j].metadata.day),
+                        month: Number(nlpDates[j].metadata.month)-1,
+                        year: Number(nlpDates[j].metadata.year)
+                    }
+                    newDraftBlock['blockDate'] = blockDate;
+                    break;
+                }
+            }
              
              
              draftBlocks.push(newDraftBlock);             
