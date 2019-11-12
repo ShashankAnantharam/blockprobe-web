@@ -43,6 +43,7 @@ class DraftBlockComponent extends React.Component {
         //props:draftBlock, bpId, uId, entityPane, draftBlockTooltip, finishTooltip, bpDetails
         this.state={
             newBlock: {},
+            canSubmit: false,
             newEntity: '',
             multiSelectEntityList: [],
             addDate: false,
@@ -572,12 +573,15 @@ class DraftBlockComponent extends React.Component {
                         onClick={this.saveDraftBlock}>
                             <div>Save</div>
                     </button>
-                    
-                    <button 
-                        className="submitBlockButton" 
-                        onClick={this.submitDraftBlock}>
-                            <div>Submit</div>
-                    </button>
+                    {this.state.canSubmit?
+                        <button 
+                            className="submitBlockButton" 
+                            onClick={this.submitDraftBlock}>
+                                <div>Submit</div>
+                        </button>
+                        :
+                        null
+                    }
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
@@ -772,12 +776,15 @@ class DraftBlockComponent extends React.Component {
                         onClick={this.saveDraftBlock}>
                             <div>Save</div>
                     </button>
-                    
-                    <button 
-                        className="submitBlockButton" 
-                        onClick={this.submitDraftBlock}>
-                            <div>Submit</div>
-                    </button>
+                    {this.state.canSubmit?
+                        <button 
+                            className="submitBlockButton" 
+                            onClick={this.submitDraftBlock}>
+                                <div>Submit</div>
+                        </button>
+                        :
+                        null
+                    }
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
