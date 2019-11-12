@@ -12,6 +12,7 @@ import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
 import ImagePaneView from "../view/ImagePane/ImagePane";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import Joyride from 'react-joyride';
 
@@ -827,81 +828,107 @@ class UserBlocksComponent extends React.Component {
             <div>
                      
                 {this.renderBlockOptions()}                              
+
+                <Tabs>
+                    <TabList>
+                    <Tab>DRAFT</Tab>
+
+                    {Object.keys(this.state.successBlocks).length>0?
+                        <Tab>SUCCESSFUL</Tab>
+                        :
+                        null}
+
+                    {Object.keys(this.state.inReviewBlocks).length>0?
+                        <Tab>IN REVIEW</Tab>
+                            :
+                            null}
+
+                    {Object.keys(this.state.toReviewBlocks).length>0?
+                        <Tab>TO REVIEW</Tab>
+                            :
+                            null}                   
+                    </TabList>
+                
+                    <TabPanel>
+                    {Object.keys(this.state.draftBlocks).length>0?
+                        <div>
+                            <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '3em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                        }}
+                            steps={this.state.tooltipText.draftBlock}
+                            run = {this.state.showTooltip.draftBlock}                    
+                            /> 
+                            <div className="block-list-content draftBlocksList">
+                                <List>{draftBlocksListRender}</List>
+                            </div>
+                        </div>
+                        :
+                        null
+                        }
+                    </TabPanel> 
                     
-                {Object.keys(this.state.draftBlocks).length>0?
-                <div>
-                     <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(10,10,10, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
-                    steps={this.state.tooltipText.draftBlock}
-                    run = {this.state.showTooltip.draftBlock}                    
-                    /> 
-                    <h4 className="block-list-title">DRAFT</h4>
-                    <div className="block-list-content draftBlocksList">
-                        <List>{draftBlocksListRender}</List>
-                    </div>
-                </div>
-                :
-                null
-                }
-
-                {Object.keys(this.state.inReviewBlocks).length>0?
-                <div>
-                    <Joyride
-                styles={{
-                    options: {
-                      arrowColor: '#e3ffeb',
-                      beaconSize: '3em',
-                      primaryColor: '#05878B',
-                      backgroundColor: '#e3ffeb',
-                      overlayColor: 'rgba(10,10,10, 0.4)',
-                      width: 900,
-                      zIndex: 1000,
-                    }
-                  }}
-                    steps={this.state.tooltipText.commitBlock}
-                    run = {this.state.showTooltip.commitBlock}                    
-                    /> 
-                    <h4 className="block-list-title">IN REVIEW</h4>
-                    <div className="block-list-content inReviewBlockList">
-                        <List>{inReviewBlocksListRender}</List>
-                    </div>
-                </div>
-                :
-                null
-                }
-
-                {Object.keys(this.state.toReviewBlocks).length>0?
-                <div>
-                    <h4 className="block-list-title">TO REVIEW</h4>
-                    <div className="block-list-content">
-                        <List>{toReviewBlocksListRender}</List>
-                    </div>
-                </div>
-                :
-                null
-                }
-
-                {Object.keys(this.state.successBlocks).length>0?
-                <div>
-                    <h4 className="block-list-title">SUCCESSFUL</h4>
-                    <div className="block-list-content">
-                        <List>{successBlocksListRender}</List>
-                    </div>
-                </div>
-                :
-                null
-                }
-
+                    {Object.keys(this.state.successBlocks).length>0?
+                        <TabPanel>
+                            <div>
+                                <div className="block-list-content">
+                                    <List>{successBlocksListRender}</List>
+                                </div>
+                            </div>
+                        </TabPanel>
+                        :
+                        null
+                        }
+                                        
+                    {Object.keys(this.state.inReviewBlocks).length>0?
+                        <TabPanel>
+                            <div>
+                                <Joyride
+                            styles={{
+                                options: {
+                                arrowColor: '#e3ffeb',
+                                beaconSize: '3em',
+                                primaryColor: '#05878B',
+                                backgroundColor: '#e3ffeb',
+                                overlayColor: 'rgba(10,10,10, 0.4)',
+                                width: 900,
+                                zIndex: 1000,
+                                }
+                            }}
+                                steps={this.state.tooltipText.commitBlock}
+                                run = {this.state.showTooltip.commitBlock}                    
+                                /> 
+                                <div className="block-list-content inReviewBlockList">
+                                    <List>{inReviewBlocksListRender}</List>
+                                </div>
+                            </div>
+                        </TabPanel>
+                        :
+                        null
+                        }
+                                       
+                    {Object.keys(this.state.toReviewBlocks).length>0?
+                        <TabPanel>
+                            <div>
+                                <div className="block-list-content">
+                                    <List>{toReviewBlocksListRender}</List>
+                                </div>
+                            </div>
+                        </TabPanel>
+                        :
+                        null
+                        }
+                    
+                                    
+                </Tabs>
             </div>
         );
     }
