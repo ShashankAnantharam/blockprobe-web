@@ -266,6 +266,10 @@ class BulkDraftBlockComponent extends React.Component {
                 concatSummaryText = '';        
             }
         }
+
+        nlpEntities.sort(function(a, b){return b.salience - a.salience});
+        nlpCommonNounEntities.sort(function(a, b){return b.salience - a.salience});
+
          // console.log(nlpEntities);
          // console.log(nlpCommonNounEntities);
         
@@ -291,7 +295,7 @@ class BulkDraftBlockComponent extends React.Component {
                 } 
              }
 
-             for(var j=0; j<nlpEntities.length; j++){
+             for(var j=0; j<nlpEntities.length && newDraftBlock.entities.length<=3; j++){
                 var key = nlpEntities[j].name;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({
@@ -302,7 +306,7 @@ class BulkDraftBlockComponent extends React.Component {
              }
 
              //If entities are less, use common nouns also
-             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length<=4; j++){
+             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length<=1; j++){
                 var key = nlpCommonNounEntities[j].name;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({
