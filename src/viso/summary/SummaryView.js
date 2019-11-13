@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './SummaryView.css';
+import ReactGA from 'react-ga';
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import { isNullOrUndefined } from 'util';
@@ -28,6 +29,8 @@ class SummaryViewComponent extends React.Component {
       this.removeHashedIndex = this.removeHashedIndex.bind(this);    
       this.clickChevron = this.clickChevron.bind(this);
       this.clickSummaryBlock = this.clickSummaryBlock.bind(this);
+      
+      ReactGA.initialize('UA-143383035-1');
     }
 
     removeHashedIndex(a){
@@ -48,6 +51,11 @@ class SummaryViewComponent extends React.Component {
   clickSummaryBlock(){
     if(this.props.summaryBlocks && this.state.summBlockIdx < this.props.summaryBlocks.length
        && this.state.summBlockIdx >=0){
+        ReactGA.event({
+          category: 'select_summaryBlock',
+          action: 'Select ' + JSON.stringify(this.props.summaryBlocks[this.state.summBlockIdx]),
+          label: JSON.stringify(this.props.summaryBlocks[this.state.summBlockIdx])
+        });
         this.props.selectBlock(this.props.summaryBlocks[this.state.summBlockIdx]);
       }
   }

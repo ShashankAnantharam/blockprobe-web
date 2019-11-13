@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './TimelineComponent.css';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import Img from 'react-image';
+import ReactGA from 'react-ga';
 import 'react-vertical-timeline-component/style.min.css';
 
 class TimelineComponent extends React.Component {
@@ -11,6 +12,7 @@ class TimelineComponent extends React.Component {
       
       this.selectTimelineBlock = this.selectTimelineBlock.bind(this);
       this.removeHashedIndex = this.removeHashedIndex.bind(this);
+      ReactGA.initialize('UA-143383035-1');  
     }
 
     BlockEvidence(evidence, index){
@@ -84,6 +86,13 @@ class TimelineComponent extends React.Component {
 
      selectTimelineBlock(block){
         //console.log(block);
+
+        ReactGA.event({
+            category: 'select_timeline_block',
+            action: 'Select ' + JSON.stringify(block),
+            label: JSON.stringify(block)
+          });
+          
         this.props.selectBlock(block);
 
      }

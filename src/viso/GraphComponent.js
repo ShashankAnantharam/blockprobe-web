@@ -8,7 +8,7 @@ import { isNullOrUndefined } from 'util';
 import { thatReturnsThis } from 'fbjs/lib/emptyFunction';
 import Img from 'react-image';
 import IsImageUrl from 'is-image-url';
-
+import ReactGA from 'react-ga';
 import AmGraph from './amGraph/amGraph';
 import Expand from 'react-expand-animated';
 
@@ -87,6 +87,8 @@ class GraphComponent extends React.Component {
         this.resetScroll = this.resetScroll.bind(this);
 
         this.graphRef = React.createRef();
+
+        ReactGA.initialize('UA-143383035-1');  
     }
 
     resetScroll(){
@@ -124,6 +126,12 @@ class GraphComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [from, to]
         });
+
+        ReactGA.event({
+            category: 'select_edge',
+            action: 'Select Edge from ' + String(from) +  " to " + String(to),
+            label: String(from) + " to " + String(to)
+          });
 
         this.resetScroll();
     }
@@ -179,6 +187,12 @@ class GraphComponent extends React.Component {
             openSelectedBlocks: true,
             selectedNodes: [node]
         });
+
+        ReactGA.event({
+            category: 'select_node',
+            action: 'Select Node '+ String(node),
+            label: String(node)
+          });
 
         this.resetScroll();
     }
