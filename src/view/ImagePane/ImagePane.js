@@ -89,7 +89,10 @@ class ImagePaneView extends React.Component {
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
                 selectedEntity = entityList[i].label;
-                if(selectedEntity in this.props.imageMapping){
+                if(selectedEntity in this.state.changedEntities){
+                    url = this.state.changedEntities[selectedEntity];
+                }
+                else if(selectedEntity in this.props.imageMapping){
                     url = this.props.imageMapping[selectedEntity];
                 }
             }
@@ -106,7 +109,10 @@ class ImagePaneView extends React.Component {
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
                 selectedEntity = entityList[i].label;
-                if(selectedEntity in this.props.imageMapping){
+                if(selectedEntity in this.state.changedEntities){
+                    url = this.state.changedEntities[selectedEntity];
+                }
+                else if(selectedEntity in this.props.imageMapping){
                     url = this.props.imageMapping[selectedEntity];
                 }
             }
@@ -189,7 +195,7 @@ class ImagePaneView extends React.Component {
                     </div>     
 
                     {this.canSubmit()?
-                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm</button>
+                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Save</button>
                         :
                         null
                     }
