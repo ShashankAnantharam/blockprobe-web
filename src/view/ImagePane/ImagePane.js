@@ -16,7 +16,8 @@ class ImagePaneView extends React.Component {
 
             ],
             selectedEntityUrl: '',
-            selectedEntity: ''
+            selectedEntity: '',
+            changedEntities: {}
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
@@ -28,20 +29,22 @@ class ImagePaneView extends React.Component {
 
     async submitEntityImage(){
         if(this.state.selectedEntity.length > 0){
-            var newImage = {
-                entity: this.state.selectedEntity,
-                url: this.state.selectedEntityUrl,
-                timestamp: Date.now()
+            let tasks = [];
+            for(let key in this.state.changedEntities){
+                var newImage = {
+                    entity: key,
+                    url: this.state.changedEntities[key],
+                    timestamp: Date.now()
+                }
+
+                let taskResult = firebase.firestore().collection("Blockprobes").
+                    doc(this.props.bId).collection("images").
+                    doc(newImage.entity).set(newImage);
+                tasks.push(taskResult);                
             }
-
-            await firebase.firestore().collection("Blockprobes").
-            doc(this.props.bId).
-            collection("images").
-            doc(newImage.entity).set(newImage);
-
+            await Promise.all(tasks);
             this.props.refreshBlockprobe();
         }
-
     }
 
     generateEntityLists(){
@@ -131,8 +134,17 @@ class ImagePaneView extends React.Component {
 
         if(shouldUpdate){
             if(type=="entity"){
-                var selectedEntityUrl = event.target.value;
-                this.setState({selectedEntityUrl: selectedEntityUrl});
+                let selectedEntityUrl = event.target.value;
+                let changedEntities = this.state.changedEntities;
+                let selectedEntity = this.state.selectedEntity;
+                if(this.state.selectedEntity){
+                    changedEntities[selectedEntity] = selectedEntityUrl;
+                }
+
+                this.setState({
+                    selectedEntityUrl: selectedEntityUrl,
+                    changedEntities: changedEntities
+                });
             }
         }
            
@@ -177,7 +189,7 @@ class ImagePaneView extends React.Component {
                     </div>     
 
                     {this.canSubmit()?
-                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm image</button>
+                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Confirm</button>
                         :
                         null
                     }
