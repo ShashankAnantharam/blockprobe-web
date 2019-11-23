@@ -55,8 +55,10 @@ class ShareBlockprobeComponent extends React.Component {
       super(props);
       this.state = {
           urlPrefix: 'https://blockprobe-32644.firebaseapp.com/view/',
-          blocksUploaded: false,
-          imageUploaded: false,
+          blocksUploaded: true,
+          imageUploaded: true,
+          unpublishingBlocks: false,
+          unpublishingImages: false,
           adhocTooltip:{
             publicLink:{
                 flag: false,
@@ -86,7 +88,9 @@ class ShareBlockprobeComponent extends React.Component {
       this.renderShareScreen = this.renderShareScreen.bind(this);
       this.showLocalTooltip = this.showLocalTooltip.bind(this);
       this.unpublishStory = this.unpublishStory.bind(this);
-      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);      
+      this.publishStory = this.publishStory.bind(this);      
+      this.isAnyOptionClicked = this.isAnyOptionClicked.bind(this);
+      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);            
     }
 
     showLocalTooltip(type){
@@ -118,13 +122,31 @@ class ShareBlockprobeComponent extends React.Component {
         let url = this.state.urlPrefix + this.props.bpId;
         return (
             <div>
-                <div style={{display:'flex'}}>
-                        <button
-                        className="unpublishBlockprobeButton"
-                        onClick={this.unpublishStory}>
-                            <div>Unpublish story</div>
-                        </button>
-                </div>
+                {this.isAnyOptionClicked()?
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                            type="TailSpin"
+                            color="#00BFFF"
+                            height="50"	
+                            width="50"
+                        />   
+                    </div>
+                    :
+                    <div style={{display:'flex'}}>
+                            <button
+                            className="unpublishBlockprobeButton"
+                            onClick={this.unpublishStory}>
+                                <div>Unpublish story</div>
+                            </button>
+
+                            <button
+                            className="publishBlockprobeButton"
+                            onClick={this.publishStory}>
+                                <div>Publish story</div>
+                            </button>
+                    </div>
+                }               
+
                 <div className='share-section-heading'>
                     Public Link
                     <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
@@ -191,6 +213,10 @@ class ShareBlockprobeComponent extends React.Component {
     }
 
     componentDidMount(){
+        
+    }
+
+    publishStory(){
         var bTree = this.props.blockTree;
         let allBlocks = Utils.getShortenedListOfBlockTree(bTree);
         if(allBlocks.length>0){
@@ -240,11 +266,15 @@ class ShareBlockprobeComponent extends React.Component {
         else{
             this.setState({imageUploaded: true});
         }
-
-
     }
 
     unpublishStory(){
+            this.setState({
+                unpublishingBlocks: true,
+                unpublishingImages: true
+            });
+            let scope = this;
+
             firebase.firestore().collection("public").doc(this.props.bpId)
                 .collection("aggBlocks").get().then((snapshot) => {
                     snapshot.forEach((doc) => {
@@ -252,9 +282,10 @@ class ShareBlockprobeComponent extends React.Component {
                             .collection("aggBlocks").doc(doc.id).delete();
                     });        
                 }).then(
-                    this.setState({blocksUploaded: true})
+                    scope.setState({
+                        unpublishingBlocks: false
+                    })
                 );
-               
             firebase.firestore().collection("public").doc(this.props.bpId)
                 .collection("images").get().then((snapshot) => {
                     snapshot.forEach((doc) => {
@@ -263,8 +294,16 @@ class ShareBlockprobeComponent extends React.Component {
                     }); 
         
                 }).then(
-                    this.setState({imageUploaded: true})
+                    scope.setState({
+                        unpublishingImages: false
+                    })
                 );       
+    }
+
+    isAnyOptionClicked(){
+        if(this.state.unpublishingBlocks || this.state.unpublishingImages)
+            return true;
+        return false;
     }
 
     render(){

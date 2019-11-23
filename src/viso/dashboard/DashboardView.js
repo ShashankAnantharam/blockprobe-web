@@ -38,6 +38,13 @@ class DashboardViewComponent extends React.Component {
         return false;
     }
 
+    isBlockprobeEmpty(){
+        if(!this.isTimelineAvailable() && !this.isGraphAvailable() && !this.isSummaryBlocksAvailable()){
+            return true;
+        }
+        return false;
+    }
+
     render(){
         return (
             <div style={{paddingBottom:'15px'}}>
@@ -85,9 +92,15 @@ class DashboardViewComponent extends React.Component {
                         :
                         null
                 }
-          
-                
 
+                {this.isBlockprobeEmpty()?
+                    <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
+                        Visualizations not found
+                    </div>
+                    :
+                    null
+                }         
+                
             </div>
         );
     }

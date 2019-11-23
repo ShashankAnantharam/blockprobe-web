@@ -39,3 +39,16 @@
 .unpublishBlockprobeButton:hover{
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
+
+.publishBlockprobeButton{
+    background:rgb(12, 52, 231);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-top:0;
+    size:2.6em;
+    border:none;
+}
+
+.publishBlockprobeButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
