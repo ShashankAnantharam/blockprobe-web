@@ -26,3 +26,16 @@
     color: rgb(0, 76, 78);
     margin: 0 5px 0 5px;
 }
+
+.unpublishBlockprobeButton{
+    background:rgb(12, 52, 231);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-top:0;
+    size:2.6em;
+    border:none;
+}
+
+.unpublishBlockprobeButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}

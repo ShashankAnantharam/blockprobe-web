@@ -22,6 +22,7 @@ class VisualizeOptionsListComponent extends React.Component {
 
       this.state={
           tooltipText:{
+              shouldEnableMultipleContributors: false,
               dashboard:[
                   {
                     title: 'Click on \'Dashboard\' from the menu and visualise your work!',
@@ -97,15 +98,19 @@ class VisualizeOptionsListComponent extends React.Component {
                         <ListItemText primary="My Contributions"/>
                     </ListItem>
 
-                    <ListItem button 
-                    selected={this.props.selectedVisualisation == "manage_blockprobe"}
-                    onClick={() => { this.selectNewVisualisation("manage_blockprobe")}}
-                    >
-                    <Avatar>
-                        <BuildIcon />
-                    </Avatar>
-                        <ListItemText primary="Manage Blockprobe"/>
-                    </ListItem>
+                    {this.state.shouldEnableMultipleContributors?
+                        <ListItem button 
+                        selected={this.props.selectedVisualisation == "manage_blockprobe"}
+                        onClick={() => { this.selectNewVisualisation("manage_blockprobe")}}
+                        >
+                        <Avatar>
+                            <BuildIcon />
+                        </Avatar>
+                            <ListItemText primary="Manage Blockprobe"/>
+                        </ListItem>
+                        :
+                        null
+                    }                    
 
                     {this.props.permit == "CREATOR"?
                         <div className='shareOption'>

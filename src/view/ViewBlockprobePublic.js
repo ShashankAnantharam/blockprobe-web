@@ -123,6 +123,9 @@ class ViewBlockprobePublicComponent extends React.Component {
     traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef){
         var currBlock = this.state.blockTree[nodeId];
 
+        if(isNullOrUndefined(currBlock)){
+            return ;
+        }
         // console.log(nodeId);
 
         //Generic block

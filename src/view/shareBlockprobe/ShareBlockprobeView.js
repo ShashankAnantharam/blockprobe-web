@@ -85,7 +85,8 @@ class ShareBlockprobeComponent extends React.Component {
 
       this.renderShareScreen = this.renderShareScreen.bind(this);
       this.showLocalTooltip = this.showLocalTooltip.bind(this);
-      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
+      this.unpublishStory = this.unpublishStory.bind(this);
+      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);      
     }
 
     showLocalTooltip(type){
@@ -117,11 +118,18 @@ class ShareBlockprobeComponent extends React.Component {
         let url = this.state.urlPrefix + this.props.bpId;
         return (
             <div>
+                <div style={{display:'flex'}}>
+                        <button
+                        className="unpublishBlockprobeButton"
+                        onClick={this.unpublishStory}>
+                            <div>Unpublish story</div>
+                        </button>
+                </div>
                 <div className='share-section-heading'>
                     Public Link
                     <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
                             <Info style={{fontSize:'19px'}}/>
-                    </a>
+                    </a>                    
                     <Joyride
                                 styles={{
                                     options: {
@@ -234,6 +242,29 @@ class ShareBlockprobeComponent extends React.Component {
         }
 
 
+    }
+
+    unpublishStory(){
+            firebase.firestore().collection("public").doc(this.props.bpId)
+                .collection("aggBlocks").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bpId)
+                            .collection("aggBlocks").doc(doc.id).delete();
+                    });        
+                }).then(
+                    this.setState({blocksUploaded: true})
+                );
+               
+            firebase.firestore().collection("public").doc(this.props.bpId)
+                .collection("images").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bpId)
+                            .collection("images").doc(doc.id).delete();
+                    }); 
+        
+                }).then(
+                    this.setState({imageUploaded: true})
+                );       
     }
 
     render(){
