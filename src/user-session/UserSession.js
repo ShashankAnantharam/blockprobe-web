@@ -109,6 +109,7 @@ class UserSession extends React.Component {
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
         this.cueCardView = this.cueCardView.bind(this);
+        this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -221,11 +222,24 @@ class UserSession extends React.Component {
         }
       }
 
+      getLatestTimestamp(snapshot){
+        let timestampLatest = 0;
+        snapshot.forEach((doc) => { 
+            let data = doc.data().blockprobe;
+            for(let i=0; data && i<data.length; i++){
+                if(data[i].timestamp)
+                    timestampLatest = Math.max(timestampLatest, data[i].timestamp);
+            }
+        }); 
+        return timestampLatest;
+      }
+
       getBlockprobesShort(){         
         //Get short blockprobes
         firebase.firestore().collection("Users").doc(this.state.userId)
                                     .collection("shortBlockprobes").get().then((snapshot) => {
 
+                                let latestTs = this.getLatestTimestamp(snapshot);                                 
                                 let allBlockprobes = [];
                                 snapshot.forEach((doc) => {
                                         let data = doc.data();
@@ -236,7 +250,7 @@ class UserSession extends React.Component {
                                         }
                                     }); 
                                 // console.log(allBlockprobes);                                                                        
-                                });                               
+                                });                                               
       }
 
       selectBlockprobe(blockprobeId, buildStory){
