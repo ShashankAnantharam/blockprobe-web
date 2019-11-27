@@ -104,7 +104,8 @@ class UserSession extends React.Component {
         this.clickLoginOption = this.clickLoginOption.bind(this);
         this.getBlockprobes = this.getBlockprobes.bind(this);
         this.getBlockprobesShort = this.getBlockprobesShort.bind(this);
-        this.getNewBlockprobes = this.getNewBlockprobes.bind(this);
+        this.getNewBlockprobesTillThisSession = this.getNewBlockprobesTillThisSession.bind(this);
+        this.listenToBlockprobesDuringSession = this.listenToBlockprobesDuringSession.bind(this);
         this.selectBlockprobe = this.selectBlockprobe.bind(this);
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
@@ -235,17 +236,31 @@ class UserSession extends React.Component {
         return timestampLatest;
       }
 
-      getNewBlockprobes(latestTimestamp){
+      listenToBlockprobesDuringSession(latestTimestamp){
+            firebase.firestore().collection("Users").doc(this.state.userId)
+            .collection("blockprobes").where("timestamp", ">", latestTimestamp).orderBy("timestamp").onSnapshot(
+                querySnapshot => {
+                    querySnapshot.docChanges().forEach(change => {
+                        if (change.type === 'added') {
+                            console.log('New block: ', change.doc.data().timestamp);
+                        }
+                    }); 
+                });
+      }
+
+     getNewBlockprobesTillThisSession(latestTimestamp){
+
+        let currTime = Date.now();
+        //Get short blockprobes
         firebase.firestore().collection("Users").doc(this.state.userId)
-        .collection("blockprobes").where("timestamp", ">", 0).where("timestamp", "<", Date.now()).orderBy("timestamp").onSnapshot(
-            querySnapshot => {
-                querySnapshot.docChanges().forEach(change => {
-                    if (change.type === 'added') {
-                        console.log('New block: ', change.doc.data().timestamp);
-                      }
-                }); 
-            });
-        }
+        .collection("blockprobes").where("timestamp", ">", latestTimestamp).where("timestamp", "<=", currTime).
+        orderBy("timestamp").get().then((snapshot) => {
+                                
+            console.log(snapshot);  
+            
+            this.listenToBlockprobesDuringSession(currTime);
+        });          
+    }
 
       getBlockprobesShort(){         
         //Get short blockprobes
@@ -262,7 +277,7 @@ class UserSession extends React.Component {
                                             }
                                         }
                                     });
-                                this.getNewBlockprobes(latestTs);
+                                this.getNewBlockprobesTillThisSession(latestTs);
                                 // console.log(allBlockprobes);                                                                        
                                 });                                                      
       }
