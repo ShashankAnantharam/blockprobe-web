@@ -106,6 +106,7 @@ class UserSession extends React.Component {
         this.getBlockprobesShort = this.getBlockprobesShort.bind(this);
         this.getNewBlockprobesTillThisSession = this.getNewBlockprobesTillThisSession.bind(this);
         this.listenToBlockprobesDuringSession = this.listenToBlockprobesDuringSession.bind(this);
+        this.updateShortenedBlockprobesListToDb = this.updateShortenedBlockprobesListToDb.bind(this);
         this.selectBlockprobe = this.selectBlockprobe.bind(this);
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
@@ -146,13 +147,13 @@ class UserSession extends React.Component {
       addBlockprobeToList(doc){
         var blockprobeDic = this.state.blockprobes;
         var newBlockprobe = {
-            id: doc.data().id,
-            title: doc.data().title,
-            summary: doc.data().summary,
-            timestamp: doc.data().timestamp,
-            isActive: doc.data().isActive,
-            active: doc.data().active,
-            permit: doc.data().permit
+            id: doc.id,
+            title: doc.title,
+            summary: doc.summary,
+            timestamp: doc.timestamp,
+            isActive: doc.isActive,
+            active: doc.active,
+            permit: doc.permit
         };
         blockprobeDic[doc.id]=newBlockprobe;
         this.setState({
@@ -180,7 +181,7 @@ class UserSession extends React.Component {
             this.setState({areBlockprobesLoading: true});
 
             var arr= [];
-
+                /*
                 firebase.firestore().collection("Users").doc(this.state.userId)
                 .collection("blockprobes").onSnapshot(
                     querySnapshot => {
@@ -219,8 +220,9 @@ class UserSession extends React.Component {
                                 });
                         }
                     }
-                );                
-                //this.getBlockprobesShort();
+                );  
+                */              
+                this.getBlockprobesShort();
         }
       }
 
@@ -236,12 +238,35 @@ class UserSession extends React.Component {
         return timestampLatest;
       }
 
+      updateShortenedBlockprobesListToDb(){
+        let allBlockprobes = Utils.getShortenedListOfBlockprobes(this.state.blockprobes);
+        if(allBlockprobes &&  allBlockprobes.length>0){
+            firebase.firestore().collection("Users").doc(this.state.userId)
+                    .collection("shortBlockprobes").get().then((snapshot) => {
+                    
+                snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("Users").doc(this.state.userId)
+                        .collection("shortBlockprobes").doc(doc.id).delete();
+                    });
+                    
+                for(var i=0; i<allBlockprobes.length; i++){
+                    firebase.firestore().collection("Users").doc(this.state.userId)
+                    .collection("shortBlockprobes").doc(String(i)).set(allBlockprobes[i]);        
+                }       
+                });
+        }
+      }
+
       listenToBlockprobesDuringSession(latestTimestamp){
             firebase.firestore().collection("Users").doc(this.state.userId)
             .collection("blockprobes").where("timestamp", ">", latestTimestamp).orderBy("timestamp").onSnapshot(
                 querySnapshot => {
                     querySnapshot.docChanges().forEach(change => {
                         if (change.type === 'added') {
+                            let data = change.doc.data();
+                            if(data){
+                                this.addBlockprobeToList(data);
+                            }
                             console.log('New block: ', change.doc.data().timestamp);
                         }
                     }); 
@@ -257,7 +282,17 @@ class UserSession extends React.Component {
         orderBy("timestamp").get().then((snapshot) => {
                                 
             console.log(snapshot);  
-            
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                if(data){
+                    this.addBlockprobeToList(data);
+                }
+            });
+
+            this.updateShortenedBlockprobesListToDb();
+            this.setState({
+                areBlockprobesLoading: false
+            });
             this.listenToBlockprobesDuringSession(currTime);
         });          
     }
@@ -274,11 +309,13 @@ class UserSession extends React.Component {
                                         if(data.blockprobe){
                                             for(let i=0; i<data.blockprobe.length; i++){
                                                 allBlockprobes.push(data.blockprobe[i]);
+                                                this.addBlockprobeToList(data.blockprobe[i]);
                                             }
                                         }
                                     });
                                 this.getNewBlockprobesTillThisSession(latestTs);
-                                // console.log(allBlockprobes);                                                                        
+                                
+                                console.log(allBlockprobes);                                                                        
                                 });                                                      
       }
 
