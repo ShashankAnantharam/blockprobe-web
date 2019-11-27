@@ -178,50 +178,7 @@ class UserSession extends React.Component {
 
       getBlockprobes(){
         if(this.state.isUserSignedIn && (this.state.selectedBlockprobeId == '')){
-            this.setState({areBlockprobesLoading: true});
-
-            var arr= [];
-                /*
-                firebase.firestore().collection("Users").doc(this.state.userId)
-                .collection("blockprobes").onSnapshot(
-                    querySnapshot => {
-                        this.setState({
-                            areBlockprobesLoading: false
-                        });
-                        querySnapshot.docChanges().forEach(change => {
-                            if (change.type === 'added') {
-                                //console.log('New block: ', change.doc.data());
-                                this.addBlockprobeToList(change.doc);
-                              }
-                              if (change.type === 'modified') {
-                                //console.log('Modified block: ', change.doc.data());
-                                this.addBlockprobeToList(change.doc);
-                              }
-                              if (change.type === 'removed') {
-                                //console.log('Removed block: ', change.doc.data());
-                                this.removeBlockprobeFromList(change.doc);
-                              }
-                        });
-
-                        let allBlockprobes = Utils.getShortenedListOfBlockprobes(this.state.blockprobes);
-                        if(allBlockprobes &&  allBlockprobes.length>0){
-                            firebase.firestore().collection("Users").doc(this.state.userId)
-                                    .collection("shortBlockprobes").get().then((snapshot) => {
-                                    
-                                snapshot.forEach((doc) => {
-                                        var ref = firebase.firestore().collection("Users").doc(this.state.userId)
-                                        .collection("shortBlockprobes").doc(doc.id).delete();
-                                    });
-                                    
-                                for(var i=0; i<allBlockprobes.length; i++){
-                                    firebase.firestore().collection("Users").doc(this.state.userId)
-                                    .collection("shortBlockprobes").doc(String(i)).set(allBlockprobes[i]);        
-                                }       
-                                });
-                        }
-                    }
-                );  
-                */              
+            this.setState({areBlockprobesLoading: true});                       
                 this.getBlockprobesShort();
         }
       }
@@ -267,7 +224,7 @@ class UserSession extends React.Component {
                             if(data){
                                 this.addBlockprobeToList(data);
                             }
-                            console.log('New block: ', change.doc.data().timestamp);
+                            //console.log('New block: ', change.doc.data().timestamp);
                         }
                     }); 
                 });
@@ -281,7 +238,6 @@ class UserSession extends React.Component {
         .collection("blockprobes").where("timestamp", ">", latestTimestamp).where("timestamp", "<=", currTime).
         orderBy("timestamp").get().then((snapshot) => {
                                 
-            console.log(snapshot);  
             snapshot.forEach((doc) => {
                 let data = doc.data();
                 if(data){
@@ -313,9 +269,7 @@ class UserSession extends React.Component {
                                             }
                                         }
                                     });
-                                this.getNewBlockprobesTillThisSession(latestTs);
-                                
-                                console.log(allBlockprobes);                                                                        
+                                this.getNewBlockprobesTillThisSession(latestTs);                                
                                 });                                                      
       }
 
