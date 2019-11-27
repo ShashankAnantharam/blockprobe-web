@@ -237,17 +237,11 @@ class UserSession extends React.Component {
 
       getNewBlockprobes(latestTimestamp){
         firebase.firestore().collection("Users").doc(this.state.userId)
-        .collection("blockprobes").where("timestamp", ">", latestTimestamp).onSnapshot(
+        .collection("blockprobes").where("timestamp", ">", 0).where("timestamp", "<", Date.now()).orderBy("timestamp").onSnapshot(
             querySnapshot => {
                 querySnapshot.docChanges().forEach(change => {
                     if (change.type === 'added') {
-                        console.log('New block: ', change.doc.data());
-                      }
-                      if (change.type === 'modified') {
-                        console.log('Modified block: ', change.doc.data());
-                      }
-                      if (change.type === 'removed') {
-                        console.log('Removed block: ', change.doc.data());
+                        console.log('New block: ', change.doc.data().timestamp);
                       }
                 }); 
             });
