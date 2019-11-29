@@ -54,7 +54,7 @@ class ShareBlockprobeComponent extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-          urlPrefix: 'https://blockprobe-32644.firebaseapp.com/view/',
+          urlPrefix: 'https://blprobe.com/view/',
           blocksUploaded: true,
           imageUploaded: true,
           unpublishingBlocks: false,

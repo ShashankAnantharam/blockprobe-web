@@ -513,10 +513,10 @@ class UserSession extends React.Component {
                                     {this.cueCardView(this.state.landingPage.teacher.logo, this.state.landingPage.teacher.text)}
                                 </div>                        
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                    For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
+                                    For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blprobe.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
                                 </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                    A brief history of Otto von Bismarck has been built using the tool. You can view it <a href='https://blockprobe-32644.firebaseapp.com/view/09f190bf8d3e2f71ea2463c8ce98e68639080fd3ce3d3021fb04d17e62215ead' target='blank'>here</a>.
+                                    A brief history of Otto von Bismarck has been built using the tool. You can view it <a href='https://blprobe.com/view/09f190bf8d3e2f71ea2463c8ce98e68639080fd3ce3d3021fb04d17e62215ead' target='blank'>here</a>.
                                 </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
                                     To use blockprobe, login with your mobile and get started!
