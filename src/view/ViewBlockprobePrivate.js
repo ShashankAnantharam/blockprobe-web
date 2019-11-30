@@ -136,6 +136,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.startShowingShareStoryTooltip = this.startShowingShareStoryTooltip.bind(this);
         this.finishShareStoryTooltip = this.finishShareStoryTooltip.bind(this);
         this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
+        this.writeShortBlocktree = this.writeShortBlocktree.bind(this);   
+        this.getBlockTree = this.getBlockTree.bind(this);   
+        this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
+        this.getLatestBlocks = this.getLatestBlocks.bind(this);
+        this.buildBlocktree = this.buildBlocktree.bind(this);   
     }
 
     finishBuildingStoryTooltip(){
@@ -303,8 +308,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         // console.log(this.state.menuBarOpen);
     }
 
-    addBlocksToProbe(doc){      
-        var block  = doc.data();
+    addBlocksToProbe(block){      
 
         var tempState = this.state.blockTree;
         
@@ -647,7 +651,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
     createBlockprobe(snapshot){
-        snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
+        snapshot.forEach((singleBlock) => ( this.addBlocksToProbe(singleBlock)));        
         var timelineList = [];
         var timelineBlockStatus = {};
         var blockList = [];
@@ -690,7 +694,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.createInvestigationGraph(finalBlockList);
         this.createSummaryList(finalBlockList);
 
-        // console.log(finalBlockList);
+        // console.log(finalBlockList);               
+    }
+
+    writeShortBlocktree(){
         let allBlocks = Utils.getShortenedListOfBlockTree(this.state.blockTree);
         if(allBlocks &&  allBlocks.length>0){
             firebase.firestore().collection("Blockprobes").doc(this.props.bId).
@@ -707,7 +714,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 }       
                 });
         }
-        
     }
 
     changeSelectedBlock = (block) =>{
@@ -735,15 +741,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             isloading: loadingState
         });
 
-        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-        .collection("fullBlocks").get().then((snapshot) => {
-            this.createBlockprobe(snapshot);
-            var loadingState = this.state.isloading;
-            loadingState.blockprobe = false;
-            this.setState({
-                isloading: loadingState
-            });
-        });
+        this.getBlockTree();
 
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("images").get().then((snapshot) => {
@@ -753,6 +751,64 @@ class ViewBlockprobePrivateComponent extends React.Component {
             this.setState({
                 isloading: loadingState
             });
+        });
+    }
+
+    getLatestTimestamp(snapshot){
+        let timestampLatest = 0;
+        snapshot.forEach((doc) => { 
+            let data = doc.data().blocks;
+            for(let i=0; data && i<data.length; i++){
+                if(data[i].timestamp)
+                    timestampLatest = Math.max(timestampLatest, data[i].timestamp);
+            }
+        }); 
+        return timestampLatest;
+      }
+
+      async getLatestBlocks(latestTimestamp, blockList){
+
+        let currTs = Date.now();
+        let latestBlocks = await firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("fullBlocks").where("timestamp",">",latestTimestamp)
+        .where("timestamp","<",currTs)
+        .orderBy("timestamp").get();
+        
+        if(latestBlocks){
+            latestBlocks.forEach((doc) => {
+                let block = doc.data();
+                blockList.push(block);
+            });
+        }
+      }
+
+      async buildBlocktree(snapshot){
+            let latestTime = this.getLatestTimestamp(snapshot);
+            let blockList = [];
+            snapshot.forEach((doc) => {
+                    let data =doc.data();
+                    for(let i=0; data && data.blocks && i<data.blocks.length;i++){
+                        blockList.push(data.blocks[i]);
+                    }
+
+                });
+            await this.getLatestBlocks(latestTime,blockList);                   
+            //console.log(blockList);
+
+            this.createBlockprobe(blockList);
+
+            this.writeShortBlocktree();
+            var loadingState = this.state.isloading;
+            loadingState.blockprobe = false;
+            this.setState({
+                isloading: loadingState
+            });           
+      }
+
+    getBlockTree(){
+        firebase.firestore().collection("Blockprobes").doc(this.props.bId).
+        collection("users").doc(this.state.uIdHash).collection("shortBlockprobe").get().then((snapshot) => {
+                this.buildBlocktree(snapshot);
         });
     }
 
@@ -773,15 +829,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             });
         });
 
-        firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-        .collection("fullBlocks").get().then((snapshot) => {
-            this.createBlockprobe(snapshot);
-            var loadingState = this.state.isloading;
-            loadingState.blockprobe = false;
-            this.setState({
-                isloading: loadingState
-            });
-        });
+        this.getBlockTree();        
 
         firebase.firestore().collection("Blockprobes").doc(this.props.bId)
         .collection("images").get().then((snapshot) => {
