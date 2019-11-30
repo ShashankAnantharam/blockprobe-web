@@ -113,6 +113,7 @@ class UserSession extends React.Component {
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
         this.cueCardView = this.cueCardView.bind(this);
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
+        this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -141,6 +142,12 @@ class UserSession extends React.Component {
       clickLoginOption(){
           this.setState({
               showLogin: true
+          });
+      }
+
+      returnToViewBlockprobes(){
+          this.setState({
+              selectedBlockprobeId: ''
           });
       }
 
@@ -423,8 +430,8 @@ class UserSession extends React.Component {
                         <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
                         <div className="spacer" />
                         <div className="toolbar__navigation-items">
-                            <ul>
-                                <li><a href="/">Home</a></li>
+                            <ul> 
+                                <li><a onClick={() => this.returnToViewBlockprobes()}>Home</a></li>
                                 <li className="userName" style={{color:'white'}}>{this.state.userId}</li>
                                 <li><a onClick={() => this.logout()}>Logout</a></li>
                             </ul>
