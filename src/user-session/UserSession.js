@@ -321,14 +321,15 @@ class UserSession extends React.Component {
         }
       }
 
-      logout(){
-        firebase.auth().signOut();
-        this.setState({
+      async logout(){
+        await firebase.auth().signOut();
+        await localStorage.setItem('isUserSignedIn',false);
+        await localStorage.removeItem('userId');
+        await localStorage.removeItem('providerId');
+        await this.setState({
             isUserSignedIn: false
-        });
-        localStorage.setItem('isUserSignedIn',false);
-        localStorage.removeItem('userId');
-        localStorage.removeItem('providerId');
+        });        
+        window.location.href = "/";
       }
 
       componentDidMount(){
