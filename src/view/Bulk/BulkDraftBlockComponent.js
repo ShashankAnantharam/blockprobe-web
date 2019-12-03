@@ -263,7 +263,18 @@ class BulkDraftBlockComponent extends React.Component {
             concatSummaryText += '.';
             if(i%10==9 || i==bulkBlocks.length-1){
                 var entitiesFunc = this.functions.httpsCallable('entityExtraction');
-                var result = await entitiesFunc({text: concatSummaryText});   
+                var result = {};
+                try{
+                    result = await entitiesFunc({text: concatSummaryText});
+                }
+                catch(e){
+                }
+                finally{
+                    result = {
+                        data: []
+                    };
+                }
+                   
                 if(result.data){
                     // console.log(result.data);
                     for(var j=0;j<result.data.length;j++){
