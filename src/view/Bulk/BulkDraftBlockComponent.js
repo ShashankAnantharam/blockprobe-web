@@ -268,11 +268,11 @@ class BulkDraftBlockComponent extends React.Component {
                     result = await entitiesFunc({text: concatSummaryText});
                 }
                 catch(e){
-                }
-                finally{
                     result = {
                         data: []
                     };
+                }
+                finally{
                 }
                    
                 if(result.data){
