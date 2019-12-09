@@ -13,6 +13,9 @@ import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
 import ImagePaneView from "../view/ImagePane/ImagePane";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import GraphComponent from "../viso/GraphComponent";
+import  TimelineComponent from "../viso/TimelineComponent";
+import SummaryViewComponent from "../viso/summary/SummaryView";
 
 import Joyride from 'react-joyride';
 
@@ -123,6 +126,9 @@ class UserBlocksComponent extends React.Component {
         this.setDashboardVisualisation = this.setDashboardVisualisation.bind(this);
         this.convertBlockMapToList = this.convertBlockMapToList.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
+        this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
+        this.isGraphAvailable = this.isGraphAvailable.bind(this);
+        this.isTimelineAvailable = this.isTimelineAvailable.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -804,21 +810,45 @@ class UserBlocksComponent extends React.Component {
         return blockTempList;
     }
 
+    isSummaryBlocksAvailable(){
+        if(isNullOrUndefined(this.props.summaryBlocks) || this.props.summaryBlocks.length==0)
+            return false;
+        return true;
+    }
+
+    isGraphAvailable(){
+        if(isNullOrUndefined(this.props.investigationGraph) || Object.keys(this.props.investigationGraph).length==0)
+            return false;
+        return true;
+    }
+
+    isTimelineAvailable(){
+        if(this.props.timeline && this.props.timeline.length > 0)
+            return true;
+        return false;
+    }
+
     render(){
 
         const scope = this;
 
         var successBlocksList = this.convertBlockMapToList(this.state.successBlocks);
-        const successBlocksListRender = successBlocksList.map((block) => 
+        let successBlocksListRender = successBlocksList.map((block) => 
                     (scope.renderSingleBlock(block, scope, false)));
+        if(successBlocksList.length == 0){
+            successBlocksListRender = 'No succesful contributions.';
+        }            
 
         var toReviewBlocksList = this.convertBlockMapToList(this.state.toReviewBlocks);
         const toReviewBlocksListRender = toReviewBlocksList.map((block) => 
                                 (scope.renderSingleBlock(block, scope, false)));
 
         var draftBlocksList = this.convertBlockMapToList(this.state.draftBlocks);
-        const draftBlocksListRender = draftBlocksList.map((block) => 
+        let draftBlocksListRender = draftBlocksList.map((block) => 
                                             (scope.renderSingleBlock(block, scope, false)));
+        if(draftBlocksList.length == 0){
+            draftBlocksListRender = 'No contributions in draft.';
+        }
                         
         var inReviewBlocksList = this.convertBlockMapToList(this.state.inReviewBlocks);
         const inReviewBlocksListRender = inReviewBlocksList.map((block) => 
@@ -829,67 +859,27 @@ class UserBlocksComponent extends React.Component {
                      
                 {this.renderBlockOptions()}                              
 
-                <Tabs>
-                    <TabList>
-                    <Tab>DRAFT</Tab>
+                <div>
+                    <div className="visualization-tabs-title">My contributions</div>
+                    <Tabs className="blocksTab">
+                        <TabList>
+                        <Tab>DRAFT</Tab>
 
-                    {Object.keys(this.state.successBlocks).length>0?
                         <Tab>SUCCESSFUL</Tab>
-                        :
-                        null}
 
-                    {Object.keys(this.state.inReviewBlocks).length>0?
-                        <Tab>IN REVIEW</Tab>
-                            :
-                            null}
+                        {Object.keys(this.state.inReviewBlocks).length>0?
+                            <Tab>IN REVIEW</Tab>
+                                :
+                                null}
 
-                    {Object.keys(this.state.toReviewBlocks).length>0?
-                        <Tab>TO REVIEW</Tab>
-                            :
-                            null}                   
-                    </TabList>
-                
-                    <TabPanel>
-                    {Object.keys(this.state.draftBlocks).length>0?
-                        <div>
-                            <Joyride
-                        styles={{
-                            options: {
-                            arrowColor: '#e3ffeb',
-                            beaconSize: '3em',
-                            primaryColor: '#05878B',
-                            backgroundColor: '#e3ffeb',
-                            overlayColor: 'rgba(10,10,10, 0.4)',
-                            width: 900,
-                            zIndex: 1000,
-                            }
-                        }}
-                            steps={this.state.tooltipText.draftBlock}
-                            run = {this.state.showTooltip.draftBlock}                    
-                            /> 
-                            <div className="block-list-content draftBlocksList">
-                                <List>{draftBlocksListRender}</List>
-                            </div>
-                        </div>
-                        :
-                        null
-                        }
-                    </TabPanel> 
+                        {Object.keys(this.state.toReviewBlocks).length>0?
+                            <Tab>TO REVIEW</Tab>
+                                :
+                                null}                   
+                        </TabList>
                     
-                    {Object.keys(this.state.successBlocks).length>0?
                         <TabPanel>
-                            <div>
-                                <div className="block-list-content">
-                                    <List>{successBlocksListRender}</List>
-                                </div>
-                            </div>
-                        </TabPanel>
-                        :
-                        null
-                        }
-                                        
-                    {Object.keys(this.state.inReviewBlocks).length>0?
-                        <TabPanel>
+                        {Object.keys(this.state.draftBlocks).length>0?
                             <div>
                                 <Joyride
                             styles={{
@@ -903,32 +893,124 @@ class UserBlocksComponent extends React.Component {
                                 zIndex: 1000,
                                 }
                             }}
-                                steps={this.state.tooltipText.commitBlock}
-                                run = {this.state.showTooltip.commitBlock}                    
+                                steps={this.state.tooltipText.draftBlock}
+                                run = {this.state.showTooltip.draftBlock}                    
                                 /> 
-                                <div className="block-list-content inReviewBlockList">
-                                    <List>{inReviewBlocksListRender}</List>
+                                <div className="block-list-content draftBlocksList">
+                                    <List>{draftBlocksListRender}</List>
                                 </div>
                             </div>
-                        </TabPanel>
-                        :
-                        null
-                        }
-                                       
-                    {Object.keys(this.state.toReviewBlocks).length>0?
+                            :
+                            <div className="blocklist-message">{draftBlocksListRender}</div>
+                            }
+                        </TabPanel> 
+                        
                         <TabPanel>
-                            <div>
-                                <div className="block-list-content">
-                                    <List>{toReviewBlocksListRender}</List>
-                                </div>
-                            </div>
+                            {Object.keys(this.state.successBlocks).length>0?
+                            
+                                    <div>
+                                        <div className="block-list-content">
+                                            <List>{successBlocksListRender}</List>
+                                        </div>
+                                    </div>
+                                
+                                :
+                            <div className="blocklist-message">{successBlocksListRender}</div>
+                            }
                         </TabPanel>
-                        :
-                        null
-                        }
-                    
-                                    
+
+                        {Object.keys(this.state.inReviewBlocks).length>0?
+                            <TabPanel>
+                                <div>
+                                    <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '3em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(10,10,10, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                }}
+                                    steps={this.state.tooltipText.commitBlock}
+                                    run = {this.state.showTooltip.commitBlock}                    
+                                    /> 
+                                    <div className="block-list-content inReviewBlockList">
+                                        <List>{inReviewBlocksListRender}</List>
+                                    </div>
+                                </div>
+                            </TabPanel>
+                            :
+                            null
+                            }
+                                        
+                        {Object.keys(this.state.toReviewBlocks).length>0?
+                            <TabPanel>
+                                <div>
+                                    <div className="block-list-content">
+                                        <List>{toReviewBlocksListRender}</List>
+                                    </div>
+                                </div>
+                            </TabPanel>
+                            :
+                            null
+                            }
+                        
+                                        
+                    </Tabs>
+                </div>
+
+                <div className="contributionVisualizationContainer">
+                    <div className="visualization-tabs-title">Visualizations</div>
+
+                    <Tabs style={{marginTop:'10px'}}>
+                    <TabList>
+                        <Tab>Graph</Tab>
+                        <Tab>Timeline</Tab>
+                        <Tab>Summary</Tab>
+                    </TabList>
+
+                    <TabPanel>
+                        {this.isGraphAvailable()?
+                            <div>
+                                <GraphComponent blockTree={this.props.blockTree} 
+                                    investigationGraph={this.props.investigationGraph}
+                                    selectBlock={this.props.selectBlock}
+                                    imageMapping = {this.props.imageMapping}
+                                    multiSelectEntityList = {this.props.multiSelectEntityList}/>
+                            </div>
+                            :
+                            <div className="blocklist-message">No content available for graph.</div>
+                            }
+                    </TabPanel>
+
+                    <TabPanel>
+                        {this.isTimelineAvailable()?
+                            <div class="contributions-timeline-container">
+                                <TimelineComponent 
+                                    timeline={this.props.timeline} 
+                                    selectBlock={this.props.selectBlock}/>
+                            </div>
+                            :
+                            <div className="blocklist-message">No content available for timeline.</div>
+                            }
+                    </TabPanel>
+
+                    <TabPanel>
+                        {this.isSummaryBlocksAvailable()?
+                            <div>                            
+                                <SummaryViewComponent
+                                    summaryBlocks = {this.props.summaryBlocks}
+                                    selectBlock={this.props.selectBlock}/>   
+                            </div>
+                            :
+                            <div className="blocklist-message">No content available for summary.</div>
+                            }
+                    </TabPanel>
                 </Tabs>
+                </div>
             </div>
         );
     }

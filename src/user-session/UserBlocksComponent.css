@@ -9,7 +9,33 @@
     margin-top: 7px;
     margin-left: 10px;
     color: rgb(33, 171, 226);
-    font: bold;
+    font-weight: bold;
+}
+
+.blocksTab{
+    margin-bottom: 7em;
+}
+
+.contributionVisualizationContainer{
+    border-top: 1px solid rgb(197, 197, 197);
+}
+
+.blocklist-message{
+    margin-left: 10px;
+}
+
+.visualization-tabs-title{
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 7px;
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.contributions-timeline-container{
+    max-height: 600px;
+    overflow-x: scroll;
 }
 
 .block-list-content{

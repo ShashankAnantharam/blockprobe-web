@@ -176,42 +176,13 @@ class VisualizeOptionsListComponent extends React.Component {
                                 </ListItem>
                     </div>                    
 
-                    <ListItem button 
-                    selected={this.props.selectedVisualisation == "timeline"}
-                    onClick={() => { this.selectNewVisualisation("timeline")}}
-                    >
-                    <Avatar>
-                        <TimelineIcon />
-                    </Avatar>
-                        <ListItemText primary="Timeline"/>
-                    </ListItem>
+                </List>
 
-                    <ListItem button
-                    selected={this.props.selectedVisualisation == "graph"}
-                    onClick={() => { this.selectNewVisualisation("graph")}}
-                    >
-                    <Avatar>
-                        <AcUnitIcon />
-                    </Avatar>
-                        <ListItemText primary="Graph" />
-                    </ListItem>
-                    
-                    <ListItem button
-                    selected={this.props.selectedVisualisation == "find_connections"}
-                    onClick={() => { this.selectNewVisualisation("find_connections")}}
-                    >      
-                    <Avatar>
-                        <GroupIcon />
-                    </Avatar>
-                        <ListItemText primary="Find Connections" />
-                    </ListItem>
-
-                    </List>
-                    {(!this.props.isViewOnly && this.props.permit != "VIEWER")? 
-                        this.renderOptions()
-                        :
-                        null    
-                    }
+                {(!this.props.isViewOnly && this.props.permit != "VIEWER")? 
+                    this.renderOptions()
+                    :
+                     null    
+                }
             </div>
         );
     }

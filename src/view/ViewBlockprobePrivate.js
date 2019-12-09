@@ -916,7 +916,11 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
                     setNewVisualisation = {this.setNewVisualisation}   
                     refreshBlockprobe = {this.refreshBlockprobe}  
-                    blockStatus = {this.state.blockStatus}               
+                    blockStatus = {this.state.blockStatus}  
+                    blockTree={this.state.blockTree} 
+                    multiSelectEntityList = {this.state.multiSelectEntityList}
+                    timeline={this.state.timeline}  
+                    summaryBlocks = {this.state.summaryList}           
                     />
                 </div>
             );
