@@ -172,10 +172,10 @@ class ViewBlockListComponent extends React.Component {
             var committedBlock = {
                 key:'',
                 title: newTitle,
-                summary:this.props.selectedBlock.summary,
-                entities:this.props.selectedBlock.entities,
-                blockDate: this.props.selectedBlock.blockDate,
-                blockTime: this.props.selectedBlock.blockTime,
+                summary:this.props.selectedBlock.summary || '',
+                entities:this.props.selectedBlock.entities || [],
+                blockDate: this.props.selectedBlock.blockDate || {},
+                blockTime: this.props.selectedBlock.blockTime || {},
                 evidences:[],
                 actionType:'REMOVE',
                 previousKey: this.props.selectedBlock.key,
@@ -183,7 +183,7 @@ class ViewBlockListComponent extends React.Component {
                 timestamp: timestamp,
                 verificationHash: ''
             }
-
+            
             committedBlock.actionType = "REMOVE";
 
             var softBlock = JSON.parse(JSON.stringify(this.props.selectedBlock));
@@ -204,8 +204,8 @@ class ViewBlockListComponent extends React.Component {
             delete softBlock["children"];
             delete committedBlock["children"];
 
-            // console.log(committedBlock);
-            // console.log(softBlock);
+            //console.log(committedBlock);
+            //console.log(softBlock);
 
             firebase.firestore().collection("Blockprobes").
                 doc(softBlock.bpID).
