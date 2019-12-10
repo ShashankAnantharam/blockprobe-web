@@ -95,7 +95,7 @@ class VisualizeOptionsListComponent extends React.Component {
                     <Avatar>
                         <CreateIcon />
                     </Avatar>
-                        <ListItemText primary="My Contributions"/>
+                        <ListItemText primary="Contribute"/>
                     </ListItem>
 
                     {this.state.shouldEnableMultipleContributors?
@@ -121,7 +121,7 @@ class VisualizeOptionsListComponent extends React.Component {
                                 <Avatar>
                                     <ShareIcon />
                                 </Avatar>
-                                    <ListItemText primary="Share my story"/>
+                                    <ListItemText primary="Share"/>
                             </ListItem>
                         </div>
                         :
