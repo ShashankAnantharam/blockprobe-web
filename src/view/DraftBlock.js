@@ -545,10 +545,21 @@ class DraftBlockComponent extends React.Component {
             );            
         }
 
+        let actionType = '';
+        if(this.state.newBlock.actionType)
+            actionType = this.state.newBlock.actionType;
+
         return(
 
-            <div className="draft-block-container">      
-                <div className='draftBlocksPaneTitle'>Edit block</div>
+            <div className = {'draft-block-container ' + 
+            (actionType =='MODIFY'? 'draft-block-color-MODIFY' : '') + 
+            (actionType =='ADD'? 'draft-block-color-ADD' : '')}>
+                {this.state.newBlock.actionType =='MODIFY'?
+                    <div className='draftBlocksPaneTitle'>Modify block</div>
+                    :
+                    <div className='draftBlocksPaneTitle'>Edit block</div>
+                }   
+                
                 {this.props.bpDetails.criterion == 0?
                                     <div>
                                         <p className="openTooltipTextContainer">

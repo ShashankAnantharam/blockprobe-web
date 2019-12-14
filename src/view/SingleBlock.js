@@ -46,13 +46,13 @@ class SingleUserBlock extends React.Component {
 
        return(
             <ListItem button 
-                    onClick={() => { this.clickBlockNotInDraft(this.props.block)}}
-                    style={{width:'100%'}}
-                    >
-                    <ListItemText 
-                    primary={this.props.block.title} 
-                    secondary={this.props.block.summary}/>
-                </ListItem>        
+                onClick={() => { this.clickBlockNotInDraft(this.props.block)}}
+                style={{width:'100%'}}
+                >
+                <ListItemText 
+                 primary={this.props.block.title} 
+                secondary={this.props.block.summary}/>
+            </ListItem>                    
         );
         
     }
@@ -77,6 +77,10 @@ class SingleUserBlock extends React.Component {
     }
 
     renderDraftBlock(){
+        let actionType = '';
+        if(this.props.block)
+             actionType = this.props.block.actionType;
+             
         return(
             <div onClick={this.clickBlockInDraft}>
                 {this.props.selectedDraftBlockId == this.props.block.key?
@@ -92,7 +96,8 @@ class SingleUserBlock extends React.Component {
                         />
                     </div>                    
                     :
-                    <div>
+                    <div className={(actionType =='MODIFY'? 'user-block-color-MODIFY' : '') + 
+                            (actionType =='ADD'? 'user-block-color-ADD' : '')}>
                         <ListItem button 
                             onClick={() => { this.clickBlockInDraft()}}
                             style={{width:'100%'}}

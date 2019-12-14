@@ -8,6 +8,14 @@
     border: 1px black solid;
 }
 
+.draft-block-color-ADD{
+    background: rgb(184, 250, 158);
+}
+
+.draft-block-color-MODIFY{
+    background: rgb(250, 236, 158);
+}
+
 .openTooltipTextContainer{
     margin: 0; 
     border-radius: 5px;
