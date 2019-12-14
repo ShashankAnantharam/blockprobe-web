@@ -4,6 +4,8 @@ import ChatBox from './ChatBox';
 import ViewBlockListComponent from './ViewBlockOptionList';
 import UpvoteStatusComponent from './UpvoteStatus';
 import Img from 'react-image';
+import IsImageUrl from 'is-image-url';
+import Iframe from 'react-iframe';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
@@ -96,12 +98,18 @@ class ViewBlockComponent extends React.Component {
     BlockEvidence(evidence, index){
         const WebView = require('react-electron-web-view');
         var evidenceList = [evidence.evidenceLink];
+        let isImageUrl = IsImageUrl(evidence.evidenceLink);
+        let link = evidence.evidenceLink;
         return(
             <div className="block-evidence">
                 <a href={evidence.evidenceLink} target="_blank" className="block-evidence-title">Evidence {index+1}</a>
                 <div className="block-evidence-subtitle">{evidence.supportingDetails}</div>
-                <Img src={evidenceList}
-                style={{width:'100%'}}></Img>
+                {isImageUrl?
+                    <Img src={evidenceList}
+                    style={{width:'100%'}}></Img>
+                    :
+                    null
+                }
             </div>
         );
     }   
