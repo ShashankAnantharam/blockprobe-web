@@ -102,13 +102,15 @@ class ViewBlockComponent extends React.Component {
         let link = evidence.evidenceLink;
         return(
             <div className="block-evidence">
-                <a href={evidence.evidenceLink} target="_blank" className="block-evidence-title">Evidence {index+1}</a>
+                <span className="block-evidence-title">Evidence {index+1}</span>
                 <div className="block-evidence-subtitle">{evidence.supportingDetails}</div>
-                {isImageUrl?
-                    <Img src={evidenceList}
-                    style={{width:'100%'}}></Img>
+                {isImageUrl?                   
+                    <a href={link} target="_blank">
+                        <Img src={evidenceList}
+                        style={{width:'100%'}}></Img>
+                    </a>
                     :
-                    null
+                    <a href={link} target="_blank" className="block-evidence-title">{link}</a>                    
                 }
             </div>
         );
