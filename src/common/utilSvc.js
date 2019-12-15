@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from "util";
 
 
 export const getShortenedListOfBlockprobes = (blockprobes) => {
@@ -119,6 +120,40 @@ export const getShortenedListOfImages = (imageMapping) => {
         currImagePage = [];
     }
     return allImages;
+}
+
+export const  extractBlockIndex = (block)=>{
+    if(isNullOrUndefined(block))
+        return null;    
+    
+    let title = block.title;
+    if(isNullOrUndefined(title))
+        return null;
+
+    let a =  title.trim(), aIndex = 0;
+    let isAExist = false;
+    if(a.length>0 && a.charAt(0)==='#'){
+        var num = '';
+        for(var i=1; i<a.length; i++){
+            
+            if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
+                num += a.charAt(i);
+            }
+            else{
+                if(num.length > 0){
+                    aIndex = parseFloat(num);
+                    isAExist = true;
+                }
+            }
+        }
+        if(num.length > 0){
+            aIndex = parseFloat(num);
+            isAExist = true;
+        }    
+    }
+    if(isAExist)
+        return aIndex;
+    return null;
 }
 
 export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{

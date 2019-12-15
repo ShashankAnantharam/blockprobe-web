@@ -16,6 +16,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import GraphComponent from "../viso/GraphComponent";
 import  TimelineComponent from "../viso/TimelineComponent";
 import SummaryViewComponent from "../viso/summary/SummaryView";
+import * as Utils from '../common/utilSvc';
 
 import Joyride from 'react-joyride';
 
@@ -25,7 +26,7 @@ class UserBlocksComponent extends React.Component {
     
     constructor(props){
         super(props);
-        //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip, blockStatus
+        //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip, blockStatus, lastIndex
 
         this.state={
             uIdHash:'',
@@ -37,6 +38,7 @@ class UserBlocksComponent extends React.Component {
             toReviewBlocks:{},
             inReviewBlocks:{},
             blockStateMap:{},
+            lastIndexDraftBlocks: [0],
             newBlock: {
                 title:'',
                 summary:'',
@@ -230,14 +232,39 @@ class UserBlocksComponent extends React.Component {
             });
         }
         else if(block.blockState=="DRAFT"){
+            let lastIndex = this.state.lastIndexDraftBlocks;
             var currMap = this.state.draftBlocks;
-            if(add)
+            if(add){
                 currMap[block.key]=block;
-            else
-                delete currMap[block.key];
+
+                //get index here
+                let blockIndex = Utils.extractBlockIndex(block);                
+                if(!isNullOrUndefined(blockIndex)){
+                    lastIndex.push(blockIndex); 
+                    lastIndex.sort();
+                }
+            }
+            else{
+                let blockIndex = Utils.extractBlockIndex(currMap[block.key]);
+                delete currMap[block.key];                                
+                if(!isNullOrUndefined(blockIndex)){                    
+                    let newList = [], hasBeenRemoved = false;
+                    for(let i=0; i<lastIndex.length; i++){
+                        if(!hasBeenRemoved && lastIndex[i]==blockIndex){
+                            hasBeenRemoved = true;
+                        }
+                        else{
+                            newList.push(lastIndex[i]);
+                        }
+                    }
+                    lastIndex = newList;
+                }
+            }
+                        
             this.setState({
-                draftBlocks:currMap
-            });
+                draftBlocks: currMap,
+                lastIndexDraftBlocks: lastIndex
+            });           
         }
     }
 

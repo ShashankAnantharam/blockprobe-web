@@ -25,6 +25,7 @@ import UserBlocksComponent from '../user-session/UserBlocksComponent';
 import Joyride from 'react-joyride';
 import Loader from 'react-loader-spinner';
 import * as Utils from '../common/utilSvc';
+import { utils } from '@amcharts/amcharts4/core';
 
 class ViewBlockprobePrivateComponent extends React.Component {
 
@@ -51,6 +52,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
             selectedVisualisation: "contributions",
+            lastTitleIndex: 0,
             multiSelectEntityList: [
                 {
                     value: true, 
@@ -322,6 +324,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
 
         tempState[block.key] = block;
+        
 
         
         //add parent if not there
@@ -347,9 +350,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
             latestBlock = block;
         }
 
+        //get Index
+        let currIndex = Utils.extractBlockIndex(block);
+        let latestIndex = this.state.lastTitleIndex;
+        latestIndex = Math.max(currIndex,latestIndex);
+
         this.setState({
                  blockTree:tempState,
-                 latestBlock: latestBlock
+                 latestBlock: latestBlock,
+                 lastTitleIndex: latestIndex
              });
         if(block.actionType == "genesis"){
             document.title = block.title;
@@ -920,7 +929,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     blockTree={this.state.blockTree} 
                     multiSelectEntityList = {this.state.multiSelectEntityList}
                     timeline={this.state.timeline}  
-                    summaryBlocks = {this.state.summaryList}           
+                    summaryBlocks = {this.state.summaryList}
+                    lastIndex = {this.state.lastTitleIndex}           
                     />
                 </div>
             );
