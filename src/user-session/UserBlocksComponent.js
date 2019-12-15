@@ -314,6 +314,14 @@ class UserBlocksComponent extends React.Component {
 
      addDraftBlocksInBulk(blocks){
 
+        let latestIndex = 0 ;
+        if(this.state.lastIndexDraftBlocks.length > 0)
+            latestIndex = Math.max(latestIndex, this.state.lastIndexDraftBlocks[this.state.lastIndexDraftBlocks.length - 1]);
+
+        if(this.props.lastIndex){
+            latestIndex = Math.max(latestIndex, this.props.lastIndex);
+        }
+
         var allEntitiesMap = {};
         var allEntities = [];
         for(var i=0; i<blocks.length; i++){
@@ -326,6 +334,19 @@ class UserBlocksComponent extends React.Component {
                         allEntities.push(currEntity);
                     }
                 }
+            }
+
+            if(!('title' in blocks[i])){
+                blocks[i]['title'] = '';
+            }
+            let index = Utils.extractBlockIndex(blocks[i]);
+            if(index == null){
+                latestIndex += 0.1;
+                blocks[i].title = '#' + String(latestIndex.toFixed(1)) + ' ' + blocks[i].title;
+            }
+            else{
+                if(index > latestIndex)
+                    latestIndex = index;
             }
         }
         var dummyBlock = {entities:allEntities};
