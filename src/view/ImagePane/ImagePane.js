@@ -21,6 +21,8 @@ class ImagePaneView extends React.Component {
             selectedEntity: '',
             changedEntities: {},
             uploadedImages: {},
+            entityTabIndex: {},
+            selectedTabIndex: 0
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
@@ -30,6 +32,7 @@ class ImagePaneView extends React.Component {
         this.onDrop = this.onDrop.bind(this);
         this.getImageOptions = this.getImageOptions.bind(this);
         this.getImageUrlFromFile = this.getImageUrlFromFile.bind(this);
+        this.onChangeImageTab = this.onChangeImageTab.bind(this);
     }
 
     async submitEntityImage(){
@@ -122,10 +125,17 @@ class ImagePaneView extends React.Component {
                 }
             }
         }
+
+        let selectedIndex = 0;
+        if(selectedEntity in this.state.entityTabIndex){
+            selectedIndex = this.state.entityTabIndex[selectedEntity];
+        }
+
         this.setState({ 
             firstEntitySelectList: entityList, 
             selectedEntity: selectedEntity,
-            selectedEntityUrl: url 
+            selectedEntityUrl: url,
+            selectedTabIndex: selectedIndex
         });
     }
 
@@ -151,7 +161,7 @@ class ImagePaneView extends React.Component {
                 if(this.state.selectedEntity){
                     changedEntities[selectedEntity] = selectedEntityUrl;
                 }
-
+                
                 this.setState({
                     selectedEntityUrl: selectedEntityUrl,
                     changedEntities: changedEntities
@@ -190,10 +200,20 @@ class ImagePaneView extends React.Component {
         return url;
     }
 
+    onChangeImageTab(index, lastIndex, event){
+        let entityTabIndex = this.state.entityTabIndex;
+        entityTabIndex[this.state.selectedEntity] = index;
+        this.setState({
+            selectedTabIndex: index,
+            entityTabIndex: entityTabIndex
+        });
+    }
+
     getImageOptions(){
         return (
             <div style={{marginBottom: '40px'}}>
-                <Tabs>
+                <Tabs selectedIndex={this.state.selectedTabIndex}
+                    onSelect={this.onChangeImageTab}>
                         <TabList>
                             <Tab>Get image from link</Tab>
                             <Tab>Upload Image</Tab>
