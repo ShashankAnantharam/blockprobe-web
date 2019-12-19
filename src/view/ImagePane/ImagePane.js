@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
 import './ImagePane.css';
 import Textarea from 'react-textarea-autosize';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import ImageUploader from 'react-images-upload';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Img from 'react-image';
@@ -17,14 +19,17 @@ class ImagePaneView extends React.Component {
             ],
             selectedEntityUrl: '',
             selectedEntity: '',
-            changedEntities: {}
+            changedEntities: {},
+            uploadedImages: {},
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.submitEntityImage = this.submitEntityImage.bind(this);
         this.canSubmit = this.canSubmit.bind(this);
-
+        this.onDrop = this.onDrop.bind(this);
+        this.getImageOptions = this.getImageOptions.bind(this);
+        this.getImageUrlFromFile = this.getImageUrlFromFile.bind(this);
     }
 
     async submitEntityImage(){
@@ -162,6 +167,90 @@ class ImagePaneView extends React.Component {
         return false;
     }  
 
+    onDrop(picture) {
+        if(picture.length > 0)
+        {
+            let latestPicture = picture[picture.length-1];
+            let uploadedImages = this.state.uploadedImages;
+            let selectedEntity = this.state.selectedEntity;
+            uploadedImages[selectedEntity] = latestPicture;            
+            this.setState(
+                {
+                    uploadedImages: uploadedImages
+                }
+                );
+        }
+    }
+
+    getImageUrlFromFile(entity){
+        let uploadedImages = this.state.uploadedImages;
+        let url = null;
+        if(entity in uploadedImages)
+            url = URL.createObjectURL(uploadedImages[entity]);
+        return url;
+    }
+
+    getImageOptions(){
+        return (
+            <div style={{marginBottom: '40px'}}>
+                <Tabs>
+                        <TabList>
+                            <Tab>Get image from link</Tab>
+                            <Tab>Upload Image</Tab>
+                        </TabList>
+                        
+                         <TabPanel>
+                            <div>
+                                <div className="imagepane-url-container">
+                                        <form>
+                                            <label>
+                                                <Textarea 
+                                                    type="text"
+                                                    placeholder = "Image url"
+                                                    value={this.state.selectedEntityUrl}
+                                                    onChange={(e) => { this.handleChange(e,"entity")}}
+                                                    maxRows="2"
+                                                    minRows="1"
+                                                    style={{
+                                                        background: 'white',
+                                                        borderWidth:'2px', 
+                                                        borderStyle:'solid', 
+                                                        borderColor:'black',
+                                                        paddingTop:'6px',
+                                                        paddingBottom:'6px',
+                                                        width:'95%'
+                                                        }}/>
+                                            </label>
+                                        </form>
+                                </div>
+                                <div>
+                                    <Img src={[this.state.selectedEntityUrl]}
+                                        style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                </div>
+                            </div>
+                        </TabPanel>
+
+                        <TabPanel>
+                            <div>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose image'
+                                    onChange={this.onDrop}
+                                    singleImage={true}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
+                                <div style={{textAlign: 'center'}}>
+                                    <Img src={[this.getImageUrlFromFile(this.state.selectedEntity)]}
+                                            style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                </div>
+                            </div>
+                        </TabPanel>                  
+                </Tabs>
+            </div>
+        )
+    }
+
     render(){
 
         const selectedOptionsStyles = {
@@ -203,37 +292,10 @@ class ImagePaneView extends React.Component {
                     <button className="imagePaneButton" onClick={this.props.closeImagePane}>Close</button>              
                 </div>
                 {this.state.selectedEntity == ''?
-                    null   
-                        :
-                    <div>
-                        <div className="imagepane-url-container">
-                                <form>
-                                    <label>
-                                        <Textarea 
-                                            type="text"
-                                            placeholder = "Image url"
-                                            value={this.state.selectedEntityUrl}
-                                            onChange={(e) => { this.handleChange(e,"entity")}}
-                                            maxRows="2"
-                                            minRows="1"
-                                            style={{
-                                                background: 'white',
-                                                borderWidth:'2px', 
-                                                borderStyle:'solid', 
-                                                borderColor:'black',
-                                                paddingTop:'6px',
-                                                paddingBottom:'6px',
-                                                width:'95%'
-                                                }}/>
-                                    </label>
-                                </form>
-                        </div>
-                        <div>
-                            <Img src={[this.state.selectedEntityUrl]}
-                                style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
-                        </div>
-                    </div>
-                }
+                    null
+                    :
+                    this.getImageOptions()   
+                }                
             </div>
         );
     }
