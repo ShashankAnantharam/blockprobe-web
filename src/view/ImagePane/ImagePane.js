@@ -4,6 +4,7 @@ import './ImagePane.css';
 import Textarea from 'react-textarea-autosize';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import ImageUploader from 'react-images-upload';
+import imageCompression from 'browser-image-compression';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Img from 'react-image';
@@ -185,25 +186,41 @@ class ImagePaneView extends React.Component {
         return false;
     }  
 
-    onDrop(picture) {
+    uploadFileToDb(latestPicture){
+        let uploadedImages = this.state.uploadedImages;
+        let selectedEntity = this.state.selectedEntity;            
+        let scope = this;
+        let path = this.props.bId + '/' + selectedEntity;
+        let pathRef = firebase.storage().ref(path);
+        pathRef.put(latestPicture).then(function (snapshot){
+                let url = pathRef.getDownloadURL().then(function (url){
+                uploadedImages[selectedEntity] = url;            
+                scope.setState(
+                    {
+                        uploadedImages: uploadedImages
+                    }
+                    );
+            });
+        });
+    }
+
+    async onDrop(picture) {
         if(picture.length > 0)
         {
             let latestPicture = picture[picture.length-1];
-            let uploadedImages = this.state.uploadedImages;
-            let selectedEntity = this.state.selectedEntity;            
-            let scope = this;
-            let path = this.props.bId + '/' + selectedEntity;
-            let pathRef = firebase.storage().ref(path);
-            pathRef.put(latestPicture).then(function (snapshot){
-                    let url = pathRef.getDownloadURL().then(function (url){
-                    uploadedImages[selectedEntity] = url;            
-                    scope.setState(
-                        {
-                            uploadedImages: uploadedImages
-                        }
-                        );
-                });
-            })
+            
+
+            var options = {
+                maxSizeMB: 0.015,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
+              }
+              try {
+                let compressedFile = await imageCompression(latestPicture, options);
+                this.uploadFileToDb(compressedFile);
+              } catch (error) {
+
+              }
         }
     }
 
