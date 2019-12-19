@@ -39,10 +39,18 @@ class ImagePaneView extends React.Component {
         if(this.state.selectedEntity.length > 0){
             let tasks = [];
             for(let key in this.state.changedEntities){
+                let url = this.state.changedEntities[key];
+                let imageUploadtype = 0;
+                if(key in this.state.entityTabIndex && this.state.entityTabIndex[key]==1){
+                    //Uploaded image
+                    url = this.state.uploadedImages[key];
+                    imageUploadtype = 1;
+                }
                 var newImage = {
                     entity: key,
-                    url: this.state.changedEntities[key],
-                    timestamp: Date.now()
+                    url: url,
+                    timestamp: Date.now(),
+                    imageUploadtype: imageUploadtype
                 }
 
                 let taskResult = firebase.firestore().collection("Blockprobes").
@@ -182,13 +190,20 @@ class ImagePaneView extends React.Component {
         {
             let latestPicture = picture[picture.length-1];
             let uploadedImages = this.state.uploadedImages;
-            let selectedEntity = this.state.selectedEntity;
-            uploadedImages[selectedEntity] = latestPicture;            
-            this.setState(
-                {
-                    uploadedImages: uploadedImages
-                }
-                );
+            let selectedEntity = this.state.selectedEntity;            
+            let scope = this;
+            let path = this.props.bId + '/' + selectedEntity;
+            let pathRef = firebase.storage().ref(path);
+            pathRef.put(latestPicture).then(function (snapshot){
+                    let url = pathRef.getDownloadURL().then(function (url){
+                    uploadedImages[selectedEntity] = url;            
+                    scope.setState(
+                        {
+                            uploadedImages: uploadedImages
+                        }
+                        );
+                });
+            })
         }
     }
 
@@ -196,13 +211,17 @@ class ImagePaneView extends React.Component {
         let uploadedImages = this.state.uploadedImages;
         let url = null;
         if(entity in uploadedImages)
-            url = URL.createObjectURL(uploadedImages[entity]);
+            url = uploadedImages[entity];
         return url;
     }
 
     onChangeImageTab(index, lastIndex, event){
         let entityTabIndex = this.state.entityTabIndex;
         entityTabIndex[this.state.selectedEntity] = index;
+        
+        let changedEntities = this.state.changedEntities;
+        changedEntities[this.state.selectedEntity] = '';
+
         this.setState({
             selectedTabIndex: index,
             entityTabIndex: entityTabIndex
