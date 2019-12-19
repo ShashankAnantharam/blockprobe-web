@@ -3,6 +3,7 @@ import  MultiSelectReact  from 'multi-select-react';
 import './ImagePane.css';
 import Textarea from 'react-textarea-autosize';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Loader from 'react-loader-spinner';
 import ImageUploader from 'react-images-upload';
 import imageCompression from 'browser-image-compression';
 import * as firebase from 'firebase';
@@ -23,7 +24,8 @@ class ImagePaneView extends React.Component {
             changedEntities: {},
             uploadedImages: {},
             entityTabIndex: {},
-            selectedTabIndex: 0
+            selectedTabIndex: 0,
+            isImageUploading: false
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
@@ -192,15 +194,22 @@ class ImagePaneView extends React.Component {
         let scope = this;
         let path = this.props.bId + '/' + selectedEntity;
         let pathRef = firebase.storage().ref(path);
+        this.setState({
+            isImageUploading: true
+        });
         pathRef.put(latestPicture).then(function (snapshot){
                 let url = pathRef.getDownloadURL().then(function (url){
                 uploadedImages[selectedEntity] = url;            
                 scope.setState(
                     {
-                        uploadedImages: uploadedImages
+                        uploadedImages: uploadedImages,
+                        isImageUploading: false
                     }
                     );
             });
+        },
+        function (error){
+            scope.setState({isImageUploading: false});
         });
     }
 
@@ -296,9 +305,22 @@ class ImagePaneView extends React.Component {
                                     imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                     maxFileSize={5242880}
                                 />
-                                <div style={{textAlign: 'center'}}>
-                                    <Img src={[this.getImageUrlFromFile(this.state.selectedEntity)]}
-                                            style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                <div>
+                                    {this.state.isImageUploading?
+                                        <div style={{margin:'auto',width:'50px'}}>
+                                            <Loader 
+                                            type="TailSpin"
+                                            color="#00BFFF"
+                                            height="50"	
+                                            width="50"
+                                            /> 
+                                        </div>
+                                        :
+                                        <div style={{textAlign: 'center'}}>
+                                            <Img src={[this.getImageUrlFromFile(this.state.selectedEntity)]}
+                                                style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                        </div>
+                                    }                                    
                                 </div>
                             </div>
                         </TabPanel>                  
