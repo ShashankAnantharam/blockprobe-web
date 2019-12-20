@@ -9,6 +9,7 @@ import imageCompression from 'browser-image-compression';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Img from 'react-image';
+import { isNullOrUndefined } from 'util';
 
 class ImagePaneView extends React.Component {
 
@@ -37,7 +38,9 @@ class ImagePaneView extends React.Component {
         this.getImageOptions = this.getImageOptions.bind(this);
         this.getImageUrlFromFile = this.getImageUrlFromFile.bind(this);
         this.onChangeImageTab = this.onChangeImageTab.bind(this);
+        this.removeImageFromDb = this.removeImageFromDb.bind(this);
         this.closeImagePane = this.closeImagePane.bind(this);
+        this.isImagePresent = this.isImagePresent.bind(this);
     }
 
     async submitEntityImage(){
@@ -227,6 +230,34 @@ class ImagePaneView extends React.Component {
         }        
     }
 
+    async removeImageFromDb(){
+        let uploadedImages = this.state.uploadedImages;
+        let selectedEntity = this.state.selectedEntity;            
+        let scope = this;
+        let path = this.props.bId + '/' + selectedEntity;
+        let pathRef = firebase.storage().ref(path);
+        this.setState({
+            isImageUploading: true
+        });
+
+        try{    
+            uploadedImages[selectedEntity] = null;
+
+            await firebase.firestore().collection("Blockprobes").
+                    doc(scope.props.bId).collection("images").
+                    doc(selectedEntity).delete();
+                         
+            scope.setState({
+                        uploadedImages: uploadedImages,
+                        isImageUploading: false,
+                        hasUpdated: true
+                    });
+        }
+        catch(error){
+            scope.setState({isImageUploading: false});
+        }   
+    }
+
     async onDrop(picture) {
         if(picture.length > 0)
         {
@@ -255,6 +286,18 @@ class ImagePaneView extends React.Component {
         else if(entity in this.props.imageMapping)
             url = this.props.imageMapping[entity];
         return url;
+    }
+
+    isImagePresent(entity){
+        let uploadedImages = this.state.uploadedImages;
+        let url = null;
+        if(entity in this.props.imageMapping)
+            url = this.props.imageMapping[entity];
+        if(entity in uploadedImages)
+            url = uploadedImages[entity];
+        if(url == null)
+            return false;
+        return true;
     }
 
     onChangeImageTab(index, lastIndex, event){
@@ -336,9 +379,20 @@ class ImagePaneView extends React.Component {
                                             /> 
                                         </div>
                                         :
-                                        <div style={{textAlign: 'center'}}>
-                                            <Img src={[this.getImageUrlFromFile(this.state.selectedEntity)]}
-                                                style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                        <div>
+                                            {this.isImagePresent(this.state.selectedEntity)?
+                                                <div style={{textAlign: 'center', marginBottom: '35px'}}>
+                                                    <span className="removeImageButton" onClick={this.removeImageFromDb}>
+                                                        Remove image
+                                                    </span>
+                                                </div>
+                                                :
+                                                null
+                                            }                                            
+                                            <div style={{textAlign: 'center'}}>
+                                                <Img src={[this.getImageUrlFromFile(this.state.selectedEntity)]}
+                                                    style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>
+                                            </div>
                                         </div>
                                     }                                    
                                 </div>
