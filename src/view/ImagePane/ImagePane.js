@@ -25,7 +25,8 @@ class ImagePaneView extends React.Component {
             uploadedImages: {},
             entityTabIndex: {},
             selectedTabIndex: 0,
-            isImageUploading: false
+            isImageUploading: false,
+            hasUpdated: false
         }
 
         this.generateEntityLists = this.generateEntityLists.bind(this);
@@ -36,6 +37,7 @@ class ImagePaneView extends React.Component {
         this.getImageOptions = this.getImageOptions.bind(this);
         this.getImageUrlFromFile = this.getImageUrlFromFile.bind(this);
         this.onChangeImageTab = this.onChangeImageTab.bind(this);
+        this.closeImagePane = this.closeImagePane.bind(this);
     }
 
     async submitEntityImage(){
@@ -183,12 +185,12 @@ class ImagePaneView extends React.Component {
       }
 
     canSubmit(){
-        if(this.props.permit == 'CREATOR' && this.state.selectedEntity.length > 0)
-            return true;
+      //  if(this.props.permit == 'CREATOR' && this.state.selectedEntity.length > 0)
+      //      return true;
         return false;
     }  
 
-    uploadFileToDb(latestPicture){
+    async uploadFileToDb(latestPicture){
         let uploadedImages = this.state.uploadedImages;
         let selectedEntity = this.state.selectedEntity;            
         let scope = this;
@@ -197,20 +199,32 @@ class ImagePaneView extends React.Component {
         this.setState({
             isImageUploading: true
         });
-        pathRef.put(latestPicture).then(function (snapshot){
-                let url = pathRef.getDownloadURL().then(function (url){
-                uploadedImages[selectedEntity] = url;            
-                scope.setState(
-                    {
+        try{
+            await pathRef.put(latestPicture);
+
+            let url = await pathRef.getDownloadURL();
+    
+            uploadedImages[selectedEntity] = url;    
+            var newImage = {
+                    entity: selectedEntity,
+                    url: url,
+                    timestamp: Date.now(),
+                    imageUploadtype: 1
+                }
+    
+            await firebase.firestore().collection("Blockprobes").
+                    doc(scope.props.bId).collection("images").
+                    doc(newImage.entity).set(newImage);
+                         
+            scope.setState({
                         uploadedImages: uploadedImages,
-                        isImageUploading: false
-                    }
-                    );
-            });
-        },
-        function (error){
+                        isImageUploading: false,
+                        hasUpdated: true
+                    });
+        }
+        catch(error){
             scope.setState({isImageUploading: false});
-        });
+        }        
     }
 
     async onDrop(picture) {
@@ -238,6 +252,8 @@ class ImagePaneView extends React.Component {
         let url = null;
         if(entity in uploadedImages)
             url = uploadedImages[entity];
+        else if(entity in this.props.imageMapping)
+            url = this.props.imageMapping[entity];
         return url;
     }
 
@@ -254,17 +270,9 @@ class ImagePaneView extends React.Component {
         });
     }
 
-    getImageOptions(){
-        return (
-            <div style={{marginBottom: '40px'}}>
-                <Tabs selectedIndex={this.state.selectedTabIndex}
-                    onSelect={this.onChangeImageTab}>
-                        <TabList>
-                            <Tab>Get image from link</Tab>
-                            <Tab>Upload Image</Tab>
-                        </TabList>
-                        
-                         <TabPanel>
+    /*
+        Old url input
+          <TabPanel>
                             <div>
                                 <div className="imagepane-url-container">
                                         <form>
@@ -295,6 +303,18 @@ class ImagePaneView extends React.Component {
                             </div>
                         </TabPanel>
 
+
+    */
+
+    getImageOptions(){
+        return (
+            <div style={{marginBottom: '40px'}}>
+                <Tabs selectedIndex={this.state.selectedTabIndex}
+                    onSelect={this.onChangeImageTab}>
+                        <TabList>
+                            <Tab>Upload Image</Tab>
+                        </TabList>
+                        
                         <TabPanel>
                             <div>
                                 <ImageUploader
@@ -327,6 +347,12 @@ class ImagePaneView extends React.Component {
                 </Tabs>
             </div>
         )
+    }
+
+    closeImagePane(){
+        if(this.state.hasUpdated)
+            this.props.refreshBlockprobe();
+        this.props.closeImagePane();
     }
 
     render(){
@@ -367,7 +393,7 @@ class ImagePaneView extends React.Component {
                         null
                     }
                     
-                    <button className="imagePaneButton" onClick={this.props.closeImagePane}>Close</button>              
+                    <button className="imagePaneButton" onClick={this.closeImagePane}>Close</button>              
                 </div>
                 {this.state.selectedEntity == ''?
                     null
