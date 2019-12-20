@@ -243,9 +243,16 @@ class ImagePaneView extends React.Component {
         try{    
             uploadedImages[selectedEntity] = null;
 
+            var newImage = {
+                entity: selectedEntity,
+                url: '',
+                timestamp: Date.now(),
+                imageUploadtype: 1
+            }
+
             await firebase.firestore().collection("Blockprobes").
-                    doc(scope.props.bId).collection("images").
-                    doc(selectedEntity).delete();
+                doc(scope.props.bId).collection("images").
+                doc(newImage.entity).set(newImage);
                          
             scope.setState({
                         uploadedImages: uploadedImages,
@@ -295,7 +302,7 @@ class ImagePaneView extends React.Component {
             url = this.props.imageMapping[entity];
         if(entity in uploadedImages)
             url = uploadedImages[entity];
-        if(url == null)
+        if(url == null || url == '')
             return false;
         return true;
     }
