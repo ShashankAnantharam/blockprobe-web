@@ -277,10 +277,12 @@ class DraftBlockComponent extends React.Component {
         var isEntityAlreadyPresent = false;
         var entityList = this.state.multiSelectEntityList;
         var block = this.state.newBlock;
+        let entityListIndex = -1;
         for( var i=0; i<entityList.length; i++){
             var entityItem = entityList[i]
             if(entityItem.label == entityLabel){
                 isEntityAlreadyPresent=true;
+                entityListIndex = i;
                 break;
             }
         }
@@ -304,6 +306,21 @@ class DraftBlockComponent extends React.Component {
                 newBlock: block,
                 newEntity: ''
             });
+        }
+        else if(isEntityAlreadyPresent && entityLabel.toLowerCase()!='all' && entityLabel.toLowerCase()!='none'){
+                            
+            entityList[entityListIndex].value = true;
+            if(isNullOrUndefined(block.entities)){
+                block.entities=[];
+            }
+            block.entities.push({
+                title:entityList[entityListIndex].label
+            });
+            this.setState({
+                multiSelectEntityList: entityList,
+                newBlock: block,
+                newEntity: ''
+            });                                                      
         }       
     }
     
