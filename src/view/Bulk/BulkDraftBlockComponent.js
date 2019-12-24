@@ -408,6 +408,84 @@ class BulkDraftBlockComponent extends React.Component {
         }
     }
 
+    oldTooltips(){
+        return (
+            <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
+                <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
+                </p>
+                <ol className='tooltips-list-bulkdraft bulkdraft-list'>
+                    <li>
+                        How paragraphs get converted into blocks. 
+                        <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.para.text}
+                            run = {this.state.adhocTooltip.para.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'para')}}                    
+                            />  
+                        
+                    </li>
+                    <li>
+                        Role of the title hashtag in ordering of content 
+                        <a className='tooltipHashtag tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.hashtag.text}
+                            run = {this.state.adhocTooltip.hashtag.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
+                            />  
+                    </li>
+                    <li>
+                        Role of the title hashtag in the creation of the story summary 
+                        <a className='tooltipSummary tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('summary')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.summary.text}
+                            run = {this.state.adhocTooltip.summary.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'summary')}}                    
+                            />  
+                    </li>
+                </ol>                
+            </div>
+        );
+    }
+
     render(){
         return(
             <div className='bulkDraftBlocksPaneContainer'>
@@ -430,87 +508,14 @@ class BulkDraftBlockComponent extends React.Component {
                     :
                     <div>
                         <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                                <p className='tooltips-list-bulkdraft'>**The following key points are important while contributing to any story. Click on the info icons to learn more<br/>
-                                </p>
-                                <ol className='tooltips-list-bulkdraft bulkdraft-list'>
-                                    <li>
-                                        How paragraphs get converted into blocks. 
-                                        <a className='tooltipPara tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('para')}} >
-                                            <Info style={{fontSize:'19px'}}/>
-                                        </a>
-                                        <Joyride
-                                        styles={{
-                                            options: {
-                                            arrowColor: '#e3ffeb',
-                                            beaconSize: '4em',
-                                            primaryColor: '#05878B',
-                                            backgroundColor: '#e3ffeb',
-                                            overlayColor: 'rgba(10,10,10, 0.4)',
-                                            width: 900,
-                                            zIndex: 1000,
-                                            }
-                                            }}
-                                            steps={this.state.adhocTooltip.para.text}
-                                            run = {this.state.adhocTooltip.para.flag}
-                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'para')}}                    
-                                            />  
-                                        
-                                    </li>
-                                    <li>
-                                        Role of the title hashtag in ordering of content 
-                                        <a className='tooltipHashtag tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('hashtag')}} >
-                                            <Info style={{fontSize:'19px'}}/>
-                                        </a>
-                                        <Joyride
-                                        styles={{
-                                            options: {
-                                            arrowColor: '#e3ffeb',
-                                            beaconSize: '4em',
-                                            primaryColor: '#05878B',
-                                            backgroundColor: '#e3ffeb',
-                                            overlayColor: 'rgba(10,10,10, 0.4)',
-                                            width: 900,
-                                            zIndex: 1000,
-                                            }
-                                            }}
-                                            steps={this.state.adhocTooltip.hashtag.text}
-                                            run = {this.state.adhocTooltip.hashtag.flag}
-                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'hashtag')}}                    
-                                            />  
-                                    </li>
-                                    <li>
-                                        Role of the title hashtag in the creation of the story summary 
-                                        <a className='tooltipSummary tooltips-bulkdraft' onClick={(e)=>{this.showLocalTooltip('summary')}} >
-                                            <Info style={{fontSize:'19px'}}/>
-                                        </a>
-                                        <Joyride
-                                        styles={{
-                                            options: {
-                                            arrowColor: '#e3ffeb',
-                                            beaconSize: '4em',
-                                            primaryColor: '#05878B',
-                                            backgroundColor: '#e3ffeb',
-                                            overlayColor: 'rgba(10,10,10, 0.4)',
-                                            width: 900,
-                                            zIndex: 1000,
-                                            }
-                                            }}
-                                            steps={this.state.adhocTooltip.summary.text}
-                                            run = {this.state.adhocTooltip.summary.flag}
-                                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'summary')}}                    
-                                            />  
-                                    </li>
-                                </ol>
-                                
-                        </div>
-                        <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                                <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>For example, copy paste the text in red as input. 
+                                <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>Copy paste your content in paragraphs. Add subtitles for each para if needed. <br/> 
+                                For example, copy paste the entire text in red as input. 
                                     <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
                                         Learn More
                                     </a>
                                 </p>
                                 <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
-                                    #1s Avengers<br/>
+                                    Avengers<br/>
                                     Thor, Rogers and Ironman are the Avengers.<br/><br/>
                                     Thor is from Asgard
                                 </p>
