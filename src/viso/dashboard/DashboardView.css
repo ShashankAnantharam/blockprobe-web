@@ -12,3 +12,9 @@
 .timeline-heading{
     margin-bottom:-25px; 
 }
+
+.tooltips-dashboard{
+    color:rgb(0, 76, 78);
+    cursor: pointer;
+    margin-left: 5px;
+}

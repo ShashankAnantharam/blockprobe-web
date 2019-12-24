@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import Info from '@material-ui/icons/Info';
 import "react-tabs/style/react-tabs.css";
 import './DashboardView.css';
 import SummaryViewComponent from "../summary/SummaryView";
@@ -13,11 +15,67 @@ class DashboardViewComponent extends React.Component {
     constructor(props){
       super(props);
       this.state={
-          key: 'graph'
+          key: 'graph',
+          adhocTooltip:{
+            timeline:{
+                flag: false,
+                text: [
+                    {
+                        title: 'Timeline view',
+                        target: '.tooltipTimeline',
+                        content: 'Visualise the story as a timeline!',
+                        disableBeacon: true
+                    }
+                ]
+            },
+            mindmap:{
+                flag: false,
+                text: [
+                    {
+                        title: 'Mindmap view',
+                        target: '.tooltipMindmap',
+                        content: 'Visualise the story as a mindmap! Select any topic from the mindmap to read all about that topic.',
+                        disableBeacon: true
+                    }
+                ]
+            }
+        }
       }
       this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
       this.isGraphAvailable = this.isGraphAvailable.bind(this);
       this.isTimelineAvailable = this.isTimelineAvailable.bind(this);
+      this.showLocalTooltip = this.showLocalTooltip.bind(this);
+      this.hideLocalTooltip = this.hideLocalTooltip.bind(this);
+      this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
+    }
+
+    showLocalTooltip(type){
+        var adhocTooltip = this.state.adhocTooltip;
+       if(type=='timeline'){
+           adhocTooltip.timeline.flag = true;
+       }
+       else if(type=='mindmap'){
+           adhocTooltip.mindmap.flag = true;
+       }
+       this.setState({adhocTooltip: adhocTooltip});
+    }
+
+    hideLocalTooltip(type){
+        var adhocTooltip = this.state.adhocTooltip;
+        if(type=='timeline'){
+           adhocTooltip.timeline.flag = false;
+       }
+        else if(type=='mindmap'){
+           adhocTooltip.mindmap.flag = false;
+       }
+        this.setState({adhocTooltip: adhocTooltip});
+    }
+
+    handleAdhocTooltipJoyrideCallback(data, tooltipType){
+        const {action,index,status,type} = data;
+        if([STATUS.FINISHED, STATUS.SKIPPED].includes(status)){
+            this.hideLocalTooltip(tooltipType);
+        }
     }
 
     isSummaryBlocksAvailable(){
@@ -61,7 +119,29 @@ class DashboardViewComponent extends React.Component {
                 
                 {this.isGraphAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">Mindmap</div>
+                        <div className="dashboard-section-heading graph-heading">Mindmap
+                        <a className='tooltipMindmap tooltips-dashboard' 
+                            onMouseEnter={() => this.showLocalTooltip('mindmap')}
+                            onClick={(e)=>{this.showLocalTooltip('mindmap')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.mindmap.text}
+                            run = {this.state.adhocTooltip.mindmap.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'mindmap')}}                    
+                            />  
+                        </div>
                         <Tabs>
                             <TabList>
                             <Tab>Overview</Tab>
@@ -84,7 +164,29 @@ class DashboardViewComponent extends React.Component {
                 {this.isTimelineAvailable()?
 
                     <div>
-                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline</div> 
+                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline
+                        <a className='tooltipTimeline tooltips-dashboard' 
+                            onMouseEnter={() => this.showLocalTooltip('timeline')}
+                            onClick={(e)=>{this.showLocalTooltip('timeline')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.timeline.text}
+                            run = {this.state.adhocTooltip.timeline.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'timeline')}}                    
+                            />  
+                        </div> 
                             <TimelineComponent 
                                 timeline={this.props.timeline} 
                                 selectBlock={this.props.selectBlock}/>
