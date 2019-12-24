@@ -508,7 +508,7 @@ class BulkDraftBlockComponent extends React.Component {
                     :
                     <div>
                         <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
-                                <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>Copy paste your content in paragraphs. Add subtitles for each para if needed. <br/> 
+                                <p style={{fontSize:'13px', color:'grey', fontStyle:'italic'}}>Copy paste your content. Your content must be divided into paragraphs. Add subtitles for each para if needed. <br/> 
                                 For example, copy paste the entire text in red as input. 
                                     <a href='https://youtu.be/SCDA-rUVdMA?t=192' target='blank'>                            
                                         Learn More
