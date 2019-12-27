@@ -374,79 +374,93 @@ class ViewBlockprobePrivateComponent extends React.Component {
     traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef){
         var currBlock = this.state.blockTree[nodeId];
 
-        // console.log(nodeId);
-
-        //Generic block
-        if(currBlock.actionType!="REMOVE"){
-            blockList.push(currBlock.key);
-            blockStatus[currBlock.key]=true;            
-        }
-        else{
-            blockStatus[currBlock.referenceBlock]=false;
+        if(isNullOrUndefined(currBlock))
+            return;
             
-            // If block is modified, then remove latest modification also
-            if(modifyRef[currBlock.referenceBlock]!=null && modifyRef[currBlock.referenceBlock]!=undefined){
-                blockStatus[modifyRef[currBlock.referenceBlock]]=false
-            }
-        }
-        
+        try{
+            // console.log(nodeId);
 
-        if(currBlock.blockDate!=null || currBlock.blockTime!=null){
+            //Generic block
             if(currBlock.actionType!="REMOVE"){
-                timelineList.push(currBlock.key);
-                timelineBlockStatus[currBlock.key]=true;
-                // console.log("ADD "+ nodeId);
+                blockList.push(currBlock.key);
+                blockStatus[currBlock.key]=true;            
             }
             else{
-                timelineBlockStatus[currBlock.referenceBlock]=false;
-                // console.log("REM "+ nodeId);
+                blockStatus[currBlock.referenceBlock]=false;
+                
+                // If block is modified, then remove latest modification also
+                if(modifyRef[currBlock.referenceBlock]!=null && modifyRef[currBlock.referenceBlock]!=undefined){
+                    blockStatus[modifyRef[currBlock.referenceBlock]]=false
+                }
             }
-        }
+            
 
-        if(currBlock.actionType == "MODIFY"){
-            let prevKey = modifyRef[currBlock.referenceBlock]; 
-            let currKey = currBlock.key;
-            let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
-            let currTs = currBlock.timestamp;
-            if(!blockStatus[prevKey]){
-                //The modified block has already been removed
-                //Remove current block also
-                blockStatus[currBlock.key] = false;
-                timelineBlockStatus[currBlock.key] = false;
-                modifyRef[currKey] = currBlock.referenceBlock;
+            if(currBlock.blockDate!=null || currBlock.blockTime!=null){
+                if(currBlock.actionType!="REMOVE"){
+                    timelineList.push(currBlock.key);
+                    timelineBlockStatus[currBlock.key]=true;
+                    // console.log("ADD "+ nodeId);
+                }
+                else{
+                    timelineBlockStatus[currBlock.referenceBlock]=false;
+                    // console.log("REM "+ nodeId);
+                }
             }
-            else if(currTs > prevTs){
-                //remove the older block; Also save the older version with later one 
-                blockStatus[prevKey] = false;
-                timelineBlockStatus[prevKey] = false;
-                modifyRef[prevKey] = currBlock.referenceBlock;
-                modifyRef[currBlock.referenceBlock] = currKey;   
-                modifyRef[currKey] = currKey;          
+
+            if(currBlock.actionType == "MODIFY"){
+                let prevKey = modifyRef[currBlock.referenceBlock]; 
+                let currKey = currBlock.key;
+                let prevTs = this.state.blockTree[modifyRef[currBlock.referenceBlock]].timestamp;
+                let currTs = currBlock.timestamp;
+                if(!blockStatus[prevKey]){
+                    //The modified block has already been removed
+                    //Remove current block also
+                    blockStatus[currBlock.key] = false;
+                    timelineBlockStatus[currBlock.key] = false;
+                    modifyRef[currKey] = currBlock.referenceBlock;
+                }
+                else if(currTs > prevTs){
+                    //remove the older block; Also save the older version with later one 
+                    blockStatus[prevKey] = false;
+                    timelineBlockStatus[prevKey] = false;
+                    modifyRef[prevKey] = currBlock.referenceBlock;
+                    modifyRef[currBlock.referenceBlock] = currKey;   
+                    modifyRef[currKey] = currKey;          
+                }
+                else{
+                    //remove the new block
+                    blockStatus[currKey] = false;
+                    timelineBlockStatus[currKey] = false;
+                    modifyRef[currKey] = currBlock.referenceBlock;
+                    modifyRef[currBlock.referenceBlock] = prevKey;                
+                }
             }
             else{
-                //remove the new block
-                blockStatus[currKey] = false;
-                timelineBlockStatus[currKey] = false;
-                modifyRef[currKey] = currBlock.referenceBlock;
-                modifyRef[currBlock.referenceBlock] = prevKey;                
+                //Set current block as modify reference
+                modifyRef[currBlock.key] = currBlock.key;
             }
-        }
-        else{
-            //Set current block as modify reference
-            modifyRef[currBlock.key] = currBlock.key;
-        }
 
-        this.setState({
-            timeline:timelineList
-        });
+            this.setState({
+                timeline:timelineList
+            });
+        }
+        catch{
+
+        }
 
         var checkedChildren = {};
         if(!isNullOrUndefined(currBlock.children)){
             currBlock.children.forEach((childBlockId) => {
                 
                 // Check for false children and duplicate children 
-                if(this.state.blockTree[childBlockId].previousKey == nodeId && !(childBlockId in checkedChildren))
-                    this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                if(this.state.blockTree[childBlockId].previousKey == nodeId && !(childBlockId in checkedChildren)){
+                    try{
+                        this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                    }
+                    catch{
+
+                    }
+                }
                 checkedChildren[childBlockId] = true;
             });
         }
@@ -667,13 +681,17 @@ class ViewBlockprobePrivateComponent extends React.Component {
         var blockStatus = {};
         var modifyRef = {};
 
-        this.traverseBlockTree(
-            this.state.genesisBlockId, 
-            timelineList, 
-            timelineBlockStatus,
-            blockList,
-            blockStatus,
-            modifyRef);
+        try{
+            this.traverseBlockTree(
+                this.state.genesisBlockId, 
+                timelineList, 
+                timelineBlockStatus,
+                blockList,
+                blockStatus,
+                modifyRef);    
+        }
+        catch{
+        }
 
         // console.log(blockList);
         // console.log(blockStatus);
