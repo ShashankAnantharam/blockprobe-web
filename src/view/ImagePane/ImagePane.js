@@ -250,6 +250,8 @@ class ImagePaneView extends React.Component {
                 imageUploadtype: 1
             }
 
+            await pathRef.delete();
+
             await firebase.firestore().collection("Blockprobes").
                 doc(scope.props.bId).collection("images").
                 doc(newImage.entity).set(newImage);
