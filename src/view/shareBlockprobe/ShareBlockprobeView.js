@@ -57,6 +57,8 @@ class ShareBlockprobeComponent extends React.Component {
           urlPrefix: 'https://blprobe.com/view/',
           blocksUploaded: true,
           imageUploaded: true,
+          didPublishBlocksInSession: false,
+          didPublishImagesInSession: false,
           unpublishingBlocks: false,
           unpublishingImages: false,
           isBlockprobeAlreadyPublished: false,
@@ -154,6 +156,11 @@ class ShareBlockprobeComponent extends React.Component {
 
                 {this.state.isBlockprobeAlreadyPublished?
                 <div>
+                    {this.state.didPublishBlocksInSession && this.state.didPublishImagesInSession?
+                        <p className='publish-story-message'>Your latest story has been succesfully published</p>
+                        :
+                        null
+                    }                    
                     <div className='share-section-heading'>
                         Public Link
                         <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
@@ -259,11 +266,17 @@ class ShareBlockprobeComponent extends React.Component {
                     }
         
                 }).then(
-                    this.setState({blocksUploaded: true})
+                    this.setState({
+                        blocksUploaded: true,
+                        didPublishBlocksInSession: true
+                    })
                 );
         }
         else{
-            this.setState({blocksUploaded: true});
+            this.setState({
+                blocksUploaded: true,
+                didPublishBlocksInSession: true
+            });
         }
 
         //Add images
@@ -285,12 +298,18 @@ class ShareBlockprobeComponent extends React.Component {
                     }
         
                 }).then(
-                    this.setState({imageUploaded: true})
+                    this.setState({
+                        imageUploaded: true,
+                        didPublishImagesInSession: true
+                    })
                 );
 
         }
         else{
-            this.setState({imageUploaded: true});
+            this.setState({
+                imageUploaded: true,
+                didPublishImagesInSession: true
+            });
         }
 
         this.setState({isBlockprobeAlreadyPublished: true});
@@ -311,7 +330,8 @@ class ShareBlockprobeComponent extends React.Component {
                     });        
                 }).then(
                     scope.setState({
-                        unpublishingBlocks: false
+                        unpublishingBlocks: false,
+                        didPublishBlocksInSession: false
                     })
                 );
             firebase.firestore().collection("public").doc(this.props.bpId)
@@ -323,7 +343,8 @@ class ShareBlockprobeComponent extends React.Component {
         
                 }).then(
                     scope.setState({
-                        unpublishingImages: false
+                        unpublishingImages: false,
+                        didPublishImagesInSession: false
                     })
                 );       
 

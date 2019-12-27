@@ -8,6 +8,11 @@
     cursor: pointer;
 }
 
+.publish-story-message{
+    margin-left: 10px; 
+    font-size: 10px;
+}
+
 .share-section-heading{
     margin-top:30px; 
     font-weight:500;
