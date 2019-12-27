@@ -133,22 +133,22 @@ class ShareBlockprobeComponent extends React.Component {
                         />   
                     </div>
                     :
-                    <div style={{display:'flex'}}>
-                        {this.state.isBlockprobeAlreadyPublished?
-                            <button
-                            className="unpublishBlockprobeButton"
-                            onClick={this.unpublishStory}>
-                                <div>Unpublish story</div>
-                            </button>
-                            :
-                            null
-                        }
-                            
+                    <div style={{display:'flex'}}>                            
                             <button
                             className="publishBlockprobeButton"
                             onClick={this.publishStory}>
-                                <div>Publish story</div>
+                                <div>Publish latest story</div>
                             </button>
+
+                            {this.state.isBlockprobeAlreadyPublished?
+                                <button
+                                className="unpublishBlockprobeButton"
+                                onClick={this.unpublishStory}>
+                                    <div>Unpublish story</div>
+                                </button>
+                                :
+                                null
+                            }
                     </div>
                 }        
 

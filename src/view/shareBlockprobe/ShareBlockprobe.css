@@ -28,7 +28,7 @@
 }
 
 .unpublishBlockprobeButton{
-    background:rgb(12, 52, 231);
+    background:rgb(252, 31, 31);
     color:rgb(219, 243, 242);
     margin-left:1em;
     margin-top:0;
@@ -41,7 +41,7 @@
 }
 
 .publishBlockprobeButton{
-    background:rgb(12, 52, 231);
+    background:rgb(4, 59, 2);
     color:rgb(219, 243, 242);
     margin-left:1em;
     margin-top:0;
