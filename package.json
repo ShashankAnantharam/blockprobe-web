@@ -17,6 +17,7 @@
     "rc-time-picker": "^3.6.4",
     "react": "^16.8.3",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-app-polyfill": "^1.0.5",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-slider": "^2.2.2",
     "react-chat-ui": "^0.3.2",
