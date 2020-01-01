@@ -98,6 +98,9 @@ class GraphComponent extends React.Component {
         }
         if(this.props.setScrollToGraphList)
             this.props.setScrollToGraphList(amount);
+
+        let blocksDisplay = document.getElementById('graph-selected-block-list');
+        blocksDisplay.scrollTop = 0;    
     }
 
     isValidBlock(block){
@@ -746,7 +749,7 @@ class GraphComponent extends React.Component {
                             </div> 
                             <Expand 
                                 open={this.state.openSelectedBlocks}
-                                duration={1000}
+                                duration={400}
                                 transitions={transitions}>
                                 <div className='graph-block-list-container' id="graph-selected-block-list">
                                     {renderBlocks}
