@@ -99,7 +99,7 @@ class AmGraph extends React.Component {
         });
         outlineCircle.propertyFields.disabled = 'imageDisabled';        
 
-        series.centerStrength = 0.25;
+        series.centerStrength = 0.55;
         series.manyBodyStrength = -38;
         series.links.template.strength = 0.5;
         series.links.template.strokeWidth = 5;
