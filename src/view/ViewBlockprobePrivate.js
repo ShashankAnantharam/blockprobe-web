@@ -24,6 +24,7 @@ import { isNullOrUndefined } from 'util';
 import UserBlocksComponent from '../user-session/UserBlocksComponent';
 import Joyride from 'react-joyride';
 import Loader from 'react-loader-spinner';
+import BpDetail from './BpDetails/BpDetails';
 import * as Utils from '../common/utilSvc';
 import { utils } from '@amcharts/amcharts4/core';
 
@@ -37,7 +38,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
             uIdHash: "",
             shajs: null,
             genesisBlockId: "",
-            blockprobeTitle: "",
+            blockprobeTitle: null,
+            bpDetailsLastTs: 0,
             blockprobeSummary: "",
             bpDetails: {},
             modifyRef: {},
@@ -365,6 +367,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             this.setState({
                 genesisBlockId: block.key,
                 blockprobeTitle: block.title,
+                bpDetailsLastTs: 0,
                 blockprobeSummary: block.summary
             })
         }
@@ -379,6 +382,20 @@ class ViewBlockprobePrivateComponent extends React.Component {
             
         try{
             // console.log(nodeId);
+
+            //ONLY TITLE OR SUMMARY CHANGE
+            if(currBlock.actionType!="BpDetails"){
+                let currTs = currBlock.timestamp;
+                let prevTs = this.state.bpDetailsLastTs;
+
+                if(!isNullOrUndefined(currTs) && currTs > prevTs){
+                    this.setState({
+                        title: currBlock.title,
+                        summary: currBlock.summary,
+                        bpDetailsLastTs: currTs
+                    })
+                }
+            }
 
             //Generic block
             if(currBlock.actionType!="REMOVE"){
@@ -848,7 +865,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             this.setState({
                 bpDetails: snapshot.data()
             })
-           // console.log(snapshot.data())
+            // console.log(snapshot.data())
             var loadingState = this.state.isloading;
             loadingState.bpDetails = false;
             this.setState({
@@ -1150,7 +1167,15 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     </button>
                 </div>
                 <div className="blockprobe-header"> 
-                    <h2>{this.state.blockprobeTitle}</h2>
+                       {!isNullOrUndefined(this.state.blockprobeTitle)?
+                            <BpDetail 
+                                type = "title"
+                                value = {this.state.blockprobeTitle}
+                                lastTs = {this.state.bpDetailsLastTs}
+                                permit = {this.props.permit}></BpDetail>
+                                :
+                            null
+                        }                                       
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 

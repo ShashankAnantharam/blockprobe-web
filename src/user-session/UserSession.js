@@ -450,7 +450,8 @@ class UserSession extends React.Component {
                             bId={this.state.selectedBlockprobeId} 
                             uId={this.state.userId}
                             permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}
-                            buildStorytooltip={this.state.tooltip.buildStory}/>
+                            buildStorytooltip={this.state.tooltip.buildStory}
+                            prevTitle={this.state.blockprobes[this.state.selectedBlockprobeId].title}/>
                         </div>    
                     }
                 </div>

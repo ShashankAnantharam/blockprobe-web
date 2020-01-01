@@ -1,7 +1,7 @@
 .blockprobe-header{
     text-align: center;
     margin-bottom: 15px;
-    margin-top:-20px;
+    margin-top:-5px;
 }
 
 .blockprobe-body{
@@ -19,6 +19,19 @@
 }
 
 .menu-button:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
+.edit-bpTitle-button{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    margin-bottom:1em;
+    size:2.6em;
+    border:none;
+}
+
+.edit-bpTitle-button:hover{
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
