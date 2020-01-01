@@ -384,14 +384,14 @@ class ViewBlockprobePrivateComponent extends React.Component {
             // console.log(nodeId);
 
             //ONLY TITLE OR SUMMARY CHANGE
-            if(currBlock.actionType!="BpDetails"){
+            if(currBlock.actionType=="BpDetails"){
                 let currTs = currBlock.timestamp;
                 let prevTs = this.state.bpDetailsLastTs;
 
                 if(!isNullOrUndefined(currTs) && currTs > prevTs){
                     this.setState({
-                        title: currBlock.title,
-                        summary: currBlock.summary,
+                        blockprobeTitle: currBlock.title,
+                        blockprobeSummary: currBlock.summary,
                         bpDetailsLastTs: currTs
                     })
                 }
@@ -1039,9 +1039,27 @@ class ViewBlockprobePrivateComponent extends React.Component {
         newBlock.timestamp = Date.now(); 
         newBlock.verificationHash = newBlockId;
         newBlock.previousKey = this.state.latestBlock.key;
-        if(newBlock.actionType == "ADD"){
+        if(!("bpID" in newBlock)){
+            newBlock.bpID = this.props.bId;
+        }
+        if(!("entities" in newBlock)){
+            newBlock.entities = [];
+        }
+        if(!("evidences" in newBlock)){
+            newBlock.evidences = [];
+        }
+        if(newBlock.actionType == "ADD" || newBlock.actionType == "BpDetails"){
             newBlock.referenceBlock = null;
         }
+        if(newBlock.actionType == "BpDetails"){
+            if(!('title' in newBlock)){
+                newBlock.title = this.state.blockprobeTitle;
+            }
+            if(!('summary' in newBlock)){
+                newBlock.summary = this.state.blockprobeSummary;
+            }
+        }
+
         newBlock.key = this.state.shajs('sha256').update(newBlockId + newBlock.previousKey).digest('hex');            
         if(isNullOrUndefined(newBlock.blockDate)){
             newBlock.blockDate = null;
@@ -1057,28 +1075,32 @@ class ViewBlockprobePrivateComponent extends React.Component {
         delete committedBlock["children"];
         //console.log(newBlock);
         //console.log(committedBlock);
-
-        await firebase.database().ref("Blockprobes/"+newBlock.bpID
-        +"/reviewBlocks/"+oldKey).remove();
-
-        await firebase.firestore().collection("Blockprobes").
-            doc(newBlock.bpID).
-            collection("users").doc(this.state.uIdHash).
-            collection("userBlocks").
-            doc(oldKey).delete();
         
-        await firebase.firestore().collection("Blockprobes").
-            doc(newBlock.bpID).
-            collection("users").doc(this.state.uIdHash).
-            collection("userBlocks").
-            doc(newBlock.key).set(newBlock);
+        if(oldKey){
+            await firebase.database().ref("Blockprobes/"+newBlock.bpID
+                +"/reviewBlocks/"+oldKey).remove();
+
+            await firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(oldKey).delete();
+        }
+        
+        if(!(newBlock.actionType == "BpDetails")){
+            await firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(newBlock.key).set(newBlock);
+        }
         
         await firebase.firestore().collection("Blockprobes").
             doc(newBlock.bpID).
             collection("fullBlocks").
             doc(committedBlock.key).set(committedBlock);
 
-            this.refreshBlockprobe();
+        this.refreshBlockprobe();
     }
 
     render(){
@@ -1172,7 +1194,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                                 type = "title"
                                 value = {this.state.blockprobeTitle}
                                 lastTs = {this.state.bpDetailsLastTs}
-                                permit = {this.props.permit}></BpDetail>
+                                permit = {this.props.permit}
+                                commitBlockToBlockprobe = {this.commitBlockToBlockprobe}></BpDetail>
                                 :
                             null
                         }                                       

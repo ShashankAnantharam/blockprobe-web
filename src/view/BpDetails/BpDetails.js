@@ -50,6 +50,15 @@ class BpDetail extends React.Component {
             this.setState({
                 clickedOnEdit: false
             });
+            let newblock = {
+                actionType: 'BpDetails',
+                timestamp: Date.now() 
+            }
+
+            if(this.props.type == 'title'){
+                newblock['title'] = this.state.newValue;
+            }
+            this.props.commitBlockToBlockprobe(newblock);
         }
     }
 
