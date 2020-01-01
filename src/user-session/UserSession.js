@@ -114,6 +114,7 @@ class UserSession extends React.Component {
         this.cueCardView = this.cueCardView.bind(this);
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
+        this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -232,6 +233,12 @@ class UserSession extends React.Component {
                                 this.addBlockprobeToList(data);
                             }
                             //console.log('New block: ', change.doc.data().timestamp);
+                        }
+                        else if (change.type == 'modified'){
+                            let data = change.doc.data();
+                            if(data){
+                                this.addBlockprobeToList(data);
+                            }
                         }
                     }); 
                 });
@@ -382,6 +389,14 @@ class UserSession extends React.Component {
 
       }
 
+      async modifyBlockprobe(type, blockprobe){
+          if(type=='update'){
+             // console.log('Users/'+ this.state.userId +'/blockprobes/'+blockprobe.id);
+             // console.log(blockprobe);
+                await firebase.firestore().collection('Users').doc(this.state.userId)
+                    .collection('blockprobes').doc(blockprobe.id).set(blockprobe);
+          }
+      }
 
       loggedInContent(){
          // console.log(this.state.blockprobes);
@@ -451,7 +466,9 @@ class UserSession extends React.Component {
                             uId={this.state.userId}
                             permit={this.state.blockprobes[this.state.selectedBlockprobeId].permit}
                             buildStorytooltip={this.state.tooltip.buildStory}
-                            prevTitle={this.state.blockprobes[this.state.selectedBlockprobeId].title}/>
+                            prevTitle={this.state.blockprobes[this.state.selectedBlockprobeId].title}
+                            currBlockprobe={this.state.blockprobes[this.state.selectedBlockprobeId]}
+                            modifyBlockprobe={this.modifyBlockprobe}/>
                         </div>    
                     }
                 </div>

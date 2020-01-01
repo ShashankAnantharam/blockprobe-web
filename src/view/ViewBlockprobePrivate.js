@@ -705,7 +705,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 timelineBlockStatus,
                 blockList,
                 blockStatus,
-                modifyRef);    
+                modifyRef); 
+                
+                // console.log(this.props.prevTitle);
+                // console.log(this.state.blockprobeTitle);
+                if(this.props.prevTitle != this.state.blockprobeTitle){
+                    let currBlockprobe = JSON.parse(JSON.stringify(this.props.currBlockprobe));
+                    currBlockprobe.title = this.state.blockprobeTitle;
+                    currBlockprobe.timestamp = this.state.bpDetailsLastTs;
+                    this.props.modifyBlockprobe('update', currBlockprobe);
+                }
         }
         catch{
         }
