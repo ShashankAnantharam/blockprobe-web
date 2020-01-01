@@ -33,6 +33,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.state={
             genesisBlockId: "",
             blockprobeTitle: "",
+            bpDetailsLastTs: 0,
             blockprobeSummary: "",
             selectedBlock:"", 
             blockTree: {},
@@ -114,6 +115,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                  this.setState({
                      genesisBlockId: block.key,
                      blockprobeTitle: block.title,
+                     bpDetailsLastTs: 0,
                      blockprobeSummary: block.summary
                  })
              }
@@ -129,6 +131,20 @@ class ViewBlockprobePublicComponent extends React.Component {
 
         try{
             // console.log(nodeId);
+
+            //ONLY TITLE OR SUMMARY CHANGE
+            if(currBlock.actionType=="BpDetails"){
+                let currTs = currBlock.timestamp;
+                let prevTs = this.state.bpDetailsLastTs;
+
+                if(!isNullOrUndefined(currTs) && currTs > prevTs){
+                    this.setState({
+                        blockprobeTitle: currBlock.title,
+                        blockprobeSummary: currBlock.summary,
+                        bpDetailsLastTs: currTs
+                    })
+                }
+            }
 
             //Generic block
             if(currBlock.actionType!="REMOVE"){
