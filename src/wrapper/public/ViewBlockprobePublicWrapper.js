@@ -13,7 +13,11 @@ class ViewBlockprobePublicWrapper extends React.Component {
       if(props.match.params.viewType && 
         props.match.params.viewType == 'graph'){
             this.state.selectedVisualisation = 'graph';
-      }   
+      }
+      else if(props.match.params.viewType && 
+        props.match.params.viewType == 'tabs'){
+          this.state.selectedVisualisation = 'tabs_all';
+        }   
     }
      
     render() {

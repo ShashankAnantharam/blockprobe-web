@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import './ViewBlockprobePublic.css';
 import ReactGA from 'react-ga';
 import DashboardViewComponent from "../viso/dashboard/DashboardView";
+import MiniDashboardViewComponent from "../viso/dashboard/MiniDashboardView";
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
@@ -66,7 +67,10 @@ class ViewBlockprobePublicComponent extends React.Component {
         ReactGA.pageview('/viewBlockprobePublic');
 
         if(this.props.visulationType == 'graph'){
-                this.state.selectedVisualisation = 'graph';
+            this.state.selectedVisualisation = 'graph';
+        }
+        else if(this.props.visulationType == 'tabs_all'){
+            this.state.selectedVisualisation = 'tabs_all';
         }
 
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
@@ -547,6 +551,22 @@ class ViewBlockprobePublicComponent extends React.Component {
                         setScrollToGraphList ={this.setScrollToGraphList}                 
                         imageMapping={this.state.imageMapping}
                     />
+                </div>
+            );
+        }
+        else if(this.state.selectedVisualisation == "tabs_all"){
+            return(
+                <div>
+                    <MiniDashboardViewComponent
+                                summaryBlocks = {this.state.summaryList}
+                                blockTree={this.state.blockTree} 
+                                investigationGraph={this.state.investigationGraph}
+                                selectBlock={this.changeSelectedBlock}
+                                multiSelectEntityList = {this.state.multiSelectEntityList}
+                                timeline={this.state.timeline}    
+                                imageMapping={this.state.imageMapping}
+                                setScrollToGraphList ={this.setScrollToGraphList}                 
+                            />
                 </div>
             );
         }
