@@ -103,6 +103,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.formatParas = this.formatParas.bind(this);
         this.isValidNlpEntity = this.isValidNlpEntity.bind(this);
         this.isDate = this.isDate.bind(this);
+        this.isLocation = this.isLocation.bind(this);        
         this.isRepeatedNlpEntity = this.isRepeatedNlpEntity.bind(this);
         this.saveDraftInBulk = this.saveDraftInBulk.bind(this);
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
@@ -202,6 +203,12 @@ class BulkDraftBlockComponent extends React.Component {
         }
       }
 
+    isLocation(nlpEntity){
+        if(nlpEntity.type != 'LOCATION')
+            return false;
+        return true;
+    }
+
      isValidNlpEntity(nlpItem, nounType){
 
         if(isNullOrUndefined(nlpItem))
@@ -258,6 +265,7 @@ class BulkDraftBlockComponent extends React.Component {
         var nlpEntities = [];
         var nlpCommonNounEntities = [];
         let nlpDates = [];
+        let nlpLocations = [];
         for(var i=0;i<bulkBlocks.length;i++){
             concatSummaryText += bulkBlocks[i].body;
             concatSummaryText += '.';
@@ -279,7 +287,7 @@ class BulkDraftBlockComponent extends React.Component {
                     // console.log(result.data);
                     for(var j=0;j<result.data.length;j++){
                         result.data[j].name = this.makeEntityUppercase(result.data[j].name);
-                        if(this.isValidNlpEntity(result.data[j],'PROPER') &&  !this.isRepeatedNlpEntity(result.data[j])){
+                        if(this.isValidNlpEntity(result.data[j],'PROPER') && !this.isLocation(result.data[j]) &&  !this.isRepeatedNlpEntity(result.data[j])){
                             nlpEntities.push(result.data[j]);
                         }
                         if(this.isValidNlpEntity(result.data[j],'COMMON') &&  !this.isRepeatedNlpEntity(result.data[j])){
@@ -287,6 +295,9 @@ class BulkDraftBlockComponent extends React.Component {
                         }
                         if(this.isDate(result.data[j])){
                             nlpDates.push(result.data[j]);
+                        }
+                        if(this.isLocation){
+                            nlpLocations.push(result.data[j]);
                         }
                     }
                 }
@@ -335,7 +346,7 @@ class BulkDraftBlockComponent extends React.Component {
              }
 
              //If entities are less, use common nouns also
-             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length<=1; j++){
+             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length==0; j++){
                 var key = nlpCommonNounEntities[j].name;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({
