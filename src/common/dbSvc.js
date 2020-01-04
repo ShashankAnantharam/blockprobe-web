@@ -10,7 +10,7 @@ export const writePostListToDb =(postList, userId, successFn, errorFn)=>{
         collection("userPosts").get().then((snapshot) => {
                 
             snapshot.forEach((doc) => {
-                var ref = firebase.firestore().collection("publicWall").doc(userId).
+                firebase.firestore().collection("publicWall").doc(userId).
                 collection("userPosts").doc(doc.id).delete();
             });
                 

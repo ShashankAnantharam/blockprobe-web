@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import StyleFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { isNullOrUndefined } from 'util';
 import * as Utils from '../common/utilSvc';
+import * as DbUtils from "../common/dbSvc";
 import './UserSession.css';
 import UserBlockprobesComponent from './UserBlockprobes';
 import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
