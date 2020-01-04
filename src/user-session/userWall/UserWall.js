@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './UserWall.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class UserWall extends React.Component {
@@ -17,8 +18,8 @@ class UserWall extends React.Component {
         }
         return (
             <div>
-                <h5>{post.title}</h5>
-                <iframe src={link}></iframe>
+                <h5 className="wallPostTitle">{post.title}</h5>
+                <iframe src={link} className="wallPostViso"></iframe>
             </div>
         )
     }
