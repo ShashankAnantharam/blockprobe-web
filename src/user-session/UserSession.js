@@ -15,6 +15,7 @@ import PoliceLogo from "./icons/police.png";
 import PoliticianLogo from "./icons/political.png";
 import TeacherLogo from "./icons/teacher.png";
 import MainLogo from "./icons/logo.png";
+import UserWall from "./userWall/UserWall";
 import Joyride from 'react-joyride';
 import {Container, Row, Col} from 'react-bootstrap';
 import {
@@ -65,6 +66,7 @@ class UserSession extends React.Component {
         this.state={
             isUserSignedIn: this.getItemWrapper('isUserSignedIn',false), //false,
             showLogin: true,
+            isWallOpened: false,
             selectedBlockprobeId: '',
             userId: this.getItemWrapper('userId',''),//'',
             providerId: this.getItemWrapper('providerId',''),//'',
@@ -119,7 +121,9 @@ class UserSession extends React.Component {
         this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
         this.getUserWall = this.getUserWall.bind(this);
         this.buildUserWall = this.buildUserWall.bind(this);
+        this.viewWall = this.viewWall.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
+        this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -153,6 +157,14 @@ class UserSession extends React.Component {
 
       returnToViewBlockprobes(){
           this.setState({
+              selectedBlockprobeId: '',
+              isWallOpened: false
+          });
+      }
+
+      viewWall(){
+          this.setState({
+              isWallOpened: true,
               selectedBlockprobeId: ''
           });
       }
@@ -317,6 +329,7 @@ class UserSession extends React.Component {
           tooltip.buildStory = buildStory;
           this.setState({
               selectedBlockprobeId: blockprobeId,
+              isWallOpened: false,
               tooltip: tooltip
           })
 
@@ -359,7 +372,8 @@ class UserSession extends React.Component {
         await localStorage.removeItem('userId');
         await localStorage.removeItem('providerId');
         await this.setState({
-            isUserSignedIn: false
+            isUserSignedIn: false,
+            isWallOpened: false
         });        
         window.location.href = "/";
       }
@@ -431,6 +445,26 @@ class UserSession extends React.Component {
           }
       }
 
+      renderGeneralLoggedInView(){
+          if(this.state.isWallOpened){
+              return (
+                  <UserWall
+                    posts = {this.state.posts}
+                  />
+              );
+          }
+
+          return(
+            <UserBlockprobesComponent 
+                blockprobes={this.state.blockprobes}
+                selectedBlockprobe = {this.state.selectedBlockprobeId}
+                selectBlockprobe = {this.selectBlockprobe}
+                uId={this.state.userId}
+                buildStorytooltip={this.state.tooltip.buildStory}
+                />
+          );
+      }
+
       loggedInContent(){
          // console.log(this.state.blockprobes);
          if(this.state.userId!=''){
@@ -448,13 +482,9 @@ class UserSession extends React.Component {
                                     /> 
                                 </div>
                                 :
-                                <UserBlockprobesComponent 
-                                blockprobes={this.state.blockprobes}
-                                selectedBlockprobe = {this.state.selectedBlockprobeId}
-                                selectBlockprobe = {this.selectBlockprobe}
-                                uId={this.state.userId}
-                                buildStorytooltip={this.state.tooltip.buildStory}
-                                />
+                                <div>
+                                    {this.renderGeneralLoggedInView()}
+                                </div>
                         }
                     </div>
                         : 
@@ -479,8 +509,9 @@ class UserSession extends React.Component {
                         <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
                         <div className="spacer" />
                         <div className="toolbar__navigation-items">
-                            <ul> 
-                                <li><a onClick={() => this.returnToViewBlockprobes()}>Home</a></li>
+                            <ul>
+                                <li><a onClick={() => this.returnToViewBlockprobes()}>Home</a></li> 
+                                <li><a onClick={() => this.viewWall()}>Wall</a></li>
                                 <li className="userName" style={{color:'white'}}>{this.state.userId}</li>
                                 <li><a onClick={() => this.logout()}>Logout</a></li>
                             </ul>
