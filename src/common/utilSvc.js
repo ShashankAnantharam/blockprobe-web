@@ -122,6 +122,37 @@ export const getShortenedListOfImages = (imageMapping) => {
     return allImages;
 }
 
+export const getShortenedListOfPosts = (posts) => {    
+    let count=0;
+    let allPosts = [], currPostPage = [];
+    if(posts!=null){
+        for(let i=0; i<posts.length; i++){
+                if(count && count%100 == 0){
+                    let page = {
+                        posts: currPostPage
+                    };
+                    allPosts.push(page);
+                    currPostPage = [];
+                }
+                let post = posts[i];
+                if(!isNullOrUndefined(post)){
+                    currPostPage.push(post);
+                    count++;        
+                }
+            }
+    } 
+    
+    if(currPostPage.length > 0){
+        let page = {
+            posts: currPostPage
+        };
+        allPosts.push(page);
+        currPostPage = [];
+    }
+       
+    return allPosts;    
+}
+
 export const  extractBlockIndex = (block)=>{
     if(isNullOrUndefined(block))
         return null;    

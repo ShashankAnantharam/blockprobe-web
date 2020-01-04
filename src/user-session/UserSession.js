@@ -194,7 +194,7 @@ class UserSession extends React.Component {
         }
       }
 
-      getLatestTimestamp(snapshot){
+    getLatestTimestamp(snapshot){
         let timestampLatest = 0;
         snapshot.forEach((doc) => { 
             let data = doc.data().blockprobe;
@@ -212,7 +212,8 @@ class UserSession extends React.Component {
                 this.buildUserWall(snapshot);
         });
     }
-    async buildUserWall(snapshot){
+    
+    buildUserWall(snapshot){
         let postList = [];
         snapshot.forEach((doc) => {
                 let data =doc.data();
@@ -366,6 +367,7 @@ class UserSession extends React.Component {
         if(this.state.isUserSignedIn){
             this.getAndSetUser();
             this.getBlockprobes();
+            this.getUserWall();
         }
 
             firebase.auth().onAuthStateChanged(user =>{
