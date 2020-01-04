@@ -68,6 +68,7 @@ class UserSession extends React.Component {
             userId: this.getItemWrapper('userId',''),//'',
             providerId: this.getItemWrapper('providerId',''),//'',
             blockprobes: {},
+            posts: [],
             areBlockprobesLoading: false,
             tooltip:{
                 buildStory: false
@@ -115,6 +116,8 @@ class UserSession extends React.Component {
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
         this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
+        this.getUserWall = this.getUserWall.bind(this);
+        this.buildUserWall = this.buildUserWall.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -202,6 +205,25 @@ class UserSession extends React.Component {
         }); 
         return timestampLatest;
       }
+
+    getUserWall(){
+        firebase.firestore().collection("publicWall").doc(this.state.userId).
+        collection("userPosts").get().then((snapshot) => {
+                this.buildUserWall(snapshot);
+        });
+    }
+    async buildUserWall(snapshot){
+        let postList = [];
+        snapshot.forEach((doc) => {
+                let data =doc.data();
+                for(let i=0; data && data.posts && i<data.posts.length;i++){
+                    postList.push(data.posts[i]);
+                }
+            });   
+        this.setState({
+            posts: postList
+        });        
+    }
 
       updateShortenedBlockprobesListToDb(){
         let allBlockprobes = Utils.getShortenedListOfBlockprobes(this.state.blockprobes);
