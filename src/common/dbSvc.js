@@ -4,7 +4,7 @@ import * as Utils from './utilSvc';
 
 export const writePostListToDb =(postList, userId, successFn, errorFn)=>{
     let allPosts = Utils.getShortenedListOfPosts(postList);
-    if(allPosts &&  allPosts.length>0){
+    if(allPosts){
 
         firebase.firestore().collection("publicWall").doc(userId).
         collection("userPosts").get().then((snapshot) => {
@@ -18,11 +18,12 @@ export const writePostListToDb =(postList, userId, successFn, errorFn)=>{
                 firebase.firestore().collection("publicWall").doc(userId).
                     collection("userPosts").doc(String(i)).set(allPosts[i]);        
             }
-            
-            successFn();
+            if(successFn)
+                successFn();
         },
         (error) => {
-            errorFn();
+            if(errorFn)
+                errorFn();
         });
     }
 }

@@ -119,6 +119,7 @@ class UserSession extends React.Component {
         this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
         this.getUserWall = this.getUserWall.bind(this);
         this.buildUserWall = this.buildUserWall.bind(this);
+        this.updatePosts = this.updatePosts.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -414,6 +415,13 @@ class UserSession extends React.Component {
 
       }
 
+      updatePosts(posts){
+         DbUtils.writePostListToDb(posts, this.state.userId);
+          this.setState({
+              posts: posts
+          });
+      }
+
       async modifyBlockprobe(type, blockprobe){
           if(type=='update'){
              // console.log('Users/'+ this.state.userId +'/blockprobes/'+blockprobe.id);
@@ -493,7 +501,9 @@ class UserSession extends React.Component {
                             buildStorytooltip={this.state.tooltip.buildStory}
                             prevTitle={this.state.blockprobes[this.state.selectedBlockprobeId].title}
                             currBlockprobe={this.state.blockprobes[this.state.selectedBlockprobeId]}
-                            modifyBlockprobe={this.modifyBlockprobe}/>
+                            modifyBlockprobe={this.modifyBlockprobe}
+                            posts={this.state.posts}
+                            updatePosts={this.updatePosts}/>
                         </div>    
                     }
                 </div>

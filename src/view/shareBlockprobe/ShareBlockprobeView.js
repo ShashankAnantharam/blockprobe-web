@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Loader from 'react-loader-spinner';
 import * as Utils from '../../common/utilSvc';
+import * as DbUtils from "../../common/dbSvc";
 import {
     FacebookShareButton,
     LinkedinShareButton,
@@ -91,9 +92,21 @@ class ShareBlockprobeComponent extends React.Component {
       this.renderShareScreen = this.renderShareScreen.bind(this);
       this.showLocalTooltip = this.showLocalTooltip.bind(this);
       this.unpublishStory = this.unpublishStory.bind(this);
-      this.publishStory = this.publishStory.bind(this);      
+      this.publishStory = this.publishStory.bind(this);  
+      this.addStoryToWall = this.addStoryToWall.bind(this);    
+      this.removeStoryFromWall = this.removeStoryFromWall.bind(this);
       this.isAnyOptionClicked = this.isAnyOptionClicked.bind(this);
+      this.isStoryAlreadyAdded = this.isStoryAlreadyAdded.bind(this);
       this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);            
+    }
+
+    isStoryAlreadyAdded(){
+        let posts = this.props.posts;
+        for(let i=0; posts && i < posts.length; i++){
+            if(posts[i].bp == this.props.bpId)
+                return true;
+        }
+        return false;
     }
 
     showLocalTooltip(type){
@@ -119,6 +132,32 @@ class ShareBlockprobeComponent extends React.Component {
            }
            this.setState({adhocTooltip: adhocTooltip});
        }
+   }
+
+   async addStoryToWall(){
+       let posts = this.props.posts;
+
+       if(!this.isStoryAlreadyAdded()){
+           posts.push({
+               title: this.props.title,
+               bp: this.props.bpId
+           });           
+           this.props.updatePosts(posts);
+       }
+   }
+
+   async removeStoryFromWall(){
+    let posts = this.props.posts;
+
+    if(this.isStoryAlreadyAdded()){
+        let newPosts = [];
+        for(let i=0; i<posts.length; i++){
+            if(posts[i].bp != this.props.bpId){
+                newPosts.push(posts[i]);
+            }
+        }        
+        this.props.updatePosts(newPosts);
+    }
    }
 
     renderShareScreen(){
@@ -147,6 +186,28 @@ class ShareBlockprobeComponent extends React.Component {
                                 className="unpublishBlockprobeButton"
                                 onClick={this.unpublishStory}>
                                     <div>Unpublish story</div>
+                                </button>
+                                :
+                                null
+                            }
+
+                            {this.state.isBlockprobeAlreadyPublished && 
+                                !this.isStoryAlreadyAdded()?
+                                <button
+                                className="addToWallButton"
+                                onClick={this.addStoryToWall}>
+                                    <div>Add story to my wall</div>
+                                </button>
+                                :
+                                null
+                            }
+
+                            {this.state.isBlockprobeAlreadyPublished && 
+                                this.isStoryAlreadyAdded()?
+                                <button
+                                className="addToWallButton"
+                                onClick={this.removeStoryFromWall}>
+                                    <div>Remove story from my wall</div>
                                 </button>
                                 :
                                 null

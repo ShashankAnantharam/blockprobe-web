@@ -104,7 +104,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             }
         }
 
-        //props include bId, uId
+        //props include bId, uId, posts, updatePosts
         var shajs = require('sha.js');
         this.state.uIdHash = shajs('sha256').update(this.props.uId).digest('hex');
         this.state.shajs = shajs;
@@ -1002,6 +1002,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     permit = {this.props.permit}
                     blockTree = {this.state.blockTree}
                     imageMapping = {this.state.imageMapping}
+                    posts = {this.props.posts}
+                    title = {this.state.blockprobeTitle}
+                    updatePosts = {this.props.updatePosts}
                     />
                 </div>
             )
