@@ -714,6 +714,20 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     currBlockprobe.title = this.state.blockprobeTitle;
                     currBlockprobe.timestamp = this.state.bpDetailsLastTs;
                     this.props.modifyBlockprobe('update', currBlockprobe);
+
+                    let posts = this.props.posts;
+                    let index = -1;
+                    for(let i=0; i<posts.length; i++){
+                        if(posts[i].bp == this.props.bId){
+                            index = i;
+                            break;
+                        }
+                    }        
+                    if(index > -1){
+                        posts[index].title = this.state.blockprobeTitle;
+                        this.props.updatePosts(posts,this.props.bId);
+                    }
+                
                 }
         }
         catch{
@@ -1207,6 +1221,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                                 value = {this.state.blockprobeTitle}
                                 lastTs = {this.state.bpDetailsLastTs}
                                 permit = {this.props.permit}
+                                posts = {this.props.posts}
                                 commitBlockToBlockprobe = {this.commitBlockToBlockprobe}></BpDetail>
                                 :
                             null
