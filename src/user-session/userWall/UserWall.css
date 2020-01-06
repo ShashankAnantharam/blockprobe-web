@@ -3,7 +3,7 @@
     background: #03035f;
     opacity: 0.8;
     padding: 10px;
-    font-size: 1.15em;
+    font-size: 20px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -31,8 +31,18 @@
     border:none;
 }
 
+.summaryChangeWallbutton{
+    background:rgb(116, 114, 4);
+    color:rgb(219, 243, 242);
+    margin-left: 1em;
+    margin-bottom: 1em;
+    size:2.6em;
+    border:none;
+}
+
 .wallPostBody{
     padding: 15px;    
+    padding-top: 5px;
 }
 
 .wallPostContainer{
@@ -43,3 +53,13 @@
     box-shadow: 2px 2px 10px 2px grey;
 }
 
+.wallPostSummary{
+    margin-left: 1em;
+    font-size: 16px;
+}
+
+.wallPostSummaryPrompt{
+    margin-left: 1em;
+    font-size: 16px;
+    font-style: italic;
+}

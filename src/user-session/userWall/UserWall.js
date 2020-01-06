@@ -10,11 +10,13 @@ class UserWall extends React.Component {
       //posts
 
       this.state = {
-          visualizedBps: {}
+          visualizedBps: {},
+          isEditSummary: false
       }
 
       this.renderSinglePost = this.renderSinglePost.bind(this);
       this.clickOnVisualizeButton = this.clickOnVisualizeButton.bind(this);
+      this.clickOnEdit = this.clickOnEdit.bind(this);
     }
 
     clickOnVisualizeButton(bp, val){
@@ -23,6 +25,14 @@ class UserWall extends React.Component {
         this.setState({
             visualizedBps: visMap
         });
+    }
+
+    clickOnEdit(type, value){
+        if(type == 'summary'){
+            this.setState({
+                isEditSummary: value
+            });
+        }
     }
 
     renderSinglePost(post, scope){
@@ -35,6 +45,40 @@ class UserWall extends React.Component {
         return (
             <div className="wallPostContainer">
                 <h5 className="wallPostTitle">{post.title}</h5>
+                {this.state.isEditSummary && this.props.isPrivate?
+                    <div style={{display: 'flex'}}>
+                        <button className="summaryChangeWallbutton" 
+                                onClick = {(e) => this.clickOnEdit('summary', false)}>
+                            Cancel
+                        </button>
+                    </div>
+                    :
+                    null
+                }
+                {!this.state.isEditSummary && this.props.isPrivate?
+                    <div>
+                        {post.summary && post.summary.length > 0? 
+                            <p className="wallPostSummary">{post.summary}</p>
+                            :
+                            <div style={{display: 'flex'}}>
+                                <p className="wallPostSummaryPrompt">Add a summary!</p>
+                                <button className="summaryChangeWallbutton" 
+                                onClick = {(e) => this.clickOnEdit('summary', true)}>
+                                    Edit summary
+                                </button>
+                            </div>
+                            }
+                    </div>
+                    :
+                    null
+                }
+
+                {!this.props.isPrivate && post.summary && post.summary.length > 0?
+                    <p className="wallPostSummary">{post.summary}</p>
+                    :
+                    null
+                }
+
                 <div className="wallPostBody">                           
                     {
                         this.state.visualizedBps[post.bp]?
