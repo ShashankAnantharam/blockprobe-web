@@ -1,10 +1,45 @@
 .wallPostTitle{
+    color: white;
+    background: #03035f;
+    opacity: 0.8;
+    padding: 10px;
+    font-size: 1.15em;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.wallPostVisoContainer{
+    height:800px;    
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
     text-align: center;
 }
 
 .wallPostViso{
-    height:800px;    
-    width: 90%;
-    margin-left: 5%;
-    text-align: center;
+    height: 100%;
+    width: 100%;
+    background: white;
+    border: black 1px solid;
 }
+
+.visualizeWallBpButton{
+    background:rgb(2, 1, 54);
+    color:rgb(219, 243, 242);
+    margin-left: 10px;
+    margin-bottom: 0.5em;
+    size:2.6em;
+    border:none;
+}
+
+.wallPostBody{
+    padding: 15px;    
+}
+
+.wallPostContainer{
+    margin: 1em;
+    background: #cad8da;
+    opacity: 0.8;
+    border-radius: 5px;    
+}
+

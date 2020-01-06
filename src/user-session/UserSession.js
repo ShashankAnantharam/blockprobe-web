@@ -424,6 +424,7 @@ class UserSession extends React.Component {
                     
                     this.getAndSetUser();
                     this.getBlockprobes();
+                    this.getUserWall();
                 }
             });
 
