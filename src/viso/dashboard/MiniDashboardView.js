@@ -144,7 +144,7 @@ class MiniDashboardViewComponent extends React.Component {
                     
                         {this.isTimelineAvailable()?
                             <TabPanel>
-                                <div class="contributions-timeline-container">
+                                <div>
                                     <TimelineComponent 
                                         timeline={this.props.timeline} 
                                         selectBlock={this.props.selectBlock}/>
