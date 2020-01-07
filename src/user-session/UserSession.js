@@ -452,6 +452,7 @@ class UserSession extends React.Component {
                   <UserWall
                     posts = {this.state.posts}
                     isPrivate = {true}
+                    updatePosts={this.updatePosts}
                   />
               );
           }

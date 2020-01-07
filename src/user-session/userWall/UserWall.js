@@ -60,7 +60,14 @@ class UserWall extends React.Component {
             let value = newSummary[post.bp];
 
             //update db using value
-            //console.log(value);
+            let posts = this.props.posts;
+            for(let i=0; i<posts.length; i++){
+                if(posts[i].bp == post.bp){
+                    posts[i]['summary'] = value;
+                    break;
+                }
+            }
+            this.props.updatePosts(posts);
 
             this.clickOnEdit('summary', false, post);
         }
@@ -73,11 +80,10 @@ class UserWall extends React.Component {
         var lastChar = event.target.value[event.target.value.length-1];
         if(lastChar=='\n' || lastChar=='\t')
             shouldUpdate=false;
-
+        
         if(shouldUpdate){
-            let value = this.state.newValue;
-            if(type=="summary"){
-                    value = event.target.value;
+            if(type=="summary" && event.target.value.length <= 288){
+                    let value = event.target.value;
                     let newSummary = this.state.newSummary;
                     newSummary[post.bp] = value;
                     this.setState({newSummary: newSummary});
@@ -145,14 +151,12 @@ class UserWall extends React.Component {
                         {post.summary && post.summary.length > 0? 
                             <p className="wallPostSummary">{post.summary}</p>
                             :
-                            <div style={{display: 'flex'}}>
-                                <p className="wallPostSummaryPrompt">Add a summary!</p>
-                                <button className="summaryChangeWallbutton" 
+                            <p className="wallPostSummaryPrompt">Add a summary!</p> 
+                            }
+                            <button className="summaryChangeWallbutton" 
                                 onClick = {(e) => this.clickOnEdit('summary', true, post)}>
                                     Edit summary
-                                </button>
-                            </div>
-                            }
+                            </button>
                     </div>
                     :
                     null
