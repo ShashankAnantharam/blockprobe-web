@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './UserWall.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Expand from 'react-expand-animated';
+import Textarea from 'react-textarea-autosize';
 import { version } from 'punycode';
+import { isNullOrUndefined } from 'util';
 
 class UserWall extends React.Component {
     constructor(props) {
@@ -11,12 +13,14 @@ class UserWall extends React.Component {
 
       this.state = {
           visualizedBps: {},
-          isEditSummary: false
+          isEditSummary: {},
+          newSummary: {}
       }
 
       this.renderSinglePost = this.renderSinglePost.bind(this);
       this.clickOnVisualizeButton = this.clickOnVisualizeButton.bind(this);
       this.clickOnEdit = this.clickOnEdit.bind(this);
+      this.isValid = this.isValid.bind(this);
     }
 
     clickOnVisualizeButton(bp, val){
@@ -27,12 +31,58 @@ class UserWall extends React.Component {
         });
     }
 
-    clickOnEdit(type, value){
+    clickOnEdit(type, value, post){
         if(type == 'summary'){
+            let isEditSummary = this.state.isEditSummary;
+            isEditSummary = {};
+            isEditSummary[post.bp] = value;
+            let newSummary = this.state.newSummary;
+            newSummary[post.bp] = '';
+            if(!isNullOrUndefined(post.summary)){
+                newSummary[post.bp] = post.summary;
+            }
             this.setState({
-                isEditSummary: value
+                isEditSummary: isEditSummary,
+                newSummary: newSummary
             });
         }
+    }
+
+    isValid(newValue){
+        if(isNullOrUndefined(newValue) || newValue.trim() == '')
+            return false;
+        return true;
+    }
+
+    clickOnSave(type, post){
+        if(type == 'summary'){
+            let newSummary = this.state.newSummary;
+            let value = newSummary[post.bp];
+
+            //update db using value
+            //console.log(value);
+
+            this.clickOnEdit('summary', false, post);
+        }
+    }
+
+    handleChange(event, type, post) {
+
+        var shouldUpdate = true;
+      
+        var lastChar = event.target.value[event.target.value.length-1];
+        if(lastChar=='\n' || lastChar=='\t')
+            shouldUpdate=false;
+
+        if(shouldUpdate){
+            let value = this.state.newValue;
+            if(type=="summary"){
+                    value = event.target.value;
+                    let newSummary = this.state.newSummary;
+                    newSummary[post.bp] = value;
+                    this.setState({newSummary: newSummary});
+                }
+            }        
     }
 
     renderSinglePost(post, scope){
@@ -45,17 +95,52 @@ class UserWall extends React.Component {
         return (
             <div className="wallPostContainer">
                 <h5 className="wallPostTitle">{post.title}</h5>
-                {this.state.isEditSummary && this.props.isPrivate?
-                    <div style={{display: 'flex'}}>
-                        <button className="summaryChangeWallbutton" 
-                                onClick = {(e) => this.clickOnEdit('summary', false)}>
-                            Cancel
-                        </button>
+                {this.state.isEditSummary[post.bp] && this.props.isPrivate?
+                    <div>
+                        <form className="newBlockprobeForm">
+                                <label>
+                                    <Textarea 
+                                        type="text"
+                                        placeholder = {"Enter details about this story"}
+                                        value={this.state.newSummary[post.bp]}
+                                        onChange={(e) => { this.handleChange(e,"summary",post)}}
+                                        maxRows="4"
+                                        minRows="2"
+                                        style={{
+                                            background: 'white',
+                                            borderWidth:'2px', 
+                                            borderStyle:'solid', 
+                                            borderColor:'black',
+                                            paddingTop:'6px',
+                                            paddingBottom:'6px',
+                                            textColor: 'black',
+                                            fontWeight: '600',
+                                            marginLeft: '1em',
+                                            width:'95%'
+                                            }}/>                            
+                                </label>
+                        </form>
+                        <div style={{display: 'flex'}}>
+                            {this.isValid(this.state.newSummary[post.bp])?
+                                <button
+                                className="summarySaveWallbutton"
+                                onClick={() => { this.clickOnSave('summary', post)}}>
+                                    <div>Confirm</div>
+                                </button>                    
+                            :
+                                null
+                            }
+                            <button className="summaryCancelWallbutton" 
+                                    onClick = {(e) => this.clickOnEdit('summary', false, post)}>
+                                Cancel
+                            </button>
+                        </div>
                     </div>
+                    
                     :
                     null
                 }
-                {!this.state.isEditSummary && this.props.isPrivate?
+                {!this.state.isEditSummary[post.bp] && this.props.isPrivate?
                     <div>
                         {post.summary && post.summary.length > 0? 
                             <p className="wallPostSummary">{post.summary}</p>
@@ -63,7 +148,7 @@ class UserWall extends React.Component {
                             <div style={{display: 'flex'}}>
                                 <p className="wallPostSummaryPrompt">Add a summary!</p>
                                 <button className="summaryChangeWallbutton" 
-                                onClick = {(e) => this.clickOnEdit('summary', true)}>
+                                onClick = {(e) => this.clickOnEdit('summary', true, post)}>
                                     Edit summary
                                 </button>
                             </div>

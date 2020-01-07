@@ -40,6 +40,24 @@
     border:none;
 }
 
+.summarySaveWallbutton{
+    background:rgb(25, 109, 8);
+    color:rgb(219, 243, 242);
+    margin-left: 1em;
+    margin-bottom: 1em;
+    size:2.6em;
+    border:none;
+}
+
+.summaryCancelWallbutton{
+    background:rgb(248, 64, 64);
+    color:rgb(219, 243, 242);
+    margin-left: 1em;
+    margin-bottom: 1em;
+    size:2.6em;
+    border:none;
+}
+
 .wallPostBody{
     padding: 15px;    
     padding-top: 5px;
