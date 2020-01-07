@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import * as firebase from 'firebase';
 import { isNullOrUndefined } from 'util';
 import UserWall from '../../user-session/userWall/UserWall';
+import GoogleFontLoader from 'react-google-font-loader';
+import './PublicWall.css';
 
 class PublicWallComponent extends React.Component {
 
@@ -11,7 +13,8 @@ class PublicWallComponent extends React.Component {
 
         this.state = {
             userId: '',
-            posts: []
+            posts: [],
+            doesNotExist: false
         }
 
         if(!isNullOrUndefined(props.match.params.userId)){
@@ -27,6 +30,12 @@ class PublicWallComponent extends React.Component {
         firebase.firestore().collection("publicWall").doc(this.state.userId).
         collection("userPosts").get().then((snapshot) => {
                 this.buildUserWall(snapshot);
+        },
+        (error) => {
+            this.setState({
+                posts: [],
+                doesNotExist: true
+            }); 
         });
     }
     
@@ -38,8 +47,13 @@ class PublicWallComponent extends React.Component {
                     postList.push(data.posts[i]);
                 }
             });   
+        
+        let doesNotExist = this.state.doesNotExist;
+        if(postList.length == 0)
+            doesNotExist = true;
         this.setState({
-            posts: postList
+            posts: postList,
+            doesNotExist: doesNotExist
         });        
     }
 
@@ -50,11 +64,27 @@ class PublicWallComponent extends React.Component {
     render(){
         return(
             <div>
-                <h2 style={{textAlign: 'center'}}>{this.state.userId}</h2>
-                <UserWall
-                    posts = {this.state.posts}
-                    isPrivate = {false}
-                  />
+                <GoogleFontLoader
+                                fonts={[                             
+                                    {
+                                        font:'Lora',
+                                        weights: [400]
+                                    }
+                                ]}
+                                subsets={['cyrillic-ext', 'greek']}
+                />
+                <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px'}}>{this.state.userId}</h2>
+                {!this.state.doesNotExist?
+                    <UserWall
+                        posts = {this.state.posts}
+                        isPrivate = {false}
+                    />
+                    :
+                    <div className='noWallInfoMessage'>
+                        <p>This user either does not exist or does not have any posts on their wall!</p>
+                    </div>
+                }
+                
             </div>
         );
     }
