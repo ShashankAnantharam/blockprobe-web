@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import { isNullOrUndefined } from 'util';
 import UserWall from '../../user-session/userWall/UserWall';
 import GoogleFontLoader from 'react-google-font-loader';
+import Loader from 'react-loader-spinner';
 import './PublicWall.css';
 
 class PublicWallComponent extends React.Component {
@@ -14,7 +15,8 @@ class PublicWallComponent extends React.Component {
         this.state = {
             userId: '',
             posts: [],
-            doesNotExist: false
+            doesNotExist: false,
+            isLoading: true
         }
 
         if(!isNullOrUndefined(props.match.params.userId)){
@@ -34,7 +36,8 @@ class PublicWallComponent extends React.Component {
         (error) => {
             this.setState({
                 posts: [],
-                doesNotExist: true
+                doesNotExist: true,
+                isLoading: false
             }); 
         });
     }
@@ -53,7 +56,8 @@ class PublicWallComponent extends React.Component {
             doesNotExist = true;
         this.setState({
             posts: postList,
-            doesNotExist: doesNotExist
+            doesNotExist: doesNotExist,
+            isLoading: false
         });        
     }
 
@@ -74,17 +78,30 @@ class PublicWallComponent extends React.Component {
                                 subsets={['cyrillic-ext', 'greek']}
                 />
                 <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px'}}>{this.state.userId}</h2>
-                {!this.state.doesNotExist?
-                    <UserWall
-                        posts = {this.state.posts}
-                        isPrivate = {false}
-                    />
-                    :
-                    <div className='noWallInfoMessage'>
-                        <p>This user either does not exist or does not have any posts on their wall!</p>
-                    </div>
-                }
                 
+                {this.state.isLoading?
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"              
+                        /> 
+                    </div>
+                    :
+                    <div>
+                        {!this.state.doesNotExist?
+                            <UserWall
+                                posts = {this.state.posts}
+                                isPrivate = {false}
+                            />
+                            :
+                            <div className='noWallInfoMessage'>
+                                <p>This user either does not exist or does not have any posts on their wall!</p>
+                            </div>
+                        }
+                    </div>
+                }                
             </div>
         );
     }
