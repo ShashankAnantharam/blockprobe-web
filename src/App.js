@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Link,Redirect } from "react-router-dom";
 import ViewBlockprobePublicComponent from "./view/ViewBlockprobePublic";
 import ViewBlockprobePublicWrapper from './wrapper/public/ViewBlockprobePublicWrapper';
 import UserSession from "./user-session/UserSession";
@@ -25,9 +25,11 @@ class App extends Component {
                         component={PublicWallComponent}
               /> 
 
-            <Route path="/"  
+            <Route exact path="/"  
                         component={UserSession}
               />
+
+            <Redirect from="*" to="/" />
           </Switch>
         </Router>
       </div>
