@@ -18,3 +18,26 @@
     cursor: pointer;
     margin-left: 5px;
 }
+
+/*
+ *  SCROLLBAR STYLE for graph-selected-block-list
+ */
+
+ #wallPost-selected-post-list::-webkit-scrollbar-track
+ {
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+     border-radius: 10px;
+     background-color: #F5F5F5;
+ }
+ 
+ #wallPost-selected-post-list::-webkit-scrollbar
+ {
+     width: 5px;
+     background: transparent;
+ }
+ 
+ #wallPost-selected-post-list::-webkit-scrollbar-thumb
+ {
+     border-radius: 10px;
+     background-color: #555;
+ }
