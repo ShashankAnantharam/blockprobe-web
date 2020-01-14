@@ -14,6 +14,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Info from '@material-ui/icons/Info';
 import Loader from 'react-loader-spinner';
+import OcrComponent  from './ocrComponent/OcrComponent';
 import { isNullOrUndefined } from 'util';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import { setTimeout } from 'timers';
@@ -28,6 +29,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.state ={
             value:'',
             isSavingBlocks: false,
+            openOcr: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
             placeholder: "Input your story (broken into paragraphs) here",
             tooltipText:{
@@ -109,6 +111,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
         this.makeEntityUppercase = this.makeEntityUppercase.bind(this);
+        this.toggleOcrImageTab = this.toggleOcrImageTab.bind(this);
 
     }
 
@@ -179,6 +182,12 @@ class BulkDraftBlockComponent extends React.Component {
 
             // console.log(allParas);
         return allParas;
+    }
+
+    toggleOcrImageTab(){
+        this.setState({
+            openOcr: !this.state.openOcr
+        });
     }
 
     handleChange(event) {
@@ -587,9 +596,26 @@ class BulkDraftBlockComponent extends React.Component {
                                     <div>Close</div>
                             </button>
                         </div>
+
+                        <div className='bulkDraftBlocksPaneTitle'>Advanced options</div>
+                        <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
+                            <button 
+                                className="advancedImageOcr" 
+                                onClick={this.toggleOcrImageTab}>
+                                {!this.state.openOcr?
+                                    <div>Contribute text from image</div>
+                                    :
+                                    <div>Close</div>
+                                }                                    
+                            </button>                            
+                        </div>
+                        {this.state.openOcr?
+                            <OcrComponent></OcrComponent>
+                            :
+                            null
+                        }
                     </div>
-                }
-            
+                }           
             </div>
         );
     }
