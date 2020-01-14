@@ -40,7 +40,7 @@ class OcrComponent extends React.Component {
                     lang: 'eng'
                   })
                   .catch(err => {
-                    console.error(err);
+                    console.log(err);
                     this.setState({
                         loadingText: false
                     });
