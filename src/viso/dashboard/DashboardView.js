@@ -117,7 +117,78 @@ class DashboardViewComponent extends React.Component {
                     null
                 }
                 
-                {this.isGraphAvailable()?
+                {this.isGraphAvailable() || this.isTimelineAvailable()?
+                    <div className="dashboard-section-heading graph-heading">Visualisations</div>
+                    :
+                    null
+                }
+                <Tabs style={{marginTop:'15px'}}>
+                    <TabList>
+                        {this.isGraphAvailable()?
+                            <Tab>Mindmap</Tab>
+                            :
+                            null
+                        }
+
+                        {this.isTimelineAvailable()?
+                            <Tab>Timeline</Tab>
+                            :
+                            null
+                        }
+                    </TabList>   
+                    
+                    {this.isGraphAvailable()?
+                        <TabPanel>
+                            <GraphComponent blockTree={this.props.blockTree} 
+                                investigationGraph={this.props.investigationGraph}
+                                selectBlock={this.props.selectBlock}
+                                imageMapping = {this.props.imageMapping}
+                                setScrollToGraphList ={this.props.setScrollToGraphList}
+                                multiSelectEntityList = {this.props.multiSelectEntityList}/>
+                        </TabPanel>
+                        :
+                        null}             
+
+                    {this.isTimelineAvailable()?
+                        <TabPanel>
+                            <TimelineComponent 
+                                timeline={this.props.timeline} 
+                                selectBlock={this.props.selectBlock}/>
+                        </TabPanel>
+                        :
+                        null}                     
+
+                </Tabs>         
+
+                
+
+                {this.isBlockprobeEmpty()?
+                    <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
+                        Visualizations not found
+                    </div>
+                    :
+                    null
+                }         
+                
+            </div>
+        );
+    }
+}
+export default DashboardViewComponent;
+
+/*
+ <TabPanel>
+                        <FindConnectionsComponent blockTree={this.props.blockTree} 
+                            investigationGraph={this.props.investigationGraph}
+                            imageMapping = {this.props.imageMapping}
+                            selectBlock={this.props.selectBlock}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
+                        />
+                    </TabPanel>
+
+
+
+                     {this.isGraphAvailable()?
                     <div>
                         <div className="dashboard-section-heading graph-heading">Mindmap
                         <a className='tooltipMindmap tooltips-dashboard' 
@@ -142,10 +213,7 @@ class DashboardViewComponent extends React.Component {
                             callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'mindmap')}}                    
                             />  
                         </div>
-                        <Tabs>
-                            <TabList>
-                            <Tab>Overview</Tab>
-                            </TabList>
+                        
                         
                             <TabPanel>
                                 <GraphComponent blockTree={this.props.blockTree} 
@@ -155,11 +223,13 @@ class DashboardViewComponent extends React.Component {
                                     setScrollToGraphList ={this.props.setScrollToGraphList}
                                     multiSelectEntityList = {this.props.multiSelectEntityList}/>
                             </TabPanel>                  
-                        </Tabs>
+                       
                     </div>
                     :
                     null
-                }               
+                } 
+
+
 
                 {this.isTimelineAvailable()?
 
@@ -194,28 +264,4 @@ class DashboardViewComponent extends React.Component {
                         :
                         null
                 }
-
-                {this.isBlockprobeEmpty()?
-                    <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
-                        Visualizations not found
-                    </div>
-                    :
-                    null
-                }         
-                
-            </div>
-        );
-    }
-}
-export default DashboardViewComponent;
-
-/*
- <TabPanel>
-                        <FindConnectionsComponent blockTree={this.props.blockTree} 
-                            investigationGraph={this.props.investigationGraph}
-                            imageMapping = {this.props.imageMapping}
-                            selectBlock={this.props.selectBlock}
-                            setScrollToGraphList ={this.props.setScrollToGraphList}
-                        />
-                    </TabPanel>
                     */
