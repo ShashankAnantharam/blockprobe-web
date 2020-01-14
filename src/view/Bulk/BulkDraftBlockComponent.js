@@ -112,7 +112,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
         this.makeEntityUppercase = this.makeEntityUppercase.bind(this);
         this.toggleOcrImageTab = this.toggleOcrImageTab.bind(this);
-
+        this.addText = this.addText.bind(this);
     }
 
     formatParas(currentPara, allParas){
@@ -196,6 +196,15 @@ class BulkDraftBlockComponent extends React.Component {
         });
     
       }
+    
+    addText(text){
+        let value = this.state.value;
+        value += text;        
+
+        this.setState({
+            value: value
+        });
+    }
 
     handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -610,7 +619,9 @@ class BulkDraftBlockComponent extends React.Component {
                             </button>                            
                         </div>
                         {this.state.openOcr?
-                            <OcrComponent></OcrComponent>
+                            <OcrComponent
+                                addText={this.addText}
+                                ></OcrComponent>
                             :
                             null
                         }
