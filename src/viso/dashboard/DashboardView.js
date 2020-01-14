@@ -117,6 +117,110 @@ class DashboardViewComponent extends React.Component {
                     null
                 }
                 
+                {this.isGraphAvailable()?
+                    <div>
+                        <div className="dashboard-section-heading graph-heading">Mindmap
+                        <a className='tooltipMindmap tooltips-dashboard' 
+                            onMouseEnter={() => this.showLocalTooltip('mindmap')}
+                            onClick={(e)=>{this.showLocalTooltip('mindmap')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.mindmap.text}
+                            run = {this.state.adhocTooltip.mindmap.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'mindmap')}}                    
+                            />  
+                        </div>
+                                                
+                                <GraphComponent blockTree={this.props.blockTree} 
+                                    investigationGraph={this.props.investigationGraph}
+                                    selectBlock={this.props.selectBlock}
+                                    imageMapping = {this.props.imageMapping}
+                                    setScrollToGraphList ={this.props.setScrollToGraphList}
+                                    multiSelectEntityList = {this.props.multiSelectEntityList}/>
+                       
+                    </div>
+                    :
+                    null
+                } 
+
+
+
+                {this.isTimelineAvailable()?
+
+                    <div>
+                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline
+                        <a className='tooltipTimeline tooltips-dashboard' 
+                            onMouseEnter={() => this.showLocalTooltip('timeline')}
+                            onClick={(e)=>{this.showLocalTooltip('timeline')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.timeline.text}
+                            run = {this.state.adhocTooltip.timeline.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'timeline')}}                    
+                            />  
+                        </div> 
+                            <TimelineComponent 
+                                timeline={this.props.timeline} 
+                                selectBlock={this.props.selectBlock}/>
+                    </div>
+                        :
+                        null
+                }
+                
+
+                {this.isBlockprobeEmpty()?
+                    <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
+                        Visualizations not found
+                    </div>
+                    :
+                    null
+                }         
+                
+            </div>
+        );
+    }
+}
+export default DashboardViewComponent;
+
+/*
+ <TabPanel>
+                        <FindConnectionsComponent blockTree={this.props.blockTree} 
+                            investigationGraph={this.props.investigationGraph}
+                            imageMapping = {this.props.imageMapping}
+                            selectBlock={this.props.selectBlock}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
+                        />
+                    </TabPanel>
+
+
+
+                     
+
+
                 {this.isGraphAvailable() || this.isTimelineAvailable()?
                     <div className="dashboard-section-heading graph-heading">Visualisations</div>
                     :
@@ -160,108 +264,4 @@ class DashboardViewComponent extends React.Component {
 
                 </Tabs>         
 
-                
-
-                {this.isBlockprobeEmpty()?
-                    <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
-                        Visualizations not found
-                    </div>
-                    :
-                    null
-                }         
-                
-            </div>
-        );
-    }
-}
-export default DashboardViewComponent;
-
-/*
- <TabPanel>
-                        <FindConnectionsComponent blockTree={this.props.blockTree} 
-                            investigationGraph={this.props.investigationGraph}
-                            imageMapping = {this.props.imageMapping}
-                            selectBlock={this.props.selectBlock}
-                            setScrollToGraphList ={this.props.setScrollToGraphList}
-                        />
-                    </TabPanel>
-
-
-
-                     {this.isGraphAvailable()?
-                    <div>
-                        <div className="dashboard-section-heading graph-heading">Mindmap
-                        <a className='tooltipMindmap tooltips-dashboard' 
-                            onMouseEnter={() => this.showLocalTooltip('mindmap')}
-                            onClick={(e)=>{this.showLocalTooltip('mindmap')}} >
-                            <Info style={{fontSize:'19px'}}/>
-                        </a>
-                        <Joyride
-                        styles={{
-                            options: {
-                            arrowColor: '#e3ffeb',
-                            beaconSize: '4em',
-                            primaryColor: '#05878B',
-                            backgroundColor: '#e3ffeb',
-                            overlayColor: 'rgba(10,10,10, 0.4)',
-                            width: 900,
-                            zIndex: 1000,
-                            }
-                            }}
-                            steps={this.state.adhocTooltip.mindmap.text}
-                            run = {this.state.adhocTooltip.mindmap.flag}
-                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'mindmap')}}                    
-                            />  
-                        </div>
-                        
-                        
-                            <TabPanel>
-                                <GraphComponent blockTree={this.props.blockTree} 
-                                    investigationGraph={this.props.investigationGraph}
-                                    selectBlock={this.props.selectBlock}
-                                    imageMapping = {this.props.imageMapping}
-                                    setScrollToGraphList ={this.props.setScrollToGraphList}
-                                    multiSelectEntityList = {this.props.multiSelectEntityList}/>
-                            </TabPanel>                  
-                       
-                    </div>
-                    :
-                    null
-                } 
-
-
-
-                {this.isTimelineAvailable()?
-
-                    <div>
-                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline
-                        <a className='tooltipTimeline tooltips-dashboard' 
-                            onMouseEnter={() => this.showLocalTooltip('timeline')}
-                            onClick={(e)=>{this.showLocalTooltip('timeline')}} >
-                            <Info style={{fontSize:'19px'}}/>
-                        </a>
-                        <Joyride
-                        styles={{
-                            options: {
-                            arrowColor: '#e3ffeb',
-                            beaconSize: '4em',
-                            primaryColor: '#05878B',
-                            backgroundColor: '#e3ffeb',
-                            overlayColor: 'rgba(10,10,10, 0.4)',
-                            width: 900,
-                            zIndex: 1000,
-                            }
-                            }}
-                            steps={this.state.adhocTooltip.timeline.text}
-                            run = {this.state.adhocTooltip.timeline.flag}
-                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'timeline')}}                    
-                            />  
-                        </div> 
-                            <TimelineComponent 
-                                timeline={this.props.timeline} 
-                                selectBlock={this.props.selectBlock}/>
-                    </div>
-                        :
-                        null
-                }
                     */
