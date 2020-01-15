@@ -295,3 +295,20 @@ export const sortTimeline =(timelineList)=>{
     timelineList.reverse();
 }
 
+export const filterText = (text) => {
+    let ans = '';
+    for(let i=0; !isNullOrUndefined(text) && i<text.length; i++){
+        if((text[i]>='1' && text[i]<='9') || (text[i]>='a' && text[i]<='z')
+            || (text[i]>='A' && text[i]<='Z') || (text[i]=='0') || 
+            (text[i]=='.') || (text[i]=='?') || (text[i]==',') || (text[i]=='"') || (text[i]=='\'')
+            || (text[i]==' ') || (text[i]=='/'))
+            {
+                ans += text[i];
+            }
+        else{
+            ans += ' ';
+        }
+    }
+    ans += '\n\n';
+    return ans;
+}

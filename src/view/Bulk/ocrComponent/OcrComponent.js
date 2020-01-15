@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ImageUploader from 'react-images-upload';
 import Loader from 'react-loader-spinner';
 import imageCompression from 'browser-image-compression';
+import * as Utils from '../../../common/utilSvc';
 import  "./OcrComponent.css";
 
 var Tesseract = window.Tesseract;
@@ -52,6 +53,7 @@ class OcrComponent extends React.Component {
 
                     // Get full output
                     let text = result.text
+                    text = Utils.filterText(text);
                     
                     this.props.addText(text);
                     this.setState({
