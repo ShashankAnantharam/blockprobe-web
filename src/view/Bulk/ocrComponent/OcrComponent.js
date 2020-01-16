@@ -59,6 +59,7 @@ class OcrComponent extends React.Component {
                     this.setState({
                         loadingText: false
                     });
+                    this.props.closeComponent();
                 });
                   
             } catch (error) {
@@ -69,26 +70,32 @@ class OcrComponent extends React.Component {
 
     render(){
         return (
-            <div>
-                  <ImageUploader
-                        withIcon={true}
-                        buttonText='Choose image'
-                        onChange={this.onDrop}
-                        singleImage={true}
-                        imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                        maxFileSize={5242880}
-                        />  
+            <div>                  
                     {this.state.loadingText?
-                            <div style={{margin:'auto',width:'50px'}}>
-                                <Loader 
-                                type="TailSpin"
-                                color="#00BFFF"
-                                height="50"	
-                                width="50"
-                                /> 
-                            </div>
+                            <div>
+                                <div style={{margin:'auto',width:'50px'}}>
+                                    <Loader 
+                                        type="TailSpin"
+                                        color="#00BFFF"
+                                        height="50"	
+                                        width="50"
+                                        /> 
+                                </div>
+                                <div style={{padding:'3px', textAlign:'center'}}>
+                                    <p className="processingOcrText">
+                                        Your image is being processed. This may take 19 seconds or more to complete.
+                                    </p>
+                                </div> 
+                            </div>                            
                             :
-                            null
+                            <ImageUploader
+                                withIcon={true}
+                                buttonText='Choose image'
+                                onChange={this.onDrop}
+                                singleImage={true}
+                                imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                maxFileSize={5242880}
+                                />  
                     }             
             </div>
         );

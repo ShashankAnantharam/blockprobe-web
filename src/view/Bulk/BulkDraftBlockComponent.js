@@ -621,6 +621,7 @@ class BulkDraftBlockComponent extends React.Component {
                         {this.state.openOcr?
                             <OcrComponent
                                 addText={this.addText}
+                                closeComponent={this.toggleOcrImageTab}
                                 ></OcrComponent>
                             :
                             null
