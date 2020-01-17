@@ -610,8 +610,10 @@ class BulkDraftBlockComponent extends React.Component {
                                 paddingTop:'6px',
                                 paddingBottom:'6px',
                                 width:'95%',
-                                color: 'darkBlue',
-                                fontWeight:'600'
+                                color: 'blue',
+                                fontWeight:'500',
+                                fontSize: '16px',
+                                fontStyle: 'normal'
                                 }}/>
                         </label>
                         </form>
