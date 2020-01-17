@@ -506,6 +506,8 @@ class UserBlocksComponent extends React.Component {
         return(
             <SingleBlock 
             block={block} 
+            bId={this.props.bId}
+            uIdHash={this.state.uIdHash}
             selectBlock={this.selectBlock}
             investigationGraph={this.props.investigationGraph}
             isNewBlock={isNewBlock}

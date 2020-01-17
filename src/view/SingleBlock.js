@@ -5,12 +5,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import DraftBlockComponent from './DraftBlock';
+import { isNullOrUndefined } from 'util';
 
 class SingleUserBlock extends React.Component {
 
     constructor(props){
         super(props);
-        //props: isNewBlock, deleteNewBlcok, addDraftBlock, entityPane, draftBlockTooltip, finishTooltip
+        //props: isNewBlock, deleteNewBlcok, addDraftBlock, entityPane, draftBlockTooltip, finishTooltip, bId
         //changeSelectedBlock, bpDetails
 
         this.state={
@@ -93,6 +94,8 @@ class SingleUserBlock extends React.Component {
                         draftBlockTooltip = {this.props.draftBlockTooltip}
                         finishTooltip = {this.props.finishTooltip}
                         bpDetails = {this.props.bpDetails}
+                        bId = {this.props.bId}
+                        uIdHash = {this.props.uIdHash}
                         />
                     </div>                    
                     :
@@ -122,11 +125,11 @@ class SingleUserBlock extends React.Component {
                 this.props.updateDraftBlock(newBlock.key, newBlock);
             }
 
-            this.setState({
-                isBlockClicked: false
-            });
-            this.props.changeSelectedBlock(null);
-        }
+                this.setState({
+                        isBlockClicked: false
+                });
+                this.props.changeSelectedBlock(null);                
+            }
         else if(updateType=='COMMIT'){
             this.props.commitBlockToBlockprobe(newBlock);
         }

@@ -419,6 +419,8 @@ class DraftBlockComponent extends React.Component {
                     evidence={blockEvidence}
                     updateEvidence = {this.updateEvidence}
                     index = {index} 
+                    bId = {this.props.bId}
+                    uIdHash = {this.props.uIdHash}
                 />
         );
     }

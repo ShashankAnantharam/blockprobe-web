@@ -5,7 +5,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DoneIcon from '@material-ui/icons/Done'
 import Textarea from 'react-textarea-autosize';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Loader from 'react-loader-spinner';
+import ImageUploader from 'react-images-upload';
+import imageCompression from 'browser-image-compression';
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+import Img from 'react-image';
 import './DraftBlockEvidenceView.css';
+import { isNullOrUndefined } from 'util';
 
 class DraftBlockEvidenceView extends React.Component {
 
@@ -17,7 +25,10 @@ class DraftBlockEvidenceView extends React.Component {
         //console.log(this.props.evidence);
         this.state={
             isClicked: JSON.parse(JSON.stringify(this.props.isClicked)),
-            newEvidence: JSON.parse(JSON.stringify(this.props.evidence))
+            newEvidence: JSON.parse(JSON.stringify(this.props.evidence)),
+            isImage: false,
+            isImageUploading: false,
+            image: null
         }
         
         this.getEvidenceViewOnly = this.getEvidenceViewOnly.bind(this);
@@ -27,6 +38,9 @@ class DraftBlockEvidenceView extends React.Component {
         this.removeEvidence = this.removeEvidence.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
         this.cancelEvidenceAction = this.cancelEvidenceAction.bind(this);
+        this.onDrop = this.onDrop.bind(this);
+        this.uploadEvidenceImageToDb = this.uploadEvidenceImageToDb.bind(this);
+        this.deleteEvidenceImageFromDb = this.deleteEvidenceImageFromDb.bind(this);
     }
 
     clickEvidenceNotInDraft(){
@@ -42,7 +56,7 @@ class DraftBlockEvidenceView extends React.Component {
         });
     }
 
-    removeEvidence(){
+    async removeEvidence(){
         // console.log(this.state.newEvidence);
         // console.log(this.props.evidence);
         this.props.updateEvidence(this.props.evidence, null, false, true, this.props.index);
@@ -51,10 +65,11 @@ class DraftBlockEvidenceView extends React.Component {
         });
     }
 
-    updateEvidence(){
+    async updateEvidence(){
         this.props.updateEvidence(this.props.evidence, this.state.newEvidence, true, false, this.props.index);
         this.setState({
-            isClicked: false
+            isClicked: false,
+            image: null
         });
     }
 
@@ -79,12 +94,122 @@ class DraftBlockEvidenceView extends React.Component {
         }
       }
 
+      async onDrop(picture) {
+        if(picture.length > 0)
+        {
+            let latestPicture = picture[picture.length-1];
+            
+
+            var options = {
+                maxSizeMB: 0.06,
+                maxWidthOrHeight: 900,
+                useWebWorker: true
+              }
+              try {
+                let compressedFile = await imageCompression(latestPicture, options);
+                this.setState({
+                    image: compressedFile
+                })
+              } catch (error) {
+
+              }
+        }
+    }
+
+    async deleteEvidenceImageFromDb(path){       
+        /*
+          if(this.props.evidence.isImage && this.props.evidence.imgPath){
+            await this.deleteEvidenceImageFromDb(this.props.evidence.imgPath);
+        }
+        */
+        try{
+            this.setState({
+                isImageUploading: true
+            });
+            console.log(path);
+            let pathRef = firebase.storage().ref(path);
+            await pathRef.delete();
+            this.setState({
+                isImageUploading: false
+            });
+        }
+        catch{
+            this.setState({
+                isImageUploading: false
+            });
+        }
+    }
+
+    async uploadEvidenceImageToDb(){
+         /*
+          if(this.props.evidence.isImage && this.props.evidence.imgPath){
+            await this.deleteEvidenceImageFromDb(this.props.evidence.imgPath);
+        }
+        await this.uploadEvidenceImageToDb();
+
+                            <Tab>Image</Tab>
+
+                    <TabPanel>
+                        <div>
+                        <ImageUploader
+                                    buttonText='Choose image'
+                                    onChange={this.onDrop}
+                                    singleImage={true}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
+                        </div>
+                    </TabPanel>
+        */
+        let scope = this;
+        let latestPicture = this.state.image;
+
+        let newEvidence = this.state.newEvidence;
+        if(!isNullOrUndefined(latestPicture)){            
+            let path = this.props.bId + '/' + 'evidences/' + this.props.uIdHash + "_" + String(Date.now());
+            let pathRef = firebase.storage().ref(path);
+            this.setState({
+                isImageUploading: true
+            });
+            try{
+                await pathRef.put(latestPicture);
+    
+                let url = await pathRef.getDownloadURL();
+        
+                newEvidence.evidenceLink = url; 
+                newEvidence['isImage'] = true;   
+                newEvidence['imgPath'] = path;   
+                               
+                scope.setState({
+                            isImageUploading: false,
+                            newEvidence: newEvidence
+                });
+            }
+            catch(error){
+                scope.setState({isImageUploading: false});
+            }        
+        }
+        else{
+            if(newEvidence){
+                delete newEvidence['isImage'];
+                delete newEvidence['imgPath'];
+            }
+        }
+    }
+
 
     getEvidenceDraft(){
         return(
             <div>
-            <form>
-                <label>
+            
+                <Tabs style={{marginTop:'10px', fontSize:'15px'}}>
+                    <TabList>
+                            <Tab>Url</Tab>
+                    </TabList>
+
+                    <TabPanel>
+                    <form>
+                        <label>
                         <Textarea 
                         type="text"
                         placeholder="Paste link to evidence here."
@@ -97,11 +222,16 @@ class DraftBlockEvidenceView extends React.Component {
                             borderWidth:'2px', 
                             borderStyle:'solid', 
                             borderColor:'darkgrey',
-                            borderBottomWidth:'0px',
                             paddingTop:'6px',
                             paddingBottom:'6px',
                             width:'60%'
                             }}/>
+                        </label>
+                    </form>
+                    </TabPanel>                    
+                </Tabs>
+                <form>
+                <label>
                         <Textarea 
                         type="text"
                         placeholder="Enter relevant details about evidence here."
@@ -114,7 +244,6 @@ class DraftBlockEvidenceView extends React.Component {
                             borderWidth:'2px', 
                             borderStyle:'solid', 
                             borderColor:'darkgrey',
-                            borderTopWidth:'0px',
                             paddingTop:'6px',
                             paddingBottom:'6px',
                             width:'60%'
@@ -163,7 +292,20 @@ class DraftBlockEvidenceView extends React.Component {
         return(
             <div>
                 {this.state.isClicked?
-                    this.getEvidenceDraft()
+                    <div>
+                        {this.state.isImageUploading?
+                             <div style={{margin:'auto',width:'50px'}}>
+                                <Loader 
+                                type="TailSpin"
+                                color="#00BFFF"
+                                height="50"	
+                                width="50"
+                                /> 
+                            </div>
+                            :
+                            this.getEvidenceDraft()
+                        }
+                    </div>
                     :
                     this.getEvidenceViewOnly()    
             }
