@@ -96,7 +96,7 @@ class ArticleLinkComponent extends React.Component {
                         </div>
                         <div style={{padding:'3px', textAlign:'center'}}>
                             <p className="processingArticleLinkText">
-                                Your link is being processed. This will take a few moments to complete.
+                                Your link is being processed. Kindly wait for a few moments.
                             </p>
                         </div> 
                     </div>    
