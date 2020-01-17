@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import Textarea from 'react-textarea-autosize';
+import * as firebase from 'firebase';
 import  "./ArticleLinkComponent.css";
 
 class ArticleLinkComponent extends React.Component {
@@ -13,6 +14,8 @@ class ArticleLinkComponent extends React.Component {
             url: '',
             loadingText: false
         }
+
+        this.functions = firebase.functions();
         this.handleChange = this.handleChange.bind(this);
         this.isValidLink = this.isValidLink.bind(this);
         this.getArticleText = this.getArticleText.bind(this);
@@ -26,6 +29,20 @@ class ArticleLinkComponent extends React.Component {
         try{
             let url = this.state.url;
 
+            var articleFunc = this.functions.httpsCallable('articleTextExtraction');
+            let result = '';
+            try{
+                let finResult = await articleFunc({url: url}); 
+                console.log(finResult);
+                result = finResult.content; 
+            }
+            catch(e){
+                result = '';
+            }
+            finally{
+            }
+
+            console.log(result);
             this.setState({
                 loadingText: false
             });
@@ -66,36 +83,57 @@ class ArticleLinkComponent extends React.Component {
 
     render(){
         return (
-            <div style={{}}>               
-                <form className="articleLinkForm">
-                    <label>
-                    <Textarea 
-                        type="text"
-                        placeholder="Paste link to article here."
-                        value={this.state.url}
-                        onChange={(e) => { this.handleChange(e,"url")}}
-                        maxRows="3"
-                        minRows="2"
-                        style={{
-                            background: 'white',
-                            borderWidth:'2px', 
-                            borderStyle:'solid', 
-                            borderColor:'darkgrey',
-                            paddingTop:'6px',
-                            paddingBottom:'6px',
-                            width:'90%'
-                            }}/>                            
-                    </label>
-                </form>
-                {this.isValidLink()?
-                    <button
-                    className="submitArticleLinkButton"
-                    onClick={this.getArticleText}>
-                        <div>Get Text</div>
-                    </button>                    
-                :
-                    null
-                }
+            
+            <div>       
+                {this.state.loadingText?
+                    <div>
+                        <div style={{margin:'auto',width:'50px'}}>
+                            <Loader 
+                                type="TailSpin"
+                                color="#00BFFF"
+                                height="50"	
+                                width="50"
+                                /> 
+                        </div>
+                        <div style={{padding:'3px', textAlign:'center'}}>
+                            <p className="processingArticleLinkText">
+                                Your link is being processed. This may take 19 seconds or more to complete.
+                            </p>
+                        </div> 
+                    </div>    
+                    :
+                    <div>
+                        <form className="articleLinkForm">
+                            <label>
+                            <Textarea 
+                                type="text"
+                                placeholder="Paste link to article here."
+                                value={this.state.url}
+                                onChange={(e) => { this.handleChange(e,"url")}}
+                                maxRows="3"
+                                minRows="2"
+                                style={{
+                                    background: 'white',
+                                    borderWidth:'2px', 
+                                    borderStyle:'solid', 
+                                    borderColor:'darkgrey',
+                                    paddingTop:'6px',
+                                    paddingBottom:'6px',
+                                    width:'90%'
+                                    }}/>                            
+                            </label>
+                        </form>
+                        {this.isValidLink()?
+                            <button
+                            className="submitArticleLinkButton"
+                            onClick={this.getArticleText}>
+                                <div>Get Text</div>
+                            </button>                    
+                        :
+                            null
+                        }
+                    </div>
+                }                       
             </div>
         );
     }

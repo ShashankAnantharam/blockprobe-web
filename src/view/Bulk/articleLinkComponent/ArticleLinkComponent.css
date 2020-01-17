@@ -14,3 +14,8 @@
 .articleLinkForm{
     margin-left: 1em;
 }
+
+.processinArticleLinkText{
+    font-size: 20px; 
+    color: grey;
+}
