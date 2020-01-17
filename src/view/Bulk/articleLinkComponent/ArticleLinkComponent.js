@@ -33,8 +33,7 @@ class ArticleLinkComponent extends React.Component {
             let result = '';
             try{
                 let finResult = await articleFunc({url: url}); 
-                console.log(finResult);
-                result = finResult.content; 
+                result = finResult.data.content + '\n\n'; 
             }
             catch(e){
                 result = '';
@@ -42,7 +41,7 @@ class ArticleLinkComponent extends React.Component {
             finally{
             }
 
-            console.log(result);
+            this.props.addText(result);
             this.setState({
                 loadingText: false
             });
@@ -97,7 +96,7 @@ class ArticleLinkComponent extends React.Component {
                         </div>
                         <div style={{padding:'3px', textAlign:'center'}}>
                             <p className="processingArticleLinkText">
-                                Your link is being processed. This may take 19 seconds or more to complete.
+                                Your link is being processed. This will take a few moments to complete.
                             </p>
                         </div> 
                     </div>    
