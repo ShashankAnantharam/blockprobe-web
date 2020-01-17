@@ -77,7 +77,7 @@ class DraftBlockComponent extends React.Component {
                     flag: false,
                     text: [
                         {
-                            title: 'Add date and time to your block',
+                            title: 'Add date and time',
                             target: '.tooltipDatetime',
                             content: 'If the content of your block describes some event (someones birth, the creation of a company, a terrorist attack, etc.) that is associated with some date and time, then add that to the block. This enables your block to appear in the Timeline visualisation that shows the chronological view of your story.',
                             disableBeacon: true
@@ -88,9 +88,9 @@ class DraftBlockComponent extends React.Component {
                     flag: false,
                     text: [
                         {
-                            title: 'The entities/characters of your block!',
+                            title: 'Tag entities/characters!',
                             target: '.tooltipEntities',
-                            content: 'Your block will be associated with some characters of the entire story. You can select those characters (or entities) here. Typically, some entities are autodetected in the text when you create the block. These entities appear in the Graph visualisation of your story that show how your story\'s characters are connected with one-another. Your block will also show up in the Graph visualisation if the viewer clicks on the entities your block is associated with.',
+                            content: 'Your block will be associated with some characters of the entire story. You can tag those characters (or entities) here. Typically, some entities are autodetected in the text and tagged when you create the block. The entities from these tags appear in the Graph visualisation of your story that show how your story\'s characters are connected with one-another. Your block will also show up in the Graph visualisation if the viewer clicks on the entities that are tagged.',
                             disableBeacon: true
                         }
                     ]
@@ -99,7 +99,7 @@ class DraftBlockComponent extends React.Component {
                     flag: false,
                     text: [
                         {
-                            title: 'Add evidence to your block!',
+                            title: 'Add evidences!',
                             target: '.tooltipEvidences',
                             content: 'You may want to add authenticity to your block\'s content by adding evidences that is visible to any viewer. You have to provide a link to the actual evidence that viewers of the story can click and navigate to. If your evidence is a picture (a chart), then add the link of the picture here so that the viewers of the story can see it when they click on your block.',
                             disableBeacon: true
@@ -591,7 +591,7 @@ class DraftBlockComponent extends React.Component {
                                     <button 
                                         className="commitBlockButton commitBlockTooltip" 
                                         onClick={this.commitDraftBlock}>
-                                            <div>Add to story</div>
+                                            <div className="buttonDraftGeneral">Add to story</div>
                                     </button>
                                     :
                                     null
@@ -599,13 +599,13 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
-                            <div>Save</div>
+                            <div className="buttonDraftGeneral">Save as Draft</div>
                     </button>
                     {this.state.canSubmit?
                         <button 
                             className="submitBlockButton" 
                             onClick={this.submitDraftBlock}>
-                                <div>Submit</div>
+                                <div className="buttonDraftGeneral">Submit</div>
                         </button>
                         :
                         null
@@ -613,12 +613,12 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
-                            <div>Close</div>
+                            <div className="buttonDraftGeneral">Cancel</div>
                     </button>
                     <button 
                         className="deleteBlockButton" 
                         onClick={this.removeDraftBlock}>
-                            <div>Delete</div>
+                            <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>                    
                 <form>
@@ -661,9 +661,11 @@ class DraftBlockComponent extends React.Component {
                 </form>
 
                 <div className="draft-box-datetime-container"> 
-                    <h6 style={{marginBottom:'3px'}}>
-                        When did the event described here happen? (Only if your block describes an event)
-                        <a className='tooltipDatetime tooltips-draft' onClick={(e)=>{this.showLocalTooltip('datetime')}} >
+                    <h6 style={{marginBottom:'3px', fontSize:'19px'}}>
+                        Add relevant date/time
+                        <a className='tooltipDatetime tooltips-draft' 
+                        onClick={(e)=>{this.showLocalTooltip('datetime')}} 
+                        onMouseEnter={() => this.showLocalTooltip('datetime')}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride
@@ -704,9 +706,11 @@ class DraftBlockComponent extends React.Component {
                 </div>
 
                 <div className="draft-box-entity-dropdown-container">
-                    <h6 style={{marginBottom:'3px'}}>
-                        Entities (Who all are involved?)
-                        <a className='tooltipEntities tooltips-draft' onClick={(e)=>{this.showLocalTooltip('entities')}} >
+                    <h6 style={{marginBottom:'3px', fontSize:'19px'}}>
+                        Tag entities/characters
+                        <a className='tooltipEntities tooltips-draft' 
+                            onClick={(e)=>{this.showLocalTooltip('entities')}} 
+                            onMouseEnter={() => this.showLocalTooltip('entities')}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride
@@ -740,7 +744,7 @@ class DraftBlockComponent extends React.Component {
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
-                                placeholder = "New Entities seperated by commas and press 'Enter'"
+                                placeholder = "Type entity tags seperated by commas and press 'Enter'"
                                 maxRows="2"
                                 minRows="1"
                                 style={{
@@ -753,13 +757,20 @@ class DraftBlockComponent extends React.Component {
                                     minWidth:'60%',
                                     maxWidth: '90%'
                                     }}/>                                   
-                    </div>       
+                    </div> 
+                    <div>
+                        <p style={{fontSize:'12px'}}>
+                            Type entity tags seperated by commas (eg: Black Widow,Thor,Ironman) and press 'Enter'
+                        </p>
+                    </div>      
                 </div>
 
                 <div className="draft-box-evidence-container">
-                    <h6 style={{marginBottom:'3px',marginTop:'3px'}}>
-                        Evidences
-                        <a className='tooltipEvidences tooltips-draft' onClick={(e)=>{this.showLocalTooltip('evidences')}} >
+                    <h6 style={{marginBottom:'3px',marginTop:'3px', fontSize:'19px'}}>
+                        Add evidences
+                        <a className='tooltipEvidences tooltips-draft' 
+                            onClick={(e)=>{this.showLocalTooltip('evidences')}} 
+                            onMouseEnter={() => this.showLocalTooltip('evidences')}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride
@@ -794,7 +805,7 @@ class DraftBlockComponent extends React.Component {
                                     <button 
                                         className="commitBlockButton" 
                                         onClick={this.commitDraftBlock}>
-                                            <div>Add to story</div>
+                                            <div className="buttonDraftGeneral">Add to story</div>
                                     </button>
                                     :
                                     null
@@ -802,13 +813,13 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="saveBlockButton" 
                         onClick={this.saveDraftBlock}>
-                            <div>Save</div>
+                            <div className="buttonDraftGeneral">Save as Draft</div>
                     </button>
                     {this.state.canSubmit?
                         <button 
                             className="submitBlockButton" 
                             onClick={this.submitDraftBlock}>
-                                <div>Submit</div>
+                                <div className="buttonDraftGeneral">Submit</div>
                         </button>
                         :
                         null
@@ -816,12 +827,12 @@ class DraftBlockComponent extends React.Component {
                     <button 
                         className="cancelBlockBackButton" 
                         onClick={this.cancelDraftBlock}>
-                            <div>Close</div>
+                            <div className="buttonDraftGeneral">Cancel</div>
                     </button>
                     <button 
                         className="deleteBlockButton" 
                         onClick={this.removeDraftBlock}>
-                            <div>Delete</div>
+                            <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>
                 {this.props.bpDetails.criterion == 0?
