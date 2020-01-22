@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
+import Checkbox from './Draft/Checkbox';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
@@ -50,6 +51,7 @@ class DraftBlockComponent extends React.Component {
             addTime: false,
             date: new Date(),
             time: undefined,
+            selectedDateStyle: 'date',
             showTooltip:{
                 draftBlockTour: JSON.parse(JSON.stringify(props.draftBlockTooltip))
             },
@@ -130,8 +132,9 @@ class DraftBlockComponent extends React.Component {
         this.populateEntitiesAndEvidencesToBlock = this.populateEntitiesAndEvidencesToBlock.bind(this);
         this.showLocalTooltip = this.showLocalTooltip.bind(this);
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
-    }
-    
+        this.isDateChecked = this.isDateChecked.bind(this);
+        this.toggleDateStyle = this.toggleDateStyle.bind(this);
+    }    
 
     changeDateStatus(){
         var addDate = this.state.addDate;
@@ -348,11 +351,13 @@ class DraftBlockComponent extends React.Component {
                 this.setState({newEntity: event.target.value});
             }
             else if(type == "date"){
-                block.blockDate = {
-                    date: event.getDate(),
-                    month: event.getMonth(),
-                    year: event.getFullYear()
-                };
+                if(this.state.selectedDateStyle == 'date'){
+                    block.blockDate = {
+                        date: event.getDate(),
+                        month: event.getMonth(),
+                        year: event.getFullYear()
+                    };    
+                }
                 // console.log(block.blockDate);
                 this.setState({
                     date: event,
@@ -472,14 +477,69 @@ class DraftBlockComponent extends React.Component {
         this.props.updateBlock(this.state.newBlock, this.props.draftBlock,'DELETE');
     }
 
+    isDateChecked(type){
+        if(type == this.state.selectedDateStyle)
+            return true;
+        return false;
+    }
+
+    toggleDateStyle(type){
+        let block = this.state.newBlock;
+        let date = this.state.date;
+        if(type == 'month' && this.state.selectedDateStyle != 'month'){
+            if(block.blockDate){
+                block.blockDate['date'] = null;
+                date.setFullYear(block.blockDate.year);
+                date.setMonth(block.blockDate.month);
+                date.setDate(0);                
+            }
+        }
+        else if(type == 'date' && this.state.selectedDateStyle != 'date'){
+            if(block.blockDate){
+                block.blockDate['date'] = 1;
+                date.setFullYear(block.blockDate.year);
+                date.setMonth(block.blockDate.month);
+                date.setDate(1);
+
+            }
+        }       
+
+        this.setState({
+            selectedDateStyle: type,
+            date: date
+        });
+    }
+
     renderDate(){
         return (
-            <div>
+            <div style={{marginBottom:'15px'}}>
                 {this.state.addDate?
-                    <DatePicker
-                    selected={this.state.date}
-                    onChange={(date) => {this.handleChange(date,"date")}}
-                    />
+                    <div>
+                        <div>
+                            <Checkbox 
+                                value={'date'}
+                                isChecked={this.isDateChecked('date')}
+                                label={'Complete date'}  
+                                toggleChange = {this.toggleDateStyle}                              
+                                />
+                            <Checkbox 
+                                value={'month'}
+                                isChecked={this.isDateChecked('month')}
+                                label={'Only month'}
+                                toggleChange = {this.toggleDateStyle}
+                                />
+                        </div>
+                        {this.state.selectedDateStyle == 'date'?
+                            <div style={{marginTop:'5px'}}>
+                                <DatePicker
+                                selected={this.state.date}
+                                onChange={(date) => {this.handleChange(date,"date")}}
+                                />
+                            </div>
+                            :
+                            null
+                        }                                                
+                    </div>
                     :
                     null
                 }
