@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import ImageUploader from 'react-images-upload';
 import Loader from 'react-loader-spinner';
 import imageCompression from 'browser-image-compression';
@@ -19,6 +20,20 @@ class OcrComponent extends React.Component {
         }
 
         this.onDrop = this.onDrop.bind(this);
+        this.uploadOcrFileToDb = this.uploadOcrFileToDb.bind(this);
+    }
+
+    async uploadOcrFileToDb(latestPicture){
+         
+        let scope = this;
+        let path = this.props.bId + '/users/' + this.props.uId +'/ocr' ;
+        let pathRef = firebase.storage().ref(path);
+        try{
+            await pathRef.put(latestPicture);
+        }
+        catch(error){
+
+        }        
     }
 
     async onDrop(picture){
@@ -33,6 +48,8 @@ class OcrComponent extends React.Component {
             try {
                 let compressedFile = await imageCompression(latestPicture, options);
                 let url = URL.createObjectURL(compressedFile);
+
+                await this.uploadOcrFileToDb(compressedFile);
 
                 this.setState({
                     loadingText: true
