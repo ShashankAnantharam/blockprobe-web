@@ -494,12 +494,17 @@ class DraftBlockComponent extends React.Component {
     toggleDateStyle(type){
         let block = this.state.newBlock;
         let date = this.state.date;
+        let addTime = this.state.addTime;
         if(type == 'month' && this.state.selectedDateStyle != 'month'){
             if(block.blockDate){
                 block.blockDate['date'] = null;
                 date.setFullYear(block.blockDate.year);
                 date.setMonth(block.blockDate.month);
-                date.setDate(0);                
+                date.setDate(0);
+                date.setHours(0);
+                date.setMinutes(0);
+                delete block['blockTime'];
+                addTime = false;                
             }
         }
         else if(type == 'date' && this.state.selectedDateStyle != 'date'){
@@ -509,13 +514,14 @@ class DraftBlockComponent extends React.Component {
                 date.setFullYear(block.blockDate.year);
                 date.setMonth(block.blockDate.month);
                 date.setDate(1);
-
             }
         }       
 
         this.setState({
             selectedDateStyle: type,
-            date: date
+            date: date,
+            newBlock: block,
+            addTime: addTime
         });
     }
 
@@ -779,7 +785,7 @@ class DraftBlockComponent extends React.Component {
                         </button>
                         {this.renderDate()}  
                     </div>
-                    {this.state.addDate?
+                    {this.state.addDate && this.state.selectedDateStyle == 'date'?
                         this.renderTimeOption()
                         :
                         null}
