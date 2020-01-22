@@ -658,6 +658,8 @@ class UserBlocksComponent extends React.Component {
                         entityPane = {this.state.entityPaneList}
                         addBlocksTooltip = {this.state.showTooltip.addBlocks}
                         finishTooltip = {this.finishTooltip}
+                        uIdHash = {this.state.uIdHash}
+                        bId = {this.props.bId}
                     />
                 </div>
             )

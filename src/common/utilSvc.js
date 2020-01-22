@@ -153,6 +153,22 @@ export const getShortenedListOfPosts = (posts) => {
     return allPosts;    
 }
 
+export const getTextListForBulk = (text) => {
+    let textList = [];
+    let  curr = '';
+    for(let i=0;!isNullOrUndefined(text) && i<text.length; i++){
+        curr += text[i];
+        if(i && i%100 == 0){
+            textList.push(curr);
+            curr  = '';
+        }
+    }
+    if(curr.length>0)
+        textList.push(curr);
+        
+    return textList;
+}
+
 export const  extractBlockIndex = (block)=>{
     if(isNullOrUndefined(block))
         return null;    

@@ -17,6 +17,7 @@ import Loader from 'react-loader-spinner';
 import OcrComponent  from './ocrComponent/OcrComponent';
 import ArticleLinkComponent from './articleLinkComponent/ArticleLinkComponent';
 import { isNullOrUndefined } from 'util';
+import * as Utils from '../../common/utilSvc';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import { setTimeout } from 'timers';
 
@@ -117,6 +118,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.toggleAdvancedTab = this.toggleAdvancedTab.bind(this);
         this.isAnyAdvancedTabOpened = this.isAnyAdvancedTabOpened.bind(this);        
         this.addText = this.addText.bind(this);
+        this.closeBulkDraft = this.closeBulkDraft.bind(this);
     }
 
     formatParas(currentPara, allParas){
@@ -459,6 +461,66 @@ class BulkDraftBlockComponent extends React.Component {
         }
     }
 
+    async closeBulkDraft(){
+        let textList = Utils.getTextListForBulk(this.state.value);
+
+        try{
+            let bulkText = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+            .collection("users").doc(this.props.uIdHash).collection("bulkText");
+
+            let allDocs = await bulkText.get();
+
+            if(allDocs){
+                let deletePromises = [];
+                allDocs.forEach((doc) => {
+                    let deletePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+                    .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(doc.id).delete();
+                    deletePromises.push(deletePromise);
+                });    
+                await Promise.all(deletePromises);
+            }
+
+            let writePromises = [];
+            for(let i=0; i<textList.length; i++){
+                let textPage = {
+                    id: i,
+                    text: textList[i]
+                };
+                let writePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+                    .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(String(i)).set(textPage);
+                writePromises.push(writePromise);
+            }
+            await Promise.all(writePromises);
+        }
+        catch(e){
+        }
+        finally{
+            this.props.cancelBulkDraftBlock();
+        }
+
+    }
+
+    async componentDidMount(){
+        try{
+            let bulkText = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+            .collection("users").doc(this.props.uIdHash).collection("bulkText");
+
+            let allDocs = await bulkText.orderBy("id").get();
+            let text = this.state.value;
+            if(allDocs){
+                allDocs.forEach((doc) => {
+                    text += doc.data().text;
+                })
+            };    
+            this.setState({
+                value: text
+            });
+        }
+        catch{
+        }
+        
+    }
+
     oldTooltips(){
         return (
             <div  style={{marginLeft: '1em'}} className='addBlocksPane'>
@@ -625,7 +687,7 @@ class BulkDraftBlockComponent extends React.Component {
                             </button>
                             <button 
                                 className="cancelBlockBackButton" 
-                                onClick={this.props.cancelBulkDraftBlock}>
+                                onClick={this.closeBulkDraft}>
                                     <div>Close</div>
                             </button>
                         </div>
