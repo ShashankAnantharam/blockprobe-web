@@ -5,6 +5,7 @@ import ViewBlockListComponent from './ViewBlockOptionList';
 import UpvoteStatusComponent from './UpvoteStatus';
 import Img from 'react-image';
 import IsImageUrl from 'is-image-url';
+import * as Utils from '../common/utilSvc';
 import Iframe from 'react-iframe';
 import './ViewBlock.css';
 import { isNullOrUndefined } from 'util';
@@ -53,38 +54,6 @@ class ViewBlockComponent extends React.Component {
             return a;
         }
         return '';
-    }
-
-    getDateTimeString(timelineBlock){
-        var ans = "";
-        if(timelineBlock.blockDate!=null){
-            ans = ans + timelineBlock.blockDate.date + "-";
-            ans = ans + (timelineBlock.blockDate.month+1) + "-";
-            ans = ans + timelineBlock.blockDate.year + "  ";
-
-
-            // console.log(timelineBlock.blockDate);
-            // console.log(ans);
-
-            if(timelineBlock.blockTime!=null){
-                var temp = "";
-                if(timelineBlock.blockTime.hours < 10){
-                    temp = "0"; 
-                }
-                temp = temp + timelineBlock.blockTime.hours;
-                ans = ans + temp + ":";
-
-                temp = "";
-                if(timelineBlock.blockTime.minutes < 10){
-                    temp = "0"; 
-                }
-                temp = temp + timelineBlock.blockTime.minutes;
-                ans = ans + temp;
-
-
-            }
-        }
-        return ans;
     }
 
     BlockEntity(entity){
@@ -272,7 +241,7 @@ class ViewBlockComponent extends React.Component {
        }
        
        if(this.props.selectedBlock.blockDate!=null){
-           dateTimeString = this.getDateTimeString(this.props.selectedBlock);
+           dateTimeString = Utils.getDateTimeString(this.props.selectedBlock);
        }
 
         return (

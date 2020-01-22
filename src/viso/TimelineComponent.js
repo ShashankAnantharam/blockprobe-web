@@ -3,7 +3,9 @@ import './TimelineComponent.css';
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 import Img from 'react-image';
 import ReactGA from 'react-ga';
+import  * as  Utils from '../common/utilSvc';
 import 'react-vertical-timeline-component/style.min.css';
+import { isNullOrUndefined } from 'util';
 
 class TimelineComponent extends React.Component {
 
@@ -51,38 +53,6 @@ class TimelineComponent extends React.Component {
         }
         return '';
     }
-   
-     getDateTimeString(timelineBlock){
-         var ans = "";
-         if(timelineBlock.blockDate!=null){
-             ans = ans + timelineBlock.blockDate.date + "-";
-             ans = ans + (timelineBlock.blockDate.month+1) + "-";
-             ans = ans + timelineBlock.blockDate.year + "  ";
-
-
-             // console.log(timelineBlock.blockDate);
-             // console.log(ans);
-
-             if(timelineBlock.blockTime!=null){
-                 var temp = "";
-                 if(timelineBlock.blockTime.hours < 10){
-                     temp = "0"; 
-                 }
-                 temp = temp + timelineBlock.blockTime.hours;
-                 ans = ans + temp + ":";
-
-                 temp = "";
-                 if(timelineBlock.blockTime.minutes < 10){
-                     temp = "0"; 
-                 }
-                 temp = temp + timelineBlock.blockTime.minutes;
-                 ans = ans + temp;
-
-
-             }
-         }
-         return ans;
-     }
 
      selectTimelineBlock(block){
         //console.log(block);
@@ -94,7 +64,6 @@ class TimelineComponent extends React.Component {
           });
           
         this.props.selectBlock(block);
-
      }
      
      renderTimeline(timelineBlock, index){
@@ -116,7 +85,7 @@ class TimelineComponent extends React.Component {
         }
 
        //TODO add function here to get DateTime
-       const blockDateTime = this.getDateTimeString(timelineBlock);
+       const blockDateTime = Utils.getDateTimeString(timelineBlock);
        var backgroundColor = 'rgb(33, 150, 243)';
    
        if(index%3===1)

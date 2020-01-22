@@ -1,5 +1,6 @@
 import { isNullOrUndefined } from "util";
 
+let months = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
 
 export const getShortenedListOfBlockprobes = (blockprobes) => {
     let allBlockprobes = [], currentBlockprobePage = [];
@@ -212,6 +213,43 @@ export const validateNumber = (text) => {
     return true;
 }
 
+export const appendCharToString = (str, char, totalLength) => {
+    let newStr = '';
+    let len = Math.max(0,totalLength - str.length);
+    for(let i=0; i<len; i++){
+        newStr += String(char);
+    }
+    newStr += str;
+    return newStr;
+}
+
+export const getDateTimeString = (timelineBlock) => {
+    var ans = "";
+    if(timelineBlock.blockDate!=null){        
+        ans = ans + months[timelineBlock.blockDate.month] + " ";
+        if(!isNullOrUndefined(timelineBlock.blockDate.date))
+            ans = ans + timelineBlock.blockDate.date + ", ";
+        ans = ans + appendCharToString(String(timelineBlock.blockDate.year),'0',4) + "  ";
+
+        if(timelineBlock.blockTime!=null){
+            var temp = "";
+            if(timelineBlock.blockTime.hours < 10){
+                temp = "0"; 
+            }
+            temp = temp + timelineBlock.blockTime.hours;
+            ans = ans + temp + ":";
+
+            temp = "";
+            if(timelineBlock.blockTime.minutes < 10){
+                temp = "0"; 
+            }
+            temp = temp + timelineBlock.blockTime.minutes;
+            ans = ans + temp;
+        }
+    }
+    return ans;    
+}
+
 export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
     a = a.trim();        
     b = b.trim();
@@ -291,6 +329,11 @@ export const sortTimeline =(timelineList)=>{
 
     if(a.blockDate.month!==b.blockDate.month)
         return a.blockDate.month - b.blockDate.month;        
+
+    if(a.blockDate.date == null)
+        return 1;
+    else if(b.blockDate.date == null)
+        return -1;
 
     if(a.blockDate.date!==b.blockDate.date)
         return a.blockDate.date - b.blockDate.date;
