@@ -158,7 +158,7 @@ export const getTextListForBulk = (text) => {
     let  curr = '';
     for(let i=0;!isNullOrUndefined(text) && i<text.length; i++){
         curr += text[i];
-        if(i && i%100 == 0){
+        if(i && i%10000 == 0){
             textList.push(curr);
             curr  = '';
         }

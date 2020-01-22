@@ -30,7 +30,10 @@ class BulkDraftBlockComponent extends React.Component {
 
         this.state ={
             value:'',
+            oldValue: '',
             isSavingBlocks: false,
+            isLoadingText: false,
+            isSavingText: false,
             openOcr: false,
             openArticleLink: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
@@ -118,6 +121,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.toggleAdvancedTab = this.toggleAdvancedTab.bind(this);
         this.isAnyAdvancedTabOpened = this.isAnyAdvancedTabOpened.bind(this);        
         this.addText = this.addText.bind(this);
+        this.deleteExistingBulkText = this.deleteExistingBulkText.bind(this);
         this.closeBulkDraft = this.closeBulkDraft.bind(this);
     }
 
@@ -426,6 +430,13 @@ class BulkDraftBlockComponent extends React.Component {
              draftBlocks.push(newDraftBlock);             
          }
          // console.log(draftBlocks);
+
+         try{
+            await this.deleteExistingBulkText();
+         }
+         catch{
+
+         }
          this.setState({isSavingBlocks: false});
          this.props.addDraftBlocksInBulk(draftBlocks);
      } 
@@ -461,46 +472,59 @@ class BulkDraftBlockComponent extends React.Component {
         }
     }
 
+    async deleteExistingBulkText(){
+        let bulkText = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+        .collection("users").doc(this.props.uIdHash).collection("bulkText");
+
+        let allDocs = await bulkText.get();
+
+        if(allDocs){
+            let deletePromises = [];
+            allDocs.forEach((doc) => {
+                let deletePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+                .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(doc.id).delete();
+                deletePromises.push(deletePromise);
+            });    
+            await Promise.all(deletePromises);
+        }
+    }
+
     async closeBulkDraft(){
+        this.setState({
+            isSavingText: true
+        });
         let textList = Utils.getTextListForBulk(this.state.value);
 
         try{
-            let bulkText = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-            .collection("users").doc(this.props.uIdHash).collection("bulkText");
-
-            let allDocs = await bulkText.get();
-
-            if(allDocs){
-                let deletePromises = [];
-                allDocs.forEach((doc) => {
-                    let deletePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-                    .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(doc.id).delete();
-                    deletePromises.push(deletePromise);
-                });    
-                await Promise.all(deletePromises);
+            if(this.state.value != this.state.oldValue){
+                await this.deleteExistingBulkText();
+                let writePromises = [];
+                for(let i=0; i<textList.length; i++){
+                    let textPage = {
+                        id: i,
+                        text: textList[i]
+                    };
+                    let writePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+                        .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(String(i)).set(textPage);
+                    writePromises.push(writePromise);
+                }
+                await Promise.all(writePromises);    
             }
-
-            let writePromises = [];
-            for(let i=0; i<textList.length; i++){
-                let textPage = {
-                    id: i,
-                    text: textList[i]
-                };
-                let writePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
-                    .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(String(i)).set(textPage);
-                writePromises.push(writePromise);
-            }
-            await Promise.all(writePromises);
         }
         catch(e){
         }
         finally{
+            this.setState({
+                isSavingText: false
+            });
             this.props.cancelBulkDraftBlock();
         }
-
     }
 
     async componentDidMount(){
+        this.setState({
+            isLoadingText: true
+        });
         try{
             let bulkText = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
             .collection("users").doc(this.props.uIdHash).collection("bulkText");
@@ -513,12 +537,17 @@ class BulkDraftBlockComponent extends React.Component {
                 })
             };    
             this.setState({
-                value: text
+                value: text,
+                oldValue: text
             });
         }
         catch{
         }
-        
+        finally{
+            this.setState({
+                isLoadingText: false
+            });
+        }        
     }
 
     oldTooltips(){
@@ -602,12 +631,24 @@ class BulkDraftBlockComponent extends React.Component {
     render(){
         return(
             <div className='bulkDraftBlocksPaneContainer'>
-                {this.state.isSavingBlocks?
+                {this.state.isSavingBlocks || this.state.isLoadingText || this.state.isSavingText?
                     <div>
                         <div style={{padding:'3px', textAlign:'center'}}>
-                                    <p className="processingDraftBlockText">
-                                        We are processing your contribution. Kindly wait for a few moments.
-                                    </p>
+                                    {this.state.isSavingBlocks?
+                                        <p className="processingDraftBlockText">
+                                            We are processing your contribution. Kindly wait for a few moments.
+                                        </p>
+                                        :
+                                        null
+                                    }
+                                    {this.state.isSavingText?
+                                        <p className="processingDraftBlockText">
+                                            We are saving your contribution. Kindly wait for a few moments.
+                                        </p>
+                                        :
+                                        null
+                                    }
+                                    
                         </div>                        
                         <div style={{margin:'auto',width:'50px'}}>
                             <Loader 
