@@ -15,6 +15,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
+import MonthPicker from './Draft/MonthPicker/MonthPicker';
 import Timekeeper from 'react-timekeeper';
 import moment from 'moment';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -358,6 +359,13 @@ class DraftBlockComponent extends React.Component {
                         year: event.getFullYear()
                     };    
                 }
+                else{
+                    block.blockDate = {
+                        date: null,
+                        month: event.month,
+                        year: event.year
+                    }
+                }
                 // console.log(block.blockDate);
                 this.setState({
                     date: event,
@@ -496,6 +504,7 @@ class DraftBlockComponent extends React.Component {
         }
         else if(type == 'date' && this.state.selectedDateStyle != 'date'){
             if(block.blockDate){
+                date = new Date();
                 block.blockDate['date'] = 1;
                 date.setFullYear(block.blockDate.year);
                 date.setMonth(block.blockDate.month);
@@ -534,6 +543,16 @@ class DraftBlockComponent extends React.Component {
                                 <DatePicker
                                 selected={this.state.date}
                                 onChange={(date) => {this.handleChange(date,"date")}}
+                                />
+                            </div>
+                            :
+                            null
+                        }
+                        {this.state.selectedDateStyle == 'month'?
+                            <div style={{marginTop:'5px'}}>
+                                <MonthPicker
+                                date={this.state.newBlock.blockDate}
+                                onChange = {(date) => {this.handleChange(date,"date")}}
                                 />
                             </div>
                             :

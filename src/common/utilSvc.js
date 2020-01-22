@@ -203,6 +203,15 @@ export const  extractBlockIndex = (block)=>{
     return null;
 }
 
+export const validateNumber = (text) => {
+    for(let i=0; text && i<text.length; i++){
+        let lastChar = text[i];
+        if(!((lastChar>='1' && lastChar<='9') || lastChar=='0'))
+            return false;
+    }
+    return true;
+}
+
 export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
     a = a.trim();        
     b = b.trim();
