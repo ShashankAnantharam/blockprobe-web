@@ -6,8 +6,6 @@ import imageCompression from 'browser-image-compression';
 import * as Utils from '../../../common/utilSvc';
 import  "./OcrComponent.css";
 
-var Tesseract = window.Tesseract;
-
 class OcrComponent extends React.Component {
 
     constructor(props){
@@ -19,6 +17,7 @@ class OcrComponent extends React.Component {
             loadingText: false
         }
 
+        this.functions = firebase.functions();
         this.onDrop = this.onDrop.bind(this);
         this.uploadOcrFileToDb = this.uploadOcrFileToDb.bind(this);
     }
@@ -45,39 +44,34 @@ class OcrComponent extends React.Component {
                 maxSizeMB: 1,
                 useWebWorker: true
               }
+              this.setState({
+                loadingText: true
+            });
             try {
                 let compressedFile = await imageCompression(latestPicture, options);
                 let url = URL.createObjectURL(compressedFile);
 
                 await this.uploadOcrFileToDb(compressedFile);
 
-                this.setState({
-                    loadingText: true
-                });
-                Tesseract.recognize(url,  {
-                    lang: 'eng'
-                  })
-                  .catch(err => {
-                    console.log(err);
-                    this.setState({
-                        loadingText: false
-                    });
-                  })
-                  .then(result => {
+                var ocrFunc = this.functions.httpsCallable('ocrTextExtraction');
+                let text = '';
 
-                    // Get Confidence score
-                    let confidence = result.confidence
-
-                    // Get full output
-                    let text = result.text
+                try{
+                    let finResult = await ocrFunc({bpId: this.props.bId, userId: this.props.uId}); 
+                    text = finResult.data;
                     text = Utils.filterText(text);
-                    
-                    this.props.addText(text);
+                    text += '\n\n';                                       
+                }
+                catch(e){
+                    text = '';
+                }
+                finally{
+                    this.props.addText(text); 
                     this.setState({
                         loadingText: false
                     });
                     this.props.closeComponent();
-                });
+                }
                   
             } catch (error) {
                 console.log(error);
@@ -100,7 +94,7 @@ class OcrComponent extends React.Component {
                                 </div>
                                 <div style={{padding:'3px', textAlign:'center'}}>
                                     <p className="processingOcrText">
-                                        Your image is being processed. This may take 19 seconds or more to complete.
+                                        Your image is being processed. This may take 15 seconds or more to complete.
                                     </p>
                                 </div> 
                             </div>                            
