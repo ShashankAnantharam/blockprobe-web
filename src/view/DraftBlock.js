@@ -940,11 +940,17 @@ class DraftBlockComponent extends React.Component {
         var time = undefined;
         var addDate = false;
         var addTime = false;
+        let selectedDateStyle = 'date';
 
         if(("blockDate" in block) && block.blockDate!=null){
             date.setFullYear(block.blockDate.year);
             date.setMonth(block.blockDate.month);
-            date.setDate(block.blockDate.date);
+            if(!isNullOrUndefined(block.blockDate.date))
+                date.setDate(block.blockDate.date);
+            else{
+                date.setDate(0);
+                selectedDateStyle = 'month';
+            }
             date.setHours(0);
             date.setMinutes(0);
             date.setSeconds(0);
@@ -967,7 +973,8 @@ class DraftBlockComponent extends React.Component {
             date: date,
             addDate: addDate,
             addTime: addTime,
-            time: time
+            time: time,
+            selectedDateStyle: selectedDateStyle
         });
     }
 
