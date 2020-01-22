@@ -765,6 +765,9 @@ class BulkDraftBlockComponent extends React.Component {
                             <OcrComponent
                                 addText={this.addText}
                                 closeComponent={this.closeAdvancedTabs}
+                                uIdHash={this.props.uIdHash}
+                                bId={this.props.bId}
+                                uId={this.props.uId}
                                 ></OcrComponent>
                             :
                             null

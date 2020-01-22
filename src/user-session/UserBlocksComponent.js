@@ -659,6 +659,7 @@ class UserBlocksComponent extends React.Component {
                         addBlocksTooltip = {this.state.showTooltip.addBlocks}
                         finishTooltip = {this.finishTooltip}
                         uIdHash = {this.state.uIdHash}
+                        uId = {this.props.uId}
                         bId = {this.props.bId}
                     />
                 </div>
