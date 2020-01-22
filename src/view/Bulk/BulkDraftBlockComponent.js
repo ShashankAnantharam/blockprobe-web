@@ -278,7 +278,7 @@ class BulkDraftBlockComponent extends React.Component {
 
         if(nlpEntity.metadata){
             let date = nlpEntity.metadata;
-            if(!('day' in date) || !('month' in date) || !('year' in date))
+            if(!('month' in date) || !('year' in date))
                 return false;  
         }
         return true;
@@ -417,9 +417,12 @@ class BulkDraftBlockComponent extends React.Component {
                 let key = nlpDates[j].name;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     let blockDate = {
-                        date: Number(nlpDates[j].metadata.day),
+                        date: null,
                         month: Number(nlpDates[j].metadata.month)-1,
                         year: Number(nlpDates[j].metadata.year)
+                    }
+                    if(!isNullOrUndefined(nlpDates[j].metadata.day)){
+                        blockDate.date = Number(nlpDates[j].metadata.day);
                     }
                     newDraftBlock['blockDate'] = blockDate;
                     break;
