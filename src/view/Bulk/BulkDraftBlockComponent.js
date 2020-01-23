@@ -158,7 +158,7 @@ class BulkDraftBlockComponent extends React.Component {
             if(text[i]=='\n'){
               
                 if(prev!='\n'){
-                    // sentence=sentence+';';
+                    sentence=sentence + ' ';
                     currentPara.push(sentence);
                     sentence = '';
                 }
