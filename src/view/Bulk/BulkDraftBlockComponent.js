@@ -19,6 +19,7 @@ import ArticleLinkComponent from './articleLinkComponent/ArticleLinkComponent';
 import { isNullOrUndefined } from 'util';
 import * as Utils from '../../common/utilSvc';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import BulkBlockEditable from './BulkBlockEditable/BulkBlockEditable';
 import { setTimeout } from 'timers';
 
 class BulkDraftBlockComponent extends React.Component {
@@ -782,10 +783,16 @@ class BulkDraftBlockComponent extends React.Component {
                             null
                         }
                     </div>
-                }           
+                }                         
             </div>
         );
     }
 
 }
 export default BulkDraftBlockComponent;
+
+/*
+<BulkBlockEditable
+                    value = {this.state.value}
+                    onChange = {this.handleChange}></BulkBlockEditable>  
+                    */

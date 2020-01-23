@@ -386,3 +386,15 @@ export const filterText = (text) => {
     ans += '\n\n';
     return ans;
 }
+
+export const isCharacterNumeric = (text) => {
+    if(!((text >='1' && text<='9') || text=='0' || text=='.'))
+        return false;
+    return  true;
+}
+
+export const isCharacterAlphabet = (text) => {
+    if(!((text >='a' && text<='z') || (text >='A' && text<='Z')))
+        return false;
+    return  true;
+}
