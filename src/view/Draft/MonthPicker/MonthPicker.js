@@ -3,6 +3,7 @@ import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import  * as Utils from '../../../common/utilSvc'; 
 import './MonthPicker.css';
+import { isNull, isNullOrUndefined } from 'util';
 
 class MonthPicker extends React.Component {
 
@@ -35,10 +36,10 @@ class MonthPicker extends React.Component {
 
     validateMonth(monthList){
         let selectedMonth = -1;
-        for(let i=0; i<monthList.length; i++){
+        for(let i=1; i<monthList.length; i++){
             if(monthList[i].value == true)
             {
-                selectedMonth = i;
+                selectedMonth = monthList[i].id;
                 break;
             }
         }
@@ -46,6 +47,7 @@ class MonthPicker extends React.Component {
         if(selectedMonth == -1){
             let prevMonth  = newDate.month;
             selectedMonth = null;
+            monthList[0].value = true;
         }
         newDate.month = selectedMonth;      
         this.setState({
@@ -82,6 +84,9 @@ class MonthPicker extends React.Component {
     generateMonthList(){
         let months = ['Jan','Feb','March','April','May','June','July','Aug','Sep','Oct','Nov','Dec'];
         let monthList = [];
+        monthList.push({
+            id:-1, value:false, label:'None'   
+        });
         for(let i=0; i<12; i++){
             let value = false;
             if(this.props.date.month == i)
@@ -89,6 +94,9 @@ class MonthPicker extends React.Component {
             monthList.push({
                 id:i, value:value, label:months[i]   
             });
+        }
+        if(isNullOrUndefined(this.props.date.month)){
+            monthList[0].value = true;
         }
         this.setState({
             monthList:monthList
