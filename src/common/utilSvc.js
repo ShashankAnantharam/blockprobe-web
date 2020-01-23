@@ -375,7 +375,7 @@ export const filterText = (text) => {
         if((text[i]>='1' && text[i]<='9') || (text[i]>='a' && text[i]<='z')
             || (text[i]>='A' && text[i]<='Z') || (text[i]=='0') || 
             (text[i]=='.') || (text[i]=='?') || (text[i]==',') || (text[i]=='"') || (text[i]=='\'')
-            || (text[i]==' ') || (text[i]=='/'))
+            || (text[i]==' ') || (text[i]=='/') || (text[i]=='\n'))
             {
                 ans += text[i];
             }
