@@ -45,8 +45,7 @@ class MonthPicker extends React.Component {
         let newDate = this.state.newDate;
         if(selectedMonth == -1){
             let prevMonth  = newDate.month;
-            selectedMonth = prevMonth;
-            monthList[selectedMonth].value = true;
+            selectedMonth = null;
         }
         newDate.month = selectedMonth;      
         this.setState({

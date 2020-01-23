@@ -225,8 +225,9 @@ export const appendCharToString = (str, char, totalLength) => {
 
 export const getDateTimeString = (timelineBlock) => {
     var ans = "";
-    if(timelineBlock.blockDate!=null){        
-        ans = ans + months[timelineBlock.blockDate.month] + " ";
+    if(timelineBlock.blockDate!=null){      
+        if(!isNullOrUndefined(timelineBlock.blockDate.month))  
+            ans = ans + months[timelineBlock.blockDate.month] + " ";
         if(!isNullOrUndefined(timelineBlock.blockDate.date))
             ans = ans + timelineBlock.blockDate.date + ", ";
         ans = ans + appendCharToString(String(timelineBlock.blockDate.year),'0',4) + "  ";
@@ -325,7 +326,12 @@ export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
 export const sortTimeline =(timelineList)=>{
     timelineList.sort(function(b,a){
     if(a.blockDate.year!==b.blockDate.year)
-        return a.blockDate.year - b.blockDate.year;        
+        return a.blockDate.year - b.blockDate.year; 
+        
+    if(a.blockDate.month == null)
+        return 1;
+    else if(b.blockDate.month == null)
+        return -1;
 
     if(a.blockDate.month!==b.blockDate.month)
         return a.blockDate.month - b.blockDate.month;        

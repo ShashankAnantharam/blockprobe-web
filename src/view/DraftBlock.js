@@ -511,6 +511,9 @@ class DraftBlockComponent extends React.Component {
             if(block.blockDate){
                 date = new Date();
                 block.blockDate['date'] = 1;
+                if(isNullOrUndefined(block.blockDate['month'])){
+                    block.blockDate['month'] = 0;
+                }
                 date.setFullYear(block.blockDate.year);
                 date.setMonth(block.blockDate.month);
                 date.setDate(1);
@@ -540,7 +543,7 @@ class DraftBlockComponent extends React.Component {
                             <Checkbox 
                                 value={'month'}
                                 isChecked={this.isDateChecked('month')}
-                                label={'Only month'}
+                                label={'Only month/year'}
                                 toggleChange = {this.toggleDateStyle}
                                 />
                         </div>

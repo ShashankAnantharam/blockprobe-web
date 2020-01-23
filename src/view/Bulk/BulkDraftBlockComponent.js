@@ -278,7 +278,7 @@ class BulkDraftBlockComponent extends React.Component {
 
         if(nlpEntity.metadata){
             let date = nlpEntity.metadata;
-            if(!('month' in date) || !('year' in date))
+            if(!('year' in date))
                 return false;  
         }
         return true;
