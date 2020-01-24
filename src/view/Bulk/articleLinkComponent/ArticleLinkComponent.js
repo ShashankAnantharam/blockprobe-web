@@ -108,8 +108,8 @@ class ArticleLinkComponent extends React.Component {
                                 placeholder="Paste link to article here."
                                 value={this.state.url}
                                 onChange={(e) => { this.handleChange(e,"url")}}
-                                maxRows="3"
-                                minRows="2"
+                                maxRows="1"
+                                minRows="1"
                                 style={{
                                     background: 'white',
                                     borderWidth:'2px', 
@@ -117,7 +117,7 @@ class ArticleLinkComponent extends React.Component {
                                     borderColor:'darkgrey',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
-                                    width:'90%'
+                                    width:'96%'
                                     }}/>                            
                             </label>
                         </form>

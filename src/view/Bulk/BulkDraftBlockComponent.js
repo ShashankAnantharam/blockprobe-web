@@ -785,14 +785,14 @@ class BulkDraftBlockComponent extends React.Component {
                         
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                                 <button 
-                                    className="advancedImageOcr" 
+                                    className={"advancedImageOption " + (this.state.openOcr ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')} 
                                     onClick={() => {this.toggleAdvancedTab('ocr')}}>
-                                        <div>Contribute text from image</div>                                                                    
+                                        <div style={{fontWeight:'bold'}}>Contribute text from image</div>                                                                    
                                 </button>
                                 <button 
-                                    className="advancedImageOcr" 
+                                    className={"advancedImageOption " + (this.state.openArticleLink ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('article')}}>
-                                        <div>Retrieve text from article</div>                                                                    
+                                        <div style={{fontWeight:'bold'}}>Retrieve text from article</div>                                                                    
                                 </button>                                
                         </div>
 

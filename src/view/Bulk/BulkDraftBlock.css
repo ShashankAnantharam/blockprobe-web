@@ -38,8 +38,7 @@
     color: grey;
 }
 
-.advancedImageOcr{
-    background:rgb(12, 52, 231);
+.advancedImageOption{
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
@@ -47,6 +46,16 @@
     border:none;
 }
 
-.advancedImageOcr:hover{
+.advancedImageOption:hover{
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
+.advancedImageOptionSelected{
+    background:rgb(12, 52, 231);
+    opacity: 1;
+}
+
+.advancedImageOptionUnselected{
+    background:rgb(66, 93, 209);
+    opacity: 0.7;
 }
