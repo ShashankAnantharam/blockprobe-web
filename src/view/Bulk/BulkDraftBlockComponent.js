@@ -13,6 +13,13 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Info from '@material-ui/icons/Info';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import Loader from 'react-loader-spinner';
 import OcrComponent  from './ocrComponent/OcrComponent';
 import ArticleLinkComponent from './articleLinkComponent/ArticleLinkComponent';
@@ -21,6 +28,10 @@ import * as Utils from '../../common/utilSvc';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import BulkBlockEditable from './BulkBlockEditable/BulkBlockEditable';
 import { setTimeout } from 'timers';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 class BulkDraftBlockComponent extends React.Component {
 
@@ -37,6 +48,7 @@ class BulkDraftBlockComponent extends React.Component {
             isSavingText: false,
             openOcr: false,
             openArticleLink: false,
+            openConfirmDialog: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
             placeholder: "Input your story (broken into paragraphs) here",
             tooltipText:{
@@ -124,6 +136,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.addText = this.addText.bind(this);
         this.deleteExistingBulkText = this.deleteExistingBulkText.bind(this);
         this.closeBulkDraft = this.closeBulkDraft.bind(this);
+        this.toggleSaveDialog = this.toggleSaveDialog.bind(this);
     }
 
     formatParas(currentPara, allParas){
@@ -217,6 +230,12 @@ class BulkDraftBlockComponent extends React.Component {
                 openArticleLink: !this.state.openArticleLink
             });
         }
+    }
+
+    toggleSaveDialog(value){
+        this.setState({
+            openConfirmDialog: value
+        });
     }
 
     handleChange(event) {
@@ -727,9 +746,33 @@ class BulkDraftBlockComponent extends React.Component {
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                             <button 
                                 className="saveBlockButton saveBlocksInBulk" 
-                                onClick={this.saveDraftInBulk}>
+                                onClick={() => this.toggleSaveDialog(true)}>
                                     <div>Save</div>
                             </button>
+                            <Dialog
+                                open={this.state.openConfirmDialog}
+                                TransitionComponent={Transition}
+                                keepMounted
+                                onClose={() => this.toggleSaveDialog(false)}
+                                aria-labelledby="alert-dialog-slide-title"
+                                aria-describedby="alert-dialog-slide-description"
+                            >
+                                <DialogTitle id="alert-dialog-slide-title">{"Save content as blocks"}</DialogTitle>
+                                <DialogContent>
+                                <DialogContentText id="alert-dialog-slide-description">
+                                    Saving will convert your text to blocks that can be added to your story, and remove all existing text from here. 
+                                    Do you confirm?
+                                </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                <Button onClick={() => this.toggleSaveDialog(false)} color="primary">
+                                    No
+                                </Button>
+                                <Button onClick={this.saveDraftInBulk} color="primary">
+                                    Yes
+                                </Button>
+                                </DialogActions>
+                            </Dialog>
                             <button 
                                 className="cancelBlockBackButton" 
                                 onClick={this.closeBulkDraft}>
