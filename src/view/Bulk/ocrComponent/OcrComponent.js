@@ -70,7 +70,6 @@ class OcrComponent extends React.Component {
                     this.setState({
                         loadingText: false
                     });
-                    this.props.closeComponent();
                 }
                   
             } catch (error) {

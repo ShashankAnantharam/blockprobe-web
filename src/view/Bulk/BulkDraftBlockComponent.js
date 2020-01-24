@@ -220,6 +220,7 @@ class BulkDraftBlockComponent extends React.Component {
     }
 
     toggleAdvancedTab(type){
+        this.closeAdvancedTabs();
         if(type == 'ocr'){
             this.setState({
                 openOcr: !this.state.openOcr
@@ -782,16 +783,7 @@ class BulkDraftBlockComponent extends React.Component {
 
                         <div className='bulkDraftBlocksPaneTitle'>Advanced options</div>
                         
-                        {this.isAnyAdvancedTabOpened()?
-                            <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
-                                <button 
-                                    className="advancedImageOcr" 
-                                    onClick={() => {this.closeAdvancedTabs()}}>
-                                        <div>Close</div>                                                                    
-                                </button>
-                            </div>
-                            :
-                            <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
+                        <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                                 <button 
                                     className="advancedImageOcr" 
                                     onClick={() => {this.toggleAdvancedTab('ocr')}}>
@@ -802,8 +794,7 @@ class BulkDraftBlockComponent extends React.Component {
                                     onClick={() => {this.toggleAdvancedTab('article')}}>
                                         <div>Retrieve text from article</div>                                                                    
                                 </button>                                
-                            </div>
-                        }
+                        </div>
 
                         {this.state.openOcr?
                             <OcrComponent

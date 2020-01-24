@@ -52,7 +52,6 @@ class ArticleLinkComponent extends React.Component {
             });
         }
         finally{
-            this.props.closeComponent();
         }
 
     }
