@@ -375,6 +375,27 @@ class BulkDraftBlockComponent extends React.Component {
 
         nlpEntities.sort(function(a, b){return b.salience - a.salience});
         nlpCommonNounEntities.sort(function(a, b){return b.salience - a.salience});
+        nlpDates.sort(function(A, B){
+            let a = A.metadata;
+            let b = B.metadata;
+            if(a.year != b.year)
+                return Number(a.year) - Number(b.year);
+            if((isNullOrUndefined(a.month) && isNullOrUndefined(b.month)) || a.month==b.month){
+                if(isNullOrUndefined(a.day) && isNullOrUndefined(b.day)){
+                    return a.day;
+                }
+                if(isNullOrUndefined(a.day))
+                    return 1;
+                if(isNullOrUndefined(b.day))
+                    return -1;
+                return Number(a.day) - Number(b.day);
+            }
+            if(isNullOrUndefined(a.month))
+                return 1;
+            if(isNullOrUndefined(b.month))
+                return -1;
+            return Number(b.month) - Number(a.month);            
+        });
 
          // console.log(nlpEntities);
          // console.log(nlpCommonNounEntities);
