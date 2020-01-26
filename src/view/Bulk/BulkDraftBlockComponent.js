@@ -699,7 +699,43 @@ class BulkDraftBlockComponent extends React.Component {
                                 </p>
                         </div>
 
-                        <div className='bulkDraftBlocksPaneTitle'>Contribute to the story</div>
+                        <div className='bulkDraftBlocksPaneTitle' style={{marginBottom:'0'}}>Advanced options</div>
+                        
+                        <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
+                                <button 
+                                    className={"advancedImageOption " + (this.state.openOcr ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')} 
+                                    onClick={() => {this.toggleAdvancedTab('ocr')}}>
+                                        <div style={{fontWeight:'bold'}}>Retrieve text from image</div>                                                                    
+                                </button>
+                                <button 
+                                    className={"advancedImageOption " + (this.state.openArticleLink ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
+                                    onClick={() => {this.toggleAdvancedTab('article')}}>
+                                        <div style={{fontWeight:'bold'}}>Retrieve text from article</div>                                                                    
+                                </button>                                
+                        </div>
+
+                        {this.state.openOcr?
+                            <OcrComponent
+                                addText={this.addText}
+                                closeComponent={this.closeAdvancedTabs}
+                                uIdHash={this.props.uIdHash}
+                                bId={this.props.bId}
+                                uId={this.props.uId}
+                                ></OcrComponent>
+                            :
+                            null
+                        }
+
+                        {this.state.openArticleLink?
+                            <ArticleLinkComponent
+                                addText={this.addText}
+                                closeComponent={this.closeAdvancedTabs}
+                            ></ArticleLinkComponent>
+                            :
+                            null
+                        }
+
+                        <div className='bulkDraftBlocksPaneTitle'>Input your text here</div>
                         <Joyride
                         styles={{
                             options: {
@@ -780,42 +816,6 @@ class BulkDraftBlockComponent extends React.Component {
                                     <div>Close</div>
                             </button>
                         </div>
-
-                        <div className='bulkDraftBlocksPaneTitle'>Advanced options</div>
-                        
-                        <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
-                                <button 
-                                    className={"advancedImageOption " + (this.state.openOcr ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')} 
-                                    onClick={() => {this.toggleAdvancedTab('ocr')}}>
-                                        <div style={{fontWeight:'bold'}}>Contribute text from image</div>                                                                    
-                                </button>
-                                <button 
-                                    className={"advancedImageOption " + (this.state.openArticleLink ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
-                                    onClick={() => {this.toggleAdvancedTab('article')}}>
-                                        <div style={{fontWeight:'bold'}}>Retrieve text from article</div>                                                                    
-                                </button>                                
-                        </div>
-
-                        {this.state.openOcr?
-                            <OcrComponent
-                                addText={this.addText}
-                                closeComponent={this.closeAdvancedTabs}
-                                uIdHash={this.props.uIdHash}
-                                bId={this.props.bId}
-                                uId={this.props.uId}
-                                ></OcrComponent>
-                            :
-                            null
-                        }
-
-                        {this.state.openArticleLink?
-                            <ArticleLinkComponent
-                                addText={this.addText}
-                                closeComponent={this.closeAdvancedTabs}
-                            ></ArticleLinkComponent>
-                            :
-                            null
-                        }
                     </div>
                 }                         
             </div>
