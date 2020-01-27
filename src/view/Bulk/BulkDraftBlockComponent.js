@@ -116,6 +116,7 @@ class BulkDraftBlockComponent extends React.Component {
             }
         }
         this.functions = firebase.functions();
+        this.textarea = null;
 
         //this.EditSingleBlock = this.EditSingleBlock.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -253,6 +254,8 @@ class BulkDraftBlockComponent extends React.Component {
         this.setState({
             value: value
         });
+        if(!isNullOrUndefined(this.textarea))
+            this.textarea.focus();
     }
 
     handleKeyPress = (e) => {
@@ -592,6 +595,8 @@ class BulkDraftBlockComponent extends React.Component {
             this.setState({
                 isLoadingText: false
             });
+            if(!isNullOrUndefined(this.textarea))
+                this.textarea.focus();
         }        
     }
 
@@ -775,6 +780,7 @@ class BulkDraftBlockComponent extends React.Component {
                         <form className='addBlocksPaneInput'>
                         <label>
                             <Textarea 
+                            inputRef={tag => (this.textarea = tag)}
                             type="text"
                             value={this.state.value}
                             onKeyPress={this.handleKeyPress}
