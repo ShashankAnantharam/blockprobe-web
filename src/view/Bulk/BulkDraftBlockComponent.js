@@ -143,18 +143,21 @@ class BulkDraftBlockComponent extends React.Component {
     formatParas(currentPara, allParas){
         var newPara={};
  
-        if(currentPara.length==1){
-
-            //one long para body, put as summary
+        if(currentPara){
             newPara.title='';
-            newPara.body=currentPara[0];
-        }
-        else{
-            newPara.title = currentPara[0];
+            newPara.body='';
+            let start = 0;
+            if(currentPara.length == 2 || (Utils.isTitleHashtag(currentPara[0]))){
+                newPara.title = currentPara[0];
+                start++;
+            }  
+            else{
+                newPara.title = '';
+            }          
             var paraBody = '';
-            for(var j=1;j<currentPara.length;j++){
+            for(var j=start;j<currentPara.length;j++){
                 const currParaSent = currentPara[j];
-               // console.log("currSent "+ currParaSent);
+                // console.log("currSent "+ currParaSent);
                 paraBody = paraBody + currentPara[j];
             }
             newPara.body = paraBody;
@@ -169,6 +172,11 @@ class BulkDraftBlockComponent extends React.Component {
         var prev2 = '0';
         var currentPara=[], allParas=[];
         var ans="";
+        let start  = 0;
+        text = text.trim();
+        while(start<text.length && (text[start] == '\n' || text[start] == '\t'))
+            start++;
+        text = text.substring(start);
         for(var i=0;i<text.length;i++){
             if(text[i]=='\n'){
               

@@ -340,9 +340,13 @@ class UserBlocksComponent extends React.Component {
                 blocks[i]['title'] = '';
             }
             let index = Utils.extractBlockIndex(blocks[i]);
+            let isSummary = Utils.isTitleSummary(blocks[i].title);
+
             if(index == null){
+                blocks[i].title = Utils.removeTitleHashtag(blocks[i].title);
                 latestIndex += 0.1;
-                blocks[i].title = '#' + String(latestIndex.toFixed(1)) + ' ' + blocks[i].title;
+                blocks[i].title = '#' + String(latestIndex.toFixed(1)) + (isSummary? 's': '') 
+                                    + ' ' + blocks[i].title;
             }
             else{
                 if(index > latestIndex)

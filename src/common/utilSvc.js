@@ -251,6 +251,48 @@ export const getDateTimeString = (timelineBlock) => {
     return ans;    
 }
 
+export const isTitleHashtag = (str)=>{
+    //str is string
+    if(!isNullOrUndefined(str)){
+        str = str.trim();
+        if(str.length>0 && str[0]=='#')
+            return true;
+    }
+    return false;
+}
+
+export const isTitleSummary = (str)=>{
+    //str is string
+    if(isTitleHashtag(str)){
+        str = str.trim();
+        let startIndex = 0;
+        while(startIndex<str.length && str[startIndex] != ' '){
+            if(str[startIndex] == 's' || str[startIndex] == 'S')
+                return true;
+            startIndex++;
+        }
+    }
+    return false;
+}
+
+export const removeTitleHashtag = (str)=>{
+    //str is string
+    if(isTitleHashtag(str)){
+        str = str.trim();
+        let startIndex = 0;
+        while(startIndex<str.length && str[startIndex] != ' '){
+            startIndex++;
+        }
+        if(startIndex < str.length){
+            str = str.substring(startIndex+1);
+        }
+        else{
+            str = '';
+        }
+    }
+    return str;
+}
+
 export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
     a = a.trim();        
     b = b.trim();
