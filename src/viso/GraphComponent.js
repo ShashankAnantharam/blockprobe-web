@@ -681,13 +681,14 @@ class GraphComponent extends React.Component {
 
     render(){
 
-
         const selectedOptionsStyles = {
             color: "white",
             backgroundColor: "rgb(117, 106, 214)",
             borderRadius:"20px",
             fontSize:'0.6em',
-            padding:'10px'
+            padding:'10px',
+            maxWidth: '92%',
+            wordWrap: 'break-word'
         };
         const optionsListStyles = {
             backgroundColor: "darkcyan",

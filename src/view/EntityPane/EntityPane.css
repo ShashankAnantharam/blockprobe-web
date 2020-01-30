@@ -53,4 +53,6 @@
     font-weight: bold;
     color:white;
     text-align: center;
+    max-width: 90%;
+    word-wrap: break-word;
 }

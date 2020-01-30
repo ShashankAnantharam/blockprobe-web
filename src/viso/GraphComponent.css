@@ -87,6 +87,7 @@
     background-color: #c0cff8;
     transition: 0.5s;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .graph-block-list-title:hover{

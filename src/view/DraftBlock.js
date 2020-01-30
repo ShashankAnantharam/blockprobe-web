@@ -29,7 +29,9 @@ class DraftBlockComponent extends React.Component {
         backgroundColor: "rgb(117, 106, 214)",
         borderRadius:"20px",
         fontSize:'0.6em',
-        padding:'5px'
+        padding:'5px',
+        maxWidth: '92%',
+        wordWrap: 'break-word'
     };
     optionsListStyles = {
         backgroundColor: "darkcyan",
