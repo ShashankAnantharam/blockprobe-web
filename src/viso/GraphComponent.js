@@ -11,6 +11,8 @@ import IsImageUrl from 'is-image-url';
 import ReactGA from 'react-ga';
 import AmGraph from './amGraph/amGraph';
 import Expand from 'react-expand-animated';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 
 class GraphComponent extends React.Component {
 
@@ -746,6 +748,13 @@ class GraphComponent extends React.Component {
                                     <span>Select any entity/topic</span>
                                 }                                                                
                                 <span>{selectedNodesString}</span>
+                                <span>
+                                    {this.state.openSelectedBlocks?
+                                        <ExpandLess className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
+                                        :
+                                        <ExpandMore className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
+                                    }
+                                </span>
                             </div> 
                             <Expand 
                                 open={this.state.openSelectedBlocks}
