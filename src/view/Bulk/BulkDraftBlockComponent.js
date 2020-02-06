@@ -23,6 +23,7 @@ import Slide from '@material-ui/core/Slide';
 import Loader from 'react-loader-spinner';
 import OcrComponent  from './ocrComponent/OcrComponent';
 import ArticleLinkComponent from './articleLinkComponent/ArticleLinkComponent';
+import  FilterTextComponent from './filterTextComponent/FilterTextComponent';
 import { isNullOrUndefined } from 'util';
 import * as Utils from '../../common/utilSvc';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -48,6 +49,7 @@ class BulkDraftBlockComponent extends React.Component {
             isSavingText: false,
             openOcr: false,
             openArticleLink: false,
+            openFilterText: false,
             openConfirmDialog: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
             placeholder: "Input your story (broken into paragraphs) here",
@@ -135,6 +137,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.toggleAdvancedTab = this.toggleAdvancedTab.bind(this);
         this.isAnyAdvancedTabOpened = this.isAnyAdvancedTabOpened.bind(this);        
         this.addText = this.addText.bind(this);
+        this.reformText = this.reformText.bind(this);        
         this.deleteExistingBulkText = this.deleteExistingBulkText.bind(this);
         this.closeBulkDraft = this.closeBulkDraft.bind(this);
         this.toggleSaveDialog = this.toggleSaveDialog.bind(this);
@@ -224,7 +227,8 @@ class BulkDraftBlockComponent extends React.Component {
     closeAdvancedTabs(){
         this.setState({
             openOcr: false,
-            openArticleLink: false
+            openArticleLink: false,
+            openFilterText: false
         });
     }
 
@@ -238,6 +242,11 @@ class BulkDraftBlockComponent extends React.Component {
         else if(type == 'article'){
             this.setState({
                 openArticleLink: !this.state.openArticleLink
+            });
+        }
+        else if(type == 'filterText'){
+            this.setState({
+                openFilterText: !this.state.openFilterText
             });
         }
     }
@@ -254,6 +263,10 @@ class BulkDraftBlockComponent extends React.Component {
         });
     
       }
+
+    reformText(text){
+        this.setState({value: text});
+    }
     
     addText(text){
         let value = this.state.value;
@@ -745,7 +758,12 @@ class BulkDraftBlockComponent extends React.Component {
                                     className={"advancedImageOption " + (this.state.openArticleLink ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('article')}}>
                                         <div style={{fontWeight:'bold'}}>Retrieve text from article</div>                                                                    
-                                </button>                                
+                                </button>  
+                                <button 
+                                    className={"advancedImageOption " + (this.state.openFilterText ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
+                                    onClick={() => {this.toggleAdvancedTab('filterText')}}>
+                                        <div style={{fontWeight:'bold'}}>Quickfilter</div>                                                                    
+                                </button>                               
                         </div>
 
                         {this.state.openOcr?
@@ -765,6 +783,15 @@ class BulkDraftBlockComponent extends React.Component {
                                 addText={this.addText}
                                 closeComponent={this.closeAdvancedTabs}
                             ></ArticleLinkComponent>
+                            :
+                            null
+                        }
+
+                        {this.state.openFilterText?
+                            <FilterTextComponent
+                                addText={this.reformText}
+                                text={this.state.value}
+                            ></FilterTextComponent>
                             :
                             null
                         }

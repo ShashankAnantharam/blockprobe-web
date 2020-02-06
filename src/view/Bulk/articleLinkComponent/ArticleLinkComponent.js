@@ -8,7 +8,7 @@ class ArticleLinkComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //addText
+        //addText, text
 
         this.state={
             url: '',

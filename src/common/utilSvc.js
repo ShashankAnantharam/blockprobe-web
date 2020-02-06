@@ -440,3 +440,54 @@ export const isCharacterAlphabet = (text) => {
         return false;
     return  true;
 }
+
+export const isValidDelimiter = (text) => {
+    if(!isNullOrUndefined(text)){
+        if(text.length > 2)
+            return false;
+        for(let i=0; i<2; i++){
+            if(text[i]=='\n' || text[i]=='\t' || text[i]==' ')
+                return false;
+        }
+        if(text.length==2){
+            if(text[0]==text[1])
+                return false;
+        }
+    }
+    return true;
+}
+
+export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {
+    if(!isNullOrUndefined(text)){
+        let flag=0;
+        let delimText = '';
+        let nonDelimText =  '';
+        for(let i=0; i<text.length; i++){
+            if(text[i]==lDelim){
+                if(flag==0)
+                {
+                    flag=1;
+                    i++;
+                }
+            }
+            else if(text[i]==rDelim){
+                if(flag==1){
+                    flag=0;
+                    i++;
+                }
+            }
+            //console.log(flag);
+
+            if(flag==0){
+                nonDelimText += text[i];
+            }
+            else{
+                delimText += text[i];
+            }            
+        }
+        if(shouldInclude)
+            return delimText;
+        return nonDelimText;
+    }
+    return text;
+}
