@@ -463,25 +463,25 @@ export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) =
         let delimText = '';
         let nonDelimText =  '';
         for(let i=0; i<text.length; i++){
+            let shouldAdd = true;
             if(text[i]==lDelim){
                 if(flag==0)
                 {
-                    flag=1;
-                    i++;
+                    shouldAdd = false;
                 }
+                flag++;
             }
             else if(text[i]==rDelim){
                 if(flag==1){
-                    flag=0;
-                    i++;
+                    shouldAdd = false;
                 }
+                flag--;
             }
-            //console.log(flag);
 
-            if(flag==0){
+            if(flag==0 && shouldAdd){
                 nonDelimText += text[i];
             }
-            else{
+            else if(shouldAdd){
                 delimText += text[i];
             }            
         }
