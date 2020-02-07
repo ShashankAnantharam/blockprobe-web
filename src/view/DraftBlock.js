@@ -8,11 +8,13 @@ import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
 import Checkbox from './Draft/Checkbox';
-import AddIcon from '@material-ui/icons/Add';
-import SaveIcon from '@material-ui/icons/Save';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
-import ClearIcon from '@material-ui/icons/Clear';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
 import MonthPicker from './Draft/MonthPicker/MonthPicker';
@@ -21,6 +23,10 @@ import moment from 'moment';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Info from '@material-ui/icons/Info';
 import "react-datepicker/dist/react-datepicker.css";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 class DraftBlockComponent extends React.Component {
 
@@ -52,6 +58,7 @@ class DraftBlockComponent extends React.Component {
             multiSelectEntityList: [],
             addDate: false,
             addTime: false,
+            deleteDraftBlockDialog: false,
             date: new Date(),
             time: undefined,
             selectedDateStyle: 'date',
@@ -137,6 +144,7 @@ class DraftBlockComponent extends React.Component {
         this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
         this.isDateChecked = this.isDateChecked.bind(this);
         this.toggleDateStyle = this.toggleDateStyle.bind(this);
+        this.toggleDeleteBlockDialog = this.toggleDeleteBlockDialog.bind(this);
     }    
 
     changeDateStatus(){
@@ -709,7 +717,7 @@ class DraftBlockComponent extends React.Component {
                     </button>
                     <button 
                         className="deleteBlockButton" 
-                        onClick={this.removeDraftBlock}>
+                        onClick={() => this.toggleDeleteBlockDialog(true)}>
                             <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>                    
@@ -923,7 +931,7 @@ class DraftBlockComponent extends React.Component {
                     </button>
                     <button 
                         className="deleteBlockButton" 
-                        onClick={this.removeDraftBlock}>
+                        onClick={() => this.toggleDeleteBlockDialog(true)}>
                             <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>
@@ -989,6 +997,12 @@ class DraftBlockComponent extends React.Component {
         });
     }
 
+    toggleDeleteBlockDialog(value){
+        this.setState({
+            deleteDraftBlockDialog: value
+        });
+    }
+
     render(){
         return(
             <div>
@@ -1007,6 +1021,29 @@ class DraftBlockComponent extends React.Component {
                     steps={this.state.tooltipText.draftBlockTour}
                     run = {this.state.showTooltip.draftBlockTour}                    
                     /> 
+                    <Dialog
+                    open={this.state.deleteDraftBlockDialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => this.toggleDeleteBlockDialog(false)}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description">
+                        <DialogTitle id="alert-dialog-slide-title">{"Save content as blocks"}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            You are about to delete this block. This action cannot be undone. 
+                            Do you confirm?
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={() => this.toggleDeleteBlockDialog(false)} color="primary">
+                            No
+                        </Button>
+                        <Button onClick={this.removeDraftBlock} color="primary">
+                            Yes
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 {this.EditSingleBlock()}
             </div>
         );
