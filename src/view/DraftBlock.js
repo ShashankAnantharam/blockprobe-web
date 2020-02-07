@@ -59,6 +59,22 @@ class DraftBlockComponent extends React.Component {
             addDate: false,
             addTime: false,
             deleteDraftBlockDialog: false,
+            commitDraftBlockDialog: false,
+            dialogType: null,
+            dialogText:{
+                delete:{
+                    title: "Delete blocks",
+                    desc: "You are about to delete this block. This action cannot be reversed.\nDo you confirm?"
+                },
+                commit:{
+                    title: "Add block to story",
+                    desc: "You are about to add this block to the story.\nDo you confirm?"
+                },
+                selected:{
+                    title: null,
+                    desc: null
+                }
+            },
             date: new Date(),
             time: undefined,
             selectedDateStyle: 'date',
@@ -145,6 +161,7 @@ class DraftBlockComponent extends React.Component {
         this.isDateChecked = this.isDateChecked.bind(this);
         this.toggleDateStyle = this.toggleDateStyle.bind(this);
         this.toggleDeleteBlockDialog = this.toggleDeleteBlockDialog.bind(this);
+        this.performAction = this.performAction.bind(this);
     }    
 
     changeDateStatus(){
@@ -680,7 +697,7 @@ class DraftBlockComponent extends React.Component {
                 {this.props.bpDetails.criterion == 0?
                                     <div>
                                         <p className="openTooltipTextContainer">
-                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
+                                                Click on <a className='tooltip-selection' onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>Add to story</a> to add your block to the story. <br/><br/>
                                         </p>
                                     </div>
                                     :
@@ -690,7 +707,7 @@ class DraftBlockComponent extends React.Component {
                 {this.props.bpDetails.criterion == 0?
                                     <button 
                                         className="commitBlockButton commitBlockTooltip" 
-                                        onClick={this.commitDraftBlock}>
+                                        onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>
                                             <div className="buttonDraftGeneral">Add to story</div>
                                     </button>
                                     :
@@ -717,7 +734,7 @@ class DraftBlockComponent extends React.Component {
                     </button>
                     <button 
                         className="deleteBlockButton" 
-                        onClick={() => this.toggleDeleteBlockDialog(true)}>
+                        onClick={() => this.toggleDeleteBlockDialog(true,'delete')}>
                             <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>                    
@@ -904,7 +921,7 @@ class DraftBlockComponent extends React.Component {
                 {this.props.bpDetails.criterion == 0?
                                     <button 
                                         className="commitBlockButton" 
-                                        onClick={this.commitDraftBlock}>
+                                        onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>
                                             <div className="buttonDraftGeneral">Add to story</div>
                                     </button>
                                     :
@@ -931,14 +948,14 @@ class DraftBlockComponent extends React.Component {
                     </button>
                     <button 
                         className="deleteBlockButton" 
-                        onClick={() => this.toggleDeleteBlockDialog(true)}>
+                        onClick={() => this.toggleDeleteBlockDialog(true,'delete')}>
                             <div className="buttonDraftGeneral">Delete</div>
                     </button>    
                 </div>
                 {this.props.bpDetails.criterion == 0?
                                     <div>
                                         <p className="openTooltipTextContainer">
-                                                Click on <a className='tooltip-selection' onClick={this.commitDraftBlock}>Add to story</a> to add your block to the story. <br/><br/>
+                                                Click on <a className='tooltip-selection' onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>Add to story</a> to add your block to the story. <br/><br/>
                                         </p>
                                     </div>
                                     :
@@ -997,10 +1014,29 @@ class DraftBlockComponent extends React.Component {
         });
     }
 
-    toggleDeleteBlockDialog(value){
+    toggleDeleteBlockDialog(value, type){
+        let dialogText = this.state.dialogText;
+        if(type == 'delete'){
+            dialogText.selected.title = dialogText.delete.title;
+            dialogText.selected.desc = dialogText.delete.desc;
+        }
+        else if(type == 'commit'){
+            dialogText.selected.title = dialogText.commit.title;
+            dialogText.selected.desc = dialogText.commit.desc;
+        }
         this.setState({
-            deleteDraftBlockDialog: value
+            deleteDraftBlockDialog: value,
+            dialogType: type
         });
+    }
+
+    performAction(type){
+        if(type == 'delete'){
+            this.removeDraftBlock();
+        }
+        else if(type == 'commit'){
+            this.commitDraftBlock();
+        }
     }
 
     render(){
@@ -1025,21 +1061,20 @@ class DraftBlockComponent extends React.Component {
                     open={this.state.deleteDraftBlockDialog}
                     TransitionComponent={Transition}
                     keepMounted
-                    onClose={() => this.toggleDeleteBlockDialog(false)}
+                    onClose={() => this.toggleDeleteBlockDialog(false,'delete')}
                     aria-labelledby="alert-dialog-slide-title"
                     aria-describedby="alert-dialog-slide-description">
-                        <DialogTitle id="alert-dialog-slide-title">{"Save content as blocks"}</DialogTitle>
+                        <DialogTitle id="alert-dialog-slide-title">{this.state.dialogText.selected.title}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            You are about to delete this block. This action cannot be undone. 
-                            Do you confirm?
+                            {this.state.dialogText.selected.desc}
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={() => this.toggleDeleteBlockDialog(false)} color="primary">
+                        <Button onClick={() => this.toggleDeleteBlockDialog(false,this.state.dialogType)} color="primary">
                             No
                         </Button>
-                        <Button onClick={this.removeDraftBlock} color="primary">
+                        <Button onClick={() => this.performAction(this.state.dialogType)} color="primary">
                             Yes
                         </Button>
                         </DialogActions>
