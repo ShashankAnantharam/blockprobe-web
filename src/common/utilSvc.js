@@ -475,7 +475,9 @@ export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) =
                 if(flag==1){
                     shouldAdd = false;
                 }
-                flag--;
+                if(flag>0){
+                    flag--;
+                }                
             }
 
             if(flag==0 && shouldAdd){
