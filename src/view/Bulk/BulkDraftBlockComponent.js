@@ -275,8 +275,8 @@ class BulkDraftBlockComponent extends React.Component {
         this.setState({
             value: value
         });
-        if(!isNullOrUndefined(this.textarea))
-            this.textarea.focus();
+       // if(!isNullOrUndefined(this.textarea))
+       //     this.textarea.focus();
     }
 
     handleKeyPress = (e) => {

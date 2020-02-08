@@ -13,7 +13,7 @@ class FilterTextComponent extends React.Component {
         //addText, text
 
         this.state={
-            delimiters: '{}',
+            delimiters: '()',
             loadingText: false
         }
 
