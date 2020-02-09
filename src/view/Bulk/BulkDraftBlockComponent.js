@@ -140,6 +140,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.reformText = this.reformText.bind(this);        
         this.deleteExistingBulkText = this.deleteExistingBulkText.bind(this);
         this.closeBulkDraft = this.closeBulkDraft.bind(this);
+        this.saveBulkDraft = this.saveBulkDraft.bind(this);
         this.toggleSaveDialog = this.toggleSaveDialog.bind(this);
     }
 
@@ -558,6 +559,37 @@ class BulkDraftBlockComponent extends React.Component {
         }
     }
 
+    async saveBulkDraft(){
+        this.setState({
+            isSavingText: true
+        });
+        let textList = Utils.getTextListForBulk(this.state.value);
+
+        try{
+            if(this.state.value != this.state.oldValue){
+                await this.deleteExistingBulkText();
+                let writePromises = [];
+                for(let i=0; i<textList.length; i++){
+                    let textPage = {
+                        id: i,
+                        text: textList[i]
+                    };
+                    let writePromise = firebase.firestore().collection("Blockprobes").doc(this.props.bId)
+                        .collection("users").doc(this.props.uIdHash).collection("bulkText").doc(String(i)).set(textPage);
+                    writePromises.push(writePromise);
+                }
+                await Promise.all(writePromises);    
+            }
+        }
+        catch(e){
+        }
+        finally{
+            this.setState({
+                isSavingText: false
+            });
+        }
+    }
+
     async closeBulkDraft(){
         this.setState({
             isSavingText: true
@@ -846,7 +878,7 @@ class BulkDraftBlockComponent extends React.Component {
                             <button 
                                 className="saveBlockButton saveBlocksInBulk" 
                                 onClick={() => this.toggleSaveDialog(true)}>
-                                    <div>Save</div>
+                                    <div>Confirm</div>
                             </button>
                             <Dialog
                                 open={this.state.openConfirmDialog}
@@ -859,7 +891,7 @@ class BulkDraftBlockComponent extends React.Component {
                                 <DialogTitle id="alert-dialog-slide-title">{"Save content as blocks"}</DialogTitle>
                                 <DialogContent>
                                 <DialogContentText id="alert-dialog-slide-description">
-                                    Saving will convert your text to blocks that can be added to your story, and remove all existing text from here. 
+                                    This action will convert your text to blocks that can be added to your story, and remove all existing text from here. 
                                     Do you confirm?
                                 </DialogContentText>
                                 </DialogContent>
@@ -872,6 +904,11 @@ class BulkDraftBlockComponent extends React.Component {
                                 </Button>
                                 </DialogActions>
                             </Dialog>
+                            <button 
+                                className="saveDraftBulkBlockprobeButton" 
+                                onClick={this.saveBulkDraft}>
+                                    <div>Save draft</div>
+                            </button>
                             <button 
                                 className="cancelBlockBackButton" 
                                 onClick={this.closeBulkDraft}>

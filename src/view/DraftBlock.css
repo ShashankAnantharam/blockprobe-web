@@ -131,7 +131,7 @@
 }
 
 .saveBlockButton{
-    background:rgb(12, 52, 231);
+    background:rgb(2, 100, 32);
     color:rgb(219, 243, 242);
     margin-left:1.5em;
     margin-top:1.5em;
@@ -153,6 +153,19 @@
 }
 
 .cancelBlockBackButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
+.saveDraftBulkBlockprobeButton{
+    background:rgb(12, 52, 231);
+    color:rgb(219, 243, 242);
+    margin-left:1.5em;
+    margin-top:1.5em;
+    size:2.6em;
+    border:none;
+}
+
+.saveDraftBulkBlockprobeButton:hover{
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 
