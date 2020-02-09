@@ -781,8 +781,7 @@ class DraftBlockComponent extends React.Component {
                     <h6 style={{marginBottom:'3px', fontSize:'19px'}}>
                         Add relevant date/time
                         <a className='tooltipDatetime tooltips-draft' 
-                        onClick={(e)=>{this.showLocalTooltip('datetime')}} 
-                        onMouseEnter={() => this.showLocalTooltip('datetime')}>
+                        onClick={(e)=>{this.showLocalTooltip('datetime')}}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride
@@ -826,8 +825,7 @@ class DraftBlockComponent extends React.Component {
                     <h6 style={{marginBottom:'3px', fontSize:'19px'}}>
                         Tag entities/characters
                         <a className='tooltipEntities tooltips-draft' 
-                            onClick={(e)=>{this.showLocalTooltip('entities')}} 
-                            onMouseEnter={() => this.showLocalTooltip('entities')}>
+                            onClick={(e)=>{this.showLocalTooltip('entities')}}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride
@@ -886,8 +884,7 @@ class DraftBlockComponent extends React.Component {
                     <h6 style={{marginBottom:'3px',marginTop:'3px', fontSize:'19px'}}>
                         Add evidences
                         <a className='tooltipEvidences tooltips-draft' 
-                            onClick={(e)=>{this.showLocalTooltip('evidences')}} 
-                            onMouseEnter={() => this.showLocalTooltip('evidences')}>
+                            onClick={(e)=>{this.showLocalTooltip('evidences')}}>
                             <Info style={{fontSize:'19px'}}/>
                         </a>                         
                         <Joyride

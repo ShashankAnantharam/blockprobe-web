@@ -876,7 +876,7 @@ class BulkDraftBlockComponent extends React.Component {
                         </form>
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                             <button 
-                                className="saveBlockButton saveBlocksInBulk" 
+                                className="convertToBlocksButton saveBlocksInBulk" 
                                 onClick={() => this.toggleSaveDialog(true)}>
                                     <div>Confirm</div>
                             </button>
