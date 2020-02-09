@@ -14,12 +14,15 @@ class FilterTextComponent extends React.Component {
 
         this.state={
             delimiters: '()',
-            loadingText: false
+            loadingText: false,
+            oldText: '',
+            canUndo: false
         }
 
        this.handleChange = this.handleChange.bind(this);
        this.filterText = this.filterText.bind(this);
        this.isValidDelimter = this.isValidDelimter.bind(this);
+       this.undoOperation = this.undoOperation.bind(this);
     }
 
     handleChange(event, type){
@@ -38,7 +41,19 @@ class FilterTextComponent extends React.Component {
     filterText(){
         let text  = this.props.text;
         let delimiters = this.state.delimiters;
+        this.setState({
+            oldText:text,
+            canUndo: true
+        });
         text = Utils.filterTextBasedOnDelimter(text, delimiters[0], delimiters[1], true);
+        this.props.addText(text);
+    }
+
+    undoOperation(){
+        let text = this.state.oldText;
+        this.setState({
+            canUndo: false
+        });
         this.props.addText(text);
     }
 
@@ -78,14 +93,36 @@ class FilterTextComponent extends React.Component {
                             </label>
                     </form>
 
-                    {this.isValidDelimter()?
-                        <button
-                            className="filterTextDelimiterButton"
-                            onClick={this.filterText}>
-                                <div>Filter</div>
-                        </button>
-                        :
-                        false
+                    <div className="filterTextOptionsContainer">
+                        {this.isValidDelimter()?
+                            <button
+                                className="filterTextDelimiterButton"
+                                onClick={this.filterText}>
+                                    <div>Filter</div>
+                            </button>
+                            :
+                            false
+                        }
+
+                        {this.state.canUndo?
+                            <button
+                                className="undoFilterTextDelimiterButton"
+                                onClick={this.undoOperation}>
+                                    <div>Undo</div>
+                            </button>
+                            :
+                            false
+                        }
+                    </div>
+                    
+
+                    {this.state.canUndo?
+                    <p className="filterTextUndoOperation">
+                        You have filter text based on the delimiters  <span className="filterTextDelimText">{this.state.delimiters}</span>.
+                        To undo this action, please click <a className="filterTextUndoAction" onClick={() => this.undoOperation()}>Undo</a>.
+                    </p>
+                    :
+                    null
                     }
                      
                 </div>
