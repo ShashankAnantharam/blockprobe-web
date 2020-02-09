@@ -458,22 +458,30 @@ export const isValidDelimiter = (text) => {
 }
 
 export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {
+    let prev2 = ' ';
+    let prev1 = ' ';
     if(!isNullOrUndefined(text)){
         let flag=0;
         let delimText = '';
         let nonDelimText =  '';
         for(let i=0; i<text.length; i++){
+            let isNewlineBtwParas = false;
+            if(prev2!='\n' && prev1=='\n' && text[i]=='\n')
+                isNewlineBtwParas = true;
+
             let shouldAdd = true;
             if(text[i]==lDelim){
                 if(flag==0)
                 {
                     shouldAdd = false;
+                    nonDelimText += '\n';
                 }
                 flag++;
             }
             else if(text[i]==rDelim){
                 if(flag==1){
                     shouldAdd = false;
+                    delimText += '\n';
                 }
                 if(flag>0){
                     flag--;
@@ -482,10 +490,18 @@ export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) =
 
             if(flag==0 && shouldAdd){
                 nonDelimText += text[i];
+                if(isNewlineBtwParas){
+                    delimText += '\n\n';
+                }
             }
             else if(shouldAdd){
                 delimText += text[i];
-            }            
+                if(isNewlineBtwParas){
+                    nonDelimText += '\n\n';
+                }
+            }
+            prev2 = prev1;
+            prev1 = text[i];            
         }
         if(shouldInclude)
             return delimText;
