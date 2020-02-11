@@ -49,6 +49,7 @@
     "react-tooltip": "^3.10.0",
     "react-vertical-timeline-component": "^2.3.1",
     "sha.js": "^2.4.11",
+    "speak-tts": "^2.0.8",
     "tesseract.js": "^2.0.2"
   },
   "scripts": {

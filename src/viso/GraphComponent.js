@@ -13,6 +13,7 @@ import AmGraph from './amGraph/amGraph';
 import Expand from 'react-expand-animated';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
+import Speech from 'speak-tts';
 
 class GraphComponent extends React.Component {
 
@@ -59,7 +60,8 @@ class GraphComponent extends React.Component {
         openSelectedBlocks: false,
         wasAllOptionSelected: true,
         wasNoneOptionSelected:false,
-        testVar: -1
+        playStatus: 'end',
+        testVar: -1,
         }
 
         this.graphHelperMap= {
@@ -70,6 +72,8 @@ class GraphComponent extends React.Component {
 
             }
           };
+
+        this.speech = null;
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
@@ -88,6 +92,12 @@ class GraphComponent extends React.Component {
         this.toggleSelectedBlocksPane = this.toggleSelectedBlocksPane.bind(this);
         this.resetScroll = this.resetScroll.bind(this);
 
+        this.initSpeech = this.initSpeech.bind(this);
+        this.playExistingSelection = this.playExistingSelection.bind(this);
+        this.pauseExistingSelection = this.pauseExistingSelection.bind(this);
+        this.resumeExistingSelection = this.resumeExistingSelection.bind(this);
+        this.stopExistingSelection = this.stopExistingSelection.bind(this);
+ 
         this.graphRef = React.createRef();
 
         ReactGA.initialize('UA-143383035-1');  
@@ -669,14 +679,113 @@ class GraphComponent extends React.Component {
         this.props.selectBlock(block);
     }
 
-    componentDidMount(){
+    async initSpeech(){
+        try{
+            this.speech = new Speech();
+            if(this.speech.hasBrowserSupport()) { // returns a boolean
+                console.log("speech synthesis supported")
+            }
+            await  this.speech.init({
+                'volume': 1,
+                'lang': 'en-GB',
+                'rate': 1,
+                'pitch': 1,
+                'voice':'Google UK English Male',
+                'splitSentences': true,
+                'listeners': {
+                    'onvoiceschanged': (voices) => {
+                        console.log("Event voiceschanged", voices)
+                    }
+                }
+            });
+        }
+        catch{}
+    }
+
+    async componentDidMount(){
         this.initializeGraphEvents();
+        await this.initSpeech();
     }
 
     toggleSelectedBlocksPane(){        
         this.setState({
             openSelectedBlocks: !this.state.openSelectedBlocks
         });        
+    }
+
+    async pauseExistingSelection(){
+        if(!isNullOrUndefined(this.speech) && this.speech.speaking())
+        {
+            await this.speech.pause();
+            this.setState({
+                playStatus: 'paused'
+            });
+        }            
+    }
+
+    async resumeExistingSelection(){
+        if(!isNullOrUndefined(this.speech)){
+            await this.speech.resume();
+            this.setState({
+                playStatus: 'start'
+            });
+        }        
+    }
+
+    async stopExistingSelection(){
+        if(!isNullOrUndefined(this.speech)){
+            await this.speech.cancel();
+            this.setState({
+                playStatus: 'end'
+            });    
+        }
+    }
+    
+    async playExistingSelection(){
+        if(!isNullOrUndefined(this.speech)){
+            if(this.speech.speaking())
+                await this.speech.cancel();
+          
+            let toPlayText = '';
+            this.state.currentSelectedBlocks.map((selectedBlock) => 
+                {
+                    let title = this.removeHashedIndex(selectedBlock.title);
+                    let summary = selectedBlock.summary;
+                    if(!isNullOrUndefined(title) && title.length>0)
+                        toPlayText += (title + '. ');
+                    toPlayText += summary;
+                    toPlayText  += '. ';
+                }
+            );
+            this.setState({
+                playStatus: 'start'
+            });
+            this.speech.speak({
+                text: toPlayText,
+                queue: false, // current speech will be interrupted,
+                listeners: {
+                    onstart: () => {
+                        console.log("Start utterance")
+                    },
+                    onend: () => {
+                        console.log("End utterance")
+                    },
+                    onresume: () => {
+                        console.log("Resume utterance")
+                    },
+                    onboundary: (event) => {
+                        console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+                    }
+                }
+            }).then(() => {
+                this.setState({
+                    playStatus: 'end'
+                });
+            }).catch(e => {
+                console.error("An error occurred :", e)
+            });
+            
+        }
     }
 
     render(){
@@ -742,6 +851,36 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
+                            {selectedNodesString.length>0?
+                                <div className='graph-block-list-sound'>
+                                        {this.state.playStatus == 'end'?
+                                            <a onClick={this.playExistingSelection} className="soundIcon">Play</a>
+                                            :
+                                            null
+                                        }
+
+                                        {this.state.playStatus == 'paused'?
+                                            <a onClick={this.resumeExistingSelection} className="soundIcon">Resume</a>
+                                            :
+                                            null
+                                        }
+
+                                        {this.state.playStatus == 'start'?
+                                            <a onClick={this.pauseExistingSelection} className="soundIcon">Pause</a>
+                                            :
+                                            null
+                                        }
+
+                                        {(this.state.playStatus == 'start' || this.state.playStatus == 'paused')?
+                                            <a onClick={this.stopExistingSelection} className="soundIcon">Stop</a>
+                                            :
+                                            null
+                                        }
+                                    
+                                </div>
+                                :
+                                null
+                            }
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.graphRef}>                                
                                 {selectedNodesString.length>0?
                                     <span> Selections</span>
