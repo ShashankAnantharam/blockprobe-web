@@ -855,7 +855,7 @@ class GraphComponent extends React.Component {
                 }
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
-                        <div className="graph-block-list">
+                        <div className="graph-block-list" ref={this.graphRef}>
                             {selectedNodesString.length>0?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
@@ -894,7 +894,7 @@ class GraphComponent extends React.Component {
                                 :
                                 null
                             }
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane} ref={this.graphRef}>                                
+                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
                                     <span> Selections</span>
                                     :
