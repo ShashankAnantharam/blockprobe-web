@@ -846,7 +846,23 @@ class GraphComponent extends React.Component {
         if(selectedNodesString.length > 0)
             selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
 
-            
+            /*
+            {this.state.playStatus == 'paused'?
+                                            <a onClick={this.resumeExistingSelection} className="soundIcon">
+                                                <PlayArrow />
+                                            </a>
+                                            :
+                                            null
+                                        }
+
+                                        {this.state.playStatus == 'start'?
+                                            <a onClick={this.pauseExistingSelection} className="soundIcon">
+                                                <Pause />
+                                            </a>
+                                            :
+                                            null
+                                        }
+                                        */
         return (
             <div>
                 {this.props.isPublic == undefined || !this.props.isPublic?
@@ -888,23 +904,7 @@ class GraphComponent extends React.Component {
                                             </a>
                                             :
                                             null
-                                        }
-
-                                        {this.state.playStatus == 'paused'?
-                                            <a onClick={this.resumeExistingSelection} className="soundIcon">
-                                                <PlayArrow />
-                                            </a>
-                                            :
-                                            null
-                                        }
-
-                                        {this.state.playStatus == 'start'?
-                                            <a onClick={this.pauseExistingSelection} className="soundIcon">
-                                                <Pause />
-                                            </a>
-                                            :
-                                            null
-                                        }
+                                        }                                        
 
                                         {(this.state.playStatus == 'start' || this.state.playStatus == 'paused')?
                                             <a onClick={this.stopExistingSelection} className="soundIcon">
