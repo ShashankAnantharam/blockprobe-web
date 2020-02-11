@@ -98,11 +98,15 @@
     font-weight: 600;
     padding: 2px;
     text-align: center;
-    background-color: #747474;
+    background-color: #585858;
     color: white;
     transition: 0.5s;
     cursor: pointer;
     word-wrap: break-word;
+}
+
+.graph-block-list-sound:hover{
+    background-color: #353535;
 }
 
 .soundIcon{

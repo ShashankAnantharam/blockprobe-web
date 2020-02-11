@@ -13,6 +13,9 @@ import AmGraph from './amGraph/amGraph';
 import Expand from 'react-expand-animated';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Pause from '@material-ui/icons/Pause';
+import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
 
 class GraphComponent extends React.Component {
@@ -854,25 +857,33 @@ class GraphComponent extends React.Component {
                             {selectedNodesString.length>0?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
-                                            <a onClick={this.playExistingSelection} className="soundIcon">Play</a>
+                                            <a onClick={this.playExistingSelection} className="soundIcon">
+                                                <PlayArrow />
+                                            </a>
                                             :
                                             null
                                         }
 
                                         {this.state.playStatus == 'paused'?
-                                            <a onClick={this.resumeExistingSelection} className="soundIcon">Resume</a>
+                                            <a onClick={this.resumeExistingSelection} className="soundIcon">
+                                                <PlayArrow />
+                                            </a>
                                             :
                                             null
                                         }
 
                                         {this.state.playStatus == 'start'?
-                                            <a onClick={this.pauseExistingSelection} className="soundIcon">Pause</a>
+                                            <a onClick={this.pauseExistingSelection} className="soundIcon">
+                                                <Pause />
+                                            </a>
                                             :
                                             null
                                         }
 
                                         {(this.state.playStatus == 'start' || this.state.playStatus == 'paused')?
-                                            <a onClick={this.stopExistingSelection} className="soundIcon">Stop</a>
+                                            <a onClick={this.stopExistingSelection} className="soundIcon">
+                                                <Stop />
+                                            </a>
                                             :
                                             null
                                         }
