@@ -441,6 +441,12 @@ export const isCharacterAlphabet = (text) => {
     return  true;
 }
 
+export const isCharacterAcceptableText = (text) => {
+    if(text =='.' || text==',' || text ==' ' || isCharacterAlphabet(text) || isCharacterNumeric(text))
+        return true;
+    return false;
+}
+
 export const isValidDelimiter = (text) => {
     if(!isNullOrUndefined(text)){
         if(text.length > 2)
@@ -455,6 +461,26 @@ export const isValidDelimiter = (text) => {
         }
     }
     return true;
+}
+
+export const correctTextForSpeech = (text) => {
+    let ans = '';
+    if(!isNullOrUndefined(text)){
+        if(text.length)
+            ans += text[0];
+        for(let i=1; i<text.length;i++){
+            if(text[i-1]=='.' || text[i-1]==','){
+                if(!isCharacterNumeric(text[i]) && text[i]!='.' && text[i]!=' '){
+                    ans += ' ';
+                }
+            }
+            if(isCharacterAcceptableText(text[i])){
+                ans += text[i];
+            }
+        }
+    }
+    ans = ans.trim();
+    return ans;
 }
 
 export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {

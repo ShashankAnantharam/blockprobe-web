@@ -17,6 +17,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
+import * as Utils from '../common/utilSvc';
 
 class GraphComponent extends React.Component {
 
@@ -686,7 +687,7 @@ class GraphComponent extends React.Component {
         try{
             this.speech = new Speech();
             if(this.speech.hasBrowserSupport()) { // returns a boolean
-                console.log("speech synthesis supported")
+                // console.log("speech synthesis supported")
             }
             await  this.speech.init({
                 'volume': 1,
@@ -697,7 +698,7 @@ class GraphComponent extends React.Component {
                 'splitSentences': true,
                 'listeners': {
                     'onvoiceschanged': (voices) => {
-                        console.log("Event voiceschanged", voices)
+                        // console.log("Event voiceschanged", voices)
                     }
                 }
             });
@@ -755,29 +756,30 @@ class GraphComponent extends React.Component {
                     let title = this.removeHashedIndex(selectedBlock.title);
                     let summary = selectedBlock.summary;
                     if(!isNullOrUndefined(title) && title.length>0)
-                        toPlayText += (title + '. ');
-                    toPlayText += summary;
+                        toPlayText += (Utils.correctTextForSpeech(title) + '. ');
+                    toPlayText += Utils.correctTextForSpeech(summary);
                     toPlayText  += '. ';
                 }
             );
             this.setState({
                 playStatus: 'start'
             });
+            console.log(toPlayText);
             this.speech.speak({
                 text: toPlayText,
                 queue: false, // current speech will be interrupted,
                 listeners: {
                     onstart: () => {
-                        console.log("Start utterance")
+                        //console.log("Start utterance")
                     },
                     onend: () => {
-                        console.log("End utterance")
+                        //console.log("End utterance")
                     },
                     onresume: () => {
-                        console.log("Resume utterance")
+                        //console.log("Resume utterance")
                     },
                     onboundary: (event) => {
-                        console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+                        //console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
                     }
                 }
             }).then(() => {
