@@ -101,6 +101,8 @@ class GraphComponent extends React.Component {
         this.pauseExistingSelection = this.pauseExistingSelection.bind(this);
         this.resumeExistingSelection = this.resumeExistingSelection.bind(this);
         this.stopExistingSelection = this.stopExistingSelection.bind(this);
+        this.timeoutFn = this.timeoutFn.bind(this);
+        this.timeInFn = this.timeInFn.bind(this);
  
         this.graphRef = React.createRef();
 
@@ -692,9 +694,9 @@ class GraphComponent extends React.Component {
             await  this.speech.init({
                 'volume': 1,
                 'lang': 'en-GB',
-                'rate': 1,
-                'pitch': 1,
-                'voice':'Google UK English Male',
+                'rate': 0.9,
+                'pitch': 0.9,
+                'voice':'Google UK English Female',
                 'splitSentences': true,
                 'listeners': {
                     'onvoiceschanged': (voices) => {
@@ -706,9 +708,31 @@ class GraphComponent extends React.Component {
         catch{}
     }
 
+    async timeoutFn(){            
+        if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech)){
+            await this.speech.resume();                
+        }
+        const scope = this;
+        this.timeout = setTimeout(function() {
+            if(scope.state.playStatus == 'start' && !isNullOrUndefined(scope.speech)){
+                scope.speech.pause();                    
+            }
+            scope.timeInFn();
+        }, 9500);        
+    }
+
+    async timeInFn(){
+        const scope = this;
+        this.timeout = setTimeout(() => {
+          scope.timeoutFn();
+          }, 50);
+    }
+
     async componentDidMount(){
         this.initializeGraphEvents();
         await this.initSpeech();
+
+        this.timeInFn();
     }
 
     toggleSelectedBlocksPane(){        
@@ -764,28 +788,28 @@ class GraphComponent extends React.Component {
             this.setState({
                 playStatus: 'start'
             });
-            console.log(toPlayText);
             this.speech.speak({
                 text: toPlayText,
-                queue: false, // current speech will be interrupted,
-                listeners: {
+                queue: false // ,current speech will be interrupted,
+               /* listeners: {
                     onstart: () => {
-                        //console.log("Start utterance")
+                        console.log("Start utterance")
                     },
                     onend: () => {
-                        //console.log("End utterance")
+                        console.log("End utterance")
                     },
                     onresume: () => {
-                        //console.log("Resume utterance")
+                        console.log("Resume utterance")
                     },
                     onboundary: (event) => {
-                        //console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+                        console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
                     }
-                }
+                }*/
             }).then(() => {
                 this.setState({
                     playStatus: 'end'
                 });
+                //console.log('here');
             }).catch(e => {
                 console.error("An error occurred :", e)
             });
@@ -856,7 +880,7 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list" ref={this.graphRef}>
-                            {selectedNodesString.length>0?
+                            {selectedNodesString.length>0 && !isNullOrUndefined(this.speech)?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
                                             <a onClick={this.playExistingSelection} className="soundIcon">

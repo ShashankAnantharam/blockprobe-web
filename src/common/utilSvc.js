@@ -442,7 +442,7 @@ export const isCharacterAlphabet = (text) => {
 }
 
 export const isCharacterAcceptableText = (text) => {
-    if(text =='.' || text==',' || text ==' ' || isCharacterAlphabet(text) || isCharacterNumeric(text))
+    if(text =='.' || text==',' || text ==' ' || text =='%' || isCharacterAlphabet(text) || isCharacterNumeric(text))
         return true;
     return false;
 }
