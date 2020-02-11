@@ -184,6 +184,10 @@
 
 @media only screen and (max-width: 600px) {
 
+    .graph-block-list-sound{
+        display: none;
+    }
+
     .only-large-screen{
         display: none;
     }
