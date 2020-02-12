@@ -698,7 +698,6 @@ class GraphComponent extends React.Component {
                 'lang': 'en-GB',
                 'rate': 0.9,
                 'pitch': 0.9,
-                'voice':'Google UK English Female',
                 'splitSentences': true,
                 'listeners': {
                     'onvoiceschanged': (voices) => {
@@ -787,8 +786,8 @@ class GraphComponent extends React.Component {
             });
             this.speech.speak({
                 text: toPlayText,
-                queue: false // ,current speech will be interrupted,
-               /* listeners: {
+                queue: false// ,  // current speech will be interrupted,
+                /* listeners: {
                     onstart: () => {
                         console.log("Start utterance")
                     },
