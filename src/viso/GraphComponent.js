@@ -17,6 +17,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
+import * as firebase from 'firebase';
 import * as Utils from '../common/utilSvc';
 
 const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
@@ -694,18 +695,22 @@ class GraphComponent extends React.Component {
             if(this.speech.hasBrowserSupport()) { // returns a boolean
                 // console.log("speech synthesis supported")
             }
-            let data = await this.speech.init();
+            let data = await this.speech.init();            
             let voices =  data.voices;
             let selectedVoice = -1;
             for(let i=0; !isNullOrUndefined(voices) && i<voices.length; i++){
+                if(selectedVoice == -1)
+                    selectedVoice = i;
+                // firebase.database().ref('Testing/dataVal/'+String(i)).set(voices[i].name);
                 let name = voices[i].name;
-                if(name.toLowerCase().includes('eng'))
+                if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine')) 
                 {
                     selectedVoice = i;
                     break;
                 }
             }
             if(selectedVoice != -1){
+                //firebase.database().ref('Testing/dataVal').set(voices[selectedVoice].name);
                 await this.speech.setVoice(voices[selectedVoice].name);
             }
         }
@@ -864,21 +869,7 @@ class GraphComponent extends React.Component {
             selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
 
             /*
-            {this.state.playStatus == 'paused'?
-                                            <a onClick={this.resumeExistingSelection} className="soundIcon">
-                                                <PlayArrow />
-                                            </a>
-                                            :
-                                            null
-                                        }
-
-                                        {this.state.playStatus == 'start'?
-                                            <a onClick={this.pauseExistingSelection} className="soundIcon">
-                                                <Pause />
-                                            </a>
-                                            :
-                                            null
-                                        }
+            
                                         */
         return (
             <div>
@@ -921,7 +912,23 @@ class GraphComponent extends React.Component {
                                             </a>
                                             :
                                             null
-                                        }                                        
+                                        }     
+
+                                        {this.state.playStatus == 'paused' && !isChrome?
+                                            <a onClick={this.resumeExistingSelection} className="soundIcon">
+                                                <PlayArrow />
+                                            </a>
+                                            :
+                                            null
+                                        }
+
+                                        {this.state.playStatus == 'start' && !isChrome? 
+                                            <a onClick={this.pauseExistingSelection} className="soundIcon">
+                                                <Pause />
+                                            </a>
+                                            :
+                                            null
+                                        }                                   
 
                                         {(this.state.playStatus == 'start' || this.state.playStatus == 'paused')?
                                             <a onClick={this.stopExistingSelection} className="soundIcon">
