@@ -20,6 +20,7 @@ import Speech from 'speak-tts';
 import * as Utils from '../common/utilSvc';
 
 const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+const isIE = /*@cc_on!@*/false || !!document.documentMode;
 
 class GraphComponent extends React.Component {
 
@@ -693,18 +694,20 @@ class GraphComponent extends React.Component {
             if(this.speech.hasBrowserSupport()) { // returns a boolean
                 // console.log("speech synthesis supported")
             }
-            await  this.speech.init({
-                'volume': 1,
-                'lang': 'en-GB',
-                'rate': 0.9,
-                'pitch': 0.9,
-                'splitSentences': true,
-                'listeners': {
-                    'onvoiceschanged': (voices) => {
-                        // console.log("Event voiceschanged", voices)
-                    }
+            let data = await this.speech.init();
+            let voices =  data.voices;
+            let selectedVoice = -1;
+            for(let i=0; !isNullOrUndefined(voices) && i<voices.length; i++){
+                let name = voices[i].name;
+                if(name.toLowerCase().includes('eng'))
+                {
+                    selectedVoice = i;
+                    break;
                 }
-            });
+            }
+            if(selectedVoice != -1){
+                await this.speech.setVoice(voices[selectedVoice].name);
+            }
         }
         catch{}
     }
@@ -813,6 +816,12 @@ class GraphComponent extends React.Component {
         }
     }
 
+    async componentWillUnmount(){
+        if(!isNullOrUndefined(this.speech)){
+            await this.speech.cancel();
+        }
+    }
+
     render(){
 
         const selectedOptionsStyles = {
@@ -892,7 +901,7 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list" ref={this.graphRef}>
-                            {selectedNodesString.length>0 && !isNullOrUndefined(this.speech)?
+                            {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech)?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
                                             <a onClick={this.playExistingSelection} className="soundIcon">
