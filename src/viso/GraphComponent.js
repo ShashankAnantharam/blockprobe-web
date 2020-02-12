@@ -773,6 +773,18 @@ class GraphComponent extends React.Component {
             if(this.speech.speaking())
                 await this.speech.cancel();
           
+            let selectedNodesString = ': ';
+            for(let i=0; !isNullOrUndefined(this.state.selectedNodes) && i<this.state.selectedNodes.length; i++){
+                selectedNodesString += this.state.selectedNodes[i] + ', ';
+            }
+            if(selectedNodesString.length > 0)
+                selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
+            ReactGA.event({
+                category: 'playSound',
+                action: 'PlaySound ' + selectedNodesString,
+                label: 'PlaySound ' + selectedNodesString
+            });
+
             let toPlayText = '';
             this.state.currentSelectedBlocks.map((selectedBlock) => 
                 {
