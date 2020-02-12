@@ -19,6 +19,8 @@ import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
 import * as Utils from '../common/utilSvc';
 
+const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
 class GraphComponent extends React.Component {
 
     constructor(props){
@@ -708,8 +710,8 @@ class GraphComponent extends React.Component {
         catch{}
     }
 
-    async timeoutFn(){            
-        if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech)){
+    async timeoutFn(){  
+        if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech) && isChrome){
             await this.speech.pause();
             await this.speech.resume();     
         }     
@@ -717,10 +719,8 @@ class GraphComponent extends React.Component {
 
     timeInFn(){
         const scope = this;
-        this.timeout = setInterval(() => {
-            if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech)){            
-                this.timeoutFn();                
-            } 
+        this.timeout = setInterval(() => {            
+            this.timeoutFn();                
           }, 8500);
     }
 
@@ -728,7 +728,8 @@ class GraphComponent extends React.Component {
         this.initializeGraphEvents();
         await this.initSpeech();
 
-        this.timeInFn();
+        if(isChrome)
+            this.timeInFn();
     }
 
     toggleSelectedBlocksPane(){        
