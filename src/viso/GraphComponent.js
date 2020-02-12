@@ -710,22 +710,26 @@ class GraphComponent extends React.Component {
 
     async timeoutFn(){            
         if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech)){
-            await this.speech.resume();                
+            await this.speech.pause();
+            await this.speech.resume();     
         }
-        const scope = this;
+        /*const scope = this;
         this.timeout = setTimeout(function() {
             if(scope.state.playStatus == 'start' && !isNullOrUndefined(scope.speech)){
                 scope.speech.pause();                    
             }
             scope.timeInFn();
-        }, 9500);        
+        }, 9500);*/        
     }
 
     async timeInFn(){
         const scope = this;
-        this.timeout = setTimeout(() => {
-          scope.timeoutFn();
-          }, 50);
+        this.timeout = setInterval(() => {
+            if(this.state.playStatus == 'start' && !isNullOrUndefined(this.speech)){
+                
+                this.timeoutFn();                
+            } 
+          }, 9500);
     }
 
     async componentDidMount(){
