@@ -115,6 +115,10 @@ class TimelineComponent extends React.Component {
                     let title = this.removeHashedIndex(selectedBlock.title);
                     let summary = selectedBlock.summary;
 
+                    if(!isNullOrUndefined(selectedBlock.blockDate) && isNullOrUndefined(selectedBlock.blockDate.month)){
+                        dateTimeStr = 'Year ' + dateTimeStr;
+                    }
+
                     if(!isNullOrUndefined(dateTimeStr) && dateTimeStr.length>0){
                         toPlayText += dateTimeStr + ". ";
                     }
