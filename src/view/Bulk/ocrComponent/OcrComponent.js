@@ -5,6 +5,7 @@ import Loader from 'react-loader-spinner';
 import imageCompression from 'browser-image-compression';
 import * as Utils from '../../../common/utilSvc';
 import  "./OcrComponent.css";
+import { isNullOrUndefined } from 'util';
 
 class OcrComponent extends React.Component {
 
@@ -14,7 +15,8 @@ class OcrComponent extends React.Component {
 
         this.state={
             text: 'none',
-            loadingText: false
+            loadingText: false,
+            fileName: null
         }
 
         this.functions = firebase.functions();
@@ -39,7 +41,11 @@ class OcrComponent extends React.Component {
  
         if(picture.length > 0)
         {
+            let name = null;
             let latestPicture = picture[picture.length-1];
+            if(!isNullOrUndefined(latestPicture.name))
+                name  = latestPicture.name;
+
             var options = {
                 maxSizeMB: 1,
                 useWebWorker: true
@@ -68,7 +74,8 @@ class OcrComponent extends React.Component {
                 finally{
                     this.props.addText(text); 
                     this.setState({
-                        loadingText: false
+                        loadingText: false,
+                        fileName: name
                     });
                 }
                   
@@ -98,14 +105,25 @@ class OcrComponent extends React.Component {
                                 </div> 
                             </div>                            
                             :
-                            <ImageUploader
-                                withIcon={true}
-                                buttonText='Choose image'
-                                onChange={this.onDrop}
-                                singleImage={true}
-                                imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                                maxFileSize={5242880}
-                                />  
+                            <div>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose image'
+                                    onChange={this.onDrop}
+                                    singleImage={true}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                    />
+                                {!isNullOrUndefined(this.state.fileName)?
+                                    <div style={{textAlign:'center'}}>
+                                        <p className="processingOcrText">
+                                            Your last image upload was <span style={{color:'blue'}}>{this.state.fileName}</span>.
+                                        </p>
+                                    </div>
+                                    :
+                                    null
+                                }
+                            </div>                              
                     }             
             </div>
         );
