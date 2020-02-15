@@ -151,7 +151,7 @@ class BulkDraftBlockComponent extends React.Component {
             newPara.title='';
             newPara.body='';
             let start = 0;
-            if(currentPara.length == 2 || (Utils.isTitleHashtag(currentPara[0]))){
+            if(Utils.isTitleHashtag(currentPara[0])){
                 newPara.title = currentPara[0];
                 start++;
             }  
@@ -772,7 +772,7 @@ class BulkDraftBlockComponent extends React.Component {
                                     </a>
                                 </p>
                                 <p className='copyBlockBulkText' style={{fontSize:'13px', color:'red', fontStyle:'italic', background:'rgba(255,0,0,0.3)'}}>                           
-                                    Avengers<br/>
+                                    # Avengers<br/>
                                     Thor, Rogers and Ironman are the Avengers.<br/><br/>
                                     Thor is from Asgard
                                 </p>
