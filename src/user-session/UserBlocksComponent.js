@@ -4,10 +4,13 @@ import ReactGA from 'react-ga';
 import SingleBlock from '../view/SingleBlock';
 import BulkDraftBlockComponent from '../view/Bulk/BulkDraftBlockComponent';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import AddIcon from '@material-ui/icons/Add';
-import BookIcon from '@material-ui/icons/Book';
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
@@ -21,6 +24,10 @@ import * as Utils from '../common/utilSvc';
 import Joyride from 'react-joyride';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 class UserBlocksComponent extends React.Component {
     
@@ -46,6 +53,22 @@ class UserBlocksComponent extends React.Component {
                 entities:[]
             },
             multiSelectedBlocks: {},
+            dialogType: null,
+            dialogText:{
+                delete:{
+                    title: "Delete blocks",
+                    desc: "You are about to delete these blocks. This action cannot be reversed.\nDo you confirm?"
+                },
+                commit:{
+                    title: "Add blocks to story",
+                    desc: "You are about to add these blocks to the story.\nDo you confirm?"
+                },
+                selected:{
+                    title: null,
+                    desc: null
+                }
+            },
+            dialog: false,
             multiSelectDraftBlockStatus: false,
             isCreateBlockClicked:false,
             isCreateBulkBlockClicked: false,
@@ -137,6 +160,24 @@ class UserBlocksComponent extends React.Component {
         this.onSelectTab = this.onSelectTab.bind(this);
         this.toggleMultiSelect = this.toggleMultiSelect.bind(this);
         this.multiSelectBlocks = this.multiSelectBlocks.bind(this);
+        this.toggleDialog = this.toggleDialog.bind(this);
+        this.performAction = this.performAction.bind(this);
+    }
+
+    toggleDialog(value, type){
+        let dialogText = this.state.dialogText;
+        if(type == 'delete'){
+            dialogText.selected.title = dialogText.delete.title;
+            dialogText.selected.desc = dialogText.delete.desc;
+        }
+        else if(type == 'commit'){
+            dialogText.selected.title = dialogText.commit.title;
+            dialogText.selected.desc = dialogText.commit.desc;
+        }
+        this.setState({
+            dialog: value,
+            dialogType: type
+        });
     }
 
     updateEntityPaneList(list){
@@ -308,7 +349,11 @@ class UserBlocksComponent extends React.Component {
         const scope = this;
         Object.keys(multiSelectBlocks).map((key) => {
             scope.deleteDraftBlock(key);
-        })
+        });
+        multiSelectBlocks = {};
+        this.setState({
+            multiSelectedBlocks: multiSelectBlocks
+        });
     }
 
     deleteDraftBlock(blockKey){
@@ -941,6 +986,17 @@ class UserBlocksComponent extends React.Component {
         }
     }
 
+    performAction(type){
+        if(type == 'delete'){
+            this.deleteMultipleDraftBlocks();
+        }
+
+        this.setState({
+            dialog: false,
+            dialogType: null
+        });
+    }
+
     render(){
 
         const scope = this;
@@ -973,6 +1029,28 @@ class UserBlocksComponent extends React.Component {
                 {this.renderBlockOptions()}                              
 
                 <div>
+                    <Dialog
+                        open={this.state.dialog}
+                        TransitionComponent={Transition}
+                        keepMounted
+                        onClose={() => this.toggleDialog(false,'delete')}
+                        aria-labelledby="alert-dialog-slide-title"
+                        aria-describedby="alert-dialog-slide-description">
+                            <DialogTitle id="alert-dialog-slide-title">{this.state.dialogText.selected.title}</DialogTitle>
+                            <DialogContent>
+                            <DialogContentText id="alert-dialog-slide-description">
+                                {this.state.dialogText.selected.desc}
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                            <Button onClick={() => this.toggleDialog(false,this.state.dialogType)} color="primary">
+                                No
+                            </Button>
+                            <Button onClick={() => this.performAction(this.state.dialogType)} color="primary">
+                                Yes
+                            </Button>
+                            </DialogActions>
+                        </Dialog>
                     <div className="visualization-tabs-title">My contributions</div>
                     <Tabs className="blocksTab" onSelect={this.onSelectTab}>
                         <TabList>
@@ -1024,10 +1102,11 @@ class UserBlocksComponent extends React.Component {
                                         </button>
                                     }
 
-                                    {Object.keys(this.state.multiSelectedBlocks).length > 0?
+                                    {Object.keys(this.state.multiSelectedBlocks).length > 0 &&
+                                        this.state.multiSelectDraftBlockStatus?
                                         <button 
                                             className="multiSelectDeleteBlockButton" 
-                                            onClick={this.deleteMultipleDraftBlocks}>
+                                            onClick={() => {this.toggleDialog(true,'delete')}}>
                                                 <div>Delete</div>
                                         </button>
                                         :

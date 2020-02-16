@@ -63,7 +63,7 @@ class DraftBlockComponent extends React.Component {
             dialogType: null,
             dialogText:{
                 delete:{
-                    title: "Delete blocks",
+                    title: "Delete block",
                     desc: "You are about to delete this block. This action cannot be reversed.\nDo you confirm?"
                 },
                 commit:{
