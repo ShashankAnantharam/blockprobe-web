@@ -182,7 +182,7 @@ export const  extractBlockIndex = (block)=>{
     let isAExist = false;
     if(a.length>0 && a.charAt(0)==='#'){
         var num = '';
-        for(var i=1; i<a.length; i++){
+        for(var i=1; i<a.length && a[i]!=' '; i++){
             
             if((!isNaN(parseInt(a.charAt(i), 10))) || a[i]==='.'){
                 num += a.charAt(i);
