@@ -139,12 +139,16 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.finishDashboardView = this.finishDashboardView.bind(this);
         this.startShowingShareStoryTooltip = this.startShowingShareStoryTooltip.bind(this);
         this.finishShareStoryTooltip = this.finishShareStoryTooltip.bind(this);
-        this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
+        
         this.writeShortBlocktree = this.writeShortBlocktree.bind(this);   
         this.getBlockTree = this.getBlockTree.bind(this);   
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.getLatestBlocks = this.getLatestBlocks.bind(this);
         this.buildBlocktree = this.buildBlocktree.bind(this);   
+
+        this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
+        this.commitMultipleBlocksToBlockprobe = this.commitMultipleBlocksToBlockprobe.bind(this);
+        this.commitSingleBlockToBlockprobe = this.commitSingleBlockToBlockprobe.bind(this);          
     }
 
     finishBuildingStoryTooltip(){
@@ -980,6 +984,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     buildStory = {this.state.showTooltip.buildStory}
                     finishBuildingStoryTooltip = {this.finishBuildingStoryTooltip}
                     commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
+                    commitMultipleBlocksToBlockprobe = {this.commitMultipleBlocksToBlockprobe}
                     finishAddingBlockToStoryTooltip = {this.finishAddingBlockToStoryTooltip}
                     setNewVisualisation = {this.setNewVisualisation}   
                     refreshBlockprobe = {this.refreshBlockprobe}  
@@ -1044,6 +1049,97 @@ class ViewBlockprobePrivateComponent extends React.Component {
             showTooltip.buildStory = JSON.parse(JSON.stringify(newProps.buildStorytooltip));
             this.setState({showTooltip:showTooltip});
         }
+    }
+
+    async commitMultipleBlocksToBlockprobe(blocks){
+        let currTime = Date.now();
+        var loadingState = this.state.isloading;
+        loadingState.blockprobe = true;
+        this.setState({            
+            isloading: loadingState
+        });
+
+        let tasks = [];
+        for(let i=0;!isNullOrUndefined(blocks) && i<blocks.length; i++){
+            let block = blocks[i];
+            let task = this.commitSingleBlockToBlockprobe(block,currTime);
+            tasks.push(task);
+            currTime = currTime + 10;
+        }
+        await Promise.all(tasks);
+        this.refreshBlockprobe();
+    }
+
+    async commitSingleBlockToBlockprobe(block, timestamp){
+        const oldKey = block.key;
+        //Deepcopy of block
+        const blockStr = JSON.stringify(block);
+        var newBlock = JSON.parse(blockStr);
+        //console.log(this.state);
+        var newBlockId = this.state.shajs('sha256').update(this.state.uIdHash+String(newBlock.timestamp)).digest('hex');
+        newBlock.timestamp = timestamp; 
+        newBlock.verificationHash = newBlockId;
+        newBlock.previousKey = this.state.latestBlock.key;
+        if(!("bpID" in newBlock)){
+            newBlock.bpID = this.props.bId;
+        }
+        if(!("entities" in newBlock)){
+            newBlock.entities = [];
+        }
+        if(!("evidences" in newBlock)){
+            newBlock.evidences = [];
+        }
+        if(newBlock.actionType == "ADD" || newBlock.actionType == "BpDetails"){
+            newBlock.referenceBlock = null;
+        }
+        if(newBlock.actionType == "BpDetails"){
+            if(!('title' in newBlock)){
+                newBlock.title = this.state.blockprobeTitle;
+            }
+            if(!('summary' in newBlock)){
+                newBlock.summary = this.state.blockprobeSummary;
+            }
+        }
+
+        newBlock.key = this.state.shajs('sha256').update(newBlockId + newBlock.previousKey).digest('hex');            
+        if(isNullOrUndefined(newBlock.blockDate)){
+            newBlock.blockDate = null;
+        }
+        if(isNullOrUndefined(newBlock.blockTime)){
+            newBlock.blockTime = null;
+        }
+        newBlock.blockState = "SUCCESSFUL";
+
+        var committedBlock = JSON.parse(JSON.stringify(newBlock));
+        delete committedBlock["blockState"];
+        delete committedBlock["bpID"];
+        delete committedBlock["children"];
+        //console.log(newBlock);
+        //console.log(committedBlock);
+        
+        if(oldKey){
+            await firebase.database().ref("Blockprobes/"+newBlock.bpID
+                +"/reviewBlocks/"+oldKey).remove();
+
+            await firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(oldKey).delete();
+        }
+        
+        if(!(newBlock.actionType == "BpDetails")){
+            await firebase.firestore().collection("Blockprobes").
+                doc(newBlock.bpID).
+                collection("users").doc(this.state.uIdHash).
+                collection("userBlocks").
+                doc(newBlock.key).set(newBlock);
+        }
+        
+        await firebase.firestore().collection("Blockprobes").
+            doc(newBlock.bpID).
+            collection("fullBlocks").
+            doc(committedBlock.key).set(committedBlock);
     }
 
     async commitBlockToBlockprobe(block){

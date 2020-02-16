@@ -139,6 +139,7 @@ class UserBlocksComponent extends React.Component {
         this.closeImagePane = this.closeImagePane.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
         this.deleteMultipleDraftBlocks = this.deleteMultipleDraftBlocks.bind(this);
+        this.commitMultipleDraftBlocks = this.commitMultipleDraftBlocks.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
         this.addDraftBlocksInBulk = this.addDraftBlocksInBulk.bind(this);
@@ -350,6 +351,23 @@ class UserBlocksComponent extends React.Component {
         Object.keys(multiSelectBlocks).map((key) => {
             scope.deleteDraftBlock(key);
         });
+        multiSelectBlocks = {};
+        this.setState({
+            multiSelectedBlocks: multiSelectBlocks
+        });
+    }
+
+    commitMultipleDraftBlocks(){
+        let multiSelectBlocks = this.state.multiSelectedBlocks;
+        const scope = this;
+        let blocks = [];
+        Object.keys(multiSelectBlocks).map((key) => {
+            if(key in this.state.draftBlocks){
+                blocks.push(this.state.draftBlocks[key]);
+            }
+        });
+        this.props.commitMultipleBlocksToBlockprobe(blocks);
+
         multiSelectBlocks = {};
         this.setState({
             multiSelectedBlocks: multiSelectBlocks
@@ -990,6 +1008,9 @@ class UserBlocksComponent extends React.Component {
         if(type == 'delete'){
             this.deleteMultipleDraftBlocks();
         }
+        else if(type  == 'commit'){
+            this.commitMultipleDraftBlocks();   
+        }
 
         this.setState({
             dialog: false,
@@ -1108,6 +1129,17 @@ class UserBlocksComponent extends React.Component {
                                             className="multiSelectDeleteBlockButton" 
                                             onClick={() => {this.toggleDialog(true,'delete')}}>
                                                 <div>Delete</div>
+                                        </button>
+                                        :
+                                        null
+                                    }
+
+                                    {Object.keys(this.state.multiSelectedBlocks).length > 0 &&
+                                        this.state.multiSelectDraftBlockStatus?
+                                        <button 
+                                            className="multiSelectCommitBlockButton" 
+                                            onClick={() => {this.toggleDialog(true,'commit')}}>
+                                                <div>Add to story</div>
                                         </button>
                                         :
                                         null
