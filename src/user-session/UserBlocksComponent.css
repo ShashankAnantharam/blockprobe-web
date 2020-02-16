@@ -43,6 +43,10 @@
     margin-bottom: 30px;   
 }
 
+.multiselect-button-container{
+    display: flex;
+}
+
 .addBlockButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
@@ -78,6 +82,18 @@
 }
 
 .multiSelectBlockButton:hover{
+    box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
+}
+
+.multiSelectDeleteBlockButton{
+    background:rgb(241, 123, 123);
+    color:rgb(219, 243, 242);
+    margin-left:1em;
+    size:2.6em;
+    border:none;
+}
+
+.multiSelectDeleteBlockButton:hover{
     box-shadow: 2px 2px 10px 2px rgb(95, 95, 95);
 }
 

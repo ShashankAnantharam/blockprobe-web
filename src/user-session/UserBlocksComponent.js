@@ -115,6 +115,7 @@ class UserBlocksComponent extends React.Component {
         this.openImagePane = this.openImagePane.bind(this);
         this.closeImagePane = this.closeImagePane.bind(this);
         this.deleteNewBlock = this.deleteNewBlock.bind(this);
+        this.deleteMultipleDraftBlocks = this.deleteMultipleDraftBlocks.bind(this);
         this.deleteDraftBlock = this.deleteDraftBlock.bind(this);
         this.addDraftBlock = this.addDraftBlock.bind(this);
         this.addDraftBlocksInBulk = this.addDraftBlocksInBulk.bind(this);
@@ -300,6 +301,14 @@ class UserBlocksComponent extends React.Component {
             blockStateMap[blockId] = block.blockState;
             this.modifyBlockList(block,true);
         }
+    }
+
+    deleteMultipleDraftBlocks(){
+        let multiSelectBlocks = this.state.multiSelectedBlocks;
+        const scope = this;
+        Object.keys(multiSelectBlocks).map((key) => {
+            scope.deleteDraftBlock(key);
+        })
     }
 
     deleteDraftBlock(blockKey){
@@ -915,7 +924,6 @@ class UserBlocksComponent extends React.Component {
                 multiSelectDraftBlockStatus: false
             });
         }
-        console.log(index);
     }
 
     toggleMultiSelect(){
@@ -1001,7 +1009,7 @@ class UserBlocksComponent extends React.Component {
                                 steps={this.state.tooltipText.draftBlock}
                                 run = {this.state.showTooltip.draftBlock}                    
                                 /> 
-                                <div className="block-list-content">
+                                <div className="block-list-content multiselect-button-container">
                                     {this.state.multiSelectDraftBlockStatus?
                                         <button 
                                             className="multiSelectBlockButton" 
@@ -1014,6 +1022,16 @@ class UserBlocksComponent extends React.Component {
                                             onClick={this.toggleMultiSelect}>
                                                 <div>Multiselect</div>
                                         </button>
+                                    }
+
+                                    {Object.keys(this.state.multiSelectedBlocks).length > 0?
+                                        <button 
+                                            className="multiSelectDeleteBlockButton" 
+                                            onClick={this.deleteMultipleDraftBlocks}>
+                                                <div>Delete</div>
+                                        </button>
+                                        :
+                                        null
                                     }
                                     
                                 </div>
