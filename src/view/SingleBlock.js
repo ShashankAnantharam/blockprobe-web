@@ -60,8 +60,6 @@ class SingleUserBlock extends React.Component {
     }
 
     clickBlockInDraft(){
-        let key = this.props.block.key;
-            console.log('clicked ',key);
         if(!this.props.isMultiSelect){
             if(!this.state.isBlockClicked){
                 this.setState({
@@ -73,6 +71,7 @@ class SingleUserBlock extends React.Component {
             }
         }
         else{            
+            let key = this.props.block.key;
             this.props.multiSelectBlocks(key);
         }
     }
@@ -91,7 +90,7 @@ class SingleUserBlock extends React.Component {
              actionType = this.props.block.actionType;
              
         return(
-            <div onClick={this.clickBlockInDraft}>
+            <div>
                 {this.props.selectedDraftBlockId == this.props.block.key?
                     <div>
                         <DraftBlockComponent 
