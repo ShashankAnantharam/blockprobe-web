@@ -42,3 +42,11 @@
 .user-block-color-ADD{
     background: rgb(184, 250, 158);
 }
+
+.user-block-color-multiselect-UNSELECTED{
+    background: rgb(209, 209, 209);
+}
+
+.user-block-color-multiselect-SELECTED{
+    background: rgb(172, 15, 145);
+}

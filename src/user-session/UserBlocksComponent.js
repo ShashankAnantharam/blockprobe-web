@@ -45,6 +45,8 @@ class UserBlocksComponent extends React.Component {
                 blockState:'DRAFT',
                 entities:[]
             },
+            multiSelectedBlocks: {},
+            multiSelectDraftBlockStatus: false,
             isCreateBlockClicked:false,
             isCreateBulkBlockClicked: false,
             isEntityPaneOpen: false,
@@ -131,6 +133,9 @@ class UserBlocksComponent extends React.Component {
         this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
         this.isGraphAvailable = this.isGraphAvailable.bind(this);
         this.isTimelineAvailable = this.isTimelineAvailable.bind(this);
+        this.onSelectTab = this.onSelectTab.bind(this);
+        this.toggleMultiSelect = this.toggleMultiSelect.bind(this);
+        this.multiSelectBlocks = this.multiSelectBlocks.bind(this);
     }
 
     updateEntityPaneList(list){
@@ -506,6 +511,9 @@ class UserBlocksComponent extends React.Component {
         if(isNullOrUndefined(block)){
             return null;
         }
+        let isBlockSelectedInMultiselect = false;
+        if(this.state.multiSelectedBlocks[block.key])
+            isBlockSelectedInMultiselect = true;
 
         return(
             <SingleBlock 
@@ -527,12 +535,28 @@ class UserBlocksComponent extends React.Component {
             selectedDraftBlockId = {this.state.selectedDraftBlockId}
             changeSelectedBlock = {this.changeSelectedBlock} 
             bpDetails = {this.props.bpDetails}
+            isMultiSelect = {this.state.multiSelectDraftBlockStatus}
+            multiSelectBlocks = {this.multiSelectBlocks}
+            isBlockSelectedInMultiselect = {isBlockSelectedInMultiselect}
             />
         );
     }
 
     selectBlock(block){
         this.props.selectBlock(block);
+    }
+
+    multiSelectBlocks(blockKey){
+        let currMultiSelectedBlocks = this.state.multiSelectedBlocks;
+        if(!(blockKey in currMultiSelectedBlocks)){
+            currMultiSelectedBlocks[blockKey] = true;
+        }
+        else{
+            delete currMultiSelectedBlocks[blockKey];
+        }
+        this.setState({
+            multiSelectedBlocks: currMultiSelectedBlocks
+        });
     }
 
     createBlock(){
@@ -885,6 +909,30 @@ class UserBlocksComponent extends React.Component {
         return false;
     }
 
+    onSelectTab(index, lastIndex, event){
+        if(index==1){
+            this.setState({
+                multiSelectDraftBlockStatus: false
+            });
+        }
+        console.log(index);
+    }
+
+    toggleMultiSelect(){
+        let multiselectFlag = this.state.multiSelectDraftBlockStatus;
+        if(multiselectFlag){
+            this.setState({
+                multiSelectDraftBlockStatus: false
+            });
+        }
+        else{
+            this.setState({
+                multiSelectDraftBlockStatus: true,
+                selectedDraftBlockId: ''
+            });
+        }
+    }
+
     render(){
 
         const scope = this;
@@ -918,7 +966,7 @@ class UserBlocksComponent extends React.Component {
 
                 <div>
                     <div className="visualization-tabs-title">My contributions</div>
-                    <Tabs className="blocksTab">
+                    <Tabs className="blocksTab" onSelect={this.onSelectTab}>
                         <TabList>
                         <Tab>DRAFT</Tab>
 
@@ -953,6 +1001,22 @@ class UserBlocksComponent extends React.Component {
                                 steps={this.state.tooltipText.draftBlock}
                                 run = {this.state.showTooltip.draftBlock}                    
                                 /> 
+                                <div className="block-list-content">
+                                    {this.state.multiSelectDraftBlockStatus?
+                                        <button 
+                                            className="multiSelectBlockButton" 
+                                            onClick={this.toggleMultiSelect}>
+                                                <div>Close multiselect</div>
+                                        </button>
+                                        :
+                                        <button 
+                                            className="multiSelectBlockButton" 
+                                            onClick={this.toggleMultiSelect}>
+                                                <div>Multiselect</div>
+                                        </button>
+                                    }
+                                    
+                                </div>
                                 <div className="block-list-content draftBlocksList">
                                     <List>{draftBlocksListRender}</List>
                                 </div>

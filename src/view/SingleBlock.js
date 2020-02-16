@@ -12,7 +12,7 @@ class SingleUserBlock extends React.Component {
     constructor(props){
         super(props);
         //props: isNewBlock, deleteNewBlcok, addDraftBlock, entityPane, draftBlockTooltip, finishTooltip, bId
-        //changeSelectedBlock, bpDetails
+        //changeSelectedBlock, bpDetails, isMultiSelect, multiSelectBlocks(block), isBlockSelectedInMultiselect
 
         this.state={
             isBlockClicked: false
@@ -33,7 +33,8 @@ class SingleUserBlock extends React.Component {
     }
 
     clickBlockNotInDraft(block){
-        this.props.selectBlock(block);
+        if(!this.props.isMultiSelect)
+            this.props.selectBlock(block);
     }
 
     renderViewOnlyBlock(){
@@ -59,13 +60,20 @@ class SingleUserBlock extends React.Component {
     }
 
     clickBlockInDraft(){
+        let key = this.props.block.key;
+            console.log('clicked ',key);
+        if(!this.props.isMultiSelect){
             if(!this.state.isBlockClicked){
-            this.setState({
-                isBlockClicked: true
-            });
+                this.setState({
+                    isBlockClicked: true
+                });
+            }
+            if(this.props.block.key != this.props.selectedDraftBlockId){
+                this.props.changeSelectedBlock(this.props.block.key);
+            }
         }
-        if(this.props.block.key != this.props.selectedDraftBlockId){
-            this.props.changeSelectedBlock(this.props.block.key);
+        else{            
+            this.props.multiSelectBlocks(key);
         }
     }
 
@@ -99,8 +107,10 @@ class SingleUserBlock extends React.Component {
                         />
                     </div>                    
                     :
-                    <div className={(actionType =='MODIFY'? 'user-block-color-MODIFY' : '') + 
-                            (actionType =='ADD'? 'user-block-color-ADD' : '')}>
+                    <div className={(actionType =='MODIFY' && !this.props.isMultiSelect? 'user-block-color-MODIFY' : '') + 
+                            (actionType =='ADD' && !this.props.isMultiSelect? 'user-block-color-ADD' : '') + 
+                            (this.props.isMultiSelect && !this.props.isBlockSelectedInMultiselect? 'user-block-color-multiselect-UNSELECTED' : '') +
+                            (this.props.isMultiSelect && this.props.isBlockSelectedInMultiselect? 'user-block-color-multiselect-SELECTED' : '')}>
                         <ListItem button 
                             onClick={() => { this.clickBlockInDraft()}}
                             style={{width:'100%'}}
