@@ -3,6 +3,7 @@ import * as firebase from 'firebase';
 import ImageUploader from 'react-images-upload';
 import Loader from 'react-loader-spinner';
 import imageCompression from 'browser-image-compression';
+import Checkbox from '../../Draft/Checkbox';
 import * as Utils from '../../../common/utilSvc';
 import  "./OcrComponent.css";
 import { isNullOrUndefined } from 'util';
@@ -17,7 +18,8 @@ class OcrComponent extends React.Component {
             text: 'none',
             loadingText: false,
             fileName: null,
-            pictures: []
+            pictures: [],
+            showPreview: true
         }
 
         this.functions = firebase.functions();
@@ -26,6 +28,7 @@ class OcrComponent extends React.Component {
         this.getText = this.getText.bind(this);
         this.canSubmit = this.canSubmit.bind(this);
         this.clickSubmit = this.clickSubmit.bind(this);
+        this.togglePreviewImages = this.togglePreviewImages.bind(this);
     }
 
     async uploadOcrFileToDb(latestPicture,  index){
@@ -114,6 +117,12 @@ class OcrComponent extends React.Component {
         return false;
     }
 
+    togglePreviewImages(){
+        this.setState({
+            showPreview: !this.state.showPreview            
+        });
+    }
+
     render(){
         return (
             <div>                  
@@ -142,6 +151,14 @@ class OcrComponent extends React.Component {
                                         null
                                     }
                                 </div>
+                                <div style={{marginLeft:'1em'}}>
+                                    <Checkbox 
+                                        value={'showPreview'}
+                                        isChecked={this.state.showPreview}
+                                        label={'Preview images'}  
+                                        toggleChange = {this.togglePreviewImages}                              
+                                        />
+                                </div>
                                 <ImageUploader
                                     withIcon={true}
                                     buttonText='Choose image'
@@ -149,7 +166,7 @@ class OcrComponent extends React.Component {
                                     singleImage={true}
                                     imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                     maxFileSize={5242880}
-                                    withPreview={true}
+                                    withPreview={this.state.showPreview}
                                     />
                                 {!isNullOrUndefined(this.state.fileName)?
                                     <div style={{textAlign:'center'}}>
