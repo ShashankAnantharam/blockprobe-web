@@ -28,10 +28,10 @@ class OcrComponent extends React.Component {
         this.clickSubmit = this.clickSubmit.bind(this);
     }
 
-    async uploadOcrFileToDb(latestPicture){
+    async uploadOcrFileToDb(latestPicture,  index){
          
         let scope = this;
-        let path = this.props.bId + '/users/' + this.props.uId +'/ocr' ;
+        let path = this.props.bId + '/users/' + this.props.uId +'/ocr_' + String(index) ;
         let pathRef = firebase.storage().ref(path);
         try{
             await pathRef.put(latestPicture);
@@ -41,7 +41,7 @@ class OcrComponent extends React.Component {
         }        
     }
 
-    async getText(latestPicture, options){
+    async getText(latestPicture, options, index){
         let compressedFile = await imageCompression(latestPicture, options);
         let url = URL.createObjectURL(compressedFile);
 
@@ -49,11 +49,11 @@ class OcrComponent extends React.Component {
         let text = '';
 
         try{
-            await this.uploadOcrFileToDb(compressedFile);
+            await this.uploadOcrFileToDb(compressedFile, index);
 
             var ocrFunc = this.functions.httpsCallable('ocrTextExtraction');
 
-            let finResult = await ocrFunc({bpId: this.props.bId, userId: this.props.uId}); 
+            let finResult = await ocrFunc({bpId: this.props.bId, userId: this.props.uId, index: index}); 
             text = finResult.data;
             text = Utils.filterText(text);
             text += '\n\n';                                       
@@ -81,18 +81,25 @@ class OcrComponent extends React.Component {
         });
 
         let name = '';
+        let textPromises = [];
         for(let i=0; i<pictures.length; i++){
             try{
                 let picture  = pictures[i];
                 if(i==pictures.length-1 && !isNullOrUndefined(picture.name)){
                     name  = picture.name;
                 }
-                let text =  await this.getText(picture, options);
-                this.props.addText(text); 
+                let textPromise =  this.getText(picture, options, i); 
+                textPromises.push(textPromise);             
             }
             catch (error) {
                 console.log(error);
             }
+        }
+        let results = await Promise.all(textPromises);
+
+        for(let i=0; i<results.length; i++){
+            if(!isNullOrUndefined(results[i]) && results[i].length>0)
+                this.props.addText(results[i]);
         }
 
         this.setState({
