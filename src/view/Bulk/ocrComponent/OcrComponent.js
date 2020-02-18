@@ -16,12 +16,16 @@ class OcrComponent extends React.Component {
         this.state={
             text: 'none',
             loadingText: false,
-            fileName: null
+            fileName: null,
+            pictures: []
         }
 
         this.functions = firebase.functions();
         this.onDrop = this.onDrop.bind(this);
         this.uploadOcrFileToDb = this.uploadOcrFileToDb.bind(this);
+        this.getText = this.getText.bind(this);
+        this.canSubmit = this.canSubmit.bind(this);
+        this.clickSubmit = this.clickSubmit.bind(this);
     }
 
     async uploadOcrFileToDb(latestPicture){
@@ -37,52 +41,70 @@ class OcrComponent extends React.Component {
         }        
     }
 
-    async onDrop(picture){
- 
-        if(picture.length > 0)
-        {
-            let name = null;
-            let latestPicture = picture[picture.length-1];
-            if(!isNullOrUndefined(latestPicture.name))
-                name  = latestPicture.name;
+    async getText(latestPicture, options){
+        let compressedFile = await imageCompression(latestPicture, options);
+        let url = URL.createObjectURL(compressedFile);
 
-            var options = {
-                maxSizeMB: 1,
-                useWebWorker: true
-              }
-              this.setState({
-                loadingText: true
-            });
-            try {
-                let compressedFile = await imageCompression(latestPicture, options);
-                let url = URL.createObjectURL(compressedFile);
+        
+        let text = '';
 
-                await this.uploadOcrFileToDb(compressedFile);
+        try{
+            await this.uploadOcrFileToDb(compressedFile);
 
-                var ocrFunc = this.functions.httpsCallable('ocrTextExtraction');
-                let text = '';
+            var ocrFunc = this.functions.httpsCallable('ocrTextExtraction');
 
-                try{
-                    let finResult = await ocrFunc({bpId: this.props.bId, userId: this.props.uId}); 
-                    text = finResult.data;
-                    text = Utils.filterText(text);
-                    text += '\n\n';                                       
+            let finResult = await ocrFunc({bpId: this.props.bId, userId: this.props.uId}); 
+            text = finResult.data;
+            text = Utils.filterText(text);
+            text += '\n\n';                                       
+        }
+        catch(e){
+            text = '';
+        }
+        return text;
+    }
+
+    onDrop(picture){
+        this.setState({
+            pictures: picture
+        });        
+    }
+
+    async clickSubmit(){
+        let pictures = this.state.pictures;
+        var options = {
+            maxSizeMB: 1,
+            useWebWorker: true
+          }
+        this.setState({
+            loadingText: true
+        });
+
+        let name = '';
+        for(let i=0; i<pictures.length; i++){
+            try{
+                let picture  = pictures[i];
+                if(i==pictures.length-1 && !isNullOrUndefined(picture.name)){
+                    name  = picture.name;
                 }
-                catch(e){
-                    text = '';
-                }
-                finally{
-                    this.props.addText(text); 
-                    this.setState({
-                        loadingText: false,
-                        fileName: name
-                    });
-                }
-                  
-            } catch (error) {
+                let text =  await this.getText(picture, options);
+                this.props.addText(text); 
+            }
+            catch (error) {
                 console.log(error);
             }
         }
+
+        this.setState({
+            loadingText: false,
+            fileName: name
+        });
+    }
+
+    canSubmit(){
+        if(this.state.pictures.length > 0)
+            return true;
+        return false;
     }
 
     render(){
@@ -106,6 +128,13 @@ class OcrComponent extends React.Component {
                             </div>                            
                             :
                             <div>
+                                <div style={{textAlign:'center'}}>
+                                    {this.canSubmit()?
+                                        <button className="converOcrButton" onClick={this.clickSubmit}>Save</button>
+                                        :
+                                        null
+                                    }
+                                </div>
                                 <ImageUploader
                                     withIcon={true}
                                     buttonText='Choose image'
@@ -113,6 +142,7 @@ class OcrComponent extends React.Component {
                                     singleImage={true}
                                     imgExtension={['.jpg', '.gif', '.png', '.gif']}
                                     maxFileSize={5242880}
+                                    withPreview={true}
                                     />
                                 {!isNullOrUndefined(this.state.fileName)?
                                     <div style={{textAlign:'center'}}>
