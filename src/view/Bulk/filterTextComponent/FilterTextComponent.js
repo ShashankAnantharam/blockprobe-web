@@ -15,7 +15,7 @@ class FilterTextComponent extends React.Component {
         this.state={
             delimiters: '()',
             loadingText: false,
-            oldText: '',
+            oldText: [],
             canUndo: false
         }
 
@@ -41,8 +41,10 @@ class FilterTextComponent extends React.Component {
     filterText(){
         let text  = this.props.text;
         let delimiters = this.state.delimiters;
+        let oldText = this.state.oldText;
+        oldText.push(text);
         this.setState({
-            oldText:text,
+            oldText:oldText,
             canUndo: true
         });
         text = Utils.filterTextBasedOnDelimter(text, delimiters[0], delimiters[1], true);
@@ -50,9 +52,15 @@ class FilterTextComponent extends React.Component {
     }
 
     undoOperation(){
-        let text = this.state.oldText;
+        let oldText = this.state.oldText;
+        let text = oldText.pop();
+        let canUndo = true;
+        if(oldText.length == 0)
+            canUndo = false;
+
         this.setState({
-            canUndo: false
+            canUndo: canUndo,
+            oldText: oldText
         });
         this.props.addText(text);
     }
