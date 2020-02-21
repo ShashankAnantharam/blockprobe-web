@@ -535,3 +535,31 @@ export const filterTextBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) =
     }
     return text;
 }
+
+
+export const HtmlBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {
+    if(!isNullOrUndefined(text)){
+        let flag=0;
+        let ans = '';
+        for(let i=0; i<text.length; i++){
+            if(text[i]==lDelim){
+                if(flag==0)
+                {
+                    ans += '<b style="color: green">';
+                }
+                flag++;               
+            }
+            else if(text[i]==rDelim){
+                if(flag==1){
+                    ans += '</b>';
+                }
+                if(flag>0){
+                    flag--;
+                }                
+            }
+            ans += text[i];         
+        }
+        return ans;
+    }
+    return text;
+}
