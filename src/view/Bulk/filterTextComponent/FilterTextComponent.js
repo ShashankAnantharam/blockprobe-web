@@ -91,19 +91,7 @@ class FilterTextComponent extends React.Component {
 
     render(){
         return (
-            <div className="filterTextComponent">
-                {this.isValidDelimter()?
-                    <div>
-                        <Checkbox 
-                            value={'showPreview'}
-                            isChecked={this.state.showPreview}
-                            label={'Preview text with filter'}  
-                            toggleChange = {this.toggleDelimiterPreview}                              
-                            />
-                    </div>
-                    :
-                    null
-                }
+            <div className="filterTextComponent">                
                 <div>
                     <p>Delimiter</p>
                     <form>
@@ -125,6 +113,19 @@ class FilterTextComponent extends React.Component {
                                     }}/>                            
                             </label>
                     </form>
+
+                    {this.isValidDelimter()?
+                        <div style={{marginTop:'10px', marginBottom:'10px'}}>
+                            <Checkbox 
+                                value={'showPreview'}
+                                isChecked={this.state.showPreview}
+                                label={'Preview text with filter'}  
+                                toggleChange = {this.toggleDelimiterPreview}                              
+                                />
+                        </div>
+                        :
+                        null
+                    }
 
                     <div className="filterTextOptionsContainer">
                         {this.isValidDelimter()?
