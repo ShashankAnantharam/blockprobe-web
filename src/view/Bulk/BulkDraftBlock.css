@@ -57,3 +57,23 @@
     background:rgb(66, 93, 209);
     opacity: 0.7;
 }
+
+.bulkEdit-nonPreview{
+    width: 90vw;
+}
+
+.bulkPreview-nonPreview{
+    display: none;
+}
+
+@media only screen and (min-width: 601px) {
+    .bulkEdit-preview{
+        width: 45vw;
+    }   
+}
+
+@media only screen and (max-width: 600px) {
+    .bulkEdit-preview{
+        width: 95vw;
+    }
+}
