@@ -545,7 +545,10 @@ export const HtmlBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {
             if(text[i]==lDelim){
                 if(flag==0)
                 {
-                    ans += '<b class="filterTextStyle">';
+                    ans += text[i];
+                    ans += '<b class="filterTextStyle">';  
+                    flag++;
+                    continue;                  
                 }
                 flag++;               
             }

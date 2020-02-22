@@ -1,3 +1,8 @@
+.bulkEditBlockContainer{
+    max-height: 1150px;
+    overflow-y: auto !important;
+}
+
 .bulk-draft-options-container{
     display:flex; 
     flex-direction:row;

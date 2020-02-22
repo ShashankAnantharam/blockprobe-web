@@ -879,7 +879,6 @@ class BulkDraftBlockComponent extends React.Component {
                                         onKeyPress={this.handleKeyPress}
                                         placeholder={this.state.placeholder}
                                         onChange={(e) => { this.handleChange(e)}}
-                                        maxRows="60"
                                         minRows="10"
                                         onKeyUp = {this.sendMessage}
                                         style={{
@@ -896,14 +895,16 @@ class BulkDraftBlockComponent extends React.Component {
                                             color: 'blue',
                                             fontWeight:'500',
                                             fontSize: '16px',
-                                            fontStyle: 'normal'
+                                            fontStyle: 'normal',
+                                            maxHeight: '1150px',
+                                            overflowY:  'auto'
                                             }}/>
                                     </label>
                                 </form>
                             </div>
                             <div 
                                 className = {(Object.keys(this.state.previewEditorType).length==0? 'bulkPreview-nonPreview': 'bulkEdit-preview')}
-                                style =  {{maxHeight:'1150px', overflowY:'auto'}}>
+                                style =  {{maxHeight:'1165px', overflowY:'auto'}}>
                                 <BulkBlockEditable
                                     style={{width:'100%'}}
                                     value = {this.state.value}
