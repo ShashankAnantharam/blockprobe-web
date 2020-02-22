@@ -583,7 +583,8 @@ class BulkDraftBlockComponent extends React.Component {
 
     async saveBulkDraft(){
         this.setState({
-            isSavingText: true
+            isSavingText: true,
+            previewEditorType: {}
         });
         let textList = Utils.getTextListForBulk(this.state.value);
 
