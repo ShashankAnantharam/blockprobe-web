@@ -115,7 +115,9 @@ class BulkDraftBlockComponent extends React.Component {
                         }
                     ]
                 }
-            }
+            },
+            previewEditorType: {},
+            delims: ''
         }
         this.functions = firebase.functions();
         this.textarea = null;
@@ -142,6 +144,25 @@ class BulkDraftBlockComponent extends React.Component {
         this.closeBulkDraft = this.closeBulkDraft.bind(this);
         this.saveBulkDraft = this.saveBulkDraft.bind(this);
         this.toggleSaveDialog = this.toggleSaveDialog.bind(this);
+        this.togglePreview = this.togglePreview.bind(this);
+        this.setDelims = this.setDelims.bind(this);
+    }
+
+    togglePreview(type, value){
+        let previewEditorType = this.state.previewEditorType;
+        if(value){
+            previewEditorType[type] = true;
+        }
+        else{
+            delete previewEditorType[type];
+        }
+        this.setState({
+            previewEditorType: previewEditorType
+        });
+    }
+
+    setDelims(delims){
+        this.setState({delims:delims});
     }
 
     formatParas(currentPara, allParas){
@@ -226,6 +247,7 @@ class BulkDraftBlockComponent extends React.Component {
     }
 
     closeAdvancedTabs(){
+        this.togglePreview('delims',false);
         this.setState({
             openOcr: false,
             openArticleLink: false,
@@ -823,6 +845,8 @@ class BulkDraftBlockComponent extends React.Component {
                             <FilterTextComponent
                                 addText={this.reformText}
                                 text={this.state.value}
+                                togglePreview={this.togglePreview}
+                                setDelims = {this.setDelims}
                             ></FilterTextComponent>
                             :
                             null
@@ -844,36 +868,49 @@ class BulkDraftBlockComponent extends React.Component {
                             steps={this.state.tooltipText.addBlocks}
                             run = {this.state.showTooltip.addBlocks}                    
                             />  
-                        <form className='addBlocksPaneInput'>
-                        <label>
-                            <Textarea 
-                            inputRef={tag => (this.textarea = tag)}
-                            type="text"
-                            value={this.state.value}
-                            onKeyPress={this.handleKeyPress}
-                            placeholder={this.state.placeholder}
-                            onChange={(e) => { this.handleChange(e)}}
-                            maxRows="60"
-                            minRows="10"
-                            onKeyUp = {this.sendMessage}
-                            style={{
-                                background: 'white',
-                                borderRadius:'5px',
-                                borderWidth:'2px', 
-                                borderStyle:'solid', 
-                                borderColor:'black',
-                                marginLeft:'1%',
-                                marginRight:'1%',
-                                paddingTop:'6px',
-                                paddingBottom:'6px',
-                                width:'95%',
-                                color: 'blue',
-                                fontWeight:'500',
-                                fontSize: '16px',
-                                fontStyle: 'normal'
-                                }}/>
-                        </label>
-                        </form>
+                        <div style={{display:'flex', flexWrap: 'wrap'}}>
+                            <div className={(Object.keys(this.state.previewEditorType).length==0? 'bulkEdit-nonPreview': 'bulkEdit-preview')}>
+                                <form className='addBlocksPaneInput'>
+                                    <label>
+                                        <Textarea 
+                                        inputRef={tag => (this.textarea = tag)}
+                                        type="text"
+                                        value={this.state.value}
+                                        onKeyPress={this.handleKeyPress}
+                                        placeholder={this.state.placeholder}
+                                        onChange={(e) => { this.handleChange(e)}}
+                                        maxRows="60"
+                                        minRows="10"
+                                        onKeyUp = {this.sendMessage}
+                                        style={{
+                                            background: 'white',
+                                            borderRadius:'5px',
+                                            borderWidth:'2px', 
+                                            borderStyle:'solid', 
+                                            borderColor:'black',
+                                            marginLeft:'1%',
+                                            marginRight:'1%',
+                                            paddingTop:'6px',
+                                            paddingBottom:'6px',
+                                            width:'95%',
+                                            color: 'blue',
+                                            fontWeight:'500',
+                                            fontSize: '16px',
+                                            fontStyle: 'normal'
+                                            }}/>
+                                    </label>
+                                </form>
+                            </div>
+                            <div 
+                                className = {(Object.keys(this.state.previewEditorType).length==0? 'bulkPreview-nonPreview': 'bulkEdit-preview')}
+                                style =  {{maxHeight:'1150px', overflowY:'auto'}}>
+                                <BulkBlockEditable
+                                    style={{width:'100%'}}
+                                    value = {this.state.value}
+                                    type = {this.state.previewEditorType}
+                                    delims = {this.state.delims}></BulkBlockEditable>  
+                            </div>
+                        </div>
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
                             <button 
                                 className="convertToBlocksButton saveBlocksInBulk" 
@@ -914,7 +951,7 @@ class BulkDraftBlockComponent extends React.Component {
                                 onClick={this.closeBulkDraft}>
                                     <div>Close</div>
                             </button>
-                        </div>
+                        </div>                        
                     </div>
                 }                         
             </div>

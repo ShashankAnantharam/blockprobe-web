@@ -8,7 +8,7 @@ class BulkBlockEditable extends React.Component {
 
     constructor(props){
         super(props);
-        //value, onChange, delims
+        //value, onChange, delims, type
 
         this.state = {
             html: '',
@@ -76,7 +76,7 @@ class BulkBlockEditable extends React.Component {
 
     getDelimiters(html){
         //Check for consequtive title
-        let delim = this.state.delims;
+        let delim = this.props.delims;
         let ans = html;
         if(!isNullOrUndefined(delim) && delim.length==2){
             ans = Utils.HtmlBasedOnDelimter(html,delim[0],delim[1],true); 
@@ -85,11 +85,11 @@ class BulkBlockEditable extends React.Component {
     }
 
     formatHtml(html){
-        let ans = '';
-        html = this.removeExtraEffects(html);
+        let ans = html;
 
         //Delimiters
-        ans = this.getDelimiters(html);
+        if(this.props.type['delims'])
+            ans = this.getDelimiters(html);
         /*for(let i=0; i<html.length; i++){
             if(html[i]=='#'){
                 ans += `<span style="color: green">`;
@@ -110,13 +110,15 @@ class BulkBlockEditable extends React.Component {
     }
 
     render(){
+        let html = this.props.value;
+        html ='<div class="nonEditablePreviewText">' + html + '</div>';
+        html = this.formatHtml(html);
         return (
-            <div>
+            <div style={{width:'100%'}}>
                 <ContentEditable
-                    className="editableBulkDiv"
-                    html={this.state.html} // innerHTML of the editable div
-                    disabled={false}       // use true to disable editing
-                    onChange={this.handleChange} // handle innerHTML change
+                    className="editableBulkDivMain"
+                    html={html} // innerHTML of the editable div
+                    disabled={true}       // use true to disable editing
                     />
             </div>
         );

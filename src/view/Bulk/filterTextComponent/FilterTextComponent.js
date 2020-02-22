@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner';
 import Textarea from 'react-textarea-autosize';
 import * as firebase from 'firebase';
 import * as Utils  from '../../../common/utilSvc';
+import Checkbox from '../../Draft/Checkbox';
 import  "./FilterTextComponent.css";
 import { isNullOrUndefined } from 'util';
 
@@ -16,13 +17,15 @@ class FilterTextComponent extends React.Component {
             delimiters: '()',
             loadingText: false,
             oldText: [],
-            canUndo: false
+            canUndo: false,
+            showPreview: false
         }
 
        this.handleChange = this.handleChange.bind(this);
        this.filterText = this.filterText.bind(this);
        this.isValidDelimter = this.isValidDelimter.bind(this);
        this.undoOperation = this.undoOperation.bind(this);
+       this.toggleDelimiterPreview = this.toggleDelimiterPreview.bind(this);
     }
 
     handleChange(event, type){
@@ -34,8 +37,18 @@ class FilterTextComponent extends React.Component {
             if(type=="delimiters"){
                     delimiters = event.target.value;                    
                     this.setState({delimiters: delimiters});
-                }
+                    this.props.setDelims(delimiters);
+                }            
             }  
+    }
+
+    toggleDelimiterPreview(){
+        let showPreview = !this.state.showPreview;
+        this.props.setDelims(this.state.delimiters);
+        this.props.togglePreview('delims',showPreview);
+        this.setState({
+            showPreview: showPreview      
+        });
     }
 
     filterText(){
@@ -79,6 +92,18 @@ class FilterTextComponent extends React.Component {
     render(){
         return (
             <div className="filterTextComponent">
+                {this.isValidDelimter()?
+                    <div>
+                        <Checkbox 
+                            value={'showPreview'}
+                            isChecked={this.state.showPreview}
+                            label={'Preview text with filter'}  
+                            toggleChange = {this.toggleDelimiterPreview}                              
+                            />
+                    </div>
+                    :
+                    null
+                }
                 <div>
                     <p>Delimiter</p>
                     <form>
