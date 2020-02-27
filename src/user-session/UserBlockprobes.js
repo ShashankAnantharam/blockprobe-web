@@ -11,6 +11,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Loader from 'react-loader-spinner';
 import Textarea from 'react-textarea-autosize';
+import  * as Utils from '../common/utilSvc';
 import './UserBlockprobes.css';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 
@@ -299,8 +300,8 @@ class UserBlockprobesComponent extends React.Component {
 
         var shouldUpdate = true;
       
-        var lastChar = event.target.value[event.target.value.length-1];
-        if(lastChar=='\n' || lastChar=='\t')
+        let newStr = event.target.value;
+        if(!Utils.shouldUpdateText(newStr, '\n\t'))
             shouldUpdate=false;
 
         if(shouldUpdate){

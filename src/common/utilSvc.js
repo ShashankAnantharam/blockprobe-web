@@ -566,3 +566,13 @@ export const HtmlBasedOnDelimter = (text, lDelim, rDelim, shouldInclude) => {
     }
     return text;
 }
+
+export const shouldUpdateText = (str, restrictedChars)=>{
+    for(let i=0;!isNullOrUndefined(str) && i<str.length; i++){
+        for(let j=0; !isNullOrUndefined(restrictedChars) && j<restrictedChars.length; j++){
+            if(str[i]==restrictedChars[j])
+                return false;
+        }
+    }
+    return true;
+}

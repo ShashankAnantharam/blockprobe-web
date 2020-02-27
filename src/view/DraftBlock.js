@@ -19,6 +19,7 @@ import { isNullOrUndefined } from 'util';
 import DatePicker from "react-datepicker";
 import MonthPicker from './Draft/MonthPicker/MonthPicker';
 import Timekeeper from 'react-timekeeper';
+import * as Utils from '../common/utilSvc';
 import moment from 'moment';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Info from '@material-ui/icons/Info';
@@ -359,8 +360,8 @@ class DraftBlockComponent extends React.Component {
 
         var shouldUpdate = true;
         if(type!="date" && type!="time"){
-            var lastChar = event.target.value[event.target.value.length-1];
-            if(lastChar=='\n' || lastChar=='\t'){
+            let newStr = event.target.value;
+            if(!Utils.shouldUpdateText(newStr, '\n\t')){
                 shouldUpdate=false;
             }
         }
