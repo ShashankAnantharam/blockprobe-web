@@ -172,13 +172,18 @@ class BulkDraftBlockComponent extends React.Component {
             newPara.title='';
             newPara.body='';
             let start = 0;
-            if(Utils.isTitleHashtag(currentPara[0])){
-                newPara.title = currentPara[0];
-                start++;
-            }  
-            else{
-                newPara.title = '';
-            }          
+            for(let i=0; i<currentPara.length; i++){
+                if(Utils.isTitleHashtag(currentPara[i])){
+                    if(i>0){
+                        currentPara[i] = Utils.removeTitleHashtag(currentPara[i]);
+                    }
+                    newPara.title += currentPara[i] + ' ';
+                    start++;                    
+                }
+                else{
+                    break;
+                }
+            }
             var paraBody = '';
             for(var j=start;j<currentPara.length;j++){
                 const currParaSent = currentPara[j];
@@ -187,8 +192,7 @@ class BulkDraftBlockComponent extends React.Component {
             }
             newPara.body = paraBody;
         }
-        allParas.push(newPara);
-    
+        allParas.push(newPara);    
     }
 
     getParas(text){
