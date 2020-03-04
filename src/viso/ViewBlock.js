@@ -33,6 +33,7 @@ class ViewBlockComponent extends React.Component {
         this.renderOptions = this.renderOptions.bind(this);
         this.renderUpvoteStatus = this.renderUpvoteStatus.bind(this);
         this.selectOption = this.selectOption.bind(this);
+        this.renderNumber = this.renderNumber.bind(this);
         this.getReviewersStatusForBlock = this.getReviewersStatusForBlock.bind(this);
         this.modifyReviewerMap = this.modifyReviewerMap.bind(this);
         this.removeHashedIndex = this.removeHashedIndex.bind(this);
@@ -93,6 +94,13 @@ class ViewBlockComponent extends React.Component {
             );
         }
         return null;
+    }
+
+    renderNumber(number){        
+        let numStr = number.key + ': ' + number.value;
+        return (
+            <div class="block-number">{numStr}</div>
+        );
     }
 
     renderChat(id){
@@ -224,6 +232,7 @@ class ViewBlockComponent extends React.Component {
 
         var renderBlockEntities="";
         var renderBlockEvidences="";
+        let renderBlockNumbers="";
         var dateTimeString = "";
 
         if(this.props.selectedBlock.entities!=null && 
@@ -239,6 +248,13 @@ class ViewBlockComponent extends React.Component {
            this.BlockEvidence(blockEvidence, index)
        );            
        }
+
+       if(!isNullOrUndefined(this.props.selectedBlock.numbers) && 
+            this.props.selectedBlock.numbers.length > 0){
+                renderBlockNumbers = this.props.selectedBlock.numbers.map((blockNumber) =>
+                    this.renderNumber(blockNumber)
+                );
+            }
        
        if(this.props.selectedBlock.blockDate!=null){
            dateTimeString = Utils.getDateTimeString(this.props.selectedBlock);
@@ -253,6 +269,7 @@ class ViewBlockComponent extends React.Component {
             
             {this.renderDateTime(dateTimeString)}
 
+            <div>{renderBlockNumbers}</div>
             <div>{renderBlockEntities}</div>
             <div className="block-evidence-list">
                 {renderBlockEvidences}

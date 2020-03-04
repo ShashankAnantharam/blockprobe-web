@@ -50,6 +50,22 @@
     color:white;
     text-align: center;
 }
+
+.block-number{
+    border-radius: 20px; 
+    padding: 10px;
+    background-color: rgb(16, 39, 218);
+    margin-bottom:10px;
+    margin-top:10px;
+    margin-left: 10px;
+    display:inline-block;
+    font-size:0.85em;
+    font-weight: bold;
+    color:rgb(189, 189, 189);
+    text-align: center;
+    word-wrap: break-word;
+}
+
 .block-text{
     margin-left: 12px;
 }
