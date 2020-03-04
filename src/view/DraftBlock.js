@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
+import DraftBlockNumberView from './Draft/DraftBlockNumberView';
 import Checkbox from './Draft/Checkbox';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -134,9 +135,20 @@ class DraftBlockComponent extends React.Component {
                             disableBeacon: true
                         }
                     ]
+                },
+                numbers:{
+                    flag: false,
+                    text: [
+                        {
+                            title: 'Add relevant numbers!',
+                            target: '.tooltipNumbers',
+                            content: 'You may have some numbers, like money, headcount, etc., that you want to associate with this block.',
+                            disableBeacon: true
+                        }
+                    ]
                 }
             }
-        }
+        }//
 
         this.handleChange = this.handleChange.bind(this);
         this.changeDateStatus = this.changeDateStatus.bind(this);
@@ -150,7 +162,9 @@ class DraftBlockComponent extends React.Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
         this.addEvidence = this.addEvidence.bind(this);
+        this.addNumber = this.addNumber.bind(this);
         this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
+        this.singleBlockNumber = this.singleBlockNumber.bind(this);
         this.commitDraftBlock = this.commitDraftBlock.bind(this);
         this.saveDraftBlock = this.saveDraftBlock.bind(this);
         this.submitDraftBlock = this.submitDraftBlock.bind(this);
@@ -452,6 +466,19 @@ class DraftBlockComponent extends React.Component {
         this.setState({newBlock: block});
       }
 
+    addNumber(){
+        var block = this.state.newBlock;
+        var newNumber={
+            key: null,
+            value: 0
+        }
+
+        if(isNullOrUndefined(block.numbers))
+            block.numbers = [];
+        block.numbers.push(newNumber);
+        this.setState({newBlock: block});
+    }
+
     singleBlockEvidence(blockEvidence, index){
         var isClicked = (blockEvidence.supportingDetails =='' && blockEvidence.evidenceLink == '');
         return(
@@ -463,6 +490,17 @@ class DraftBlockComponent extends React.Component {
                     bId = {this.props.bId}
                     uIdHash = {this.props.uIdHash}
                 />
+        );
+    }
+
+    singleBlockNumber(blockNumber, index){
+        var isClicked = (isNullOrUndefined(blockNumber.key));
+        return (
+            <DraftBlockNumberView
+                isClicked={isClicked}
+                index = {index}
+                number = {blockNumber}
+            />
         );
     }
 
@@ -650,6 +688,9 @@ class DraftBlockComponent extends React.Component {
        else if(type == 'evidences'){
            adhocTooltip.evidences.flag = true;
        }
+       else if(type == 'numbers'){
+            adhocTooltip.numbers.flag = true;
+       }
        this.setState({adhocTooltip: adhocTooltip});
     }
 
@@ -666,6 +707,9 @@ class DraftBlockComponent extends React.Component {
            else if(tooltipType == 'evidences'){
                adhocTooltip.evidences.flag = false;
            }
+           else if(tooltipType == 'numbers'){
+                adhocTooltip.numbers.flag = false;
+            }
            this.setState({adhocTooltip: adhocTooltip});
        }
    }
@@ -677,6 +721,14 @@ class DraftBlockComponent extends React.Component {
             // console.log(this.state.newBlock.evidences);
             renderEvidenceList = this.state.newBlock.evidences.map((blockEvidence, index) => 
                 this.singleBlockEvidence(blockEvidence, index)
+            );            
+        }
+
+        var renderNumberList = "";
+        if(!isNullOrUndefined(this.state.newBlock.numbers)){
+            // console.log(this.state.newBlock.numbers);
+            renderNumberList = this.state.newBlock.numbers.map((blockNumber, index) => 
+                this.singleBlockNumber(blockNumber, index)
             );            
         }
 
@@ -914,6 +966,42 @@ class DraftBlockComponent extends React.Component {
                     <div>
                         {renderEvidenceList}
                     </div> 
+                </div>
+                <div className="draft-box-number-container">
+                    <h6 style={{marginBottom:'3px',marginTop:'3px', fontSize:'19px'}}>
+                        Add relevant numbers
+                        <a className='tooltipNumbers tooltips-draft' 
+                            onClick={(e)=>{this.showLocalTooltip('numbers')}}>
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>    
+                        <Joyride
+                                styles={{
+                                    options: {
+                                    arrowColor: '#e3ffeb',
+                                    beaconSize: '4em',
+                                    primaryColor: '#05878B',
+                                    backgroundColor: '#e3ffeb',
+                                    overlayColor: 'rgba(10,10,10, 0.4)',
+                                    width: 900,
+                                    zIndex: 1000,
+                                    }
+                                    }}
+                                    steps={this.state.adhocTooltip.numbers.text}
+                                    run = {this.state.adhocTooltip.numbers.flag}
+                                    callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'numbers')}}                    
+                                    />                     
+                    </h6>                    
+                    <button 
+                        className="addNumberButton" 
+                        onClick={this.addNumber}
+                        >                    
+                            <div>Add new number</div>
+                        </button>  
+                    <div>
+                        {renderNumberList}
+                    </div> 
+
+                    
                 </div>
                 <div className="draft-options-container" style={{marginTop:'0.1em'}}>
                 {this.props.bpDetails.criterion == 0?
