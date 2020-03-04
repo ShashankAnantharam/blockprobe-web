@@ -473,6 +473,8 @@ class DraftBlockComponent extends React.Component {
           block.numbers[index] = newNumber;
       }
 
+      block.numbers = Utils.coalesceNumbers(block.numbers);
+
       this.setState({newBlock: block});
     }
 

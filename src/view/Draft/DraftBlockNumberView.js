@@ -12,6 +12,7 @@ import imageCompression from 'browser-image-compression';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Img from 'react-image';
+import * as Utils from '../../common/utilSvc';
 import './DraftBlockNumberView.css';
 import { isNullOrUndefined } from 'util';
 
@@ -51,7 +52,13 @@ class DraftBlockNumberView extends React.Component {
         var shouldUpdate = true;
         
         //TODO Handle change here too!
-
+        let str = event.target.value;
+        if(!Utils.shouldUpdateText(str, ['\n','\t'])){
+            shouldUpdate = false;
+        }
+        if(shouldUpdate && type == 'number' && !Utils.isNumber(str)){
+            shouldUpdate = false;
+        }
         if(shouldUpdate){
             var number = this.state.newNumber;
             if(type=="key"){
@@ -62,7 +69,6 @@ class DraftBlockNumberView extends React.Component {
                 number.value = event.target.value;
                 this.setState({newNumber: number});
             }
-
         }
       }
 
@@ -74,7 +80,7 @@ class DraftBlockNumberView extends React.Component {
     }
 
     cancelNumber(){
-        if(this.state.newNumber.key == null){
+        if(!isNullOrUndefined(this.props.number) && this.props.number.key == null){
             this.removeNumber();
         }
         else{
@@ -94,9 +100,17 @@ class DraftBlockNumberView extends React.Component {
     }
 
     async updateNumber(){
+        let newNumber = this.state.newNumber;
+        newNumber.value = parseFloat(newNumber.value);
+        if(isNaN(newNumber.value))
+            newNumber.value = 0;        
+        newNumber.key = Utils.makeFirstLetterUppercase(newNumber.key);
+        if(newNumber.key.length == 0)
+            newNumber.key = 'Unknown key';
         this.props.updateNumber(this.props.number, this.state.newNumber, true, false, this.props.index);
         this.setState({
-            isClicked: false
+            isClicked: false,
+            newNumber: newNumber
         });
     }
 

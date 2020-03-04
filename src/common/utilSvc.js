@@ -576,3 +576,45 @@ export const shouldUpdateText = (str, restrictedChars)=>{
     }
     return true;
 }
+
+export const isNumber = (str)=>{
+
+    //exception for single dash
+    if(str.length==1 && str[0]=='-')
+        return true;
+
+    if(isNaN(str))
+        return false;
+    return true;
+}
+
+export const coalesceNumbers = (numbers)=>{
+    let nMap = {};
+    for(let i=0;!isNullOrUndefined(numbers) && i<numbers.length; i++){
+        let key = numbers[i].key;
+        let value = numbers[i].value;
+        if(!(key in nMap)){
+            nMap[key] = 0;
+        }
+        if(!isNaN(Number(nMap[key])))
+            nMap[key] += Number(value);
+    }
+    let finalAns = [];
+    Object.keys(nMap).forEach((key) => {
+        finalAns.push({
+            key: key,
+            value: nMap[key]
+        });
+    })
+    return finalAns;
+}
+
+export const makeFirstLetterUppercase = (str)=>{
+    if(isNullOrUndefined(str))
+        return '';
+    str = str.trim();
+    if(str.length==0)
+        return str;
+    let out = str.toUpperCase().charAt(0) + str.substring(1).toLowerCase(); 
+    return out;
+}
