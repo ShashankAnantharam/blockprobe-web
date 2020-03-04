@@ -79,6 +79,7 @@ class DraftBlockEvidenceView extends React.Component {
         if(lastChar=='\n' || lastChar=='\t'){
             shouldUpdate=false;
         }
+        //TODO Handle change here too!
 
         if(shouldUpdate){
             var evidence = this.state.newEvidence;

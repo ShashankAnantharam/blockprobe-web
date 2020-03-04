@@ -161,6 +161,7 @@ class DraftBlockComponent extends React.Component {
         this.addEntityToList = this.addEntityToList.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.updateEvidence = this.updateEvidence.bind(this);
+        this.updateNumber = this.updateNumber.bind(this);
         this.addEvidence = this.addEvidence.bind(this);
         this.addNumber = this.addNumber.bind(this);
         this.singleBlockEvidence = this.singleBlockEvidence.bind(this);
@@ -452,6 +453,29 @@ class DraftBlockComponent extends React.Component {
         this.setState({newBlock: block});
       }
 
+    updateNumber(oldNumber, newNumber, isUpdate, isDelete, index){
+        var block = this.state.newBlock;
+
+        if(isNullOrUndefined(block.numbers)){
+            block.numbers=[];
+        }
+        if(isDelete){
+            
+              let newNum = [];
+              for(let i=0;i<block.numbers.length;i++){
+                  if(i != index){
+                      newNum.push(block.numbers[i]);
+                  }
+              }
+              block.numbers = newNum;                
+        }
+        else if(isUpdate){            
+          block.numbers[index] = newNumber;
+      }
+
+      this.setState({newBlock: block});
+    }
+
     addEvidence(){
         var block = this.state.newBlock;
         var newEvidence={
@@ -500,6 +524,7 @@ class DraftBlockComponent extends React.Component {
                 isClicked={isClicked}
                 index = {index}
                 number = {blockNumber}
+                updateNumber = {this.updateNumber}
             />
         );
     }
