@@ -572,24 +572,33 @@ class GraphComponent extends React.Component {
         );
     } 
 
-    AgregateNumberDisplay(numbers){
+    AgregateNumberDisplay(numbers, selectedNodesString){
 
-        let renderNumbers = numbers.map((number) => 
-            <span><span className="graph-content-number-key">{number.key}: </span> 
+        let renderNumbers = '';
+        if(!isNullOrUndefined(numbers) && numbers.length>0){
+            renderNumbers = numbers.map((number) => 
+             <span><span className="graph-content-number-key">{number.key}: </span> 
                 <b className="graph-content-number-value">{number.value}</b> <br/></span>
-        );   
+            );   
+        }
 
-        return (
-            <div className="graph-block-para-div">
-                <h4 className="graph-block-title">Relevant statistics</h4>
-                <div className="graph-content-container">
-                    <p className="graph-block-text">
-                        {renderNumbers}
-                    </p> 
+        if(!isNullOrUndefined(selectedNodesString))
+            selectedNodesString = selectedNodesString.replace(':', '');
+        if(renderNumbers != ''){
+            return (
+                <div className="graph-block-para-div">
+                    <h4 className="graph-block-title">Statistics for {selectedNodesString}</h4>
+                    <div className="graph-content-container">
+                        <p className="graph-block-text">
+                            {renderNumbers}
+                        </p> 
+                    </div>
+                    
                 </div>
-                
-            </div>
-        )
+            );    
+        }
+
+        return null;
     }
 
     SingleBlock(singleBlock){
@@ -812,6 +821,14 @@ class GraphComponent extends React.Component {
             });
 
             let toPlayText = '';
+            let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
+            if(!isNullOrUndefined(numbers) && numbers.length>0){
+                toPlayText += 'Statistics for ' + selectedNodesString + '. ';
+            }
+            for(let i=0; !isNullOrUndefined(numbers) && i<numbers.length;i++){
+                toPlayText += (numbers[i].key + ": " + String(numbers[i].value)+ ". ");
+            }
+
             this.state.currentSelectedBlocks.map((selectedBlock) => 
                 {
                     let title = this.removeHashedIndex(selectedBlock.title);
@@ -881,10 +898,6 @@ class GraphComponent extends React.Component {
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
            );      
-
-        let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
-        let aggrNums = this.AgregateNumberDisplay(numbers);
-        //console.log(numbers);
         
         let selectedNodesString = ': ';
         for(let i=0; i<this.state.selectedNodes.length; i++){
@@ -892,6 +905,10 @@ class GraphComponent extends React.Component {
         }
         if(selectedNodesString.length > 0)
             selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
+        
+        let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
+        let aggrNums = this.AgregateNumberDisplay(numbers,selectedNodesString);
+        //console.log(numbers);
 
         /*
             {this.state.playStatus == 'paused' && !isChrome?
