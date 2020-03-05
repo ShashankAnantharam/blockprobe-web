@@ -93,6 +93,7 @@ class GraphComponent extends React.Component {
         this.clickBlockFromList = this.clickBlockFromList.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
         this.removeHashedIndex = this.removeHashedIndex.bind(this);
+        this.AgregateNumberDisplay = this.AgregateNumberDisplay.bind(this);
 
         this.generateAmGraph = this.generateAmGraph.bind(this);
         this.selectEdge = this.selectEdge.bind(this);
@@ -571,6 +572,26 @@ class GraphComponent extends React.Component {
         );
     } 
 
+    AgregateNumberDisplay(numbers){
+
+        let renderNumbers = numbers.map((number) => 
+            <span><span className="graph-content-number-key">{number.key}: </span> 
+                <b className="graph-content-number-value">{number.value}</b> <br/></span>
+        );   
+
+        return (
+            <div className="graph-block-para-div">
+                <h4 className="graph-block-title">Relevant statistics</h4>
+                <div className="graph-content-container">
+                    <p className="graph-block-text">
+                        {renderNumbers}
+                    </p> 
+                </div>
+                
+            </div>
+        )
+    }
+
     SingleBlock(singleBlock){
         
         /*
@@ -860,6 +881,10 @@ class GraphComponent extends React.Component {
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
            );      
+
+        let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
+        let aggrNums = this.AgregateNumberDisplay(numbers);
+        //console.log(numbers);
         
         let selectedNodesString = ': ';
         for(let i=0; i<this.state.selectedNodes.length; i++){
@@ -961,6 +986,7 @@ class GraphComponent extends React.Component {
                                 duration={400}
                                 transitions={transitions}>
                                 <div className='graph-block-list-container' id="graph-selected-block-list">
+                                    {aggrNums}
                                     {renderBlocks}
                                 </div>
                             </Expand>

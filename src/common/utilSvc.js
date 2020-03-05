@@ -609,6 +609,19 @@ export const coalesceNumbers = (numbers)=>{
     return finalAns;
 }
 
+export const coalesceBlockNumbers = (blocks)=>{
+    let nos = [];
+    for(let i=0; i<blocks.length;i++){
+        if(!isNullOrUndefined(blocks[i].numbers)){
+            for(let j=0; j<blocks[i].numbers.length;j++){
+                nos.push(blocks[i].numbers[j]);
+            }
+        }
+    }
+    nos = coalesceNumbers(nos);
+    return nos;
+}
+
 export const makeFirstLetterUppercase = (str)=>{
     if(isNullOrUndefined(str))
         return '';

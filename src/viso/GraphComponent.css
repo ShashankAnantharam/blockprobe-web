@@ -38,6 +38,14 @@
     margin-right: 9px;
 }
 
+.graph-content-number-key{
+    color: rgb(49, 49, 49);
+}
+
+.graph-content-number-value{
+    color: rgb(60, 60, 250);
+}
+
 .graph-block-div{
     margin-bottom: 8px;
     margin-top:0px;
