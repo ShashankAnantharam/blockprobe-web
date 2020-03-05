@@ -577,7 +577,7 @@ class GraphComponent extends React.Component {
         let renderNumbers = '';
         if(!isNullOrUndefined(numbers) && numbers.length>0){
             renderNumbers = numbers.map((number) => 
-             <span><span className="graph-content-number-key">{number.key}: </span> 
+             <span><span className="graph-content-number-key">Total {number.key}: </span> 
                 <b className="graph-content-number-value">{number.value}</b> <br/></span>
             );   
         }
@@ -620,6 +620,15 @@ class GraphComponent extends React.Component {
        );            
        }
 
+       let renderNumbers = null;
+       if(!isNullOrUndefined(singleBlock.numbers) && singleBlock.numbers.length>0){
+           let numbers = singleBlock.numbers;
+            renderNumbers = numbers.map((number) => 
+            <span><span className="graph-content-number-key">{number.key}: </span> 
+            <b className="graph-content-number-value">{number.value}</b> <br/></span>
+        ); 
+       }
+
         return(
             <div className="graph-block-para-div"
             onClick={() => { this.clickBlockFromList(singleBlock)}}>
@@ -627,6 +636,9 @@ class GraphComponent extends React.Component {
                 <div className="graph-content-container">
                     <p className="graph-block-text">
                         {singleBlock.summary}
+                    </p>
+                    <p className="graph-block-text">
+                        {renderNumbers}
                     </p> 
                     <div class="graph-block-evidence-container">
                         {renderBlockEvidences}                       
@@ -826,7 +838,7 @@ class GraphComponent extends React.Component {
                 toPlayText += 'Statistics for ' + selectedNodesString + '. ';
             }
             for(let i=0; !isNullOrUndefined(numbers) && i<numbers.length;i++){
-                toPlayText += (numbers[i].key + ": " + String(numbers[i].value)+ ". ");
+                toPlayText += ('Total ' + numbers[i].key + ": " + String(numbers[i].value)+ ". ");
             }
 
             this.state.currentSelectedBlocks.map((selectedBlock) => 
@@ -837,6 +849,10 @@ class GraphComponent extends React.Component {
                         toPlayText += (Utils.correctTextForSpeech(title) + '. ');
                     toPlayText += Utils.correctTextForSpeech(summary);
                     toPlayText  += '. ';
+                    for(let i=0; !isNullOrUndefined(selectedBlock.numbers) && i<selectedBlock.numbers.length;i++){
+                        toPlayText += (selectedBlock.numbers[i].key + ": " + 
+                            String(selectedBlock.numbers[i].value)+ ". ");
+                    }
                 }
             );
             this.setState({

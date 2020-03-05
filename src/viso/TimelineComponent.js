@@ -126,6 +126,10 @@ class TimelineComponent extends React.Component {
                         toPlayText += (Utils.correctTextForSpeech(title) + '. ');
                     toPlayText += Utils.correctTextForSpeech(summary);
                     toPlayText  += '. ';
+                    for(let i=0; !isNullOrUndefined(selectedBlock.numbers) && i<selectedBlock.numbers.length;i++){
+                        toPlayText += (selectedBlock.numbers[i].key + ": " + 
+                            String(selectedBlock.numbers[i].value)+ ". ");
+                    }
                 }
             );
             this.setState({
@@ -239,12 +243,21 @@ class TimelineComponent extends React.Component {
             backgroundColor = 'rgb(243, 33, 25)';
        }
 
+       let renderNumbers = null;
+       if(!isNullOrUndefined(timelineBlock.numbers) && timelineBlock.numbers.length>0){
+           let numbers = timelineBlock.numbers;
+            renderNumbers = numbers.map((number) => 
+            <span><span className="graph-content-number-key">{number.key}: </span> 
+            <b className="graph-content-number-value">{number.value}</b> <br/></span>
+        ); 
+       }
+
        return (
          <VerticalTimelineElement
-         className="vertical-timeline-element--work"
-         date={blockDateTime}
-         iconStyle={{ background: backgroundColor, color: '#fff' }}         
-       >
+            className="vertical-timeline-element--work"
+            date={blockDateTime}
+            iconStyle={{ background: backgroundColor, color: '#fff' }}         
+        >
        <div onClick={() => { this.selectTimelineBlock(timelineBlock)}} className="timeline-block-container">
             
             {this.removeHashedIndex(timelineBlock.title).length > 0? 
@@ -255,7 +268,10 @@ class TimelineComponent extends React.Component {
             <p className="timeline-block-text">
                 {timelineBlock.summary}
             </p>
-            
+            <p className="timeline-block-text">
+                {renderNumbers}
+            </p>
+
             {renderBlockEvidences.length !== ''?
                         <div>
                             {renderBlockEvidences}
