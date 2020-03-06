@@ -193,8 +193,13 @@ class UserBlockprobesComponent extends React.Component {
         };
         nickPhoneHash["creator"]= this.props.uId;
 
+        let userDetails = {
+            id: this.props.uId,
+            role: 'CREATOR'
+        }
+
         // console.log('Blockprobes/'+ blockprobeId +'/isActive/');
-        await firebase.database().ref('Blockprobes/'+ blockprobeId +'/isActive/').set('true'); 
+        await firebase.database().ref('Blockprobes/'+ blockprobeId +'/users/').push(userDetails); 
 
         // console.log('Blockprobes/'+ blockprobeId +'/fullBlocks/'+blockprobeId);
         // console.log(firstBlock);

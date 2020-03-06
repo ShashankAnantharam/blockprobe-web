@@ -55,6 +55,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             menuBarOpen: false,
             selectedVisualisation: "contributions",
             lastTitleIndex: 0,
+            coUsers: {},
             multiSelectEntityList: [
                 {
                     value: true, 
@@ -114,6 +115,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
 
         this.bpDetailsDoc = null;
+        this.bpUsersRef = null;
 
         ReactGA.initialize('UA-143383035-1');   
         ReactGA.pageview('/userBlockprobePrivate');
@@ -911,11 +913,24 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 isloading: loadingState
             });
         });
+
+        let scope = this;
+        this.bpUsersRef = firebase.database().ref('Blockprobes/'+this.props.bId +'/users');
+        this.bpUsersRef.on('child_added', function(data){
+            let userVal = data.val();
+            let coUsers = scope.state.coUsers;
+            coUsers[userVal['id']] = userVal;
+            scope.setState({
+                coUsers: coUsers 
+            });
+        })
     }
 
     componentWillUnmount(){
         var unsub = this.bpDetailsDoc.onSnapshot(() => {});
         unsub();
+
+        this.bpUsersRef.off();
     }
 
     renderVisualisation(){

@@ -30,3 +30,11 @@
     margin-top:0.2em;
     height:auto;
 }
+
+.messageUserTextGeneral{
+    font-size:14px;
+}
+
+.messageUserTextUid{
+    color: rgb(96, 96, 255);
+}

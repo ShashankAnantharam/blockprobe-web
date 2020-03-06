@@ -21,8 +21,8 @@ class VisualizeOptionsListComponent extends React.Component {
       //role, dashboardTooltip
 
       this.state={
-          tooltipText:{
-              shouldEnableMultipleContributors: false,
+        shouldEnableMultipleContributors: true,
+          tooltipText:{              
               dashboard:[
                   {
                     title: 'Click on \'Dashboard\' from the menu and visualise your work!',
@@ -96,21 +96,7 @@ class VisualizeOptionsListComponent extends React.Component {
                         <CreateIcon />
                     </Avatar>
                         <ListItemText primary="Contribute"/>
-                    </ListItem>
-
-                    {this.state.shouldEnableMultipleContributors?
-                        <ListItem button 
-                        selected={this.props.selectedVisualisation == "manage_blockprobe"}
-                        onClick={() => { this.selectNewVisualisation("manage_blockprobe")}}
-                        >
-                        <Avatar>
-                            <BuildIcon />
-                        </Avatar>
-                            <ListItemText primary="Manage Blockprobe"/>
-                        </ListItem>
-                        :
-                        null
-                    }                    
+                    </ListItem>                                     
 
                     {this.props.permit == "CREATOR"?
                         <div className='shareOption'>
@@ -126,6 +112,20 @@ class VisualizeOptionsListComponent extends React.Component {
                         </div>
                         :
                         null}
+
+                    {this.state.shouldEnableMultipleContributors?
+                            <ListItem button 
+                            selected={this.props.selectedVisualisation == "manage_blockprobe"}
+                            onClick={() => { this.selectNewVisualisation("manage_blockprobe")}}
+                            >
+                            <Avatar>
+                                <BuildIcon />
+                            </Avatar>
+                                <ListItemText primary="Manage Blockprobe"/>
+                            </ListItem>
+                            :
+                            null
+                        }  
                 </List>
             </div>
         )

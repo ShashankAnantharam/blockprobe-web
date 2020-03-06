@@ -10,7 +10,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Textarea from 'react-textarea-autosize';
 import Slider from '@material-ui/lab/Slider';
+import * as Utils from '../../common/utilSvc';
+import Loader from 'react-loader-spinner';
 import './BlockprobeSettings.css';
+import { isNullOrUndefined } from 'util';
 
 
 const styles = {
@@ -35,7 +38,11 @@ class BlockprobeSettingsComponent extends React.Component {
             step: 1,
             min: 0,
             viewerId: '',
-            contributorId: ''
+            contributorId: '',
+            creatorId: '',
+            prevCreatorId: '',
+            creatorMessageId: null,
+            addingUser: false
         }
 
         var shajs = require('sha.js');
@@ -47,7 +54,36 @@ class BlockprobeSettingsComponent extends React.Component {
         this.modifyBlockProbeSettings = this.modifyBlockProbeSettings.bind(this);
         this.renderAddViewers = this.renderAddViewers.bind(this);
         this.renderAddContributors = this.renderAddContributors.bind(this);
+        this.renderAddCreators = this.renderAddCreators.bind(this);
+        this.getMessage = this.getMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
+    }
+
+    getMessage(type){
+        let id = this.state.prevCreatorId;
+        if(!isNullOrUndefined(type)){
+            if(type == 'alreadyPresent'){
+                return (
+                    <p className="messageUserTextGeneral">User <span className="messageUserTextUid">{id}</span> is already contributing to the story.</p>
+                );
+            }
+            else if(type == 'notExist'){
+                return (
+                    <p className="messageUserTextGeneral">User <span className="messageUserTextUid">{id}</span> does not exist.</p>
+                );
+            }
+            else if(type == 'alreadySent'){
+                return (
+                    <p className="messageUserTextGeneral">User <span className="messageUserTextUid">{id}</span> has already been invited.</p>
+                );
+            }
+            else if(type == 'sent'){
+                return (
+                    <p className="messageUserTextGeneral">Invitation sent to <span className="messageUserTextUid">{id}</span>.</p>
+                );
+            }
+        }
+        return null;
     }
 
     changeCriterion = (event, value) => {
@@ -70,6 +106,14 @@ class BlockprobeSettingsComponent extends React.Component {
             }
             else if(change == 'reviewer'){
                 permit = "REVIEWER";
+            }
+            else if(change == 'creator'){
+                val = this.state.creatorId;
+                permit = "CREATOR";
+                this.setState({
+                    prevCreatorId: val,
+                    addingUser: true
+                });
             }
 
             if(change != 'criterion'){
@@ -97,7 +141,7 @@ class BlockprobeSettingsComponent extends React.Component {
 
                                     // console.log("Blockprobe exist for user");
 
-                                    var existingBlockprobe = bpSnapshot.data();
+                                  /*  var existingBlockprobe = bpSnapshot.data();
                                     softBlockprobeToAdd.timestamp = existingBlockprobe.timestamp;
                                     if(change == "contributor" 
                                         && existingBlockprobe.permit == "VIEWER"){
@@ -113,6 +157,13 @@ class BlockprobeSettingsComponent extends React.Component {
                                             doc(val).collection("blockprobes").
                                                 doc(scope.props.bpId).set(softBlockprobeToAdd);
                                         }
+                                        */
+
+                                        scope.setState({
+                                            creatorMessageId: 'alreadyPresent',
+                                            addingUser: false
+                                        });
+                                        //console.log("User already present");
 
                                 }
                                 else{
@@ -120,14 +171,49 @@ class BlockprobeSettingsComponent extends React.Component {
                                     // console.log("adding blockprobe first time");
 
                                     firebase.firestore().collection("Users").
-                                    doc(val).collection("blockprobes").
-                                        doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                        doc(val).collection("notifications").
+                                            doc(scope.props.bpId).get().then(
+                                                function(notifSnapshot){
+                                                    if(notifSnapshot.exists){
+                                                        //notification sent
+                                                        scope.setState({
+                                                            creatorMessageId: 'alreadySent',
+                                                            addingUser: false
+                                                        });
+                                                        //console.log("User already sent");
+                                                    }
+                                                    else{
+                                                        firebase.firestore().collection("Users").
+                                                            doc(val).collection("notifications").
+                                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                                        scope.setState({
+                                                            creatorMessageId: 'sent',
+                                                            addingUser: false
+                                                        });
+                                                    }
+                                                }
+                                            )
+
+                                    /*if(change != "creator"){
+                                        firebase.firestore().collection("Users").
+                                        doc(val).collection("blockprobes").
+                                            doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                    }
+                                    else{
+                                        firebase.firestore().collection("Users").
+                                        doc(val).collection("notifications").
+                                            doc(scope.props.bpId).set(softBlockprobeToAdd)
+                                    }*/
                                 }
                             }
                         )
                     }
                     else{
-                        console.log("User does not exist");
+                        //console.log("User does not exist");
+                        scope.setState({
+                            creatorMessageId: 'notExist',
+                            addingUser: false
+                        });
                     }
                 });
                 
@@ -152,6 +238,9 @@ class BlockprobeSettingsComponent extends React.Component {
         }
         else if(change == "contributor"){
             this.setState({contributorId: ''});
+        }
+        else if(change == "creator"){
+            this.setState({creatorId: ''});
         }
         else if(change == "criterion"){
 
@@ -210,12 +299,11 @@ class BlockprobeSettingsComponent extends React.Component {
 
     handleChange(event, type) {
 
-        var shouldUpdate = true;
-        var lastChar = event.target.value[event.target.value.length-1];
-        if(lastChar=='\n' || lastChar=='\t'){
-            shouldUpdate=false;
+        var shouldUpdate = false;
+        let str = event.target.value;
+        if(type=='creator' && Utils.shouldUpdateText(str,['\n','\t'])){
+            shouldUpdate = true;
         }
-        
 
         if(shouldUpdate){
             
@@ -227,7 +315,13 @@ class BlockprobeSettingsComponent extends React.Component {
                 var id = event.target.value;
                 this.setState({contributorId: id});
             }
-            
+            else if(type=="creator"){
+                let id = event.target.value;
+                this.setState({
+                    creatorId: id,
+                    creatorMessageId: null
+                });
+            }
 
         }
       }
@@ -328,13 +422,75 @@ class BlockprobeSettingsComponent extends React.Component {
         )
     }
 
-
-    render(){
+    renderAddCreators(){
         return (
             <div>
-                {this.renderBlockprobeSettings()}
-                {this.renderAddContributors()}
-                {this.renderAddViewers()}
+                <div style={{marginLeft:'10px', marginTop:'1em'}}>
+                    <h3>Add Users</h3>
+                    <form>
+                    <label>
+                        <Textarea 
+                            type="text"
+                            placeholder = "Email or phonenumber"
+                            value={this.state.creatorId}
+                            onChange={(e) => { this.handleChange(e,"creator")}}
+                            maxRows="1"
+                            minRows="1"
+                            style={{
+                                background: 'white',
+                                borderWidth:'2px', 
+                                borderStyle:'solid', 
+                                borderColor:'darkgrey',
+                                paddingTop:'6px',
+                                paddingBottom:'6px',
+                                width:'30%'
+                                }}/>
+                    </label>
+                    </form>
+                    {this.getMessage(this.state.creatorMessageId)}
+                    {this.state.creatorId!='' && !this.state.addingUser?
+                            <div className="blockprobe-settings-criterion-options-container">
+                                <button 
+                                className="saveBlockProbeSettingsButton" 
+                                style={{marginTop:'1em'}}
+                                onClick={(e) => this.modifyBlockProbeSettings("creator",true)}>
+                                    <div>Confirm</div>
+                                </button>
+                                <button 
+                                className="cancelBlockProbeSettingsButton" 
+                                style={{marginTop:'1em'}}
+                                onClick={(e) => this.modifyBlockProbeSettings("creator",false)}>
+                                    <div>Cancel</div>
+                                </button>
+                            </div>
+                            :
+                            null
+                        }
+                    {this.state.addingUser?
+                        <div style={{width:'50px'}}>
+                            <Loader 
+                            type="TailSpin"
+                            color="#00BFFF"
+                            height="50"	
+                            width="50"
+                            /> 
+                        </div>
+                        :
+                        null
+                    }           
+                </div>
+            </div>
+        )
+    }
+
+
+    //{this.renderBlockprobeSettings()}
+    //{this.renderAddContributors()}
+    //{this.renderAddViewers()}
+    render(){
+        return (
+            <div>                
+                {this.renderAddCreators()}
             </div>
         );
     }
