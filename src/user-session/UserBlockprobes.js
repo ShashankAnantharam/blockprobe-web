@@ -199,7 +199,7 @@ class UserBlockprobesComponent extends React.Component {
         }
 
         // console.log('Blockprobes/'+ blockprobeId +'/isActive/');
-        await firebase.database().ref('Blockprobes/'+ blockprobeId +'/users/').push(userDetails); 
+        await firebase.database().ref('Blockprobes/'+ blockprobeId +'/users/'+this.state.uIdHash).set(userDetails); 
 
         // console.log('Blockprobes/'+ blockprobeId +'/fullBlocks/'+blockprobeId);
         // console.log(firstBlock);

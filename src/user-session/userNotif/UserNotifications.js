@@ -35,8 +35,14 @@ class UserNotifications extends React.Component {
                 desc: null
             }
         },
-        selectedNotificationId: null
+        selectedNotificationId: null,
+        uIdHash: null,
+        shajs: null
       }
+
+        var shajs = require('sha.js');
+        this.state.uIdHash = shajs('sha256').update(this.props.userId).digest('hex');
+        this.state.shajs = shajs;
 
       this.renderSingleNotification = this.renderSingleNotification.bind(this);
       this.renderStoryInviteNotifications = this.renderStoryInviteNotifications.bind(this);
@@ -111,7 +117,7 @@ class UserNotifications extends React.Component {
             if(value){
                 //Add user to story    
                 //console.log('Add user ',this.state.selectedNotificationId);
-                let addUserToBlockprobe = DbUtils.addUserToBlockprobe(notification,userId);
+                let addUserToBlockprobe = DbUtils.addUserToBlockprobe(notification,userId,this.state.uIdHash);
                 await Promise.all(addUserToBlockprobe);
                 await DbUtils.removeNotification(notification,userId);
             }

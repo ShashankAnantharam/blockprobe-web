@@ -204,7 +204,8 @@ class BlockprobeSettingsComponent extends React.Component {
                                                             }
                                                             
                                                             // console.log('Blockprobes/'+ blockprobeId +'/isActive/');
-                                                            firebase.database().ref('Blockprobes/'+ scope.props.bpId +'/users/').push(userDetails); 
+                                                            let shaVal = scope.state.shajs('sha256').update(val).digest('hex');
+                                                            firebase.database().ref('Blockprobes/'+ scope.props.bpId +'/users/'+shaVal).set(userDetails); 
                                                             scope.setState({
                                                                 creatorMessageId: 'sent',
                                                                 addingUser: false

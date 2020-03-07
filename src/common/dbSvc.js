@@ -38,7 +38,7 @@ export const removeNotification =(notification,userId)=>{
     return null;
 }
 
-export const addUserToBlockprobe =(notification,userId)=>{
+export const addUserToBlockprobe =(notification,userId,userIdHash)=>{
     let allPromises = [];
 
     if(!isNullOrUndefined(notification) && !isNullOrUndefined(userId) && ('permit' in notification)
@@ -48,7 +48,7 @@ export const addUserToBlockprobe =(notification,userId)=>{
             role: notification.permit
         }
         let bId = notification.id;
-        firebase.database().ref('Blockprobes/'+ bId +'/users/').push(userObj);
+        firebase.database().ref('Blockprobes/'+ bId +'/users/'+userIdHash).set(userObj);
 
         let softBlockprobe = notification;
         softBlockprobe.timestamp = Date.now();
