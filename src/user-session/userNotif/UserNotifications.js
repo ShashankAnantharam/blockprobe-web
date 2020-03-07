@@ -12,6 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import * as DbUtils from '../../common/dbSvc';
 import { isNullOrUndefined } from 'util';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -22,7 +23,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 class UserNotifications extends React.Component {
     constructor(props) {
       super(props);
-      //notifications
+      //notifications,userId
       //console.log(props.notifications);
 
       this.state = {
@@ -102,17 +103,21 @@ class UserNotifications extends React.Component {
         
     }
 
-    performAction(value){
+    async performAction(value){
         let type = this.state.dialogType;
-        
-        if(type == 'storyInvite'){        
+        if(type == 'storyInvite' && !isNullOrUndefined(this.state.selectedNotificationId)){        
+            let notification = this.props.notifications[this.state.selectedNotificationId];
+            let userId = this.props.userId;
             if(value){
                 //Add user to story    
                 //console.log('Add user ',this.state.selectedNotificationId);
+                let addUserToBlockprobe = DbUtils.addUserToBlockprobe(notification,userId);
+                await Promise.all(addUserToBlockprobe);
+                await DbUtils.removeNotification(notification,userId);
             }
             else{
                 //Remove notification
-                //console.log('Remove notif ',this.state.selectedNotificationId);
+                await DbUtils.removeNotification(notification,userId);
             }
         }
 
@@ -152,6 +157,9 @@ class UserNotifications extends React.Component {
                         </Button>
                         <Button onClick={() => this.performAction(false)} color="primary">
                             No
+                        </Button>
+                        <Button onClick={() => this.toggleDialog(false,'all',null)} color="primary">
+                            Cancel
                         </Button>                        
                         </DialogActions>
                 </Dialog>

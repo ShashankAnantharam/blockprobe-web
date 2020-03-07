@@ -522,6 +522,7 @@ class UserSession extends React.Component {
               return (
                   <UserNotifications
                     notifications = {this.state.notifications}
+                    userId = {this.state.userId}
                     />
               );
           }
