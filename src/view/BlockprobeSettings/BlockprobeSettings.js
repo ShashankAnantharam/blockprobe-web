@@ -11,6 +11,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Textarea from 'react-textarea-autosize';
 import Slider from '@material-ui/lab/Slider';
 import * as Utils from '../../common/utilSvc';
+import * as Constants from '../../common/constants';
 import Loader from 'react-loader-spinner';
 import './BlockprobeSettings.css';
 import { isNullOrUndefined } from 'util';
@@ -29,7 +30,7 @@ class BlockprobeSettingsComponent extends React.Component {
 
     constructor(props){
         super(props);
-        //details, permit, uId
+        //details, permit, uId, coUsers
 
         this.state={
             uIdHash:'',
@@ -82,6 +83,11 @@ class BlockprobeSettingsComponent extends React.Component {
                     <p className="messageUserTextGeneral">Invitation sent to <span className="messageUserTextUid">{id}</span>.</p>
                 );
             }
+            else if(type =="maxUserLimitReached"){
+                return (
+                    <p className="messageUserTextGeneral">Cannot add <span className="messageUserTextUid">{id}</span> because each story has {Constants.maxUsers} contributors!</p>
+                );
+            }
         }
         return null;
     }
@@ -130,92 +136,113 @@ class BlockprobeSettingsComponent extends React.Component {
                 // console.log(softBlockprobeToAdd);
 
                 var scope = this;
-                
-               firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
-                    if(doc.exists){
-                        // console.log("Debug exists:" + val);
-                        firebase.firestore().collection("Users").doc(val).
-                        collection("blockprobes").doc(scope.props.bpId).get().then(
-                            function(bpSnapshot){
-                                if(bpSnapshot.exists){
+               let coUsers = this.props.coUsers;
+               let currMem = 1;
+               if(!isNullOrUndefined(coUsers)){
+                   currMem = Math.max(Object.keys(coUsers).length,1);
+               } 
+               if(currMem < Constants.maxUsers){
+                    firebase.firestore().collection("Users").doc(val).get().then(function(doc) {
+                        if(doc.exists){
+                            // console.log("Debug exists:" + val);
+                            firebase.firestore().collection("Users").doc(val).
+                            collection("blockprobes").doc(scope.props.bpId).get().then(
+                                function(bpSnapshot){
+                                    if(bpSnapshot.exists){
 
-                                    // console.log("Blockprobe exist for user");
+                                        // console.log("Blockprobe exist for user");
 
-                                  /*  var existingBlockprobe = bpSnapshot.data();
-                                    softBlockprobeToAdd.timestamp = existingBlockprobe.timestamp;
-                                    if(change == "contributor" 
-                                        && existingBlockprobe.permit == "VIEWER"){
-                                            
-                                            firebase.firestore().collection("Users").
-                                            doc(val).collection("blockprobes").
-                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
-                                        }
-                                    else if(change == "reviewer" && 
-                                        !(existingBlockprobe.permit != "PRIVILEGED")){
+                                    /*  var existingBlockprobe = bpSnapshot.data();
+                                        softBlockprobeToAdd.timestamp = existingBlockprobe.timestamp;
+                                        if(change == "contributor" 
+                                            && existingBlockprobe.permit == "VIEWER"){
+                                                
+                                                firebase.firestore().collection("Users").
+                                                doc(val).collection("blockprobes").
+                                                    doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                            }
+                                        else if(change == "reviewer" && 
+                                            !(existingBlockprobe.permit != "PRIVILEGED")){
 
-                                            firebase.firestore().collection("Users").
-                                            doc(val).collection("blockprobes").
-                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
-                                        }
-                                        */
+                                                firebase.firestore().collection("Users").
+                                                doc(val).collection("blockprobes").
+                                                    doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                            }
+                                            */
 
-                                        scope.setState({
-                                            creatorMessageId: 'alreadyPresent',
-                                            addingUser: false
-                                        });
-                                        //console.log("User already present");
+                                            scope.setState({
+                                                creatorMessageId: 'alreadyPresent',
+                                                addingUser: false
+                                            });
+                                            //console.log("User already present");
 
-                                }
-                                else{
-
-                                    // console.log("adding blockprobe first time");
-
-                                    firebase.firestore().collection("Users").
-                                        doc(val).collection("notifications").
-                                            doc(scope.props.bpId).get().then(
-                                                function(notifSnapshot){
-                                                    if(notifSnapshot.exists){
-                                                        //notification sent
-                                                        scope.setState({
-                                                            creatorMessageId: 'alreadySent',
-                                                            addingUser: false
-                                                        });
-                                                        //console.log("User already sent");
-                                                    }
-                                                    else{
-                                                        firebase.firestore().collection("Users").
-                                                            doc(val).collection("notifications").
-                                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
-                                                        scope.setState({
-                                                            creatorMessageId: 'sent',
-                                                            addingUser: false
-                                                        });
-                                                    }
-                                                }
-                                            )
-
-                                    /*if(change != "creator"){
-                                        firebase.firestore().collection("Users").
-                                        doc(val).collection("blockprobes").
-                                            doc(scope.props.bpId).set(softBlockprobeToAdd);
                                     }
                                     else{
+
+                                        // console.log("adding blockprobe first time");
+
                                         firebase.firestore().collection("Users").
-                                        doc(val).collection("notifications").
-                                            doc(scope.props.bpId).set(softBlockprobeToAdd)
-                                    }*/
+                                            doc(val).collection("notifications").
+                                                doc(scope.props.bpId).get().then(
+                                                    function(notifSnapshot){
+                                                        if(notifSnapshot.exists){
+                                                            //notification sent
+                                                            scope.setState({
+                                                                creatorMessageId: 'alreadySent',
+                                                                addingUser: false
+                                                            });
+                                                            //console.log("User already sent");
+                                                        }
+                                                        else{
+                                                            firebase.firestore().collection("Users").
+                                                                doc(val).collection("notifications").
+                                                                    doc(scope.props.bpId).set(softBlockprobeToAdd);
+
+                                                            let userDetails = {
+                                                                id: val,
+                                                                role: 'INVITED'
+                                                            }
+                                                            
+                                                            // console.log('Blockprobes/'+ blockprobeId +'/isActive/');
+                                                            firebase.database().ref('Blockprobes/'+ scope.props.bpId +'/users/').push(userDetails); 
+                                                            scope.setState({
+                                                                creatorMessageId: 'sent',
+                                                                addingUser: false
+                                                            });
+                                                        }
+                                                    }
+                                                )
+
+                                        /*if(change != "creator"){
+                                            firebase.firestore().collection("Users").
+                                            doc(val).collection("blockprobes").
+                                                doc(scope.props.bpId).set(softBlockprobeToAdd);
+                                        }
+                                        else{
+                                            firebase.firestore().collection("Users").
+                                            doc(val).collection("notifications").
+                                                doc(scope.props.bpId).set(softBlockprobeToAdd)
+                                        }*/
+                                    }
                                 }
-                            }
-                        )
-                    }
-                    else{
-                        //console.log("User does not exist");
-                        scope.setState({
-                            creatorMessageId: 'notExist',
-                            addingUser: false
-                        });
-                    }
+                            )
+                        }
+                        else{
+                            //console.log("User does not exist");
+                            scope.setState({
+                                creatorMessageId: 'notExist',
+                                addingUser: false
+                            });
+                        }
+                    });
+               }
+               else{
+                scope.setState({
+                    creatorMessageId: 'maxUserLimitReached',
+                    addingUser: false
                 });
+               }
+               
                 
             }
             else if(change == 'criterion'){

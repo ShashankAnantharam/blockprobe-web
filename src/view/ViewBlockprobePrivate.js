@@ -1021,6 +1021,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     bpId={this.props.bId}
                     details = {this.state.bpDetails}
                     permit = {this.props.permit}
+                    coUsers = {this.state.coUsers}
                     />
                 </div>
             )
