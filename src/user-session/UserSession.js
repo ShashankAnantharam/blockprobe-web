@@ -16,6 +16,7 @@ import PoliticianLogo from "./icons/political.png";
 import TeacherLogo from "./icons/teacher.png";
 import MainLogo from "./icons/logo.png";
 import UserWall from "./userWall/UserWall";
+import UserNotifications from "./userNotif/UserNotifications";
 import Joyride from 'react-joyride';
 import {Container, Row, Col} from 'react-bootstrap';
 import {
@@ -58,6 +59,7 @@ import {
     InstapaperIcon,
     EmailIcon,
   } from 'react-share';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 class UserSession extends React.Component {
 
@@ -67,11 +69,13 @@ class UserSession extends React.Component {
             isUserSignedIn: this.getItemWrapper('isUserSignedIn',false), //false,
             showLogin: true,
             isWallOpened: false,
+            isNotificationsOpened: false,
             selectedBlockprobeId: '',
             userId: this.getItemWrapper('userId',''),//'',
             providerId: this.getItemWrapper('providerId',''),//'',
             blockprobes: {},
             posts: [],
+            notifications: {},
             areBlockprobesLoading: false,
             tooltip:{
                 buildStory: false
@@ -114,14 +118,17 @@ class UserSession extends React.Component {
         this.selectBlockprobe = this.selectBlockprobe.bind(this);
         this.createBlockprobeList = this.createBlockprobeList.bind(this);
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
+        this.addNotificationToList = this.addNotificationToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
         this.cueCardView = this.cueCardView.bind(this);
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
         this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
         this.getUserWall = this.getUserWall.bind(this);
+        this.getUserNotifications = this.getUserNotifications.bind(this);
         this.buildUserWall = this.buildUserWall.bind(this);
         this.viewWall = this.viewWall.bind(this);
+        this.viewNotifications = this.viewNotifications.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
     }
@@ -158,15 +165,25 @@ class UserSession extends React.Component {
       returnToViewBlockprobes(){
           this.setState({
               selectedBlockprobeId: '',
-              isWallOpened: false
+              isWallOpened: false,
+              isNotificationsOpened: false
           });
       }
 
       viewWall(){
           this.setState({
               isWallOpened: true,
+              isNotificationsOpened: false,
               selectedBlockprobeId: ''
           });
+      }
+
+      viewNotifications(){
+            this.setState({
+                isWallOpened: false,
+                isNotificationsOpened: true,
+                selectedBlockprobeId: ''
+            });
       }
 
       addBlockprobeToList(doc){
@@ -219,6 +236,47 @@ class UserSession extends React.Component {
         }); 
         return timestampLatest;
       }
+
+    addNotificationToList(notification, shouldAdd){
+        let notifications = this.state.notifications;
+        let id = notification['id'];
+        if(isNullOrUndefined(id))
+            return;
+        if(shouldAdd){
+            //notification.add(notification);
+            notifications[id] = notification;
+        }
+        else{
+            if(id in notifications)
+                delete notifications[id];            
+        }
+        this.setState({
+            notifications: notifications
+        });
+    }
+
+    getUserNotifications(){
+        let scope = this;
+        firebase.firestore().collection("Users").doc(this.state.userId)
+        .collection("notifications").onSnapshot(
+            querySnapshot => {
+                querySnapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        let data = change.doc.data();
+                        if(data){
+                            this.addNotificationToList(data,true);
+                        }
+                        //console.log('New block: ', change.doc.data().timestamp);
+                    }
+                    else if (change.type == 'removed'){
+                        let data = change.doc.data();
+                        if(data){
+                            this.addNotificationToList(data,false);
+                        }
+                    }
+                }); 
+            });
+    }
 
     getUserWall(){
         firebase.firestore().collection("publicWall").doc(this.state.userId).
@@ -330,6 +388,7 @@ class UserSession extends React.Component {
           this.setState({
               selectedBlockprobeId: blockprobeId,
               isWallOpened: false,
+              isNotificationsOpened: false,
               tooltip: tooltip
           })
 
@@ -373,7 +432,8 @@ class UserSession extends React.Component {
         await localStorage.removeItem('providerId');
         await this.setState({
             isUserSignedIn: false,
-            isWallOpened: false
+            isWallOpened: false,
+            isNotificationsOpened: false
         });        
         window.location.href = "/";
       }
@@ -384,6 +444,7 @@ class UserSession extends React.Component {
             this.getAndSetUser();
             this.getBlockprobes();
             this.getUserWall();
+            this.getUserNotifications();
         }
 
             firebase.auth().onAuthStateChanged(user =>{
@@ -425,6 +486,7 @@ class UserSession extends React.Component {
                     this.getAndSetUser();
                     this.getBlockprobes();
                     this.getUserWall();
+                    this.getUserNotifications();
                 }
             });
 
@@ -454,6 +516,13 @@ class UserSession extends React.Component {
                     isPrivate = {true}
                     updatePosts={this.updatePosts}
                   />
+              );
+          }
+          else if(this.state.isNotificationsOpened){
+              return (
+                  <UserNotifications
+                    notifications = {this.state.notifications}
+                    />
               );
           }
 
@@ -515,6 +584,7 @@ class UserSession extends React.Component {
                             <ul>
                                 <li><a onClick={() => this.returnToViewBlockprobes()}>Home</a></li> 
                                 <li><a onClick={() => this.viewWall()}>Wall</a></li>
+                                <li><a onClick={() => this.viewNotifications()}>Notifications</a></li>
                                 <li className="userName" style={{color:'white'}}>{this.state.userId}</li>
                                 <li><a onClick={() => this.logout()}>Logout</a></li>
                             </ul>
