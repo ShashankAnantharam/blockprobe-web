@@ -38,6 +38,16 @@ export const removeNotification =(notification,userId)=>{
     return null;
 }
 
+export const removeInviteStoryNotification =(notification,userId,userIdHash)=>{
+    if(!isNullOrUndefined(notification) && !isNullOrUndefined(userId) && ('permit' in notification)
+                && ('id' in notification))
+    {
+        let bId = notification.id;
+        firebase.database().ref('Blockprobes/'+ bId +'/users/'+userIdHash).remove();            
+    }
+}
+
+
 export const addUserToBlockprobe =(notification,userId,userIdHash)=>{
     let allPromises = [];
 

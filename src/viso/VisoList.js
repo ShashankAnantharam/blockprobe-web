@@ -121,7 +121,7 @@ class VisualizeOptionsListComponent extends React.Component {
                             <Avatar>
                                 <BuildIcon />
                             </Avatar>
-                                <ListItemText primary="Manage Blockprobe"/>
+                                <ListItemText primary="Settings"/>
                             </ListItem>
                             :
                             null

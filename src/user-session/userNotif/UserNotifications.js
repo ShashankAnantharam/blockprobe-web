@@ -123,6 +123,7 @@ class UserNotifications extends React.Component {
             }
             else{
                 //Remove notification
+                await DbUtils.removeInviteStoryNotification(notification,userId,this.state.uIdHash);
                 await DbUtils.removeNotification(notification,userId);
             }
         }
