@@ -41,13 +41,14 @@ class UserNotifications extends React.Component {
       this.renderStoryInviteNotifications = this.renderStoryInviteNotifications.bind(this);
       this.clickOnNotification = this.clickOnNotification.bind(this);
       this.toggleDialog = this.toggleDialog.bind(this);
+      this.performAction = this.performAction.bind(this);
     }
 
     toggleDialog(value, type, notification){
         let dialogText = this.state.dialogText;
         if(type == 'storyInvite'){
             dialogText.selected.title = `Contribute to story \n"${notification.title}"`;
-            dialogText.selected.desc = "You have been invited to contribute to this story as admin.";
+            dialogText.selected.desc = "You have been invited to contribute to this story. Do you accept?";
         }
         else if(type=='all'){
  
@@ -101,6 +102,16 @@ class UserNotifications extends React.Component {
         
     }
 
+    performAction(){
+        let type = this.state.dialogType;
+        
+        if(type == 'storyInvite'){
+            //Add user to story
+        }
+
+        this.toggleDialog(false,'all',null);
+    }
+
     render(){
 
         return (
@@ -130,10 +141,10 @@ class UserNotifications extends React.Component {
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={() => this.performAction()} color="primary">
-                            Accept
+                            Yes
                         </Button>
                         <Button onClick={() => this.toggleDialog(false,'all',null)} color="primary">
-                            Decline
+                            No
                         </Button>                        
                         </DialogActions>
                 </Dialog>
