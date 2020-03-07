@@ -69,7 +69,7 @@ class UserNotifications extends React.Component {
                 let notification = notifications[key];
                 let title = notification.title;
                 let summary = "You have been invited to contribute to this story as admin."
-                return this.renderSingleNotification(title, summary, 'storyInvite');
+                return this.renderSingleNotification(title, summary, 'storyInvite', notification);
             });
         }
         return (
@@ -87,8 +87,8 @@ class UserNotifications extends React.Component {
         this.toggleDialog(true,'storyInvite',notification);
     }
 
-    renderSingleNotification(title, summary, type){
-        let notif = {title:title}
+    renderSingleNotification(title, summary, type, notification){
+        let notif = {title:title,  id:notification.id}
        return(
             <ListItem button 
                 onClick={() => { this.clickOnNotification(type,notif)}}
@@ -102,11 +102,18 @@ class UserNotifications extends React.Component {
         
     }
 
-    performAction(){
+    performAction(value){
         let type = this.state.dialogType;
         
-        if(type == 'storyInvite'){
-            //Add user to story
+        if(type == 'storyInvite'){        
+            if(value){
+                //Add user to story    
+                //console.log('Add user ',this.state.selectedNotificationId);
+            }
+            else{
+                //Remove notification
+                //console.log('Remove notif ',this.state.selectedNotificationId);
+            }
         }
 
         this.toggleDialog(false,'all',null);
@@ -140,10 +147,10 @@ class UserNotifications extends React.Component {
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={() => this.performAction()} color="primary">
+                        <Button onClick={() => this.performAction(true)} color="primary">
                             Yes
                         </Button>
-                        <Button onClick={() => this.toggleDialog(false,'all',null)} color="primary">
+                        <Button onClick={() => this.performAction(false)} color="primary">
                             No
                         </Button>                        
                         </DialogActions>
