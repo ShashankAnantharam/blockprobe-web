@@ -13,9 +13,19 @@ import Slider from '@material-ui/lab/Slider';
 import * as Utils from '../../common/utilSvc';
 import * as Constants from '../../common/constants';
 import Loader from 'react-loader-spinner';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import './BlockprobeSettings.css';
 import { isNullOrUndefined } from 'util';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 const styles = {
     root: {
@@ -43,7 +53,15 @@ class BlockprobeSettingsComponent extends React.Component {
             creatorId: '',
             prevCreatorId: '',
             creatorMessageId: null,
-            addingUser: false
+            addingUser: false,
+            dialogType: null,
+            dialog: false,
+            dialogText:{
+                selected:{
+                    title: null,
+                    desc: null
+                }
+            }
         }
 
         var shajs = require('sha.js');
@@ -56,8 +74,63 @@ class BlockprobeSettingsComponent extends React.Component {
         this.renderAddViewers = this.renderAddViewers.bind(this);
         this.renderAddContributors = this.renderAddContributors.bind(this);
         this.renderAddCreators = this.renderAddCreators.bind(this);
+        this.renderAccountSettings = this.renderAccountSettings.bind(this);
         this.getMessage = this.getMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.toggleDialog = this.toggleDialog.bind(this);
+        this.performAction = this.performAction.bind(this);
+    }
+
+    toggleDialog(value, type){
+        let dialogText = this.state.dialogText;
+        if(type == 'exitBlockprobe'){
+            dialogText.selected.title = `Exit story "${this.props.details.title}"`;
+            dialogText.selected.desc = "You will no longer be able to contribute or participate in building this story. Do you want to exit?";
+        }
+        else if(type=='all'){
+ 
+        }
+        
+        this.setState({
+            dialog: value,
+            dialogType: type,
+            dialogText: dialogText
+        });
+    }
+
+    async performAction(value){
+        let type = this.state.dialogType;
+        if(type=="exitBlockprobe" && value){
+            let bId = this.props.bpId;
+            let userId = this.props.uId;
+            let userIdHash = this.state.uIdHash;
+
+            let ts = Date.now();
+            var softBlockprobeToRemove = {
+                active: true,
+                id: this.props.bpId,
+                isActive: true,
+                permit:"EXIT",
+                summary: this.props.details.summary,
+                title: this.props.details.title,
+                timestamp: ts
+            };
+            
+            if(!isNullOrUndefined(this.props.coUsers) && Object.keys(this.props.coUsers).length<=1){
+                let defunctBlockprobe = {
+                    id: bId,
+                    timestamp: ts
+                };
+                firebase.firestore().collection('defunctBlockprobes').doc(bId).set(defunctBlockprobe);                
+            }
+            firebase.database().ref('Blockprobes/'+ bId +'/users/'+userIdHash).remove();
+            await firebase.firestore().collection('Users').doc(userId)
+            .collection('blockprobes').doc(bId).set(softBlockprobeToRemove);
+        }
+
+        this.setState({
+            dialog: false
+        });
     }
 
     getMessage(type){
@@ -511,6 +584,24 @@ class BlockprobeSettingsComponent extends React.Component {
         )
     }
 
+    renderAccountSettings(){
+        return (
+            <div>
+                <div style={{marginLeft:'10px', marginTop:'1em'}}>
+                    <h3>Account settings</h3>
+                    <div className="blockprobe-settings-criterion-options-container">
+                        <button 
+                            className="saveBlockProbeSettingsButton" 
+                            style={{marginTop:'1em'}}
+                            onClick={(e) => this.toggleDialog(true,"exitBlockprobe")}>
+                            <div>Exit story</div>
+                        </button>                                
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 
     //{this.renderBlockprobeSettings()}
     //{this.renderAddContributors()}
@@ -519,6 +610,32 @@ class BlockprobeSettingsComponent extends React.Component {
         return (
             <div>                
                 {this.renderAddCreators()}
+                {this.renderAccountSettings()}
+                <Dialog
+                    open={this.state.dialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => this.toggleDialog(false,'all')}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description">
+                        <DialogTitle id="alert-dialog-slide-title">{this.state.dialogText.selected.title}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {this.state.dialogText.selected.desc}
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={() => this.performAction(true)} color="primary">
+                            Yes
+                        </Button>
+                        <Button onClick={() => this.performAction(false)} color="primary">
+                            No
+                        </Button>
+                        <Button onClick={() => this.toggleDialog(false,'all')} color="primary">
+                            Cancel
+                        </Button>                        
+                        </DialogActions>
+                </Dialog>
             </div>
         );
     }

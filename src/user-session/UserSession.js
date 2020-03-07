@@ -197,7 +197,12 @@ class UserSession extends React.Component {
             active: doc.active,
             permit: doc.permit
         };
-        blockprobeDic[doc.id]=newBlockprobe;
+        if(newBlockprobe.permit ==  "EXIT")
+        {
+            delete blockprobeDic[doc.id];
+        }
+        else
+            blockprobeDic[doc.id]=newBlockprobe;
         this.setState({
             blockprobes:blockprobeDic
         });
@@ -595,7 +600,7 @@ class UserSession extends React.Component {
                 </div>
                 <div>
                 <div className="logged-in-content">
-                    {this.state.selectedBlockprobeId == ''?
+                    {this.state.selectedBlockprobeId == '' || !(this.state.selectedBlockprobeId in this.state.blockprobes)?
                         this.loggedInContent()
                         :
                         <div className="blockprobe-list-container">
