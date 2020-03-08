@@ -924,6 +924,14 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 coUsers: coUsers 
             });
         });
+        this.bpUsersRef.on('child_changed', function(data){
+            let userVal = data.val();
+            let coUsers = scope.state.coUsers;
+            coUsers[userVal['id']] = userVal;
+            scope.setState({
+                coUsers: coUsers 
+            });
+        });
         this.bpUsersRef.on('child_removed', function(data){
             let userVal = data.val();
             let coUsers = scope.state.coUsers;

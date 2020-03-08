@@ -57,10 +57,12 @@ class BlockprobeSettingsComponent extends React.Component {
             contributorId: '',
             creatorId: '',
             prevCreatorId: '',
+            selectedUser: null,
             creatorMessageId: null,
             addingUser: false,
             dialogType: null,
             dialog: false,
+            userDialog: false,
             dialogText:{
                 selected:{
                     title: null,
@@ -82,7 +84,9 @@ class BlockprobeSettingsComponent extends React.Component {
         this.renderAccountSettings = this.renderAccountSettings.bind(this);
         this.renderUserList = this.renderUserList.bind(this);
         this.renderUser = this.renderUser.bind(this);
+        this.renderUserDialog = this.renderUserDialog.bind(this);
         this.clickUser = this.clickUser.bind(this);
+        this.removeUser = this.removeUser.bind(this);
         this.getMessage = this.getMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -94,6 +98,22 @@ class BlockprobeSettingsComponent extends React.Component {
         if(type == 'exitBlockprobe'){
             dialogText.selected.title = `Exit story "${this.props.details.title}"`;
             dialogText.selected.desc = "You will no longer be able to contribute or participate in building this story. Do you want to exit?";
+        }
+        else if(type == 'user'){
+            let selectedUser = this.state.selectedUser;
+            let selectedUserId = null, role = null;
+            if(!isNullOrUndefined(selectedUser)){
+                selectedUserId = selectedUser.id;
+                role = selectedUser.role;
+            }
+            dialogText.selected.title = `${selectedUserId}`;
+            dialogText.selected.desc = null;
+            this.setState({
+                userDialog: value,
+                dialog: false,
+                dialogText: dialogText
+            });
+            return;
         }
         else if(type=='all'){
  
@@ -229,7 +249,7 @@ class BlockprobeSettingsComponent extends React.Component {
                             firebase.firestore().collection("Users").doc(val).
                             collection("blockprobes").doc(scope.props.bpId).get().then(
                                 function(bpSnapshot){
-                                    if(bpSnapshot.exists){
+                                    if(bpSnapshot.exists && bpSnapshot.data().permit!="EXIT"){
 
                                         // console.log("Blockprobe exist for user");
 
@@ -250,7 +270,7 @@ class BlockprobeSettingsComponent extends React.Component {
                                                     doc(scope.props.bpId).set(softBlockprobeToAdd);
                                             }
                                             */
-
+                                                
                                             scope.setState({
                                                 creatorMessageId: 'alreadyPresent',
                                                 addingUser: false
@@ -592,7 +612,8 @@ class BlockprobeSettingsComponent extends React.Component {
         )
     }
 
-    async clickUser(user){
+    async removeUser(){
+        let user = this.state.selectedUser;
         if(!isNullOrUndefined(user.role) && user.role=="INVITED"){
             //console.log('remove invitation');
 
@@ -607,7 +628,18 @@ class BlockprobeSettingsComponent extends React.Component {
             //console.log(uIdHash);
             await DbUtils.removeInviteStoryNotification(notification,userId,uIdHash);
             await DbUtils.removeNotification(notification,userId);
+
+            this.setState({
+                userDialog: false
+            });
         }
+    }
+
+    async clickUser(user){
+        await this.setState({
+            selectedUser: user
+        });
+        this.toggleDialog(true,'user');
     }
 
     renderUser(user){
@@ -661,6 +693,38 @@ class BlockprobeSettingsComponent extends React.Component {
         );
     }
 
+    renderUserDialog(){
+        let selectedUser = this.state.selectedUser;
+        return (
+            <Dialog
+                    open={this.state.userDialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => this.toggleDialog(false,'user')}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description">
+                        <DialogTitle id="alert-dialog-slide-title">{this.state.dialogText.selected.title}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {this.state.dialogText.selected.desc}
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        {!isNullOrUndefined(selectedUser) && selectedUser.role == "INVITED"?
+                            <Button onClick={() => this.removeUser()} color="primary">
+                                Delete
+                            </Button>
+                            :
+                            null
+                        }                        
+                        <Button onClick={() => this.toggleDialog(false,'user')} color="primary">
+                            Cancel
+                        </Button>                        
+                        </DialogActions>
+                </Dialog>
+        );
+    }
+
 
     //{this.renderBlockprobeSettings()}
     //{this.renderAddContributors()}
@@ -671,6 +735,7 @@ class BlockprobeSettingsComponent extends React.Component {
                 {this.renderUserList(this.props.coUsers)}
                 {this.renderAddCreators()}
                 {this.renderAccountSettings()}
+                {this.renderUserDialog()}
                 <Dialog
                     open={this.state.dialog}
                     TransitionComponent={Transition}
