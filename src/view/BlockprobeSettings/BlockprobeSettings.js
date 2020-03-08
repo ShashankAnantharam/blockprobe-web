@@ -5,6 +5,10 @@ import 'firebase/firestore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
@@ -75,6 +79,9 @@ class BlockprobeSettingsComponent extends React.Component {
         this.renderAddContributors = this.renderAddContributors.bind(this);
         this.renderAddCreators = this.renderAddCreators.bind(this);
         this.renderAccountSettings = this.renderAccountSettings.bind(this);
+        this.renderUserList = this.renderUserList.bind(this);
+        this.renderUser = this.renderUser.bind(this);
+        this.clickUser = this.clickUser.bind(this);
         this.getMessage = this.getMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -584,6 +591,45 @@ class BlockprobeSettingsComponent extends React.Component {
         )
     }
 
+    clickUser(user){
+        if(!isNullOrUndefined(user.role) && user.role=="INVITED"){
+            //console.log('remove invitation');
+        }
+    }
+
+    renderUser(user){
+        return(
+            <ListItem button
+                onClick={() => this.clickUser(user)}>                
+                <ListItemText
+                    primary={user.id}
+                    secondary={user.role}                    
+                    />                
+            </ListItem>
+        )
+    }
+
+    renderUserList(coUsers){
+        let renderStr = null;
+        if(!isNullOrUndefined(coUsers)){
+            renderStr = Object.keys(coUsers).map((key) => {
+                let user = coUsers[key];
+                return this.renderUser(user);
+            });
+        }
+        return (
+            <div style={{marginLeft:'10px', marginTop:'1em'}}>
+                <h3>User list</h3>
+                <div className="userListContainer">
+                    <List>
+                        {renderStr}
+                    </List>
+                </div>
+            </div>
+        )
+
+    }
+
     renderAccountSettings(){
         return (
             <div>
@@ -609,6 +655,7 @@ class BlockprobeSettingsComponent extends React.Component {
     render(){
         return (
             <div>                
+                {this.renderUserList(this.props.coUsers)}
                 {this.renderAddCreators()}
                 {this.renderAccountSettings()}
                 <Dialog

@@ -38,3 +38,8 @@
 .messageUserTextUid{
     color: rgb(96, 96, 255);
 }
+
+.userListContainer{
+    width:100%;
+    word-wrap: break-word;
+}
