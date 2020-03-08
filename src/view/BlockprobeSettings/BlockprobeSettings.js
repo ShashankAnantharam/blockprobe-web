@@ -16,6 +16,7 @@ import Textarea from 'react-textarea-autosize';
 import Slider from '@material-ui/lab/Slider';
 import * as Utils from '../../common/utilSvc';
 import * as Constants from '../../common/constants';
+import * as DbUtils from '../../common/dbSvc';
 import Loader from 'react-loader-spinner';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -591,9 +592,21 @@ class BlockprobeSettingsComponent extends React.Component {
         )
     }
 
-    clickUser(user){
+    async clickUser(user){
         if(!isNullOrUndefined(user.role) && user.role=="INVITED"){
             //console.log('remove invitation');
+
+            let notification = {
+                id: this.props.bpId,
+                permit: 'INVITED'
+            }
+            let userId = user.id;
+            let uIdHash = this.state.shajs('sha256').update(userId).digest('hex');
+            //console.log(notification);
+            //console.log(userId);
+            //console.log(uIdHash);
+            await DbUtils.removeInviteStoryNotification(notification,userId,uIdHash);
+            await DbUtils.removeNotification(notification,userId);
         }
     }
 
