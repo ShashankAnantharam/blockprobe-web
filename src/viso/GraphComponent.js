@@ -430,6 +430,28 @@ class GraphComponent extends React.Component {
                     }                    
                 }
             }
+            let islands = Utils.getGraphIslandsAndValues(this.props.investigationGraph);
+            if(Object.keys(islands).length>0 && this.props.multiSelectEntityList[0].value){
+                newGraph.push({
+                    id:count,
+                    label:'#ALL',
+                    link: [],
+                    image: null
+                });
+
+                let revMap = {};
+                for(let i=0; i<newGraph.length; i++){
+                    revMap[newGraph[i].label] = newGraph[i].id;
+                }
+
+                for(let key in islands){
+                    let newId = revMap[islands[key].node];
+                    if(!isNullOrUndefined(newId)){
+                        newGraph[count].link.push(newId);
+                    } 
+                }
+                count++;
+            }
         }
 
         var newGraphHelper = {

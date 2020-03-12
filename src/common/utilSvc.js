@@ -631,3 +631,58 @@ export const makeFirstLetterUppercase = (str)=>{
     let out = str.toUpperCase().charAt(0) + str.substring(1).toLowerCase(); 
     return out;
 }
+
+export const traverseGraphNode = (graph, nodeId, visited, islandCount)=>{
+    let node = graph[nodeId];
+    let label = nodeId;
+    let edges ={};
+    if(label in visited)
+        return;
+    if(!isNullOrUndefined(node.edges)){
+        edges = node.edges;
+    }
+    visited[label] = {
+        island: islandCount,
+        count: Object.keys(edges).length
+    }
+
+    for(let edgeKey in edges){
+        traverseGraphNode(graph,edgeKey,visited,islandCount);   
+    }    
+}
+
+export const getGraphIslandsAndValues = (graph)=>{
+    // console.log(graph);
+    if(isNullOrUndefined(graph))
+        return {};
+
+    let visited = {};
+    let islandCount = 0;
+    for(let key in graph){
+        if(!(key in visited)){
+            traverseGraphNode(graph,key,visited,islandCount);
+            islandCount++;        
+        }
+    }
+    
+    // console.log(visited);
+    let islands =  {};
+    for(let key in visited){
+        let island = visited[key].island;
+        let count = visited[key].count;
+        if(!(island in islands)){
+            islands[island] = {
+                count: -1,
+                node: null
+            }
+        };
+        if(count > islands[island].count){
+            islands[island] = {
+                count: count,
+                node: key
+            }
+        }
+    }
+
+    return islands;
+}
