@@ -206,6 +206,34 @@ class GraphComponent extends React.Component {
             });
         }
 
+        if(node == "#ALL"){
+            let added = {};
+            let invGraph = this.props.investigationGraph;
+            if(!isNullOrUndefined(invGraph)){
+                for(let key in invGraph){
+                    for(let j=0; !isNullOrUndefined(invGraph[key].char) && j<invGraph[key].char.length; j++){
+                        added[invGraph[key].char[j]] = true; 
+                    }
+
+                    for(let edgekey in invGraph[key].edges){
+
+                        console.log(invGraph[key].edges[edgekey]);
+                        for(let j=0;!isNullOrUndefined(invGraph[key].edges[edgekey]) && 
+                                        j<invGraph[key].edges[edgekey].length; j++)
+                        {
+
+                            added[invGraph[key].edges[edgekey][j]] = true;
+                        }
+                    }
+                }
+
+                for(let blockKey in added){
+                    if(!isNullOrUndefined(this.props.blockTree) && !isNullOrUndefined(this.props.blockTree[blockKey]))
+                        blocksToBeSelected.push(this.props.blockTree[blockKey]);
+                }
+            }
+        }
+
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title));
         
         this.setState({
