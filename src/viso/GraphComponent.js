@@ -206,7 +206,7 @@ class GraphComponent extends React.Component {
             });
         }
 
-        if(node == "#ALL"){
+        if(node == "ALL"){
             let added = {};
             let invGraph = this.props.investigationGraph;
             if(!isNullOrUndefined(invGraph)){
@@ -217,7 +217,7 @@ class GraphComponent extends React.Component {
 
                     for(let edgekey in invGraph[key].edges){
 
-                        console.log(invGraph[key].edges[edgekey]);
+                        // console.log(invGraph[key].edges[edgekey]);
                         for(let j=0;!isNullOrUndefined(invGraph[key].edges[edgekey]) && 
                                         j<invGraph[key].edges[edgekey].length; j++)
                         {
@@ -462,7 +462,7 @@ class GraphComponent extends React.Component {
             if(Object.keys(islands).length>0 && this.props.multiSelectEntityList[0].value){
                 newGraph.push({
                     id:count,
-                    label:'#ALL',
+                    label:'ALL',
                     link: [],
                     image: null
                 });
@@ -480,6 +480,7 @@ class GraphComponent extends React.Component {
                 }
                 count++;
             }
+            //console.log(newGraph);
         }
 
         var newGraphHelper = {

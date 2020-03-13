@@ -35,6 +35,15 @@ class AmGraph extends React.Component {
                 newEntry.circleDisabled = false;
             }
 
+            if(newEntry.label == 'ALL'){
+                newEntry.isNotAll = false;
+                newEntry.imageDisabled = true;
+                newEntry.circleDisabled = true;
+            }
+            else{
+                newEntry.isNotAll = true;
+            }          
+
             newData.push(newEntry);
         }
 
@@ -98,6 +107,19 @@ class AmGraph extends React.Component {
             return circleBullet.circle.radius + 2;
         });
         outlineCircle.propertyFields.disabled = 'imageDisabled';        
+
+        // Configure All node icon
+        var allNode = series.nodes.template.createChild(am4core.Rectangle3D);
+        allNode.width = 35;
+        allNode.height = 15;
+        allNode.depth = 35;
+        allNode.angle = 45;
+        allNode.strokeOpacity = 1;
+        allNode.strokeWidth = 1.25;
+        allNode.stroke = am4core.color('black');
+        allNode.fillOpacity = 0.25;
+        allNode.fill = am4core.color('rgb(200,200,200)');
+        allNode.propertyFields.disabled = 'isNotAll';          
 
         series.centerStrength = 0.55;
         series.manyBodyStrength = -38;
