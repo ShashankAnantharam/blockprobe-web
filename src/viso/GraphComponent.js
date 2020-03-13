@@ -164,6 +164,10 @@ class GraphComponent extends React.Component {
 
     //edg:from,to,
     addBlocksForEdge(edge, blocksToBeSelected, blocksAdded){
+        if(isNullOrUndefined(this.props.investigationGraph[edge.from]) || 
+            isNullOrUndefined(this.props.investigationGraph[edge.from]))
+            return;
+            
         var edgeBlockList = this.props.investigationGraph[edge.from].edges[edge.to];
 
         for(var i=0;i<edgeBlockList.length;i++){

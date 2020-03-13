@@ -117,8 +117,8 @@ class AmGraph extends React.Component {
         allNode.strokeOpacity = 1;
         allNode.strokeWidth = 1.25;
         allNode.stroke = am4core.color('black');
-        allNode.fillOpacity = 0.25;
-        allNode.fill = am4core.color('rgb(200,200,200)');
+        allNode.fillOpacity = 0.85;
+        allNode.fill = am4core.color('rgb(240,240,240)');
         allNode.propertyFields.disabled = 'isNotAll';          
 
         series.centerStrength = 0.55;
