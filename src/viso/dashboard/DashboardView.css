@@ -7,10 +7,12 @@
 
 .graph-heading{
     margin-bottom:10px; 
+    margin-left: 1%;
 }
 
 .timeline-heading{
-    margin-bottom:20px; 
+    margin-bottom:20px;
+    margin-left: 1%; 
 }
 
 .tooltips-dashboard{

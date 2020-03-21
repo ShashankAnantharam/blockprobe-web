@@ -73,15 +73,13 @@
 }
 
 .graph-main{
-    height: 550px; 
-    width: 98%; 
+    height: 550px;  
     margin: 0 1% 1% 1%;
-    border: 1px solid lightgrey;
+    border: 1px solid black;
 }
 
 .graph-block-list{
-    width: 98%;
-    border: 1px solid lightgrey;
+    border: 1px solid rgb(0, 0, 0);
     border-bottom: none;
     margin: 1% 1% 0 1%;
     padding-left:0;

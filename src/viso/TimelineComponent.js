@@ -291,7 +291,7 @@ class TimelineComponent extends React.Component {
       this.renderTimeline(timelineBlock, index)
     );
       return (
-          <div>
+          <div className="timeline-view-container" id="timeline-view-container-id">
               {!isIE && this.state.isSpeechAvailable?
                 <div className='timeline-block-list-sound'>
                     {this.state.playStatus == 'end'?

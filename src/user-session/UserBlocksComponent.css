@@ -35,11 +35,6 @@
     font-size: 20px;
 }
 
-.contributions-timeline-container{
-    max-height: 600px;
-    overflow-x: scroll;
-}
-
 .block-list-content{
     margin-bottom: 30px;  
     max-height: 500px;
