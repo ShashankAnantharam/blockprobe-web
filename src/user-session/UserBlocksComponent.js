@@ -1108,7 +1108,7 @@ class UserBlocksComponent extends React.Component {
                                 steps={this.state.tooltipText.draftBlock}
                                 run = {this.state.showTooltip.draftBlock}                    
                                 /> 
-                                <div className="block-list-content multiselect-button-container">
+                                <div className="multiselect-button-container">
                                     {this.state.multiSelectDraftBlockStatus?
                                         <button 
                                             className="multiSelectBlockButton" 
