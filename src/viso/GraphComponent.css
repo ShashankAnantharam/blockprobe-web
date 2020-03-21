@@ -120,7 +120,7 @@
 .graph-block-list-container{
     overflow-y:scroll;
     overflow-x: none;
-    max-height: 500px;
+    max-height: 80vh;
 }
 
 .graph-block-evidence-container{

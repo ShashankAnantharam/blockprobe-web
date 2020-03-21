@@ -1,6 +1,6 @@
 .timeline-view-container{
     border: 1px solid black;
-    max-height: 750px;
+    max-height: 80vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
