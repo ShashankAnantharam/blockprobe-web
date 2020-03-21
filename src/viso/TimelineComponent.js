@@ -291,9 +291,9 @@ class TimelineComponent extends React.Component {
       this.renderTimeline(timelineBlock, index)
     );
       return (
-          <div className="timeline-view-container" id="timeline-view-container-id">
+          <div>
               {!isIE && this.state.isSpeechAvailable?
-                <div className='timeline-block-list-sound'>
+                <div className='timeline-block-list-sound timeline-view-container-width'>
                     {this.state.playStatus == 'end'?
                         <a onClick={this.playExistingSelection} className="soundIcon">
                             <PlayArrow />
@@ -314,7 +314,7 @@ class TimelineComponent extends React.Component {
                 null
             }
             
-            <div style={{background:'lightblue'}}>
+            <div style={{background:'lightblue'}} className="timeline-view-container timeline-view-container-width" id="timeline-view-container-id">
                 <VerticalTimeline> 
                     {timelineView}
                     <VerticalTimelineElement

@@ -5,6 +5,10 @@
     overflow-y: auto;
 }
 
+.vertical-timeline{
+    margin-top: 0 !important;
+}
+
 .timeline-block-entity{
     border-radius: 20px; 
     padding: 10px;
@@ -59,7 +63,9 @@ button {
     transition: 0.5s;
     cursor: pointer;
     word-wrap: break-word;
-    margin-bottom:-2em;
+    overflow-x: hidden;
+    border: 1px solid black;
+    border-bottom: none;
 }
 
 .timeline-block-list-sound:hover{
@@ -103,13 +109,15 @@ button {
  }
 
  @media only screen and (max-width: 600px) {
-    .timeline-view-container{
-        margin: 0 20px 20px 20px;
+    .timeline-view-container-width{
+        margin-left: 20px;
+        margin-right: 20px;
     }
 }
 
  @media only screen and (min-width: 601px) {
-    .timeline-view-container{
-        margin: 0 1% 1% 1%;
+    .timeline-view-container-width{
+        margin-left: 1%;
+        margin-right: 1%;
     }
 }
