@@ -7,18 +7,36 @@
 
 .graph-heading{
     margin-bottom:10px; 
-    margin-left: 1%;
 }
 
 .timeline-heading{
     margin-bottom:20px;
-    margin-left: 1%; 
 }
 
 .tooltips-dashboard{
     color:rgb(0, 76, 78);
     cursor: pointer;
     margin-left: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+    .graph-heading{
+        margin-left: 20px;
+    }
+    
+    .timeline-heading{
+        margin-left: 20px; 
+    }
+}
+
+ @media only screen and (min-width: 601px) {
+    .graph-heading{
+        margin-left: 1%;
+    }
+    
+    .timeline-heading{
+        margin-left: 1%; 
+    }
 }
 
 /*

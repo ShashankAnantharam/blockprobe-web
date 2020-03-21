@@ -1,5 +1,4 @@
 .timeline-view-container{
-    margin: 0 1% 1% 1%;
     border: 1px solid black;
     max-height: 750px;
     overflow-x: hidden;
@@ -102,3 +101,15 @@ button {
      border-radius: 10px;
      background-color: #555;
  }
+
+ @media only screen and (max-width: 600px) {
+    .timeline-view-container{
+        margin: 0 20px 20px 20px;
+    }
+}
+
+ @media only screen and (min-width: 601px) {
+    .timeline-view-container{
+        margin: 0 1% 1% 1%;
+    }
+}

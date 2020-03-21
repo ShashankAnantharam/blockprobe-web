@@ -74,14 +74,12 @@
 
 .graph-main{
     height: 550px;  
-    margin: 0 1% 1% 1%;
     border: 1px solid black;
 }
 
 .graph-block-list{
     border: 1px solid rgb(0, 0, 0);
     border-bottom: none;
-    margin: 1% 1% 0 1%;
     padding-left:0;
     padding-right:0;
 }
@@ -141,6 +139,14 @@
 }
 
 @media only screen and (min-width: 601px) {
+
+    .graph-main{
+        margin: 0 1% 1% 1%;
+    }
+
+    .graph-block-list{
+        margin: 1% 1% 0 1%;
+    }
         
     .graph-container{
         display:flex; 
@@ -189,6 +195,14 @@
 }
 
 @media only screen and (max-width: 600px) {
+
+    .graph-main{
+        margin: 0 20px 20px 20px;
+    }
+
+    .graph-block-list{
+        margin: 20px 20px 0 20px;
+    }
 
     .only-large-screen{
         display: none;
