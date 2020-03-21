@@ -1,12 +1,21 @@
 .timeline-view-container{
     border: 1px solid black;
+    border-bottom: none;
     max-height: 80vh;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
+.dummyTimelineView{
+    height:10px;
+    border: 1px solid black;
+    border-top: none;
+}
+
 .vertical-timeline{
     margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom:10px !important;
 }
 
 .timeline-block-entity{

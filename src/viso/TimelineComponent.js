@@ -322,6 +322,7 @@ class TimelineComponent extends React.Component {
                     />
                 </VerticalTimeline>
             </div>
+            <div className="dummyTimelineView timeline-view-container-width"></div>
           </div>
       );
     }
