@@ -151,3 +151,8 @@
     background: rgba(101, 155, 177, 0.363);
     border-radius: 5px;
 }
+
+.graphVisualizationSingleEntity{
+    margin-bottom: 1em;
+    margin-left: 1em;
+}

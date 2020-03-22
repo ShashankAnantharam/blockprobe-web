@@ -26,7 +26,7 @@ const isIE = /*@cc_on!@*/false || !!document.documentMode;
 class GraphComponent extends React.Component {
 
     constructor(props){
-        //props: isPublic
+        //props: isPublic, selectNode
       super(props);
       this.state={
         graph: {
@@ -253,6 +253,11 @@ class GraphComponent extends React.Component {
           });
 
         this.resetScroll();
+
+        if((isNullOrUndefined(this.props.isPublic) || !this.props.isPublic) && this.props.selectNode && node!='ALL')
+        {
+            this.props.selectNode(node);
+        }
     }
 
     addBlocksForNodeCharacteristic(node, blocksToBeSelected, blocksAdded){

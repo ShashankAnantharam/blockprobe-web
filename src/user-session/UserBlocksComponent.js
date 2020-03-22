@@ -20,6 +20,7 @@ import GraphComponent from "../viso/GraphComponent";
 import  TimelineComponent from "../viso/TimelineComponent";
 import SummaryViewComponent from "../viso/summary/SummaryView";
 import * as Utils from '../common/utilSvc';
+import SingleEntityView from '../view/Draft/SingleEntityView/SingleEntityView';
 
 import Joyride from 'react-joyride';
 
@@ -113,7 +114,8 @@ class UserBlocksComponent extends React.Component {
                 addBlocks: JSON.parse(JSON.stringify(props.buildStory)), //false,
                 draftBlock: false,
                 commitBlock: false
-            }
+            },
+            selectedGraphNode: null
         }
         
         //props include bpId, uId
@@ -163,6 +165,8 @@ class UserBlocksComponent extends React.Component {
         this.multiSelectBlocks = this.multiSelectBlocks.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.performAction = this.performAction.bind(this);
+
+        this.selectGraphNode = this.selectGraphNode.bind(this);
     }
 
     toggleDialog(value, type){
@@ -1018,6 +1022,16 @@ class UserBlocksComponent extends React.Component {
         });
     }
 
+    selectGraphNode(node){
+        let graphNode = {
+            label: node
+        };
+        this.setState({
+            selectedGraphNode: graphNode
+        });
+        // console.log(graphNode);
+    }
+
     render(){
 
         const scope = this;
@@ -1225,11 +1239,22 @@ class UserBlocksComponent extends React.Component {
                     <TabPanel>
                         {this.isGraphAvailable()?
                             <div>
+                                {!isNullOrUndefined(this.state.selectedGraphNode)?
+                                    <div className="graphVisualizationSingleEntity">
+                                        <SingleEntityView                                        
+                                        entity = {this.state.selectedGraphNode}
+                                        />
+                                    </div>                                    
+                                    :
+                                    null
+                                }
+                                 
                                 <GraphComponent blockTree={this.props.blockTree} 
                                     investigationGraph={this.props.investigationGraph}
                                     selectBlock={this.props.selectBlock}
                                     imageMapping = {this.props.imageMapping}
-                                    multiSelectEntityList = {this.props.multiSelectEntityList}/>
+                                    multiSelectEntityList = {this.props.multiSelectEntityList}
+                                    selectNode = {this.selectGraphNode}/>                                                               
                             </div>
                             :
                             <div className="blocklist-message">No content available for graph.</div>
