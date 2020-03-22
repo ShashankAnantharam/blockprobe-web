@@ -24,6 +24,8 @@ class SingleEntityView extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.isEntityNameChanged = this.isEntityNameChanged.bind(this);
+        this.renameEntity = this.renameEntity.bind(this);
+        this.deleteEntity = this.deleteEntity.bind(this);
     }
 
     handleChange(event, type) {
@@ -54,6 +56,14 @@ class SingleEntityView extends React.Component {
                 label: label}
             );
         }
+    }
+
+    renameEntity(){
+
+    }
+
+    deleteEntity(){
+
     }
 
     render(){
