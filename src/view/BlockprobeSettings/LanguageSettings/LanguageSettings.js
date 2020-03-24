@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import  MultiSelectReact  from 'multi-select-react';
+import * as DbUtils from '../../../common/dbSvc';
 import * as Const from '../../../common/constants';
 
 import './LanguageSettings.css';
+import { isNullOrUndefined } from 'util';
 
 class LanguageSettingsComponent extends React.Component {
 
     constructor(props){
         super(props);
+        //bpId, lang
 
         this.state = {
             firstLangSelectList: [],
-            selectedLang: String(this.props.lang)
+            selectedLang: String(this.props.lang),
+            currentLangLabel: null
         }
 
         this.generateLangLists = this.generateLangLists.bind(this);
         this.canSubmit = this.canSubmit.bind(this);
+        this.submitLanguage = this.submitLanguage.bind(this);
     }
 
     firstLangClicked(entityList) {
-        var selectedEntity = '', url = '';
+        var selectedEntity = null;
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
-                selectedEntity = entityList[i].id;                
+                selectedEntity = entityList[i].id;    
             }
         }
         this.setState({ 
@@ -33,7 +38,7 @@ class LanguageSettingsComponent extends React.Component {
     }
 
     firstSelectedBadgeClicked(entityList) {
-        var selectedEntity = '', url = '';
+        var selectedEntity = null;
         for(var i=0; i<entityList.length; i++){
             if(entityList[i].value){
                 selectedEntity = entityList[i].id;
@@ -49,11 +54,14 @@ class LanguageSettingsComponent extends React.Component {
     generateLangLists(){
         var count = 1;
         var firstEntityList = this.state.firstLangSelectList;
+        let selectedLangLabel = this.state.selectedLangLabel;
         
         for(let i=0; i<Const.langs.length; i++){
             let langSelected =  false;
-            if(this.state.selectedLang == Const.langs[i].id)
+            if(this.state.selectedLang == Const.langs[i].id){
                 langSelected = true;
+                selectedLangLabel = Const.langs[i].label;
+            }
             firstEntityList.push({                
                 value: langSelected, 
                 label: Const.langs[i].label,
@@ -62,7 +70,8 @@ class LanguageSettingsComponent extends React.Component {
         }
                
         this.setState({
-            firstLangSelectList: firstEntityList
+            firstLangSelectList: firstEntityList,
+            currentLangLabel: selectedLangLabel
         });
     }
 
@@ -71,9 +80,22 @@ class LanguageSettingsComponent extends React.Component {
     }
 
     canSubmit(){
-        if(this.state.selectedLang != this.props.lang)
+        if(this.state.selectedLang != this.props.lang && !isNullOrUndefined(this.state.selectedLang))
             return true;
         return false;
+    }
+
+    submitLanguage(){
+        let firstEntityList = this.state.firstLangSelectList;
+        for(let i=0; i<firstEntityList.length; i++){
+            if(this.state.selectedLang == firstEntityList[i].id){
+                this.setState({
+                    currentLangLabel: firstEntityList[i].label
+                });
+                break;
+            }
+        }
+        DbUtils.setLanguage(this.props.bpId, this.state.selectedLang);
     }
 
     render(){
@@ -97,6 +119,11 @@ class LanguageSettingsComponent extends React.Component {
             <div>
                 <div style={{marginLeft:'10px', marginTop:'1em'}}>
                     <h3>Language settings</h3>
+                    {!isNullOrUndefined(this.state.currentLangLabel)?
+                        <p>Current language: {this.state.currentLangLabel}</p>
+                        :
+                        null
+                    }                    
                     <div className='langpane-filter-container'>                
                         <div className="langpane-dropdown-container">
                             <MultiSelectReact 
@@ -112,7 +139,7 @@ class LanguageSettingsComponent extends React.Component {
                         </div>     
 
                         {this.canSubmit()?
-                            <button className="langPaneButton" onClick={this.submitEntityImage}>Save</button>
+                            <button className="langPaneButton" onClick={this.submitLanguage}>Save</button>
                             :
                             null
                         }

@@ -118,6 +118,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
         this.bpDetailsDoc = null;
         this.bpUsersRef = null;
+        this.bpLangRef = null;
 
         ReactGA.initialize('UA-143383035-1');   
         ReactGA.pageview('/userBlockprobePrivate');
@@ -943,18 +944,24 @@ class ViewBlockprobePrivateComponent extends React.Component {
             });
         })
 
-        let langPromise = await DbUtils.getLanguageDb(this.props.bId);
-        let lang = DbUtils.getLanguageLogic(langPromise);
-        this.setState({
-            lang: lang
-        });
+        this.bpLangRef = firebase.database().ref('Blockprobes/'+ this.props.bId +'/lang');
+        this.bpLangRef.on('value', function(data){
+            let lang = DbUtils.getLanguageLogic(data);
+            console.log(lang);
+            scope.setState({
+                lang: lang
+            });
+        })        
     }
 
     componentWillUnmount(){
         var unsub = this.bpDetailsDoc.onSnapshot(() => {});
         unsub();
 
-        this.bpUsersRef.off();
+        if(!isNullOrUndefined(this.bpUsersRef))
+            this.bpUsersRef.off();
+        if(!isNullOrUndefined(this.bpLangRef))
+            this.bpLangRef.off();
     }
 
     renderVisualisation(){

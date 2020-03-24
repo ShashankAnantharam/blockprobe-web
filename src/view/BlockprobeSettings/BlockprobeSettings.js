@@ -736,6 +736,7 @@ class BlockprobeSettingsComponent extends React.Component {
                 {this.renderUserList(this.props.coUsers)}
                 <LanguageSettingsComponent
                     lang={this.props.lang}
+                    bpId={this.props.bpId}
                 />
                 {this.renderAddCreators()}
                 {this.renderAccountSettings()}

@@ -21,6 +21,7 @@ import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
 import Loader from 'react-loader-spinner';
 import * as Utils from '../common/utilSvc';
+import * as DbUtils from '../common/dbSvc';
 
 
 // /view/3a30893249f6952e26de1ce709094e6952731beb9e37c244c07e542e81f52227
@@ -36,6 +37,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             blockprobeTitle: "",
             bpDetailsLastTs: 0,
             blockprobeSummary: "",
+            lang: 'en',
             selectedBlock:"", 
             blockTree: {},
             modifyRef: {},
@@ -514,8 +516,14 @@ class ViewBlockprobePublicComponent extends React.Component {
         });
     }
 
-    componentDidMount(){         
+    async componentDidMount(){         
         this.getDataWrapper();
+
+        let langPromise = await DbUtils.getLanguageDb(this.props.bId);
+        let lang = DbUtils.getLanguageLogic(langPromise);
+        this.setState({
+            lang: lang
+        });
     }
 
     renderVisualisation(){
