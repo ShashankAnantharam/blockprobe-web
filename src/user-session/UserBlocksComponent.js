@@ -40,6 +40,7 @@ class UserBlocksComponent extends React.Component {
             uIdHash:'',
             shajs:null,
             selectedDraftBlockId: null,
+            displaySingleEntity: false,
             entityPaneList: [],
             draftBlocks:{},
             successBlocks:{},
@@ -1239,7 +1240,7 @@ class UserBlocksComponent extends React.Component {
                     <TabPanel>
                         {this.isGraphAvailable()?
                             <div>
-                                {!isNullOrUndefined(this.state.selectedGraphNode)?
+                                {!isNullOrUndefined(this.state.selectedGraphNode) && this.state.displaySingleEntity?
                                     <div className="graphVisualizationSingleEntity">
                                         <SingleEntityView                                        
                                         entity = {this.state.selectedGraphNode}
