@@ -71,16 +71,24 @@ export const addUserToBlockprobe =(notification,userId,userIdHash)=>{
 }
 
 export const setLanguage =(bId, lang)=>{
-    firebase.database().ref('Blockprobes/'+ bId +'/lang').set(lang);
+    // firebase.database().ref('Blockprobes/'+ bId +'/lang').set(lang);
+    return firebase.firestore().collection("Blockprobes").
+                doc(bId).
+                collection("lang").doc("lang").set({
+                    lang: lang
+                });
 }
 
 export const getLanguageDb =(bId)=>{
-    return firebase.database().ref('Blockprobes/'+ bId +'/lang').once("value");
+    //return firebase.database().ref('Blockprobes/'+ bId +'/lang').once("value");
+    return firebase.firestore().collection("Blockprobes").
+                doc(bId).
+                collection("lang").doc("lang").get();
 }
 
 export const getLanguageLogic =(snapshot)=>{
-    if(snapshot.exists()){
-        return snapshot.val();
+    if(snapshot.exists){
+        return snapshot.data()['lang'];
     }
     return "en";
 }

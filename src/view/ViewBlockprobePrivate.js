@@ -944,13 +944,17 @@ class ViewBlockprobePrivateComponent extends React.Component {
             });
         })
 
-        this.bpLangRef = firebase.database().ref('Blockprobes/'+ this.props.bId +'/lang');
-        this.bpLangRef.on('value', function(data){
-            let lang = DbUtils.getLanguageLogic(data);
+        this.bpLangRef = firebase.firestore().collection("Blockprobes").doc(this.props.bId).collection('lang').doc('lang');
+        this.bpLangRef.onSnapshot((snapshot) => {
+            let lang = 'en';
+            if(snapshot.exists){
+                if(!isNullOrUndefined(snapshot.data()) && !isNullOrUndefined(snapshot.data()['lang']))
+                    lang = snapshot.data()['lang'];
+            }
             scope.setState({
                 lang: lang
             });
-        })        
+        });
     }
 
     componentWillUnmount(){
@@ -959,8 +963,10 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
         if(!isNullOrUndefined(this.bpUsersRef))
             this.bpUsersRef.off();
-        if(!isNullOrUndefined(this.bpLangRef))
-            this.bpLangRef.off();
+        if(!isNullOrUndefined(this.bpLangRef)){
+            var unsubLang = this.bpLangRef.onSnapshot(() => {})
+            unsubLang();
+        }
     }
 
     renderVisualisation(){
