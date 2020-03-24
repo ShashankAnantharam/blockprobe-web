@@ -25,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import LanguageSettingsComponent from './LanguageSettings/LanguageSettings';
 import './BlockprobeSettings.css';
 import { isNullOrUndefined } from 'util';
 
@@ -733,6 +734,9 @@ class BlockprobeSettingsComponent extends React.Component {
         return (
             <div>                
                 {this.renderUserList(this.props.coUsers)}
+                <LanguageSettingsComponent
+                    lang={this.props.lang}
+                />
                 {this.renderAddCreators()}
                 {this.renderAccountSettings()}
                 {this.renderUserDialog()}

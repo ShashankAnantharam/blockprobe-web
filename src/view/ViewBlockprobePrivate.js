@@ -26,6 +26,7 @@ import Joyride from 'react-joyride';
 import Loader from 'react-loader-spinner';
 import BpDetail from './BpDetails/BpDetails';
 import * as Utils from '../common/utilSvc';
+import * as DbUtils from '../common/dbSvc';
 import { utils } from '@amcharts/amcharts4/core';
 
 class ViewBlockprobePrivateComponent extends React.Component {
@@ -42,6 +43,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             bpDetailsLastTs: 0,
             blockprobeSummary: "",
             bpDetails: {},
+            lang: 'en',
             modifyRef: {},
             blockStatus: {},
             selectedBlock:"", 
@@ -886,7 +888,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
     }
 
 
-    componentDidMount(){        
+    async componentDidMount(){        
         this.bpDetailsDoc = firebase.firestore().collection("Blockprobes").
         doc(this.props.bId);
         
@@ -940,6 +942,12 @@ class ViewBlockprobePrivateComponent extends React.Component {
                 coUsers: coUsers 
             });
         })
+
+        let langPromise = await DbUtils.getLanguageDb(this.props.bId);
+        let lang = DbUtils.getLanguageLogic(langPromise);
+        this.setState({
+            lang: lang
+        });
     }
 
     componentWillUnmount(){
@@ -1038,6 +1046,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     details = {this.state.bpDetails}
                     permit = {this.props.permit}
                     coUsers = {this.state.coUsers}
+                    lang = {this.state.lang}
                     />
                 </div>
             )

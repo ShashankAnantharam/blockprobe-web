@@ -69,3 +69,18 @@ export const addUserToBlockprobe =(notification,userId,userIdHash)=>{
     }
     return allPromises;
 }
+
+export const setLanguage =(bId, lang)=>{
+    firebase.database().ref('Blockprobes/'+ bId +'/lang').set(lang);
+}
+
+export const getLanguageDb =(bId)=>{
+    return firebase.database().ref('Blockprobes/'+ bId +'/lang').once("value");
+}
+
+export const getLanguageLogic =(snapshot)=>{
+    if(snapshot.exists()){
+        return snapshot.val();
+    }
+    return "en";
+}
