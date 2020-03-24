@@ -474,9 +474,7 @@ export const correctTextForSpeech = (text) => {
                     ans += ' ';
                 }
             }
-            if(isCharacterAcceptableText(text[i])){
-                ans += text[i];
-            }
+            ans += text[i];
         }
     }
     ans = ans.trim();
@@ -664,7 +662,7 @@ export const getGraphIslandsAndValues = (graph)=>{
             islandCount++;        
         }
     }
-    
+
     // console.log(visited);
     let islands =  {};
     for(let key in visited){
