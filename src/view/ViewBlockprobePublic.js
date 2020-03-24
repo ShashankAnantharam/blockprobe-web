@@ -545,7 +545,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
                         isPublic = {true}
-                        setScrollToGraphList ={this.setScrollToGraphList}                 
+                        setScrollToGraphList ={this.setScrollToGraphList}  
+                        lang = {this.state.lang}               
                         imageMapping={this.state.imageMapping}/>
                 </div>
             );
@@ -573,7 +574,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 multiSelectEntityList = {this.state.multiSelectEntityList}
                                 timeline={this.state.timeline}    
                                 imageMapping={this.state.imageMapping}
-                                setScrollToGraphList ={this.setScrollToGraphList}                 
+                                setScrollToGraphList ={this.setScrollToGraphList}  
+                                lang = {this.state.lang}               
                             />
                 </div>
             );
@@ -680,6 +682,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 multiSelectEntityList = {this.state.multiSelectEntityList}
                                 timeline={this.state.timeline}    
                                 imageMapping={this.state.imageMapping}
+                                lang = {this.state.lang}
                                 setScrollToGraphList ={this.setScrollToGraphList}                 
                             />
                     </div>

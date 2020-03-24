@@ -947,7 +947,6 @@ class ViewBlockprobePrivateComponent extends React.Component {
         this.bpLangRef = firebase.database().ref('Blockprobes/'+ this.props.bId +'/lang');
         this.bpLangRef.on('value', function(data){
             let lang = DbUtils.getLanguageLogic(data);
-            console.log(lang);
             scope.setState({
                 lang: lang
             });
@@ -989,6 +988,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                         imageMapping = {this.state.imageMapping}
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
+                        lang = {this.state.lang}
                         timeline={this.state.timeline}                     
                     />
                 </div>
@@ -1001,6 +1001,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                         investigationGraph={this.state.investigationGraph}
                         selectBlock={this.changeSelectedBlock}
                         imageMapping = {this.state.imageMapping}
+                        lang = {this.state.lang}
                         multiSelectEntityList = {this.state.multiSelectEntityList}/>
                 </div>
             );
@@ -1039,7 +1040,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     multiSelectEntityList = {this.state.multiSelectEntityList}
                     timeline={this.state.timeline}  
                     summaryBlocks = {this.state.summaryList}
-                    lastIndex = {this.state.lastTitleIndex}           
+                    lastIndex = {this.state.lastTitleIndex} 
+                    lang = {this.state.lang}          
                     />
                 </div>
             );

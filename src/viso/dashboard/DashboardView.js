@@ -47,6 +47,7 @@ class DashboardViewComponent extends React.Component {
       this.showLocalTooltip = this.showLocalTooltip.bind(this);
       this.hideLocalTooltip = this.hideLocalTooltip.bind(this);
       this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
+
     }
 
     showLocalTooltip(type){
@@ -148,7 +149,8 @@ class DashboardViewComponent extends React.Component {
                                     selectBlock={this.props.selectBlock}
                                     imageMapping = {this.props.imageMapping}
                                     setScrollToGraphList ={this.props.setScrollToGraphList}
-                                    multiSelectEntityList = {this.props.multiSelectEntityList}/>
+                                    multiSelectEntityList = {this.props.multiSelectEntityList}
+                                    lang = {this.props.lang}/>
                        
                     </div>
                     :

@@ -1254,6 +1254,7 @@ class UserBlocksComponent extends React.Component {
                                     selectBlock={this.props.selectBlock}
                                     imageMapping = {this.props.imageMapping}
                                     multiSelectEntityList = {this.props.multiSelectEntityList}
+                                    lang = {this.props.lang}
                                     selectNode = {this.selectGraphNode}/>                                                               
                             </div>
                             :

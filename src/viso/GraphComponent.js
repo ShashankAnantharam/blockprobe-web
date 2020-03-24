@@ -805,7 +805,7 @@ class GraphComponent extends React.Component {
                     selectedVoice = i;
                 // firebase.database().ref('Testing/dataVal/'+String(i)).set(voices[i].name);
                 let name = voices[i].name;
-                if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine')) 
+                if(Utils.languageCheck(this.props.lang, voices[i])) 
                 {
                     selectedVoice = i;
                     break;
@@ -950,6 +950,12 @@ class GraphComponent extends React.Component {
     async componentWillUnmount(){
         if(!isNullOrUndefined(this.speech)){
             await this.speech.cancel();
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.lang != nextProps.lang){
+            this.initSpeech();
         }
     }
 

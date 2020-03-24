@@ -684,3 +684,25 @@ export const getGraphIslandsAndValues = (graph)=>{
 
     return islands;
 }
+
+export const languageCheck = (lang, voice)=>{
+
+    if(isNullOrUndefined(lang))
+        lang = 'en';
+    
+    if(isNullOrUndefined(voice))
+        return false;
+
+    let name = voice.name;
+    let vLang = voice.lang;
+
+    if(lang == 'en'){
+        if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine'))
+            return true;
+    }
+    else if(lang == 'hi'){
+        if(vLang.toLowerCase().includes('hi-'))
+            return true;
+    }
+    return false;
+}
