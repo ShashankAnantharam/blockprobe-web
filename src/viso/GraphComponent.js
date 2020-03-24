@@ -953,9 +953,26 @@ class GraphComponent extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
-        if(this.props.lang != nextProps.lang){
-            this.initSpeech();
+    async componentWillReceiveProps(nextProps){
+        if(this.props.lang != nextProps.lang && !isNullOrUndefined(this.speech)){
+            let data = await this.speech.init();            
+            let voices =  data.voices;
+            let selectedVoice = -1;
+            for(let i=0; !isNullOrUndefined(voices) && i<voices.length; i++){
+                if(selectedVoice == -1)
+                    selectedVoice = i;
+                // firebase.database().ref('Testing/dataVal/'+String(i)).set(voices[i].name);
+                let name = voices[i].name;
+                if(Utils.languageCheck(this.props.lang, voices[i])) 
+                {
+                    selectedVoice = i;
+                    break;
+                }
+            }
+            if(selectedVoice != -1){
+                //firebase.database().ref('Testing/dataVal').set(voices[selectedVoice].name);
+                await this.speech.setVoice(voices[selectedVoice].name);
+            }
         }
     }
 
