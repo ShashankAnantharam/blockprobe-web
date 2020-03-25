@@ -70,6 +70,7 @@ class GraphComponent extends React.Component {
         wasAllOptionSelected: true,
         wasNoneOptionSelected:false,
         playStatus: 'end',
+        languageSupportedPlay: true,
         testVar: -1,
         }
 
@@ -801,9 +802,8 @@ class GraphComponent extends React.Component {
             let data = await this.speech.init();            
             let voices =  data.voices;
             let selectedVoice = -1;
+            // firebase.database().ref('Testing/lang/').set(this.props.lang);
             for(let i=0; !isNullOrUndefined(voices) && i<voices.length; i++){
-                if(selectedVoice == -1)
-                    selectedVoice = i;
                 // firebase.database().ref('Testing/dataVal/'+String(i)).set(voices[i].name);
                 let name = voices[i].name;
                 if(Utils.languageCheck(this.props.lang, voices[i])) 
@@ -813,8 +813,16 @@ class GraphComponent extends React.Component {
                 }
             }
             if(selectedVoice != -1){
-                //firebase.database().ref('Testing/dataVal').set(voices[selectedVoice].name);
+                //firebase.database().ref('Testing/selectedDataVal').set(voices[selectedVoice].name);
                 await this.speech.setVoice(voices[selectedVoice].name);
+                this.setState({
+                    languageSupportedPlay: true
+                });
+            }
+            else{
+                this.setState({
+                    languageSupportedPlay: false
+                });
             }
         }
         catch{}
@@ -960,8 +968,6 @@ class GraphComponent extends React.Component {
             let voices =  data.voices;
             let selectedVoice = -1;
             for(let i=0; !isNullOrUndefined(voices) && i<voices.length; i++){
-                if(selectedVoice == -1)
-                    selectedVoice = i;
                 // firebase.database().ref('Testing/dataVal/'+String(i)).set(voices[i].name);
                 let name = voices[i].name;
                 if(Utils.languageCheck(this.props.lang, voices[i])) 
@@ -973,6 +979,14 @@ class GraphComponent extends React.Component {
             if(selectedVoice != -1){
                 //firebase.database().ref('Testing/dataVal').set(voices[selectedVoice].name);
                 await this.speech.setVoice(voices[selectedVoice].name);
+                this.setState({
+                    languageSupportedPlay: true
+                });
+            }
+            else{
+                this.setState({
+                    languageSupportedPlay: false
+                });
             }
         }
     }
@@ -1065,7 +1079,7 @@ class GraphComponent extends React.Component {
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list" ref={this.graphRef}>
-                            {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech)?
+                            {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech) && this.state.languageSupportedPlay?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
                                             <a onClick={this.playExistingSelection} className="soundIcon">

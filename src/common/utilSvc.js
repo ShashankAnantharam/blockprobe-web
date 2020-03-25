@@ -697,12 +697,12 @@ export const languageCheck = (lang, voice)=>{
     let vLang = voice.lang;
 
     if(lang == 'en'){
-        if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine'))
+        if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine') || vLang.toLowerCase().includes('en'))
             return true;
     }
     else if(lang == 'hi'){
-        if(vLang.toLowerCase().includes('hi') || vLang.toLowerCase().includes('हिंदी') 
-            || name.toLowerCase().includes('india') || name.toLowerCase().includes('हिंदी'))
+        if(vLang.toLowerCase().includes('hi') || vLang.includes('हिंदी') 
+            || name.includes('हिंदी') || name.toLowerCase().includes('hindi'))
             return true;
     }
     return false;
