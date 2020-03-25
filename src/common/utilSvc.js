@@ -697,7 +697,7 @@ export const languageCheck = (lang, voice)=>{
     let vLang = voice.lang;
 
     if(lang == 'en'){
-        if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine') || vLang.toLowerCase().includes('en'))
+        if(name.toLowerCase().includes('eng') || name.toLowerCase().includes('catherine'))
             return true;
     }
     else if(lang == 'hi'){
