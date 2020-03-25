@@ -19,6 +19,7 @@ import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
 import * as firebase from 'firebase';
 import * as Utils from '../common/utilSvc';
+import * as Locale from '../Localization/localizedStrings';
 
 const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 const isIE = /*@cc_on!@*/false || !!document.documentMode;
@@ -978,6 +979,10 @@ class GraphComponent extends React.Component {
 
     render(){
 
+        let lang = this.props.lang;
+        if(isNullOrUndefined(lang))
+            lang ='en';
+
         const selectedOptionsStyles = {
             color: "white",
             backgroundColor: "rgb(117, 106, 214)",
@@ -1084,9 +1089,9 @@ class GraphComponent extends React.Component {
                             }
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
-                                    <span> Selections</span>
+                                    <span>{Locale.selections[lang]}</span>
                                     :
-                                    <span>Select any entity/topic</span>
+                                    <span>{Locale.selectEntity[lang]}</span>
                                 }                                                                
                                 <span>{selectedNodesString}</span>
                                 <span>

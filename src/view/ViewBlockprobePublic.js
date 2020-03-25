@@ -501,29 +501,27 @@ class ViewBlockprobePublicComponent extends React.Component {
         .collection("aggBlocks").get();
         let images = firebase.firestore().collection("public").doc(this.props.bId)
         .collection("images").get();
+        let langPromise = DbUtils.getLanguageDb(this.props.bId);
 
-        return Promise.all([getBlockprobe, images]).then(results => {
-            const [blockprobeSnapshot, imagesSnapshot] = results;
+        return Promise.all([getBlockprobe, images,langPromise]).then(results => {
+            const [blockprobeSnapshot, imagesSnapshot, langSnapshot] = results;
             
             this.createBlockprobe(blockprobeSnapshot);
             if(imagesSnapshot && !imagesSnapshot.empty){
                 this.getImages(imagesSnapshot);
             }
+
+            let lang = DbUtils.getLanguageLogic(langSnapshot);
             this.setState({
+                lang: lang,
                 isPageLoading: false
             })    
             return null;   
         });
     }
 
-    async componentDidMount(){         
+    componentDidMount(){         
         this.getDataWrapper();
-
-        let langPromise = await DbUtils.getLanguageDb(this.props.bId);
-        let lang = DbUtils.getLanguageLogic(langPromise);
-        this.setState({
-            lang: lang
-        });
     }
 
     renderVisualisation(){

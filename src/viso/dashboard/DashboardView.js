@@ -8,12 +8,15 @@ import SummaryViewComponent from "../summary/SummaryView";
 import GraphComponent from "../GraphComponent";
 import FindConnectionsComponent from "../FindConnectionsComponent";
 import TimelineComponent from "../TimelineComponent";
+import * as Locale from "../../Localization/localizedStrings";
 import { isNullOrUndefined } from 'util';
 
 class DashboardViewComponent extends React.Component {
 
     constructor(props){
       super(props);
+     //lang is necessary
+
       this.state={
           key: 'graph',
           adhocTooltip:{
@@ -21,9 +24,9 @@ class DashboardViewComponent extends React.Component {
                 flag: false,
                 text: [
                     {
-                        title: 'Timeline view',
+                        title: Locale.timelineTooltips.title[props.lang],
                         target: '.tooltipTimeline',
-                        content: 'Visualise the story as a timeline!',
+                        content: Locale.timelineTooltips.desc[props.lang],
                         disableBeacon: true
                     }
                 ]
@@ -32,9 +35,9 @@ class DashboardViewComponent extends React.Component {
                 flag: false,
                 text: [
                     {
-                        title: 'Mindmap view',
+                        title: Locale.mindMapTooltips.title[props.lang],
                         target: '.tooltipMindmap',
-                        content: 'Visualise the story as a mindmap! Select any topic from the mindmap to read all about that topic.',
+                        content: Locale.mindMapTooltips.desc[props.lang],
                         disableBeacon: true
                     }
                 ]
@@ -58,6 +61,7 @@ class DashboardViewComponent extends React.Component {
        else if(type=='mindmap'){
            adhocTooltip.mindmap.flag = true;
        }
+       console.log(adhocTooltip);
        this.setState({adhocTooltip: adhocTooltip});
     }
 
@@ -105,6 +109,10 @@ class DashboardViewComponent extends React.Component {
     }
 
     render(){
+        let lang = this.props.lang;
+        if(isNullOrUndefined(lang))
+            lang = 'en';
+
         return (
             <div style={{paddingBottom:'15px'}}>
 
@@ -120,7 +128,7 @@ class DashboardViewComponent extends React.Component {
                 
                 {this.isGraphAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">Mindmap
+                        <div className="dashboard-section-heading graph-heading">{Locale.mindMap[lang]}
                         <a className='tooltipMindmap tooltips-dashboard' 
                             onMouseEnter={() => this.showLocalTooltip('mindmap')}
                             onClick={(e)=>{this.showLocalTooltip('mindmap')}} >
@@ -162,7 +170,7 @@ class DashboardViewComponent extends React.Component {
                 {this.isTimelineAvailable()?
 
                     <div>
-                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>Timeline
+                        <div className="dashboard-section-heading timeline-heading" style={{marginBottom:'0 !important'}}>{Locale.timeline[lang]}
                         <a className='tooltipTimeline tooltips-dashboard' 
                             onMouseEnter={() => this.showLocalTooltip('timeline')}
                             onClick={(e)=>{this.showLocalTooltip('timeline')}} >

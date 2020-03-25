@@ -44,6 +44,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             blockprobeSummary: "",
             bpDetails: {},
             lang: 'en',
+            langLoading: true,
             modifyRef: {},
             blockStatus: {},
             selectedBlock:"", 
@@ -952,7 +953,13 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     lang = snapshot.data()['lang'];
             }
             scope.setState({
-                lang: lang
+                lang: lang,
+                langLoading: false
+            });
+        },
+        (error) => {
+            scope.setState({
+                langLoading: false
             });
         });
     }
@@ -1381,7 +1388,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     <h4>{this.state.blockprobeSummary}</h4>
                 </div>
 
-                {this.state.isloading.blockprobe || this.state.isloading.bpDetails?
+                {this.state.isloading.blockprobe || this.state.isloading.bpDetails || this.state.langLoading?
                     <div style={{width:'50px',margin:'auto'}}>
                         <Loader 
                         type="TailSpin"
