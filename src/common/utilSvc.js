@@ -701,7 +701,8 @@ export const languageCheck = (lang, voice)=>{
             return true;
     }
     else if(lang == 'hi'){
-        if(vLang.toLowerCase().includes('hi'))
+        if(vLang.toLowerCase().includes('hi') || vLang.toLowerCase().includes('हिंदी') 
+            || name.toLowerCase().includes('india') || name.toLowerCase().includes('हिंदी'))
             return true;
     }
     return false;
