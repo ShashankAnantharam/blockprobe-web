@@ -72,18 +72,16 @@ export const addUserToBlockprobe =(notification,userId,userIdHash)=>{
 
 export const setLanguage =(bId, lang)=>{
     // firebase.database().ref('Blockprobes/'+ bId +'/lang').set(lang);
-    return firebase.firestore().collection("Blockprobes").
-                doc(bId).
-                collection("lang").doc("lang").set({
+    return firebase.firestore().collection("blprobeLang").
+                doc(bId).set({
                     lang: lang
                 });
 }
 
 export const getLanguageDb =(bId)=>{
     //return firebase.database().ref('Blockprobes/'+ bId +'/lang').once("value");
-    return firebase.firestore().collection("Blockprobes").
-                doc(bId).
-                collection("lang").doc("lang").get();
+    return firebase.firestore().collection("blprobeLang").
+                doc(bId).get();
 }
 
 export const getLanguageLogic =(snapshot)=>{

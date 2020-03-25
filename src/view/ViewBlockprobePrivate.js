@@ -945,7 +945,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             });
         })
 
-        this.bpLangRef = firebase.firestore().collection("Blockprobes").doc(this.props.bId).collection('lang').doc('lang');
+        this.bpLangRef = firebase.firestore().collection("blprobeLang").doc(this.props.bId);
         this.bpLangRef.onSnapshot((snapshot) => {
             let lang = 'en';
             if(snapshot.exists){
