@@ -131,6 +131,7 @@ class UserBlocksComponent extends React.Component {
         this.modifyBlockListWrapper = this.modifyBlockListWrapper.bind(this);
         this.selectBlock = this.selectBlock.bind(this);
         this.renderSingleBlock = this.renderSingleBlock.bind(this);
+        this.renderSingleDraftBlock = this.renderSingleDraftBlock.bind(this);
         this.renderBlockOptions = this.renderBlockOptions.bind(this);
         this.createBlock = this.createBlock.bind(this);
         this.createBulkBlock = this.createBulkBlock.bind(this);
@@ -583,6 +584,44 @@ class UserBlocksComponent extends React.Component {
         });
     }
 
+    renderSingleDraftBlock(block, scope, isNewBlock){
+        if(isNullOrUndefined(block)){
+            return null;
+        }
+
+        if(!isNullOrUndefined(block.blockState) && block.blockState=="DRAFT" && 
+            !isNullOrUndefined(block.key) && !isNullOrUndefined(this.state.selectedDraftBlockId) 
+                && this.state.selectedDraftBlockId==block.key){
+            return (
+                <SingleBlock 
+                    block={block} 
+                    bId={this.props.bId}
+                    uIdHash={this.state.uIdHash}
+                    selectBlock={this.selectBlock}
+                    investigationGraph={this.props.investigationGraph}
+                    isNewBlock={isNewBlock}
+                    deleteNewBlock={this.deleteNewBlock}
+                    deleteDraftBlock = {this.deleteDraftBlock}
+                    addDraftBlock = {this.addDraftBlock}
+                    updateDraftBlock = {this.updateDraftBlock}
+                    submitDraftBlock = {this.submitDraftBlock}
+                    commitBlockToBlockprobe = {this.commitBlockToBlockprobe}
+                    entityPane = {this.state.entityPaneList}
+                    draftBlockTooltip = {this.state.showTooltip.draftBlock}
+                    finishTooltip = {this.finishTooltip}
+                    selectedDraftBlockId = {this.state.selectedDraftBlockId}
+                    changeSelectedBlock = {this.changeSelectedBlock} 
+                    bpDetails = {this.props.bpDetails}
+                    isMultiSelect = {false}
+                    multiSelectBlocks = {this.multiSelectBlocks}
+                    isBlockSelectedInMultiselect = {false}
+                    />
+            )
+
+        }
+        return null;
+    }
+
     renderSingleBlock(block, scope, isNewBlock){
 
         if(isNullOrUndefined(block)){
@@ -609,7 +648,7 @@ class UserBlocksComponent extends React.Component {
             entityPane = {this.state.entityPaneList}
             draftBlockTooltip = {this.state.showTooltip.draftBlock}
             finishTooltip = {this.finishTooltip}
-            selectedDraftBlockId = {this.state.selectedDraftBlockId}
+            selectedDraftBlockId = {null}
             changeSelectedBlock = {this.changeSelectedBlock} 
             bpDetails = {this.props.bpDetails}
             isMultiSelect = {this.state.multiSelectDraftBlockStatus}
@@ -1051,6 +1090,10 @@ class UserBlocksComponent extends React.Component {
         var draftBlocksList = this.convertBlockMapToList(this.state.draftBlocks);
         let draftBlocksListRender = draftBlocksList.map((block) => 
                                             (scope.renderSingleBlock(block, scope, false)));
+
+        let singleDraftBlocksListRender = draftBlocksList.map((block) => 
+                                            (scope.renderSingleDraftBlock(block, scope, false)));                                            
+
         if(draftBlocksList.length == 0){
             draftBlocksListRender = 'No contributions in draft.';
         }
@@ -1122,7 +1165,7 @@ class UserBlocksComponent extends React.Component {
                             }}
                                 steps={this.state.tooltipText.draftBlock}
                                 run = {this.state.showTooltip.draftBlock}                    
-                                /> 
+                                />                                 
                                 <div className="multiselect-button-container">
                                     {this.state.multiSelectDraftBlockStatus?
                                         <button 
@@ -1161,6 +1204,9 @@ class UserBlocksComponent extends React.Component {
                                     }
                                     
                                 </div>
+                                <div>
+                                    {singleDraftBlocksListRender}
+                                </div>                                
                                 <div className="block-list-content draftBlocksList">
                                     <List>{draftBlocksListRender}</List>
                                 </div>
