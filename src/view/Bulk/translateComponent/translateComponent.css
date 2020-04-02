@@ -8,6 +8,20 @@
     height: 3.6em;
 }
 
+.submitPaneButton{
+    background:rgb(2, 117, 21);
+    color:rgb(219, 243, 242);
+    margin-right: 1.5em;
+    height: 3.6em;
+}
+
+.undoPaneButton{
+    background:rgb(236, 117, 117);
+    color:rgb(219, 243, 242);
+    margin-right: 1.5em;
+    height: 3.6em;
+}
+
 @media only screen and (max-width: 600px) {
 
     .translatepane-filter-container{

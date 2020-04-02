@@ -13,16 +13,25 @@ class TranslateTextComponent extends React.Component {
 
     constructor(props){
         super(props);
+        //text, translatedText
 
         this.state = {
             firstLangSelectList: [],
             selectedLang: String(this.props.lang),
-            currentLangLabel: null
+            currentLangLabel: null,
+            oldTexts: []
         }
+
+        this.functions = firebase.functions();
 
         this.generateLangLists = this.generateLangLists.bind(this);
         this.canSubmit = this.canSubmit.bind(this);
+        this.canPreview = this.canPreview.bind(this);
+        this.canUndo = this.canUndo.bind(this);
         this.translateText = this.translateText.bind(this);
+        this.previewText = this.previewText.bind(this);
+        this.submitText = this.submitText.bind(this);
+        this.undoAction = this.undoAction.bind(this);
     }
 
     firstLangClicked(entityList) {
@@ -80,13 +89,25 @@ class TranslateTextComponent extends React.Component {
         this.generateLangLists();
     }
 
-    canSubmit(){
+    canPreview(){
         if(!isNullOrUndefined(this.state.selectedLang))
             return true;
         return false;
     }
 
-    translateText(){
+    canSubmit(){
+        if(!isNullOrUndefined(this.props.translatedText) && this.props.translatedText.length>0)
+            return true;
+        return false;
+    }
+
+    canUndo(){
+        if(this.state.oldTexts.length>0)
+            return true;
+        return false;
+    }
+
+    async previewText(){
         let firstEntityList = this.state.firstLangSelectList;
         for(let i=0; i<firstEntityList.length; i++){
             if(this.state.selectedLang == firstEntityList[i].id){
@@ -96,7 +117,52 @@ class TranslateTextComponent extends React.Component {
                 break;
             }
         }
-        console.log('translate to',this.state.currentLangLabel);
+
+        let target = this.state.selectedLang;
+        let text = this.props.text;
+        let translatedText = await this.translateText(text,target);
+        this.props.setTranslatedText(translatedText);
+    }
+
+    async submitText(){
+        let text = this.props.translatedText;
+        let currText = JSON.parse(JSON.stringify(this.props.text));
+        let oldTexts = this.state.oldTexts;
+        oldTexts.push(currText);
+        this.setState({
+            oldTexts: oldTexts
+        });
+        this.props.updateText(text);
+    }
+
+    undoAction(){
+        let oldTexts = this.state.oldTexts;
+        let oldText = oldTexts.pop();
+        this.setState({
+            oldTexts: oldTexts
+        });
+        this.props.updateText(oldText);
+    }
+    
+    async translateText(text,target){
+        var translateFunc = this.functions.httpsCallable('translateText');
+        var result = {};
+        try{
+            result = await translateFunc({text: text, target: target});
+        }
+        catch(e){
+            result = {
+                data: []
+            };
+        }
+        finally{
+        }
+        // console.log(result);
+        let translatedText = "";
+        for(let i=0; i<result.data.length; i++){
+            translatedText += (result.data[i] + ' ');
+        }
+        return translatedText;
     }
 
     render(){
@@ -131,8 +197,20 @@ class TranslateTextComponent extends React.Component {
                         
                     </div>     
 
+                    {this.canPreview()?
+                        <button className="translatePaneButton" onClick={this.previewText}>Preview</button>
+                        :
+                        null
+                    }
+
                     {this.canSubmit()?
-                        <button className="translatePaneButton" onClick={this.translateText}>Translate</button>
+                        <button className="submitPaneButton" onClick={this.submitText}>Submit</button>
+                        :
+                        null
+                    }
+
+                    {this.canUndo()?
+                        <button className="undoPaneButton" onClick={this.undoAction}>Undo</button>
                         :
                         null
                     }

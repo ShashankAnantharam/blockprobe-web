@@ -45,6 +45,7 @@ class BulkDraftBlockComponent extends React.Component {
         this.state ={
             value:'',
             oldValue: '',
+            translatedValue: '',
             isSavingBlocks: false,
             isLoadingText: false,
             isSavingText: false,
@@ -148,6 +149,8 @@ class BulkDraftBlockComponent extends React.Component {
         this.toggleSaveDialog = this.toggleSaveDialog.bind(this);
         this.togglePreview = this.togglePreview.bind(this);
         this.setDelims = this.setDelims.bind(this);
+        this.getBulkPreviewText = this.getBulkPreviewText.bind(this);
+        this.setTranslatedText = this.setTranslatedText.bind(this);
     }
 
     togglePreview(type, value){
@@ -768,6 +771,21 @@ class BulkDraftBlockComponent extends React.Component {
         );
     }
 
+    getBulkPreviewText(){
+        if(this.state.previewEditorType['delims']){
+            return this.state.value;
+        }
+        else if(this.state.previewEditorType['translate']){
+            return this.state.translatedValue;
+        }
+    }
+
+    setTranslatedText(text){
+        this.setState({
+            translatedValue: text
+        });
+    }
+
     render(){
         return(
             <div className='bulkDraftBlocksPaneContainer'>
@@ -874,9 +892,11 @@ class BulkDraftBlockComponent extends React.Component {
 
                         {this.state.openTranslateText?
                             <TranslateTextComponent
-                                addText={this.reformText}
+                                updateText={this.reformText}
                                 text={this.state.value}
                                 lang = {this.props.lang}
+                                translatedText={this.state.translatedValue}
+                                setTranslatedText = {this.setTranslatedText}
                             ></TranslateTextComponent>
                             :
                             null
@@ -937,7 +957,7 @@ class BulkDraftBlockComponent extends React.Component {
                                 style =  {{maxHeight:'1165px', overflowY:'auto'}}>
                                 <BulkBlockEditable
                                     style={{width:'100%'}}
-                                    value = {this.state.value}
+                                    value = {this.getBulkPreviewText()}
                                     type = {this.state.previewEditorType}
                                     delims = {this.state.delims}></BulkBlockEditable>  
                             </div>
