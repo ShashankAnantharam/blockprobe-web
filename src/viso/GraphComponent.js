@@ -1084,7 +1084,7 @@ class GraphComponent extends React.Component {
                 }
                         {this.state.copiedText?
                             <div className="copiedTextContainer">
-                                <p className="copiedTextValue">Text has been copied. Paste it as draft in another story</p>
+                                <p className="copiedTextValue">Text has been copied in the block format. Paste it in another story.</p>
                             </div>
                             :
                             null

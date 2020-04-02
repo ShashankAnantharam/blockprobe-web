@@ -158,6 +158,7 @@ class DashboardViewComponent extends React.Component {
                                     imageMapping = {this.props.imageMapping}
                                     setScrollToGraphList ={this.props.setScrollToGraphList}
                                     multiSelectEntityList = {this.props.multiSelectEntityList}
+                                    isPublic = {this.props.isPublic}
                                     lang = {this.props.lang}/>
                        
                     </div>

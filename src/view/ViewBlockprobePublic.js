@@ -573,6 +573,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 timeline={this.state.timeline}    
                                 imageMapping={this.state.imageMapping}
                                 setScrollToGraphList ={this.setScrollToGraphList}  
+                                isPublic = {true}
                                 lang = {this.state.lang}               
                             />
                 </div>
@@ -681,7 +682,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 timeline={this.state.timeline}    
                                 imageMapping={this.state.imageMapping}
                                 lang = {this.state.lang}
-                                setScrollToGraphList ={this.setScrollToGraphList}                 
+                                setScrollToGraphList ={this.setScrollToGraphList}     
+                                isPublic = {true}            
                             />
                     </div>
                 </Sidebar>
