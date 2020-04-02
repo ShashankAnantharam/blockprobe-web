@@ -23,7 +23,8 @@ import Slide from '@material-ui/core/Slide';
 import Loader from 'react-loader-spinner';
 import OcrComponent  from './ocrComponent/OcrComponent';
 import ArticleLinkComponent from './articleLinkComponent/ArticleLinkComponent';
-import  FilterTextComponent from './filterTextComponent/FilterTextComponent';
+import FilterTextComponent from './filterTextComponent/FilterTextComponent';
+import TranslateTextComponent from './translateComponent/translateComponent';
 import { isNullOrUndefined } from 'util';
 import * as Utils from '../../common/utilSvc';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -50,6 +51,7 @@ class BulkDraftBlockComponent extends React.Component {
             openOcr: false,
             openArticleLink: false,
             openFilterText: false,
+            openTranslateText: false,
             openConfirmDialog: false,
             placeholderOld: "Paste text here in the following format:\n\nTitle of block1\nContent of block1\n\nTitle of block2\nContent of block2\n\n(Note:\nAdding #2 at the start of the title will give the block a rank of 2, which is useful in sorting the block.\nAdding #2s at the start of the title will put the block in summary view and give it the rank 2.)",
             placeholder: "Input your story (broken into paragraphs) here",
@@ -252,10 +254,12 @@ class BulkDraftBlockComponent extends React.Component {
 
     closeAdvancedTabs(){
         this.togglePreview('delims',false);
+        this.togglePreview('translate',false);
         this.setState({
             openOcr: false,
             openArticleLink: false,
-            openFilterText: false
+            openFilterText: false,
+            openTranslateText: false
         });
     }
 
@@ -274,6 +278,12 @@ class BulkDraftBlockComponent extends React.Component {
         else if(type == 'filterText'){
             this.setState({
                 openFilterText: !this.state.openFilterText
+            });
+        }
+        else if(type == 'translateText'){
+            this.togglePreview('translate',true);
+            this.setState({
+                openTranslateText: !this.state.openTranslateText
             });
         }
     }
@@ -822,7 +832,12 @@ class BulkDraftBlockComponent extends React.Component {
                                     className={"advancedImageOption " + (this.state.openFilterText ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('filterText')}}>
                                         <div style={{fontWeight:'bold'}}>Quickfilter</div>                                                                    
-                                </button>                               
+                                </button>  
+                                <button
+                                    className={"advancedImageOption " + (this.state.openTranslateText ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
+                                    onClick={() => {this.toggleAdvancedTab('translateText')}}>
+                                        <div style={{fontWeight:'bold'}}>Translate</div>                                                                    
+                                </button>                              
                         </div>
 
                         {this.state.openOcr?
@@ -853,6 +868,16 @@ class BulkDraftBlockComponent extends React.Component {
                                 togglePreview={this.togglePreview}
                                 setDelims = {this.setDelims}
                             ></FilterTextComponent>
+                            :
+                            null
+                        }
+
+                        {this.state.openTranslateText?
+                            <TranslateTextComponent
+                                addText={this.reformText}
+                                text={this.state.value}
+                                lang = {this.props.lang}
+                            ></TranslateTextComponent>
                             :
                             null
                         }

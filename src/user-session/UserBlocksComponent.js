@@ -805,6 +805,7 @@ class UserBlocksComponent extends React.Component {
                         uIdHash = {this.state.uIdHash}
                         uId = {this.props.uId}
                         bId = {this.props.bId}
+                        lang = {this.props.lang}
                     />
                 </div>
             )
