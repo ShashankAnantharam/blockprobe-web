@@ -284,7 +284,7 @@ class BulkDraftBlockComponent extends React.Component {
             });
         }
         else if(type == 'translateText'){
-            this.togglePreview('translate',true);
+            this.togglePreview('translate',!this.state.openTranslateText);
             this.setState({
                 openTranslateText: !this.state.openTranslateText
             });
