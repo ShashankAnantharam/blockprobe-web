@@ -17,6 +17,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as firebase from 'firebase';
 import * as Utils from '../common/utilSvc';
 import * as Locale from '../Localization/localizedStrings';
@@ -71,6 +72,7 @@ class GraphComponent extends React.Component {
         wasNoneOptionSelected:false,
         playStatus: 'end',
         languageSupportedPlay: true,
+        copiedText: false,
         testVar: -1,
         }
 
@@ -152,7 +154,8 @@ class GraphComponent extends React.Component {
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
             openSelectedBlocks: true,
-            selectedNodes: [from, to]
+            selectedNodes: [from, to],
+            copiedText: false
         });
 
         ReactGA.event({
@@ -245,7 +248,8 @@ class GraphComponent extends React.Component {
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
             openSelectedBlocks: true,
-            selectedNodes: [node]
+            selectedNodes: [node],
+            copiedText: false
         });
 
         ReactGA.event({
@@ -1015,7 +1019,9 @@ class GraphComponent extends React.Component {
 
         var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
-           );      
+           );  
+           
+        let blocksString = Utils.getBlocksText(this.state.currentSelectedBlocks);
         
         let selectedNodesString = ': ';
         for(let i=0; i<this.state.selectedNodes.length; i++){
@@ -1076,6 +1082,13 @@ class GraphComponent extends React.Component {
                     </div>
 
                 }
+                        {this.state.copiedText?
+                            <div className="copiedTextContainer">
+                                <p className="copiedTextValue">Text has been copied. Paste it as draft in another story</p>
+                            </div>
+                            :
+                            null
+                        }
                 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list" ref={this.graphRef}>
@@ -1101,13 +1114,21 @@ class GraphComponent extends React.Component {
                                 :
                                 null
                             }
+                            {(this.props.isPublic == undefined || !this.props.isPublic) && selectedNodesString.length>0?
+                                    <CopyToClipboard text={Utils.getBlocksText(this.state.currentSelectedBlocks)}
+                                    onCopy={() => this.setState({copiedText: true})}>
+                                        <div className="copyBlockText">Copy the text as draft</div>
+                                    </CopyToClipboard>
+                                    :
+                                    null
+                                }
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
                                     <span>{Locale.selections[lang]}</span>
                                     :
                                     <span>{Locale.selectEntity[lang]}</span>
                                 }                                                                
-                                <span>{selectedNodesString}</span>
+                                <span>{selectedNodesString}</span>                                
                                 <span>
                                     {this.state.openSelectedBlocks?
                                         <ExpandLess className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>

@@ -340,6 +340,33 @@ export const removeTitleHashtag = (str)=>{
     return str;
 }
 
+export const getBlocksText = (blocks)=>{
+    //str is string
+    let ans = '';
+    if(!isNullOrUndefined(blocks)){
+        for(let i=0; i<blocks.length; i++){
+            if(!isNullOrUndefined(blocks[i].title) && blocks[i].title.trim().length>0){
+                ans += blocks[i].title + '\n';
+            }
+            if(!isNullOrUndefined(blocks[i].summary) && blocks[i].summary.trim().length>0){
+                ans += blocks[i].summary + '\n';
+            }
+            if(!isNullOrUndefined(blocks[i].entities) && blocks[i].entities.length>0){
+                let entityStr = "$[";
+                for(let j=0; j<blocks[i].entities.length;j++){
+                    if(j!=0)
+                        entityStr += ',';
+                    entityStr += blocks[i].entities[j].title;
+                }
+                entityStr += "]\n";
+                ans += entityStr;
+            }
+            ans += "\n";            
+        }
+    }
+    return ans;
+}
+
 export const sortBlocksCommon = (a, b, a_ts = 0, b_ts = 0)=>{
     a = a.trim();        
     b = b.trim();

@@ -1,3 +1,12 @@
+.copyBlockText{
+    text-align: center;
+    cursor: pointer;
+    background-color: rgb(117, 106, 214);
+    color: white;
+    font-weight:700;
+    padding: 5px;
+}
+
 .graph-block-entity{
     border-radius: 20px; 
     padding: 10px;
@@ -136,6 +145,14 @@
     border: 0.5px black solid;
     width: 100%;
 
+}
+
+.copiedTextContainer{
+    margin-left: 1em;
+}
+
+.copiedTextValue{
+    font-size:12px;
 }
 
 @media only screen and (min-width: 601px) {
