@@ -108,23 +108,14 @@ class TranslateTextComponent extends React.Component {
     }
 
     async previewText(){
-        let firstEntityList = this.state.firstLangSelectList;
-        for(let i=0; i<firstEntityList.length; i++){
-            if(this.state.selectedLang == firstEntityList[i].id){
-                this.setState({
-                    currentLangLabel: firstEntityList[i].label
-                });
-                break;
-            }
-        }
-
         let target = this.state.selectedLang;
         let text = this.props.text;
         let translatedText = await this.translateText(text,target);
-        this.props.setTranslatedText(translatedText);
+        await this.props.setTranslatedText(translatedText);
     }
 
     async submitText(){
+        await this.previewText();
         let text = this.props.translatedText;
         let currText = JSON.parse(JSON.stringify(this.props.text));
         let oldTexts = this.state.oldTexts;
