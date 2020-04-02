@@ -261,6 +261,53 @@ export const isTitleHashtag = (str)=>{
     return false;
 }
 
+export const isEntitiesDollar = (str)=>{
+    //str is string;
+    // return true for $ [.....  ]
+    if(!isNullOrUndefined(str)){
+        str = str.trim();
+        if(str.length>2 && str[0]=='$'){
+            let i=1;
+            while(i<str.length && str[i]==' ')
+                i++;
+            if(str[i]=='['){
+                while(i<str.length && str[i]!=']')
+                    i++;
+                if(i<str.length && str[i]==']')
+                    return true;
+            }            
+        }
+    }
+    return false;
+}
+
+export const getEntities =  (str) =>{
+    //Assuming string is of  form $[...]
+    let i=0;
+    let ans = [];
+    if(isNullOrUndefined(str))
+        return ans;
+    let start=0, end=0;
+    while(i<str.length && str[i]!='['){
+        i++;
+    }
+    start =  i+1;
+    while(i<str.length && str[i]!=']'){
+        i++;
+    }
+    end = i;
+    if(end >= str.length){
+        return ans;
+    }
+
+    let newStr = str.substring(start,end);
+    ans = newStr.split(',');
+    for(let j=0; j<ans.length; j++){
+        ans[j] = ans[j].trim();
+    }
+    return ans;
+}
+
 export const isTitleSummary = (str)=>{
     //str is string
     if(isTitleHashtag(str)){

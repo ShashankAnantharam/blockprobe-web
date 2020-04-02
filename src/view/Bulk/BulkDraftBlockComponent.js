@@ -169,13 +169,15 @@ class BulkDraftBlockComponent extends React.Component {
     setDelims(delims){
         this.setState({delims:delims});
     }
-
+    
     formatParas(currentPara, allParas){
         var newPara={};
  
         if(currentPara){
             newPara.title='';
             newPara.body='';
+            newPara.entities = [];
+            let entityMap = {};
             let start = 0;
             for(let i=0; i<currentPara.length; i++){
                 if(Utils.isTitleHashtag(currentPara[i])){
@@ -191,11 +193,29 @@ class BulkDraftBlockComponent extends React.Component {
             }
             var paraBody = '';
             for(var j=start;j<currentPara.length;j++){
-                const currParaSent = currentPara[j];
-                // console.log("currSent "+ currParaSent);
-                paraBody = paraBody + currentPara[j];
+                if(Utils.isEntitiesDollar(currentPara[j])){
+                    let paraEntites = Utils.getEntities(currentPara[j]);
+                    // console.log(paraEntites);
+                    for(let entity in paraEntites){
+                        paraEntites[entity] = this.makeEntityUppercase(paraEntites[entity]);
+                        if(!(paraEntites[entity] in entityMap)){
+                            entityMap[entity] = {
+                                title: paraEntites[entity],
+                                type: "None"
+                            }
+                        }
+                    }
+                }
+                else{
+                    const currParaSent = currentPara[j];
+                    // console.log("currSent "+ currParaSent);
+                    paraBody = paraBody + currentPara[j];
+                }
             }
             newPara.body = paraBody;
+            for(let entity in entityMap){
+                newPara.entities.push(entityMap[entity]);
+            }
         }
         allParas.push(newPara);    
     }
@@ -476,6 +496,14 @@ class BulkDraftBlockComponent extends React.Component {
              //MARK HERE ENTITIES
             
              var entityPane = this.props.entityPane;
+
+             // console.log(bulkBlocks[i]);  
+
+             for(var j =0;!isNullOrUndefined(bulkBlocks[i]) && !isNullOrUndefined(bulkBlocks[i].entities) 
+                    && j< bulkBlocks[i].entities.length; j++)
+            {
+                newDraftBlock.entities.push(bulkBlocks[i].entities[j]);
+            }
 
              for(var j =0; j< entityPane.length; j++){
                 var key = entityPane[j].label;
