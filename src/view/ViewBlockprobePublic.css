@@ -25,6 +25,12 @@
     .left-sidebar{
         width: 75vw;
     }
+
+    .blockprobe-header{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+ 
 }
 
 @media only screen and (min-width: 601px) {
@@ -34,5 +40,10 @@
 
     .left-sidebar{
         width: 40vw;
+    }
+
+    .blockprobe-header{
+        margin-left: 1%;
+        margin-right: 1%;
     }
 }
