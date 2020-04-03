@@ -10,5 +10,9 @@ export const langs = [
     {
         id: 'hi',
         label: 'Hindi'
+    },
+    {
+        id: 'ml',
+        label: 'Malayalam'
     }
 ];
