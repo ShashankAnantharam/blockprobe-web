@@ -346,7 +346,9 @@ export const getBlocksText = (blocks)=>{
     if(!isNullOrUndefined(blocks)){
         for(let i=0; i<blocks.length; i++){
             if(!isNullOrUndefined(blocks[i].title) && blocks[i].title.trim().length>0){
-                ans += blocks[i].title + '\n';
+                let strLeftover = removeTitleHashtag(blocks[i].title);
+                if(strLeftover.length>0)
+                    ans += '# '+ removeTitleHashtag(blocks[i].title) + '\n';
             }
             if(!isNullOrUndefined(blocks[i].summary) && blocks[i].summary.trim().length>0){
                 ans += blocks[i].summary + '\n';
@@ -356,7 +358,7 @@ export const getBlocksText = (blocks)=>{
                 for(let j=0; j<blocks[i].entities.length;j++){
                     if(j!=0)
                         entityStr += ',';
-                    entityStr += blocks[i].entities[j].title;
+                    entityStr += blocks[i].entities[j].title.toLowerCase();
                 }
                 entityStr += "]\n";
                 ans += entityStr;
