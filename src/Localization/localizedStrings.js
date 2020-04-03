@@ -1,3 +1,10 @@
+export const visualizationsNotFound = {
+    'en': 'Visualizations not found',
+    'hi': 'नहीं मिला',
+    'ml': 'കാണ്മാനില്ല',
+    'mr': 'सापडले नाही'
+}
+
 export const selectEntity = {
     'en': 'Select any entity/topic',
     'hi': 'किसी भी इकाई / विषय को दबाएं',

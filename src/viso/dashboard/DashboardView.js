@@ -205,7 +205,7 @@ class DashboardViewComponent extends React.Component {
 
                 {this.isBlockprobeEmpty()?
                     <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>
-                        Visualizations not found
+                        {Locale.visualizationsNotFound[lang]}
                     </div>
                     :
                     null
