@@ -392,6 +392,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
             
         try{
             // console.log(nodeId);
+            if(currBlock.actionType=="entityChange"){
+                //contains entityMap
+            }
 
             //ONLY TITLE OR SUMMARY CHANGE
             if(currBlock.actionType=="BpDetails"){

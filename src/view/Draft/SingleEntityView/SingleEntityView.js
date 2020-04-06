@@ -26,6 +26,7 @@ class SingleEntityView extends React.Component {
         this.isEntityNameChanged = this.isEntityNameChanged.bind(this);
         this.renameEntity = this.renameEntity.bind(this);
         this.deleteEntity = this.deleteEntity.bind(this);
+        this.createBlockForEntityChange = this.createBlockForEntityChange.bind(this);
     }
 
     handleChange(event, type) {
@@ -58,18 +59,45 @@ class SingleEntityView extends React.Component {
         }
     }
 
-    renameEntity(){
+    createBlockForEntityChange(currEntity, newEntity){
+        let entityMap = {
+            curr: currEntity,
+            new: newEntity
+        };
+
+        let fullBlock = {
+            title: '',
+            summary: '',
+            entities: [],
+            evidences: [],
+            referenceBlock: null,
+            timestamp: Date.now(),
+            actionType: 'entityChange',
+            entityMap: entityMap
+        };
+
+        this.props.commitBlockToBlockprobe(fullBlock);
 
     }
 
-    deleteEntity(){
+    renameEntity(){
+        let newName = this.state.entityName;
+        let oldName = JSON.parse(JSON.stringify(this.props.entity.label));
 
+        this.createBlockForEntityChange(oldName,newName);
+    }
+
+    deleteEntity(){
+        let newName = null;
+        let oldName = JSON.parse(JSON.stringify(this.props.entity.label));
+
+        this.createBlockForEntityChange(oldName,newName);
     }
 
     render(){
         return(
             <div>
-                <h4> Manage entity {this.state.label}</h4>
+                <h4 className="manageSingleEntityTitle"> Manage entity {this.state.label}</h4>
                 <div className="entityEditLabelContainer">
                     <div style={{marginBottom:'6px'}}>Edit Name</div>
                     <Textarea 

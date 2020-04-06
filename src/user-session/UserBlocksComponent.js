@@ -40,7 +40,7 @@ class UserBlocksComponent extends React.Component {
             uIdHash:'',
             shajs:null,
             selectedDraftBlockId: null,
-            displaySingleEntity: false,
+            displaySingleEntity: true,
             entityPaneList: [],
             draftBlocks:{},
             successBlocks:{},
@@ -1291,6 +1291,7 @@ class UserBlocksComponent extends React.Component {
                                     <div className="graphVisualizationSingleEntity">
                                         <SingleEntityView                                        
                                         entity = {this.state.selectedGraphNode}
+                                        commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
                                         />
                                     </div>                                    
                                     :

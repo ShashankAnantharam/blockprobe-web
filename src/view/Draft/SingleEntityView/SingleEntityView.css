@@ -7,6 +7,10 @@
     margin-bottom:1em;
 }
 
+.manageSingleEntityTitle{
+    word-wrap: break-word;
+}
+
 .renameEntityButton{
     background:rgb(2, 1, 46);
     color:rgb(219, 243, 242);
