@@ -660,16 +660,14 @@ class UserSession extends React.Component {
           let imgUrl = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]].background;
           return (
               <div>                
-                <main style={{paddingTop:'10px',minHeight:'100vh'}} className="body-color-backup">
-                <div style={{marginTop:'10px', textAlign:'center'}}>
-                                    <Img src={mainLogoList}
-                                    style={{width:'70%'}}></Img>
-                                </div>
+                <main style={{minHeight:'100vh'}} className="body-color-backup">
+                
                     <div style={{display:'flex',
+                                minHeight:'100vh',
                                 backgroundImage: `url(${imgUrl})`,
                                 backgroundSize: 'cover', 
                                 backgroundPosition: 'center center',
-                                backgroundRepeat: 'no-repeat'}} class="border-black">
+                                backgroundRepeat: 'no-repeat'}}>
                         <GoogleFontLoader
                             fonts={[
                                 {
@@ -693,7 +691,10 @@ class UserSession extends React.Component {
                             />                        
 
                         <div className="landing-view-container">                       
-                                
+                        <div style={{marginTop:'10px', textAlign:'center'}}>
+                                    <Img src={mainLogoList}
+                                    style={{width:'50%'}}></Img>
+                                </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}><span>Visually engage your audience and yourself with your work.</span></div>
                                 <div style={{marginTop:'16px'}}>
                                     {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
