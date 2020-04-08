@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import  * as Utils from '../../../common/utilSvc';
 import './SingleEntityView.css';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { isNull, isNullOrUndefined } from 'util';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 class SingleEntityView extends React.Component {
 
@@ -14,7 +25,23 @@ class SingleEntityView extends React.Component {
 
         this.state={
             entityName: null,
-            label: null
+            label: null,
+            dialogType: null,
+            dialogText:{
+                delete:{
+                    title: "Delete entity",
+                    desc: "You are about to delete this entity. This action cannot be reversed.\nDo you confirm?"
+                },
+                rename:{
+                    title: "Rename entity",
+                    desc: "You are about to rename this entity. This action cannot be reversed.\nDo you confirm?"
+                },
+                selected:{
+                    title: null,
+                    desc: null
+                }
+            },
+            dialog: false,
         }
 
         if(!isNullOrUndefined(props.entity) && !isNullOrUndefined(props.entity.label)){
@@ -27,6 +54,38 @@ class SingleEntityView extends React.Component {
         this.renameEntity = this.renameEntity.bind(this);
         this.deleteEntity = this.deleteEntity.bind(this);
         this.createBlockForEntityChange = this.createBlockForEntityChange.bind(this);
+        this.toggleDialog = this.toggleDialog.bind(this);
+        this.performAction = this.performAction.bind(this);
+    }
+
+    toggleDialog(value, type){
+        let dialogText = this.state.dialogText;
+        if(type == 'delete'){
+            dialogText.selected.title = dialogText.delete.title;
+            dialogText.selected.desc = dialogText.delete.desc;
+        }
+        else if(type == 'rename'){
+            dialogText.selected.title = dialogText.rename.title;
+            dialogText.selected.desc = dialogText.rename.desc;
+        }
+        this.setState({
+            dialog: value,
+            dialogType: type
+        });
+    }
+
+    performAction(type){
+        if(type == 'delete'){
+            this.deleteEntity();
+        }
+        else if(type  == 'rename'){
+            this.renameEntity();   
+        }
+
+        this.setState({
+            dialog: false,
+            dialogType: null
+        });
     }
 
     handleChange(event, type) {
@@ -98,6 +157,28 @@ class SingleEntityView extends React.Component {
         return(
             <div>
                 <h4 className="manageSingleEntityTitle"> Manage entity {this.state.label}</h4>
+                <Dialog
+                    open={this.state.dialog}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={() => this.toggleDialog(false,'delete')}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description">
+                    <DialogTitle id="alert-dialog-slide-title">{this.state.dialogText.selected.title}</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        {this.state.dialogText.selected.desc}
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.toggleDialog(false,this.state.dialogType)} color="primary">
+                            No
+                        </Button>
+                        <Button onClick={() => this.performAction(this.state.dialogType)} color="primary">
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>                
                 <div className="entityEditLabelContainer">
                     <div style={{marginBottom:'6px'}}>Edit Name</div>
                     <Textarea 
@@ -125,7 +206,7 @@ class SingleEntityView extends React.Component {
                     {this.isEntityNameChanged()?
                         <button 
                             className="renameEntityButton" 
-                            onClick={this.renameEntity}>
+                            onClick={() => {this.toggleDialog(true,'rename')}}>
                                 <div>Rename</div>
                         </button>
                         :
@@ -134,7 +215,7 @@ class SingleEntityView extends React.Component {
 
                     <button 
                         className="deleteEntityButton" 
-                        onClick={this.deleteEntity}>
+                        onClick={() => {this.toggleDialog(true,'delete')}}>
                             <div>Delete</div>
                     </button>
                         
