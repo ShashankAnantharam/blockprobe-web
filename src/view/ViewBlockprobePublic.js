@@ -44,6 +44,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             blockStatus: {},
             investigationGraph: {},
             imageMapping: {},
+            entityChanges: {},
             timeline: [],
             summaryList: [],
             selectedBlockSidebarOpen: false,
@@ -128,7 +129,7 @@ class ViewBlockprobePublicComponent extends React.Component {
          });
     }
 
-    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef){
+    traverseBlockTree(nodeId, timelineList, timelineBlockStatus, blockList, blockStatus, modifyRef, entityChanges){
         var currBlock = this.state.blockTree[nodeId];
 
         if(isNullOrUndefined(currBlock)){
@@ -139,6 +140,18 @@ class ViewBlockprobePublicComponent extends React.Component {
             // console.log(nodeId);
             if(currBlock.actionType=="entityChange"){
                 //contains entityMap
+                if(!isNullOrUndefined(currBlock.entityMap)){
+                    let currEntity = currBlock.entityMap.curr;
+                    let newEntity = currBlock.entityMap.new;
+                    let ts = currBlock.timestamp;
+                    if(!(currEntity in entityChanges)){
+                        entityChanges[currEntity] = [];
+                    }
+                    entityChanges[currEntity].push({
+                        ts: ts,
+                        change: newEntity
+                    });
+                }
             }
 
             //ONLY TITLE OR SUMMARY CHANGE
@@ -229,7 +242,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                 // Check for false children and duplicate children 
                 if(this.state.blockTree[childBlockId].previousKey == nodeId && !(childBlockId in checkedChildren)){
                     try{
-                        this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef);
+                        this.traverseBlockTree(childBlockId,timelineList,timelineBlockStatus,blockList,blockStatus,modifyRef,entityChanges);
                     }
                     catch{
                     }
@@ -443,6 +456,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         var blockList = [];
         var blockStatus = {};
         var modifyRef = {};
+        let entityChanges = {};
 
         try{
             this.traverseBlockTree(
@@ -451,14 +465,25 @@ class ViewBlockprobePublicComponent extends React.Component {
                 timelineBlockStatus,
                 blockList,
                 blockStatus,
-                modifyRef);    
+                modifyRef,
+                entityChanges);    
         }
         catch{
         }
 
         // console.log(blockList);
         // console.log(blockStatus);
-        
+
+        //sort entityChanges
+        for(let entity in entityChanges){
+            entityChanges[entity].sort(function (a,b){
+                return a.ts - b.ts;
+            })
+        }
+        // console.log(entityChanges);
+        let newBlockTree  = Utils.modifyBlockEntities(blockList,this.state.blockTree,entityChanges);
+        // console.log(newBlockTree);
+
         var finalTimelineList = [];
         timelineList.forEach((id) => {
             if(timelineBlockStatus[id] && blockStatus[id])
@@ -470,7 +495,8 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setState({
             timeline:[...finalTimelineList],
             modifyRef: modifyRef,
-            blockStatus: blockStatus
+            blockStatus: blockStatus,
+            entityChanges: entityChanges
         });
 
         var finalBlockList = [];

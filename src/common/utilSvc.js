@@ -706,6 +706,86 @@ export const makeFirstLetterUppercase = (str)=>{
     return out;
 }
 
+export const getEntityChange = (entity, ts, entityChanges)=>{
+    let defaultEntity = {change: entity, ts: ts};
+    if(!(entity in entityChanges))
+        return defaultEntity;
+    
+    let changes = entityChanges[entity];
+    if(isNullOrUndefined(changes))
+        return defaultEntity;
+
+    //Binary search to find lowest
+    let l = 0, r = changes.length-1; 
+    while(l<r){
+        let m = Math.floor(l + (r-l)/2);
+        if(changes[m].ts < ts){
+            l = m+1;
+        }
+        else{
+            r = m;
+        }
+    }
+
+    //handle border cases
+    while(l<changes.length && changes[l].ts < ts)
+        l++;
+    
+    if(l>=changes.length){
+        return defaultEntity;
+    }
+    return changes[l];
+}
+
+export const modifyBlockEntities = (blockList, blockTree, entityChanges)=>{
+    if(isNullOrUndefined(blockList) || isNullOrUndefined(blockTree)  || isNullOrUndefined(entityChanges))
+        return blockTree;
+
+    for(let i=0; i<blockList.length; i++){
+        let currEntityMap = {};
+        let currBlock = blockTree[blockList[i]];
+        if(!isNullOrUndefined(currBlock)){
+            let entities = currBlock.entities;
+            for(let j=0;!isNullOrUndefined(entities) && j<entities.length; j++){
+                let currEntity = entities[j];
+                if(!(currEntity.title in entityChanges)){
+                    //No change for this entity, add as is
+                    currEntityMap[currEntity.title] = '';
+                }
+                else{
+                    //some change for the entity
+                    let currEntityStr = currEntity.title;
+                    let ts = currBlock.timestamp;
+                    let newEntityStr = null; //dummy since they are not equal
+                    while(!isNullOrUndefined(currEntityStr)){
+                        // console.log(currEntityStr);
+                        // console.log(ts);
+                        let newEntity = getEntityChange(currEntityStr, ts, entityChanges);
+                        newEntityStr = newEntity.change;                        
+                        if(currEntityStr==newEntityStr)
+                            break;
+                        currEntityStr = newEntityStr;
+                        ts = newEntity.ts;
+                    }
+                    if(!isNullOrUndefined(newEntityStr)){
+                        currEntityMap[newEntityStr] = '';
+                    }
+                }
+            }
+        }
+        // console.log(currEntityMap);
+        let newEntities = [];
+        for(let entity in currEntityMap){
+            newEntities.push({
+                title: entity,
+                type: "None"
+            })
+        }
+        blockTree[blockList[i]].entities = newEntities;
+    }
+    return blockTree;
+}
+
 export const traverseGraphNode = (graph, nodeId, visited, islandCount)=>{
     let node = graph[nodeId];
     let label = nodeId;
