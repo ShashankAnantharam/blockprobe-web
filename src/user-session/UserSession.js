@@ -11,8 +11,11 @@ import Loader from 'react-loader-spinner';
 import GoogleFontLoader from 'react-google-font-loader';
 import Img from 'react-image';
 import JournalistLogo from "./icons/journalist.png";
+import JournalistBackground from "./backgrounds/Journalist.jpg";
 import PoliceLogo from "./icons/police.png";
+import TeacherBackground from "./backgrounds/Teacher.jpg";
 import PoliticianLogo from "./icons/political.png";
+import LawmakerBackground from "./backgrounds/lawmaker.jpg";
 import TeacherLogo from "./icons/teacher.png";
 import MainLogo from "./icons/logo.png";
 import UserWall from "./userWall/UserWall";
@@ -83,7 +86,8 @@ class UserSession extends React.Component {
             landingPage:{
                 journalist:{
                     logo: JournalistLogo,
-                    text: 'As a journalist, you can build your story using blockprobe, visualise your story and better engage your audience with your story.'
+                    text: 'As a journalist, you can build your story using blockprobe, visualise your story and better engage your audience with your story.',
+                    background: JournalistBackground
                 },
                 police:{
                     logo: PoliceLogo,
@@ -91,13 +95,21 @@ class UserSession extends React.Component {
                 },
                 politician:{
                     logo: PoliticianLogo,
-                    text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and better engage your constituents with your proposals.'
+                    text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and better engage your constituents with your proposals.',
+                    background: LawmakerBackground
                 },
                 teacher:{
                     logo: TeacherLogo,
-                    text: 'As a tutor, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.'
+                    text: 'As a tutor, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.',
+                    background: TeacherBackground
                 }
-            }    
+            },
+            currBackgroundIndex: 0,
+            allBackgrounds: [
+                'journalist',
+                'teacher',
+                'politician'
+            ] 
         }
 
         if(this.state.userId == ''){
@@ -645,6 +657,7 @@ class UserSession extends React.Component {
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           var mainLogoList = [MainLogo]
+          let imgUrl = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]].background;
           return (
               <div>                
                 <main style={{paddingTop:'10px',minHeight:'100vh'}} className="body-color-backup">
@@ -652,7 +665,11 @@ class UserSession extends React.Component {
                                     <Img src={mainLogoList}
                                     style={{width:'70%'}}></Img>
                                 </div>
-                    <div style={{display:'flex'}}>
+                    <div style={{display:'flex',
+                                backgroundImage: `url(${imgUrl})`,
+                                backgroundSize: 'cover', 
+                                backgroundPosition: 'center center',
+                                backgroundRepeat: 'no-repeat'}} class="border-black">
                         <GoogleFontLoader
                             fonts={[
                                 {
