@@ -64,7 +64,7 @@ class UserSession extends React.Component {
                 },
                 teacher:{
                     logo: TeacherLogo,
-                    text: 'As a tutor, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.',
+                    text: 'As a teacher, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.',
                     background: TeacherBackground
                 }
             },
@@ -664,6 +664,7 @@ class UserSession extends React.Component {
                 
                     <div style={{display:'flex',
                                 minHeight:'100vh',
+                                minwidth:'100vw',
                                 backgroundImage: `url(${imgUrl})`,
                                 backgroundSize: 'cover', 
                                 backgroundPosition: 'center center',
@@ -732,12 +733,26 @@ class UserSession extends React.Component {
                                         firebaseAuth={firebase.auth()}                            
                                         />
                                     </div>
-                                    <div className='mobile-landing-page'>
+                                    <div className='mobile-landing-page background-white-partiallyOpaque'>
+                                        <div className="lpTabContainer">
+                                            <Paper square className="lpTabPaper">
+                                                <Tabs
+                                                    value={this.state.tabValue}
+                                                    onChange={this.handleTabChange}
+                                                    variant="fullWidth"
+                                                    indicatorColor="primary"
+                                                    textColor="primary"
+                                                    aria-label="icon tabs example"
+                                                >
+                                                    <Tab icon={<SchoolIcon />} value={0} aria-label="phone" label="TEACHERS"/>
+                                                    <Tab icon={<PersonPinIcon />} value={1} aria-label="person" label="JOURNALISTS"/>
+                                                    <Tab icon={<PolicyIcon />} value={2} aria-label="favorite" label="LAWMAKERS"/>                                            
+                                                </Tabs>
+                                            </Paper>
+                                        </div>
                                         <div style={{marginTop:'16px'}}>
-                                            {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
-                                            {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
-                                            {this.cueCardView(this.state.landingPage.teacher.logo, this.state.landingPage.teacher.text)}
-                                        </div> 
+                                            {this.cueCardViewV2(currDetails.logo, currDetails.text)}
+                                        </div>            
                                         <div style={{marginTop:'3%'}}>
                                             <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
                                             <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
