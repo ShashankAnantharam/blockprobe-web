@@ -20,49 +20,13 @@ import TeacherLogo from "./icons/teacher.png";
 import MainLogo from "./icons/logo.png";
 import UserWall from "./userWall/UserWall";
 import UserNotifications from "./userNotif/UserNotifications";
-import Joyride from 'react-joyride';
-import {Container, Row, Col} from 'react-bootstrap';
-import {
-    FacebookShareButton,
-    LinkedinShareButton,
-    TwitterShareButton,
-    TelegramShareButton,
-    WhatsappShareButton,
-    PinterestShareButton,
-    VKShareButton,
-    OKShareButton,
-    RedditShareButton,
-    TumblrShareButton,
-    LivejournalShareButton,
-    MailruShareButton,
-    ViberShareButton,
-    WorkplaceShareButton,
-    LineShareButton,
-    PocketShareButton,
-    InstapaperShareButton,
-    EmailShareButton,
-  } from 'react-share';
-  import {
-    FacebookIcon,
-    TwitterIcon,
-    TelegramIcon,
-    WhatsappIcon,
-    LinkedinIcon,
-    PinterestIcon,
-    VKIcon,
-    OKIcon,
-    RedditIcon,
-    TumblrIcon,
-    LivejournalIcon,
-    MailruIcon,
-    ViberIcon,
-    WorkplaceIcon,
-    LineIcon,
-    PocketIcon,
-    InstapaperIcon,
-    EmailIcon,
-  } from 'react-share';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import SchoolIcon from '@material-ui/icons/School';
+import PolicyIcon from '@material-ui/icons/Policy';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
+
 
 class UserSession extends React.Component {
 
@@ -106,10 +70,11 @@ class UserSession extends React.Component {
             },
             currBackgroundIndex: 0,
             allBackgrounds: [
-                'journalist',
                 'teacher',
+                'journalist',
                 'politician'
-            ] 
+            ],
+            tabValue: 0 
         }
 
         if(this.state.userId == ''){
@@ -143,6 +108,7 @@ class UserSession extends React.Component {
         this.viewNotifications = this.viewNotifications.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -654,6 +620,12 @@ class UserSession extends React.Component {
           )
       }
 
+      handleTabChange(event, newValue){
+        this.setState({
+            tabValue: newValue
+        });
+      }
+
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           var mainLogoList = [MainLogo]
@@ -696,6 +668,22 @@ class UserSession extends React.Component {
                                     style={{width:'50%'}}></Img>
                                 </div>
                                 <div style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}><span>Visually engage your audience and yourself with your work.</span></div>
+                                <div className="lpTabContainer">
+                                    <Paper square className="lpTabPaper">
+                                        <Tabs
+                                            value={this.state.tabValue}
+                                            onChange={this.handleTabChange}
+                                            variant="fullWidth"
+                                            indicatorColor="primary"
+                                            textColor="primary"
+                                            aria-label="icon tabs example"
+                                        >
+                                            <Tab icon={<SchoolIcon />} aria-label="phone" label="TEACHERS"/>
+                                            <Tab icon={<PersonPinIcon />} aria-label="person" label="JOURNALISTS"/>
+                                            <Tab icon={<PolicyIcon />} aria-label="favorite" label="LAWMAKERS"/>                                            
+                                        </Tabs>
+                                    </Paper>
+                                </div>
                                 <div style={{marginTop:'16px'}}>
                                     {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
                                     {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
