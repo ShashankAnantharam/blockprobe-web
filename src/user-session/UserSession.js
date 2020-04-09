@@ -622,7 +622,8 @@ class UserSession extends React.Component {
 
       handleTabChange(event, newValue){
         this.setState({
-            tabValue: newValue
+            tabValue: newValue,
+            currBackgroundIndex: newValue
         });
       }
 
