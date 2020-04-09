@@ -98,6 +98,7 @@ class UserSession extends React.Component {
         this.addNotificationToList = this.addNotificationToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
         this.cueCardView = this.cueCardView.bind(this);
+        this.cueCardViewV2 = this.cueCardViewV2.bind(this);
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
         this.modifyBlockprobe = this.modifyBlockprobe.bind(this);
@@ -600,10 +601,22 @@ class UserSession extends React.Component {
           );
       }
 
+      cueCardViewV2(icon, content){
+        return(
+            <div className="cue-card-container-v2" style={{width:'100%', display:'flex'}}>
+                <div style={{padding:'10px 10px 10px 10px'}}>
+                    <div className="cue-card-text" style={{fontFamily: 'Lora, bold-italic', textAlign:'justify'}}>
+                            {content}
+                    </div>
+                </div>
+            </div>              
+            );
+      }
+
       cueCardView(icon, content){
         var iconList = [icon];
           return(
-                    <div className="cue-card-container" style={{border:'1px solid lightgrey', width:'100%', display:'flex'}}>
+                    <div className="cue-card-container" style={{width:'100%', display:'flex'}}>
                         <div style={{minWidth:'30%', maxWidth:'30%', padding:'10px 0 10px 0', textAlign:'center'}}>
                             
                             <div>
@@ -627,10 +640,24 @@ class UserSession extends React.Component {
         });
       }
 
+      /*
+      OLD TEXT
+      <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                    For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blprobe.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
+                                </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                    A brief history of Otto von Bismarck has been built using the tool. You can view it <a href='https://blprobe.com/view/09f190bf8d3e2f71ea2463c8ce98e68639080fd3ce3d3021fb04d17e62215ead' target='blank'>here</a>.
+                                </div>
+                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
+                                    To use blockprobe, login with your mobile and get started!
+                                </div>
+      */
+
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           var mainLogoList = [MainLogo]
           let imgUrl = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]].background;
+          let currDetails = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]];
           return (
               <div>                
                 <main style={{minHeight:'100vh'}} className="body-color-backup">
@@ -679,26 +706,16 @@ class UserSession extends React.Component {
                                             textColor="primary"
                                             aria-label="icon tabs example"
                                         >
-                                            <Tab icon={<SchoolIcon />} aria-label="phone" label="TEACHERS"/>
-                                            <Tab icon={<PersonPinIcon />} aria-label="person" label="JOURNALISTS"/>
-                                            <Tab icon={<PolicyIcon />} aria-label="favorite" label="LAWMAKERS"/>                                            
+                                            <Tab icon={<SchoolIcon />} value={0} aria-label="phone" label="TEACHERS"/>
+                                            <Tab icon={<PersonPinIcon />} value={1} aria-label="person" label="JOURNALISTS"/>
+                                            <Tab icon={<PolicyIcon />} value={2} aria-label="favorite" label="LAWMAKERS"/>                                            
                                         </Tabs>
                                     </Paper>
                                 </div>
                                 <div style={{marginTop:'16px'}}>
-                                    {this.cueCardView(this.state.landingPage.journalist.logo, this.state.landingPage.journalist.text)}
-                                    {this.cueCardView(this.state.landingPage.politician.logo, this.state.landingPage.politician.text)}
-                                    {this.cueCardView(this.state.landingPage.teacher.logo, this.state.landingPage.teacher.text)}
+                                    {this.cueCardViewV2(currDetails.logo, currDetails.text)}
                                 </div>                        
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                    For example, a story on Nirav Modi has been built using the tool. You can view it <a href='https://blprobe.com/view/6790279f4c45b5c9ff7e4f90f2b398eca2a3eb296bcc82604a3def599865b782' target='blank'>here</a>.
-                                </div>
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                    A brief history of Otto von Bismarck has been built using the tool. You can view it <a href='https://blprobe.com/view/09f190bf8d3e2f71ea2463c8ce98e68639080fd3ce3d3021fb04d17e62215ead' target='blank'>here</a>.
-                                </div>
-                                <div style={{fontFamily: 'Lora, bold-italic', textAlign:'justify', marginTop:'20px'}}>
-                                    To use blockprobe, login with your mobile and get started!
-                                </div>
+                                
                                 <div style={{marginTop:'3%'}}>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>

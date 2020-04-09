@@ -67,6 +67,10 @@
     box-shadow: 3px 3px 10px 3px rgb(182, 181, 181);
 }
 
+.cue-card-container-v2{
+    margin-bottom: 10px;
+}
+
 .cue-card-container{
     border: 1px lightgray solid;
     border-radius: 5px;
