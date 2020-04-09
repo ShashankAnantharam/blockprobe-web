@@ -1,0 +1,781 @@
+
+{
+  "header": {
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "location": "OnFatalError",
+    "filename": "report.20200409.212436.6346.001.json",
+    "dumpEventTime": "2020-04-09T21:24:36Z",
+    "dumpEventTimeStamp": "1586447676193",
+    "processId": "6346",
+    "commandLine": [
+      "node",
+      "/home/shashank/Desktop/LatestBlockprobe/blockprobe-web/node_modules/react-scripts/scripts/build.js"
+    ],
+    "nodejsVersion": "v11.8.0",
+    "glibcVersion": "2.12",
+    "wordSize": "64 bit",
+    "componentVersions": {
+      "node": "11.8.0",
+      "v8": "7.0.276.38-node.16",
+      "uv": "1.25.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "67",
+      "nghttp2": "1.34.0",
+      "napi": "4",
+      "llhttp": "1.0.1",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.0j",
+      "cldr": "34.0",
+      "icu": "63.1",
+      "tz": "2018e",
+      "unicode": "11.0",
+      "arch": "x64",
+      "platform": "linux",
+      "release": "node"
+    },
+    "osVersion": "Linux 4.4.0-176-generic #206-Ubuntu SMP Fri Feb 28 05:02:04 UTC 2020",
+    "glibc": "2.23",
+    "machine": "Linux 4.4.0-176-generic #206-Ubuntu SMP Fri Feb 28 05:02:04 UTC 2020shashank-Latitude-3590 x86_64"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    " [pc=0xa586d8] report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::string, v8::Local<v8::String>) [node]",
+    " [pc=0x9498a3] node::OnFatalError(char const*, char const*) [node]",
+    " [pc=0xb1f01e] v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [node]",
+    " [pc=0xb1f254] v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [node]",
+    " [pc=0xf1bfc2]  [node]",
+    " [pc=0xf1c0c8] v8::internal::Heap::CheckIneffectiveMarkCompact(unsigned long, double) [node]",
+    " [pc=0xf287e8] v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [node]",
+    " [pc=0xf292fb] v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node]",
+    " [pc=0xf2c031] v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationSpace, v8::internal::AllocationAlignment) [node]",
+    " [pc=0xef6264] v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationSpace) [node]",
+    " [pc=0x11abc1e] v8::internal::Runtime_AllocateInNewSpace(int, v8::internal::Object**, v8::internal::Isolate*) [node]",
+    " [pc=0x328c9e5cfc5d] "
+  ],
+  "javascriptHeap": {
+    "totalMemory": "1494720512",
+    "totalCommittedMemory": "1491773736",
+    "usedMemory": "1442016280",
+    "availableMemory": "34016184",
+    "memoryLimit": "1526909922",
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": "524288",
+        "committedMemory": "42224",
+        "capacity": "515584",
+        "used": "33520",
+        "available": "482064"
+      },
+      "new_space": {
+        "memorySize": "2097152",
+        "committedMemory": "1150288",
+        "capacity": "1031168",
+        "used": "84392",
+        "available": "946776"
+      },
+      "old_space": {
+        "memorySize": "1407389696",
+        "committedMemory": "1406769896",
+        "capacity": "1362215408",
+        "used": "1361625504",
+        "available": "589904"
+      },
+      "code_space": {
+        "memorySize": "7864320",
+        "committedMemory": "7358080",
+        "capacity": "6779136",
+        "used": "6779136",
+        "available": "0"
+      },
+      "map_space": {
+        "memorySize": "5779456",
+        "committedMemory": "5387648",
+        "capacity": "4234800",
+        "used": "4234800",
+        "available": "0"
+      },
+      "large_object_space": {
+        "memorySize": "71065600",
+        "committedMemory": "71065600",
+        "capacity": "101256368",
+        "used": "69258928",
+        "available": "31997440"
+      },
+      "new_large_object_space": {
+        "memorySize": "0",
+        "committedMemory": "0",
+        "capacity": "0",
+        "used": "0",
+        "available": "0"
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": "126.228000",
+    "kernelCpuSeconds": "2.824000",
+    "cpuConsumptionPercent": "0.000008",
+    "maxRss": "1596567552",
+    "pageFaults": {
+      "IORequired": "4",
+      "IONotRequired": "925909"
+    },
+    "fsActivity": {
+      "reads": "408",
+      "writes": "123912"
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": "63.024000",
+    "kernelCpuSeconds": "1.164000",
+    "cpuConsumptionPercent": "0.000004",
+    "fsActivity": {
+      "reads": "408",
+      "writes": "256"
+    }
+  },
+  "libuv": [
+    {
+      "type": "async",
+      "is_active": "1",
+      "is_referenced": "0",
+      "address": "70455136",
+      "details": ""
+    },
+    {
+      "type": "timer",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "140729466230304",
+      "details": "repeat: 0, timeout in: 396 ms"
+    },
+    {
+      "type": "check",
+      "is_active": "1",
+      "is_referenced": "0",
+      "address": "140729466230456",
+      "details": ""
+    },
+    {
+      "type": "idle",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "140729466230576",
+      "details": ""
+    },
+    {
+      "type": "prepare",
+      "is_active": "0",
+      "is_referenced": "0",
+      "address": "140729466230696",
+      "details": ""
+    },
+    {
+      "type": "check",
+      "is_active": "0",
+      "is_referenced": "0",
+      "address": "140729466230816",
+      "details": ""
+    },
+    {
+      "type": "async",
+      "is_active": "1",
+      "is_referenced": "0",
+      "address": "39995456",
+      "details": ""
+    },
+    {
+      "type": "tty",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "71124104",
+      "details": "width: 106, height: 24, file descriptor: 17, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "signal",
+      "is_active": "1",
+      "is_referenced": "0",
+      "address": "71124736",
+      "details": "signum: 28 (SIGWINCH)"
+    },
+    {
+      "type": "tty",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "71450360",
+      "details": "width: 106, height: 24, file descriptor: 19, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "timer",
+      "is_active": "1",
+      "is_referenced": "0",
+      "address": "88970056",
+      "details": "repeat: 0, timeout in: 2551 ms"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "97126344",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 20, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "83663512",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 22, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "74304216",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 24, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "88951512",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 26, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "97349888",
+      "details": "pid: 6371"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "97104696",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 21, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "96906408",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 25, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "73890472",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 28, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "70660856",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 30, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "97575600",
+      "details": "pid: 6378"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "96856952",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 23, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "94890152",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 29, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "96858424",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 32, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "92999192",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 34, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "85797344",
+      "details": "pid: 6385"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "96841128",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 27, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "94899928",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 33, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "97361704",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 36, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "72868488",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 38, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "85817408",
+      "details": "pid: 6392"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "94665848",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 31, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "86163336",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 37, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "83864904",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 40, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "94701000",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 42, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "71464000",
+      "details": "pid: 6399"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "72043736",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 35, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "70704536",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 41, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "83689448",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 44, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "97057848",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 46, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "97025552",
+      "details": "pid: 6406"
+    },
+    {
+      "type": "pipe",
+      "is_active": "0",
+      "is_referenced": "1",
+      "address": "97093096",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 39, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "88829128",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 45, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "70739272",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 48, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "pipe",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "73885272",
+      "details": "send buffer size: 212992, recv buffer size: 212992, file descriptor: 50, write queue size: 0, readable, writable"
+    },
+    {
+      "type": "process",
+      "is_active": "1",
+      "is_referenced": "1",
+      "address": "85817760",
+      "details": "pid: 6413"
+    }
+  ],
+  "environmentVariables": {
+    "LESSOPEN": "| /usr/bin/lesspipe %s",
+    "npm_config_cache_lock_stale": "60000",
+    "npm_config_ham_it_up": "",
+    "GNOME_KEYRING_PID": "",
+    "npm_package_dependencies__material_ui_icons": "^4.9.1",
+    "npm_package_dependencies_react_share": "^3.0.0",
+    "npm_config_legacy_bundling": "",
+    "npm_config_sign_git_tag": "",
+    "USER": "shashank",
+    "LANGUAGE": "en_IN:en",
+    "UPSTART_INSTANCE": "",
+    "npm_package_dependencies_react_google_font_loader": "^1.0.5",
+    "npm_config_user_agent": "npm/6.5.0 node/v11.8.0 linux x64",
+    "npm_config_always_auth": "",
+    "XDG_SEAT": "seat0",
+    "npm_package_dependencies__material_ui_core": "^4.1.1",
+    "npm_config_bin_links": "true",
+    "npm_config_key": "",
+    "SESSION": "ubuntu",
+    "XDG_SESSION_TYPE": "x11",
+    "COMPIZ_CONFIG_PROFILE": "ubuntu",
+    "npm_package_dependencies__firebase_logger": "^0.1.17",
+    "npm_package_dependencies_react_graph_vis": "^1.0.2",
+    "npm_config_allow_same_version": "",
+    "npm_config_description": "true",
+    "npm_config_fetch_retries": "2",
+    "npm_config_heading": "npm",
+    "npm_config_if_present": "",
+    "npm_config_init_version": "1.0.0",
+    "npm_config_user": "",
+    "npm_node_execpath": "/usr/local/bin/node",
+    "SHLVL": "1",
+    "npm_package_dependencies_react_sidebar": "^3.0.2",
+    "npm_config_prefer_online": "",
+    "npm_config_noproxy": "",
+    "HOME": "/home/shashank",
+    "QT4_IM_MODULE": "xim",
+    "OLDPWD": "/home/shashank",
+    "npm_package_dependencies_browser_image_compression": "^1.0.6",
+    "npm_package_dependencies_react_contenteditable": "^3.3.3",
+    "npm_config_force": "",
+    "DESKTOP_SESSION": "ubuntu",
+    "npm_package_dependencies_react_shimmer_effect": "^1.0.9",
+    "npm_config_only": "",
+    "npm_config_read_only": "",
+    "npm_package_dependencies_rc_time_picker": "^3.6.4",
+    "npm_package_dependencies_react_chat_ui": "^0.3.2",
+    "npm_config_cache_min": "10",
+    "npm_config_init_license": "ISC",
+    "QT_LINUX_ACCESSIBILITY_ALWAYS_ON": "1",
+    "GTK_MODULES": "gail:atk-bridge:unity-gtk-module",
+    "XDG_SEAT_PATH": "/org/freedesktop/DisplayManager/Seat0",
+    "npm_config_editor": "vi",
+    "npm_config_rollback": "true",
+    "npm_config_tag_version_prefix": "v",
+    "INSTANCE": "",
+    "npm_config_cache_max": "Infinity",
+    "npm_config_timing": "",
+    "npm_config_userconfig": "/home/shashank/.npmrc",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:abstract=/tmp/dbus-jpesZLIdjf",
+    "npm_config_engine_strict": "",
+    "npm_config_init_author_name": "",
+    "npm_config_init_author_url": "",
+    "npm_config_preid": "",
+    "npm_config_tmp": "/tmp",
+    "npm_package_dependencies__amcharts_amcharts4": "^4.5.15",
+    "npm_package_dependencies_react_router_dom": "^4.3.1",
+    "npm_package_dependencies_react_scripts": "^3.4.0",
+    "npm_package_dependencies_react_vertical_timeline_component": "^2.3.1",
+    "npm_package_description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+    "npm_config_depth": "Infinity",
+    "npm_config_package_lock_only": "",
+    "npm_config_save_dev": "",
+    "npm_config_usage": "",
+    "GNOME_KEYRING_CONTROL": "",
+    "npm_package_dependencies_react_tabs": "^3.0.0",
+    "npm_package_readmeFilename": "README.md",
+    "npm_config_metrics_registry": "https://registry.npmjs.org/",
+    "npm_config_cafile": "",
+    "npm_config_otp": "",
+    "npm_config_package_lock": "true",
+    "npm_config_progress": "true",
+    "npm_config_https_proxy": "",
+    "npm_config_save_prod": "",
+    "QT_QPA_PLATFORMTHEME": "appmenu-qt5",
+    "MANDATORY_PATH": "/usr/share/gconf/ubuntu.mandatory.path",
+    "IM_CONFIG_PHASE": "1",
+    "SESSIONTYPE": "gnome-session",
+    "UPSTART_JOB": "unity7",
+    "npm_config_audit": "true",
+    "npm_config_cidr": "",
+    "npm_config_onload_script": "",
+    "npm_config_sso_type": "oauth",
+    "LOGNAME": "shashank",
+    "GTK_IM_MODULE": "ibus",
+    "npm_package_dependencies_react_datepicker": "^2.4.0",
+    "npm_package_dependencies_react_tooltip": "^3.10.0",
+    "npm_config_rebuild_bundle": "true",
+    "npm_config_save_bundle": "",
+    "npm_config_shell": "/bin/bash",
+    "WINDOWID": "81788938",
+    "_": "/usr/local/bin/npm",
+    "npm_package_private": "true",
+    "npm_config_dry_run": "",
+    "npm_config_prefix": "/usr/local",
+    "DEFAULTS_PATH": "/usr/share/gconf/ubuntu.default.path",
+    "npm_package_dependencies_speak_tts": "^2.0.8",
+    "npm_config_scope": "",
+    "npm_config_browser": "",
+    "npm_config_cache_lock_wait": "10000",
+    "npm_config_ignore_prepublish": "",
+    "npm_config_registry": "https://registry.npmjs.org/",
+    "npm_config_save_optional": "",
+    "npm_config_searchopts": "",
+    "npm_config_versions": "",
+    "XDG_SESSION_ID": "c12",
+    "TERM": "xterm-256color",
+    "npm_package_dependencies_react_firebaseui": "^3.1.2",
+    "npm_package_dependencies_react_hover": "^1.3.4",
+    "npm_config_cache": "/home/shashank/.npm",
+    "npm_config_proxy": "",
+    "npm_config_send_metrics": "",
+    "GNOME_DESKTOP_SESSION_ID": "this-is-deprecated",
+    "npm_package_dependencies_multi_select_react": "^0.1.8",
+    "npm_package_scripts_start": "react-scripts start",
+    "npm_config_global_style": "",
+    "npm_config_ignore_scripts": "",
+    "npm_config_version": "",
+    "GTK2_MODULES": "overlay-scrollbar",
+    "npm_package_dependencies_react_app_polyfill": "^1.0.5",
+    "npm_package_dependencies_react_iframe": "^1.8.0",
+    "npm_config_local_address": "",
+    "npm_config_viewer": "man",
+    "npm_config_node_gyp": "/usr/local/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js",
+    "PATH": "/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/home/shashank/Desktop/LatestBlockprobe/blockprobe-web/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+    "GDM_LANG": "en_US",
+    "npm_package_name": "blockprobe",
+    "npm_package_dependencies_react_chat_window": "^1.2.1",
+    "npm_package_dependencies_react_ga": "^2.6.0",
+    "npm_package_dependencies_react_images_upload": "^1.2.7",
+    "npm_package_dependencies_tesseract_js": "^2.0.2",
+    "npm_config_audit_level": "low",
+    "npm_config_prefer_offline": "",
+    "NODE": "/usr/local/bin/node",
+    "XDG_SESSION_PATH": "/org/freedesktop/DisplayManager/Session0",
+    "XDG_RUNTIME_DIR": "/run/user/1001",
+    "npm_config_color": "true",
+    "npm_config_sign_git_commit": "",
+    "COMPIZ_BIN_PATH": "/usr/bin/",
+    "DISPLAY": ":0",
+    "npm_package_scripts_eject": "react-scripts eject",
+    "npm_config_fetch_retry_mintimeout": "10000",
+    "npm_config_maxsockets": "50",
+    "npm_config_offline": "",
+    "npm_config_sso_poll_frequency": "500",
+    "LANG": "en_IN",
+    "XDG_CURRENT_DESKTOP": "Unity",
+    "npm_package_dependencies_react_dom": "^16.8.3",
+    "npm_package_dependencies_react_image": "^2.1.3",
+    "npm_package_dependencies_react_textarea_autosize": "^7.1.0",
+    "npm_config_umask": "0002",
+    "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "DESKTOP_MODE": "1",
+    "XMODIFIERS": "@im=ibus",
+    "XDG_SESSION_DESKTOP": "ubuntu",
+    "XAUTHORITY": "/home/shashank/.Xauthority",
+    "npm_package_browserslist_0": ">0.2%",
+    "npm_package_gitHead": "c5186ee90733cb4f521fedf2c24cdb5f7bd65fce",
+    "npm_config_fetch_retry_maxtimeout": "60000",
+    "npm_config_loglevel": "notice",
+    "npm_config_logs_max": "10",
+    "npm_config_message": "%s",
+    "npm_lifecycle_script": "react-scripts build",
+    "XDG_GREETER_DATA_DIR": "/var/lib/lightdm-data/shashank",
+    "SSH_AUTH_SOCK": "/run/user/1001/keyring/ssh",
+    "npm_package_dependencies_react_copy_to_clipboard": "^5.0.2",
+    "npm_package_dependencies_react_expand_animated": "^1.0.0",
+    "npm_package_dependencies_sha_js": "^2.4.11",
+    "npm_package_scripts_test": "react-scripts test",
+    "npm_package_browserslist_1": "not dead",
+    "npm_config_ca": "",
+    "npm_config_cert": "",
+    "npm_config_global": "",
+    "npm_config_link": "",
+    "SHELL": "/bin/bash",
+    "npm_package_version": "0.1.0",
+    "npm_package_dependencies_jquery": "^3.4.0",
+    "npm_package_dependencies_js_sha256": "^0.9.0",
+    "npm_package_dependencies_react_loader_spinner": "^2.3.0",
+    "npm_package_browserslist_2": "not ie <= 11",
+    "npm_config_access": "",
+    "npm_config_also": "",
+    "npm_config_save": "true",
+    "npm_config_unicode": "",
+    "npm_lifecycle_event": "build",
+    "QT_ACCESSIBILITY": "1",
+    "GDMSESSION": "ubuntu",
+    "npm_package_dependencies_react_bootstrap_slider": "^2.2.2",
+    "npm_package_scripts_build": "react-scripts build",
+    "npm_package_browserslist_3": "not op_mini all",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"build\"],\"original\":[\"run\",\"build\"]}",
+    "npm_config_unsafe_perm": "true",
+    "npm_config_long": "",
+    "npm_config_production": "",
+    "npm_config_searchlimit": "20",
+    "npm_config_update_notifier": "true",
+    "LESSCLOSE": "/usr/bin/lesspipe %s %s",
+    "npm_config_auth_type": "legacy",
+    "npm_config_node_version": "11.8.0",
+    "npm_config_tag": "latest",
+    "UPSTART_EVENTS": "xsession started",
+    "npm_package_dependencies_react_timekeeper": "^1.1.0",
+    "npm_config_git_tag_version": "true",
+    "npm_config_commit_hooks": "true",
+    "npm_config_script_shell": "",
+    "npm_config_shrinkwrap": "true",
+    "GPG_AGENT_INFO": "/home/shashank/.gnupg/S.gpg-agent:0:1",
+    "UPSTART_SESSION": "unix:abstract=/com/ubuntu/upstart-session/1001/1823",
+    "npm_package_dependencies_react_bootstrap": "^1.0.0-beta.5",
+    "npm_config_fetch_retry_factor": "10",
+    "npm_config_save_exact": "",
+    "npm_config_strict_ssl": "true",
+    "XDG_VTNR": "7",
+    "QT_IM_MODULE": "ibus",
+    "npm_package_dependencies_firebase": "^5.8.5",
+    "npm_config_dev": "",
+    "npm_config_globalconfig": "/usr/local/etc/npmrc",
+    "npm_config_init_module": "/home/shashank/.npm-init.js",
+    "npm_config_parseable": "",
+    "PWD": "/home/shashank/Desktop/LatestBlockprobe/blockprobe-web",
+    "npm_package_dependencies_react_addons_css_transition_group": "^15.6.2",
+    "npm_package_dependencies_react_electron_web_view": "^2.0.1",
+    "npm_package_dependencies_react_joyride": "^2.0.5",
+    "npm_config_globalignorefile": "/usr/local/etc/npmignore",
+    "npm_execpath": "/usr/local/lib/node_modules/npm/bin/npm-cli.js",
+    "CLUTTER_IM_MODULE": "xim",
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-ubuntu:/usr/share/upstart/xdg:/etc/xdg",
+    "XDG_DATA_DIRS": "/usr/share/ubuntu:/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop:/var/lib/snapd/desktop",
+    "npm_package_dependencies_is_image_url": "^1.1.8",
+    "npm_config_cache_lock_retries": "10",
+    "npm_config_searchstaleness": "900",
+    "npm_config_node_options": "",
+    "npm_config_save_prefix": "^",
+    "npm_config_scripts_prepend_node_path": "warn-only",
+    "npm_config_group": "1001",
+    "npm_config_init_author_email": "",
+    "npm_config_searchexclude": "",
+    "VTE_VERSION": "4205",
+    "npm_package_dependencies__material_ui_lab": "^3.0.0-alpha.30",
+    "npm_config_git": "git",
+    "npm_config_optional": "true",
+    "JOB": "unity-settings-daemon",
+    "npm_package_dependencies_html_to_text": "^5.1.1",
+    "npm_package_dependencies_react": "^16.8.3",
+    "npm_package_eslintConfig_extends": "react-app",
+    "npm_config_json": "",
+    "INIT_CWD": "/home/shashank/Desktop/LatestBlockprobe/blockprobe-web",
+    "BABEL_ENV": "production",
+    "NODE_ENV": "production",
+    "NODE_PATH": ""
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": "0",
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": "65536",
+      "hard": "65536"
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": "1048576",
+      "hard": "1048576"
+    },
+    "stack_size_bytes": {
+      "soft": "8388608",
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": "62515",
+      "hard": "62515"
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "/lib/x86_64-linux-gnu/libdl.so.2",
+    "/lib/x86_64-linux-gnu/librt.so.1",
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "/lib/x86_64-linux-gnu/libm.so.6",
+    "/lib/x86_64-linux-gnu/libgcc_s.so.1",
+    "/lib/x86_64-linux-gnu/libpthread.so.0",
+    "/lib/x86_64-linux-gnu/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2"
+  ]
+}
