@@ -736,44 +736,7 @@ class UserSession extends React.Component {
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>                                    
                                 </div>                                
                             </div>
-                            <div>                        
-                            {this.state.showLogin?
-                            <div className="user-session-login-container">
-                                    <div className='user-session-shadow-view'>
-                                        <StyleFirebaseAuth
-                                        uiConfig={this.uiConfig}
-                                        firebaseAuth={firebase.auth()}                            
-                                        />
-                                    </div>
-                                    <div className='mobile-landing-page background-white-partiallyOpaque'>
-                                        <div className="lpTabContainer">
-                                            <Paper square className="lpTabPaper">
-                                                <Tabs
-                                                    value={this.state.tabValue}
-                                                    onChange={this.handleTabChange}
-                                                    variant="fullWidth"
-                                                    indicatorColor="primary"
-                                                    textColor="primary"
-                                                    aria-label="icon tabs example"
-                                                >
-                                                    <Tab icon={<SchoolIcon />} value={0} aria-label="phone" label="TEACHERS"/>
-                                                    <Tab icon={<PersonPinIcon />} value={1} aria-label="person" label="JOURNALISTS"/>
-                                                    <Tab icon={<PolicyIcon />} value={2} aria-label="favorite" label="LAWMAKERS"/>                                            
-                                                </Tabs>
-                                            </Paper>
-                                        </div>
-                                        <div style={{marginTop:'16px'}}>
-                                            {this.cueCardViewV2(currDetails.logo, currDetails.text)}
-                                        </div>            
-                                        <div style={{marginTop:'3%'}}>
-                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
-                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>
-                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/privacy-policy" target="blank">Privacy Policy</a>
-                                            <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/terms-of-service" target="blank">Terms of Service</a>
-                                        </div>
-                                    </div>
-                                </div> : null 
-                            }
+                            <div>                                                    
                             </div>
                         </div>
                         

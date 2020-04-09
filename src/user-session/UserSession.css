@@ -167,9 +167,10 @@
     font-size:16px;
 }
 
-@media only screen and (min-width: 701px) {
+
+@media only screen and (min-width: 781px) {
     .landing-view-container{
-        width: 45%; 
+        width: 60%; 
         padding: 0 10px 30px 10px; 
         margin: 0 2% 0 0;
     }
@@ -190,10 +191,11 @@
     }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 780px) {
 
     .landing-view-container{
-        display: none;
+        width: 100%; 
+        padding: 0 10px 30px 10px; 
     }
 
     .toolbar__logo{
