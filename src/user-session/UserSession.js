@@ -27,7 +27,6 @@ import SchoolIcon from '@material-ui/icons/School';
 import PolicyIcon from '@material-ui/icons/Policy';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 
-
 class UserSession extends React.Component {
 
     constructor(props){
@@ -716,7 +715,20 @@ class UserSession extends React.Component {
                                 <div style={{marginTop:'16px'}}>
                                     {this.cueCardViewV2(currDetails.logo, currDetails.text)}
                                 </div>                        
-                                
+                                {this.state.showLogin?
+                                <div className="user-session-login-container-v2">                                     
+                                    <div className='user-session-shadow-view-v2'>
+                                        <div>
+                                            <span className="userSessionLoginHeader">Login</span>
+                                        </div>                                        
+                                        <StyleFirebaseAuth
+                                        uiConfig={this.uiConfig}
+                                        firebaseAuth={firebase.auth()}                            
+                                        />
+                                    </div>
+                                </div> : 
+                                    null 
+                                }
                                 <div style={{marginTop:'3%'}}>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/quickstart" target="blank">Quickstart</a>
                                     <a style={{fontFamily: 'Roboto, sans-serif', margin:'3%'}} href="https://sites.google.com/view/blockprobe/home" target="blank">About</a>

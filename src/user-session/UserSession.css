@@ -152,6 +152,21 @@
     background:white;
 }
 
+.user-session-login-container-v2{
+    margin: 2%;
+    text-align: center;
+}
+
+.user-session-shadow-view-v2{
+    background:white;
+    padding: 10px;
+    display: inline-block;
+}
+
+.userSessionLoginHeader{
+    font-size:16px;
+}
+
 @media only screen and (min-width: 701px) {
     .landing-view-container{
         width: 45%; 
