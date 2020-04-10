@@ -104,6 +104,7 @@ class UserSession extends React.Component {
         this.updatePosts = this.updatePosts.bind(this);
         this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.changeOpacity = this.changeOpacity.bind(this);
     }
 
     getItemWrapper(key, defaultVal){
@@ -627,22 +628,34 @@ class UserSession extends React.Component {
                                 </div>
       */
 
+      changeOpacity(index){  
+        try{
+            document.querySelector(".teacherImage").style.opacity = 0;
+            document.querySelector(".journalistImage").style.opacity = 0;
+            document.querySelector(".politicianImage").style.opacity = 0;
+
+            let selectedStr ="." + this.state.allBackgrounds[index] + "Image";
+            document.querySelector(selectedStr).style.opacity = 1;
+        }
+        catch(e){
+
+        }
+      }
+
       loggedOutView(){
           var url = 'https://blockprobe-32644.firebaseapp.com/';
           var mainLogoList = [MainLogo]
           let imgUrl = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]].background;
           let currDetails = this.state.landingPage[this.state.allBackgrounds[this.state.currBackgroundIndex]];
+          this.changeOpacity(this.state.currBackgroundIndex);
           return (
               <div>                
-                <main style={{minHeight:'100vh'}} className="body-color-backup">
+                <main style={{height:'100vh',overflow:'hidden'}}>
                 
-                    <div style={{display:'flex',
-                                minHeight:'100vh',
-                                minwidth:'100vw',
-                                backgroundImage: `url(${imgUrl})`,
-                                backgroundSize: 'cover', 
-                                backgroundPosition: 'center center',
-                                backgroundRepeat: 'no-repeat'}}>
+                    <div style={{height:'100vh',overflow:'auto'}}>
+                        <img class="background-image teacherImage" src={TeacherBackground}></img>
+                        <img class="background-image journalistImage" src={JournalistBackground}></img>
+                        <img class="background-image politicianImage" src={LawmakerBackground}></img>
                         <GoogleFontLoader
                             fonts={[
                                 {
@@ -666,7 +679,7 @@ class UserSession extends React.Component {
                             />                        
 
                         <div className="landing-view-container">                       
-                        <div style={{marginTop:'10px', textAlign:'center'}}>
+                        <div style={{paddingTop:'10px', textAlign:'center'}}>
                                     <Img src={mainLogoList}
                                     style={{width:'50%'}}></Img>
                                 </div>
