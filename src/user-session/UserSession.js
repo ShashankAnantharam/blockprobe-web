@@ -10,13 +10,9 @@ import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 import Loader from 'react-loader-spinner';
 import GoogleFontLoader from 'react-google-font-loader';
 import Img from 'react-image';
-import JournalistLogo from "./icons/journalist.png";
 import JournalistBackground from "./backgrounds/Journalist.jpg";
-import PoliceLogo from "./icons/police.png";
 import TeacherBackground from "./backgrounds/Teacher.jpg";
-import PoliticianLogo from "./icons/political.png";
 import LawmakerBackground from "./backgrounds/lawmaker.jpg";
-import TeacherLogo from "./icons/teacher.png";
 import MainLogo from "./icons/logo.png";
 import UserWall from "./userWall/UserWall";
 import UserNotifications from "./userNotif/UserNotifications";
@@ -48,21 +44,21 @@ class UserSession extends React.Component {
             },
             landingPage:{
                 journalist:{
-                    logo: JournalistLogo,
+                    logo: '',
                     text: 'As a journalist, you can build your story using blockprobe, visualise your story and better engage your audience with your story.',
                     background: JournalistBackground
                 },
                 police:{
-                    logo: PoliceLogo,
+                    logo: '',
                     text: 'As a law enforcement agent, detective or police officer, you can build your investigation using blockprobe, visualise your investigation and better engage the general public with your investigation.'
                 },
                 politician:{
-                    logo: PoliticianLogo,
+                    logo: '',
                     text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and better engage your constituents with your proposals.',
                     background: LawmakerBackground
                 },
                 teacher:{
-                    logo: TeacherLogo,
+                    logo: '',
                     text: 'As a teacher, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.',
                     background: TeacherBackground
                 }
