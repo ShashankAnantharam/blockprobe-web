@@ -92,7 +92,6 @@ class UserSession extends React.Component {
         this.addBlockprobeToList = this.addBlockprobeToList.bind(this);
         this.addNotificationToList = this.addNotificationToList.bind(this);
         this.removeBlockprobeFromList = this.removeBlockprobeFromList.bind(this);
-        this.cueCardView = this.cueCardView.bind(this);
         this.cueCardViewV2 = this.cueCardViewV2.bind(this);
         this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
         this.returnToViewBlockprobes = this.returnToViewBlockprobes.bind(this);
@@ -606,26 +605,6 @@ class UserSession extends React.Component {
                 </div>
             </div>              
             );
-      }
-
-      cueCardView(icon, content){
-        var iconList = [icon];
-          return(
-                    <div className="cue-card-container" style={{width:'100%', display:'flex'}}>
-                        <div style={{minWidth:'30%', maxWidth:'30%', padding:'10px 0 10px 0', textAlign:'center'}}>
-                            
-                            <div>
-                                <Img src={iconList}
-                                    style={{width:'50%'}}></Img>
-                            </div>                                
-                        </div>
-                        <div style={{padding:'10px 10px 10px 10px'}}>
-                            <div className="cue-card-text" style={{fontFamily: 'Lora, bold-italic', textAlign:'justify'}}>
-                                    {content}
-                            </div>
-                        </div>
-                    </div>              
-          )
       }
 
       handleTabChange(event, newValue){
