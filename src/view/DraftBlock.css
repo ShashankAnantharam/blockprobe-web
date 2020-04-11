@@ -67,11 +67,11 @@
 }
 
 .addDateTimeButton{
-    background:rgb(2, 1, 54);
-    color:rgb(219, 243, 242);
-    margin-left:3em;
-    margin-top:0;
-    size:0.6em;
+    background:rgb(2, 1, 54) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:3em !important;
+    margin-top:0 !important;
+    size:0.6em !important;
     border:none;
 }
 
@@ -80,11 +80,11 @@
 }
 
 .addEntityButton{
-    background:rgb(2, 1, 54);
-    color:rgb(219, 243, 242);
-    margin-left:6em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(2, 1, 54) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:6em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -93,12 +93,12 @@
 }
 
 .addEvidenceButton{
-    background:rgb(2, 1, 54);
-    color:rgb(219, 243, 242);
-    margin-left:0.5em;
-    margin-top:1.5em;
-    margin-bottom: 0.5em;
-    size:2.6em;
+    background:rgb(2, 1, 54) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:0.5em !important;
+    margin-top:1.5em !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -107,12 +107,12 @@
 }
 
 .addNumberButton{
-    background:rgb(2, 1, 54);
-    color:rgb(219, 243, 242);
-    margin-left:0.5em;
-    margin-top:1.5em;
-    margin-bottom: 0.5em;
-    size:2.6em;
+    background:rgb(2, 1, 54) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:0.5em !important;
+    margin-top:1.5em !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -137,11 +137,11 @@
 }
 
 .commitBlockButton{
-    background:rgb(2, 100, 32);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(2, 100, 32) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -154,11 +154,11 @@
 }
 
 .saveBlockButton{
-    background:rgb(12, 52, 231);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(12, 52, 231) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -167,11 +167,11 @@
 }
 
 .convertToBlocksButton{
-    background:rgb(2, 100, 32);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(2, 100, 32) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -180,11 +180,11 @@
 }
 
 .cancelBlockBackButton{
-    background:rgb(78, 78, 78);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(78, 78, 78) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -193,11 +193,11 @@
 }
 
 .saveDraftBulkBlockprobeButton{
-    background:rgb(12, 52, 231);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(12, 52, 231) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -206,11 +206,11 @@
 }
 
 .deleteBlockButton{
-    background:rgb(231, 12, 12);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(231, 12, 12) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -219,11 +219,11 @@
 }
 
 .submitBlockButton{
-    background:rgb(12, 52, 231);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1.5em;
-    size:2.6em;
+    background:rgb(12, 52, 231) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 

@@ -43,9 +43,9 @@
 }
 
 .advancedImageOption{
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    size:2.6em;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -54,13 +54,13 @@
 }
 
 .advancedImageOptionSelected{
-    background:rgb(12, 52, 231);
-    opacity: 1;
+    background:rgb(12, 52, 231) !important;
+    opacity: 1 !important;
 }
 
 .advancedImageOptionUnselected{
-    background:rgb(66, 93, 209);
-    opacity: 0.7;
+    background:rgb(66, 93, 209) !important;
+    opacity: 0.7 !important;
 }
 
 .bulkEdit-nonPreview{

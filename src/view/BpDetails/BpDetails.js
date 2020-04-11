@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { isNullOrUndefined } from 'util';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import * as firebase from 'firebase';
 import { stringify } from '@amcharts/amcharts4/.internal/core/utils/Utils';
 import './BpDetails.css';
@@ -112,11 +114,13 @@ class BpDetail extends React.Component {
                                     {this.props.value}
                                     {!isNullOrUndefined(this.props.value)
                                         && this.props.permit == "CREATOR"?
-                                        <button 
+                                        <Button 
+                                            color="primary" 
+                                            variant="contained"
                                             className="edit-bpDetail-button"
                                             onClick={() => { this.clickOnButton('edit')}}>
                                             Edit {this.props.type}
-                                        </button>
+                                        </Button>
                                             :
                                         null
                                     }                     
@@ -130,18 +134,17 @@ class BpDetail extends React.Component {
                         <div>
                             <form className="newBlockprobeForm">
                                 <label>
-                                    <Textarea 
+                                    <TextField 
                                         type="text"
+                                        variant="outlined"
+                                        multiline
                                         placeholder = {"Enter " + this.props.type}
                                         value={this.state.newValue}
                                         onChange={(e) => { this.handleChange(e,"title")}}
-                                        maxRows="2"
-                                        minRows="1"
+                                        rowsMax="2"
+                                        rowsMin="1"
                                         style={{
                                             background: 'white',
-                                            borderWidth:'2px', 
-                                            borderStyle:'solid', 
-                                            borderColor:'black',
                                             paddingTop:'6px',
                                             paddingBottom:'6px',
                                             textColor: 'black',
@@ -152,19 +155,23 @@ class BpDetail extends React.Component {
                                 </label>
                             </form>
                             {this.isValid()?
-                                <button
+                                <Button
+                                color="primary" 
+                                variant="contained"
                                 className="submit-bpDetail-button"
                                 onClick={() => { this.clickOnButton('save')}}>
                                     <div>Confirm</div>
-                                </button>                    
+                                </Button>                    
                             :
                                 null
                             }
-                            <button
+                            <Button
+                                color="primary" 
+                                variant="contained"
                                 className="close-bpDetail-button"
                                 onClick={() => { this.clickOnButton('close')}}>
                                     <div>Close</div>
-                                </button>              
+                                </Button>              
                         </div>
                     }                 
             </div>

@@ -864,26 +864,30 @@ class BulkDraftBlockComponent extends React.Component {
                         <div className='bulkDraftBlocksPaneTitle' style={{marginBottom:'0'}}>Advanced options</div>
                         
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
-                                <button 
+                                <Button 
+                                    variant="contained" 
                                     className={"advancedImageOption " + (this.state.openOcr ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')} 
                                     onClick={() => {this.toggleAdvancedTab('ocr')}}>
                                         <div style={{fontWeight:'bold'}}>Retrieve text from image</div>                                                                    
-                                </button>
-                                <button 
+                                </Button>
+                                <Button 
+                                    variant="contained" 
                                     className={"advancedImageOption " + (this.state.openArticleLink ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('article')}}>
                                         <div style={{fontWeight:'bold'}}>Retrieve text from article</div>                                                                    
-                                </button>  
-                                <button 
+                                </Button>  
+                                <Button 
+                                    variant="contained" 
                                     className={"advancedImageOption " + (this.state.openFilterText ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('filterText')}}>
                                         <div style={{fontWeight:'bold'}}>Quickfilter</div>                                                                    
-                                </button>  
-                                <button
+                                </Button>  
+                                <Button
+                                    variant="contained" 
                                     className={"advancedImageOption " + (this.state.openTranslateText ? 'advancedImageOptionSelected' : 'advancedImageOptionUnselected')}
                                     onClick={() => {this.toggleAdvancedTab('translateText')}}>
                                         <div style={{fontWeight:'bold'}}>Translate</div>                                                                    
-                                </button>                              
+                                </Button>                              
                         </div>
 
                         {this.state.openOcr?
@@ -991,11 +995,12 @@ class BulkDraftBlockComponent extends React.Component {
                             </div>
                         </div>
                         <div className="bulk-draft-options-container" style={{marginTop:'0'}}>
-                            <button 
+                            <Button
+                                variant="contained"  
                                 className="convertToBlocksButton saveBlocksInBulk" 
                                 onClick={() => this.toggleSaveDialog(true)}>
                                     <div>Confirm</div>
-                            </button>
+                            </Button>
                             <Dialog
                                 open={this.state.openConfirmDialog}
                                 TransitionComponent={Transition}
@@ -1020,16 +1025,18 @@ class BulkDraftBlockComponent extends React.Component {
                                 </Button>
                                 </DialogActions>
                             </Dialog>
-                            <button 
+                            <Button
+                                variant="contained"  
                                 className="saveDraftBulkBlockprobeButton" 
                                 onClick={this.saveBulkDraft}>
                                     <div>Save draft</div>
-                            </button>
-                            <button 
+                            </Button>
+                            <Button
+                                variant="contained"  
                                 className="cancelBlockBackButton" 
                                 onClick={this.closeBulkDraft}>
                                     <div>Close</div>
-                            </button>
+                            </Button>
                         </div>                        
                     </div>
                 }                         
