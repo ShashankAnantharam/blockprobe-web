@@ -16,12 +16,20 @@ import LawmakerBackground from "./backgrounds/lawmaker.jpg";
 import MainLogo from "./icons/logo.png";
 import UserWall from "./userWall/UserWall";
 import UserNotifications from "./userNotif/UserNotifications";
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import SchoolIcon from '@material-ui/icons/School';
 import PolicyIcon from '@material-ui/icons/Policy';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
+import HomeIcon from '@material-ui/icons/Home';
+import NotificactionsIcon from '@material-ui/icons/Notifications';
 
 class UserSession extends React.Component {
 
@@ -552,24 +560,32 @@ class UserSession extends React.Component {
 
       loggedInView(){
           
+        let notificationNumber = null;
+        if(Object.keys(this.state.notifications).length > 0)
+            notificationNumber = Object.keys(this.state.notifications).length;
+
           return (
             <div>
                 <div style={{display: 'block'}}>
                 <header className="toolbar">
-                    <nav className="toolbar__navigation">
-                        <div></div>
-                        <div className="toolbar__logo"><a href="/">Blockprobe</a></div>
-                        <div className="spacer" />
-                        <div className="toolbar__navigation-items">
-                            <ul>
-                                <li><a onClick={() => this.returnToViewBlockprobes()}>Home</a></li> 
-                                <li><a onClick={() => this.viewWall()}>Wall</a></li>
-                                <li><a onClick={() => this.viewNotifications()}>Notifications</a></li>
-                                <li className="userName" style={{color:'white'}}>{this.state.userId}</li>
-                                <li><a onClick={() => this.logout()}>Logout</a></li>
-                            </ul>
-                        </div>
-                    </nav>
+                    <AppBar position="static">
+                        <Toolbar>
+                        <Typography>
+                            {this.state.userId}
+                        </Typography>
+                        <div style={{flexGrow: '1'}}></div>
+                        <IconButton color="inherit" onClick={() => this.returnToViewBlockprobes()}>
+                            <HomeIcon/>
+                        </IconButton>                        
+                        <IconButton color="inherit" onClick={() => this.viewNotifications()}>
+                            <Badge badgeContent={notificationNumber} color="secondary">
+                                <NotificactionsIcon />
+                            </Badge>                           
+                        </IconButton>
+                        <Button color="inherit" onClick={() => this.viewWall()}>Wall</Button>
+                        <Button color="inherit" onClick={() => this.logout()}>Logout</Button>
+                        </Toolbar>
+                    </AppBar>                   
                 </header>
                 </div>
                 <div>
