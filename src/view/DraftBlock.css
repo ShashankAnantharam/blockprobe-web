@@ -3,9 +3,9 @@
     padding-top: 10px;
     padding-bottom: 5px;
     padding-left: 10px;
-    border-radius:6px;
     margin: 1em 1em 1em 1em;
-    border: 1px black solid;
+    box-shadow: 2px 2px 10px 2px rgb(206, 204, 204) !important;
+    border: 0.25px black solid;
 }
 
 .draft-block-color-ADD{

@@ -16,6 +16,7 @@ import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
 import ImagePaneView from "../view/ImagePane/ImagePane";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import Paper from '@material-ui/core/Paper';
 import GraphComponent from "../viso/GraphComponent";
 import  TimelineComponent from "../viso/TimelineComponent";
 import SummaryViewComponent from "../viso/summary/SummaryView";
@@ -255,7 +256,8 @@ class UserBlocksComponent extends React.Component {
 
 
     modifyBlockList(block, add){
-        if(block.blockState=="SUCCESSFUL"){
+        if(block.blockState=="SUCCESSFUL" && 
+            !(block.actionType=="entityChange") ){
             var currMap = this.state.successBlocks;
             if(add && this.props.blockStatus[block.key])
                 currMap[block.key]=block;
@@ -1204,13 +1206,13 @@ class UserBlocksComponent extends React.Component {
                                         null
                                     }
                                     
-                                </div>
+                                </div>                                                               
+                                <Paper className="block-list-content draftBlocksList" elevation={3}>
+                                    <List>{draftBlocksListRender}</List>
+                                </Paper>
                                 <div>
                                     {singleDraftBlocksListRender}
-                                </div>                                
-                                <div className="block-list-content draftBlocksList">
-                                    <List>{draftBlocksListRender}</List>
-                                </div>
+                                </div> 
                             </div>
                             :
                             <div className="blocklist-message">{draftBlocksListRender}</div>
@@ -1221,9 +1223,9 @@ class UserBlocksComponent extends React.Component {
                             {Object.keys(this.state.successBlocks).length>0?
                             
                                     <div>
-                                        <div className="block-list-content">
+                                        <Paper className="block-list-content" elevation={3}>
                                             <List>{successBlocksListRender}</List>
-                                        </div>
+                                        </Paper>
                                     </div>
                                 
                                 :
@@ -1249,9 +1251,9 @@ class UserBlocksComponent extends React.Component {
                                     steps={this.state.tooltipText.commitBlock}
                                     run = {this.state.showTooltip.commitBlock}                    
                                     /> 
-                                    <div className="block-list-content inReviewBlockList">
+                                    <Paper className="block-list-content inReviewBlockList" elevation={3}>
                                         <List>{inReviewBlocksListRender}</List>
-                                    </div>
+                                    </Paper>
                                 </div>
                             </TabPanel>
                             :
@@ -1261,9 +1263,9 @@ class UserBlocksComponent extends React.Component {
                         {Object.keys(this.state.toReviewBlocks).length>0?
                             <TabPanel>
                                 <div>
-                                    <div className="block-list-content">
+                                    <Paper className="block-list-content" elevation={3}>
                                         <List>{toReviewBlocksListRender}</List>
-                                    </div>
+                                    </Paper>
                                 </div>
                             </TabPanel>
                             :
