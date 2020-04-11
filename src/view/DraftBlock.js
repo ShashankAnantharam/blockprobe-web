@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
 import  MultiSelectReact  from 'multi-select-react';
 import DraftBlockEvidenceView from './Draft/DraftBlockEvidenceView';
 import DraftBlockNumberView from './Draft/DraftBlockNumberView';
@@ -827,38 +828,34 @@ class DraftBlockComponent extends React.Component {
                 </div>                    
                 <form>
                 <label>
-                    <Textarea 
+                    <TextField 
                         type="text"
+                        variant="outlined"
+                        multiline
                         placeholder = "Title of your contribution."
                         value={this.state.newBlock.title}
                         onChange={(e) => { this.handleChange(e,"title")}}
-                        maxRows="2"
-                        minRows="1"
+                        rowsMax="2"
+                        rowsMin="1"
                         style={{
                             background: 'white',
-                            borderWidth:'2px', 
-                            borderStyle:'solid', 
-                            borderColor:'darkgrey',
-                            borderBottomWidth:'0px',
-                            paddingTop:'6px',
-                            paddingBottom:'6px',
+                            marginTop:'6px',
+                            marginBottom:'6px',
                             width:'95%'
                             }}/>
-                    <Textarea 
+                    <TextField 
                     type="text"
+                    variant="outlined"
+                    multiline
                     placeholder = "Content of your contribution."
                     value={this.state.newBlock.summary}
                     onChange={(e) => { this.handleChange(e,"summary")}}
-                    maxRows="13"
-                    minRows="3"
+                    rowsMax="13"
+                    rows="3"
                     style={{
                         background: 'white',
-                        borderWidth:'2px', 
-                        borderStyle:'solid', 
-                        borderColor:'darkgrey',
-                        borderTopWidth:'0px',
-                        paddingTop:'6px',
-                        paddingBottom:'6px',
+                        marginTop:'6px',
+                        marginBottom:'6px',
                         width:'95%'
                         }}/>
                 </label>
@@ -942,21 +939,20 @@ class DraftBlockComponent extends React.Component {
                         isTextWrap={false} 
                         />
                     <div className="draft-add-new-entity-container">
-                        <Textarea 
+                        <TextField 
                                 type="text"
+                                variant="outlined"
+                                multiline
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
                                 placeholder = "Type entity tags seperated by commas and press 'Enter'"
-                                maxRows="2"
-                                minRows="1"
+                                rowsMax="2"
+                                rows="1"
                                 style={{
                                     background: 'white',
-                                    borderWidth:'2px', 
-                                    borderStyle:'solid', 
-                                    borderColor:'darkgrey',
-                                    paddingTop:'6px',
-                                    paddingBottom:'6px',
+                                    marginTop:'6px',
+                                    marginBottom:'6px',
                                     minWidth:'60%',
                                     maxWidth: '90%'
                                     }}/>                                   

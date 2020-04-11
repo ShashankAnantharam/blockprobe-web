@@ -142,11 +142,11 @@ class BpDetail extends React.Component {
                                         value={this.state.newValue}
                                         onChange={(e) => { this.handleChange(e,"title")}}
                                         rowsMax="2"
-                                        rowsMin="1"
+                                        rows="1"
                                         style={{
                                             background: 'white',
-                                            paddingTop:'6px',
-                                            paddingBottom:'6px',
+                                            marginTop:'6px',
+                                            marginBottom:'6px',
                                             textColor: 'black',
                                             fontWeight: '600',
                                             marginLeft: '1em',

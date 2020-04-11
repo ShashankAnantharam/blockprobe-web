@@ -278,11 +278,11 @@ class EntityPaneView extends React.Component {
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
                                 placeholder = "Input your entity names seperated by ',' and press 'Enter key' or 'Ok button'"
                                 rowsMax="2"
-                                rowsMin="1"
+                                rows="1"
                                 style={{
                                     background: 'white',
-                                    paddingTop:'6px',
-                                    paddingBottom:'6px',
+                                    marginTop:'6px',
+                                    marginBottom:'6px',
                                     minWidth:'60%',
                                     maxWidth: '80%',
                                     marginLeft:'1em',
