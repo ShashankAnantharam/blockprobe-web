@@ -5,6 +5,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Joyride from 'react-joyride';
 import './EntityPane.css';
 import * as firebase from 'firebase';
@@ -266,21 +268,19 @@ class EntityPaneView extends React.Component {
                     run = {this.props.entityPaneTooltip}                    
                     /> 
                  
-                <Textarea 
+                <TextField 
                                 type="text"
+                                variant="outlined"
+                                multiline
                                 className="createNewEntitiesPane"
                                 value={this.state.newEntity}
                                 onChange={(e) => { this.handleChange(e,"new-entity")}}
                                 onKeyDown={(e) => { this.handleKeyDown(e)}}
                                 placeholder = "Input your entity names seperated by ',' and press 'Enter key' or 'Ok button'"
-                                maxRows="2"
-                                minRows="1"
+                                rowsMax="2"
+                                rowsMin="1"
                                 style={{
                                     background: 'white',
-                                    borderRadius:'5px',
-                                    borderWidth:'2px', 
-                                    borderStyle:'solid', 
-                                    borderColor:'black',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
                                     minWidth:'60%',
@@ -309,17 +309,21 @@ class EntityPaneView extends React.Component {
                     run = {this.state.showTooltip.cancel}                    
                     />                                     
                 <div className="draft-add-new-entity-container">                                       
-                        <button 
+                        <Button
+                            color="primary" 
+                            variant="contained" 
                             className="cancelBlockButton cancelEntityPaneButton" 
                             onClick={this.closeEntityPane}>
                                 <div>Close</div>
-                        </button>  
+                        </Button>  
                         {this.state.newEntity != ''?
-                            <button 
+                            <Button 
+                                color="primary" 
+                                variant="contained"
                                 className="addEntityButton" 
                                 onClick={this.clickOkayButton}>
                                     <div>Ok</div>
-                            </button>        
+                            </Button>        
                                 :
                             null}
                 </div>   

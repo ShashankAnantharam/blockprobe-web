@@ -1,8 +1,9 @@
 
 
 .imagePaneButton{
-    margin-right: 1.5em;
-    height: 3.6em;
+    margin-right: 1.5em !important;
+    height: 3.6em !important;
+    margin-top: 0.5em !important;
 }
 
 .removeImageButton{

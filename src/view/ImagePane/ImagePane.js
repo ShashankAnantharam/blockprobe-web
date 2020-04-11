@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
+import Button from '@material-ui/core/Button';
 import './ImagePane.css';
 import Textarea from 'react-textarea-autosize';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -453,12 +454,18 @@ class ImagePaneView extends React.Component {
                     </div>     
 
                     {this.canSubmit()?
-                        <button className="imagePaneButton" onClick={this.submitEntityImage}>Save</button>
+                        <Button
+                            color="primary" 
+                            variant="contained" 
+                            className="imagePaneButton" onClick={this.submitEntityImage}>Save</Button>
                         :
                         null
                     }
                     
-                    <button className="imagePaneButton" onClick={this.closeImagePane}>Close</button>              
+                    <Button
+                        color="primary" 
+                        variant="contained" 
+                        className="imagePaneButton" onClick={this.closeImagePane}>Close</Button>              
                 </div>
                 {this.state.selectedEntity == ''?
                     null

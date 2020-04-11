@@ -22,18 +22,18 @@
 .addEntityButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
-    margin-left:1em;
-    margin-top:0;
-    size:2.6em;
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 
 .cancelBlockButton{
     background:rgb(2, 1, 54);
     color:rgb(219, 243, 242);
-    margin-left:1em;
-    margin-top:0;
-    size:2.6em;
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 

@@ -12,11 +12,11 @@
 }
 
 .renameEntityButton{
-    background:rgb(2, 1, 46);
-    color:rgb(219, 243, 242);
-    margin-right:1em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(2, 1, 46) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-right:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -25,11 +25,11 @@
 }
 
 .deleteEntityButton{
-    background:rgb(102, 4, 4);
-    color:rgb(219, 243, 242);
-    margin-right:1em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(102, 4, 4) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-right:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 

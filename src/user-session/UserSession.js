@@ -569,10 +569,7 @@ class UserSession extends React.Component {
                 <div style={{display: 'block'}}>
                 <header className="toolbar">
                     <AppBar position="static">
-                        <Toolbar>
-                        <Typography>
-                            {this.state.userId}
-                        </Typography>
+                        <Toolbar>                        
                         <div style={{flexGrow: '1'}}></div>
                         <IconButton color="inherit" onClick={() => this.returnToViewBlockprobes()}>
                             <HomeIcon/>
@@ -583,6 +580,9 @@ class UserSession extends React.Component {
                             </Badge>                           
                         </IconButton>
                         <Button color="inherit" onClick={() => this.viewWall()}>Wall</Button>
+                        <Typography>
+                            {this.state.userId}
+                        </Typography>
                         <Button color="inherit" onClick={() => this.logout()}>Logout</Button>
                         </Toolbar>
                     </AppBar>                   

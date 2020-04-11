@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -181,19 +182,17 @@ class SingleEntityView extends React.Component {
                 </Dialog>                
                 <div className="entityEditLabelContainer">
                     <div style={{marginBottom:'6px'}}>Edit Name</div>
-                    <Textarea 
+                    <TextField 
                                 type="text"
+                                variant="outlined"
                                 value={this.state.entityName}
                                 onChange={(e) => { this.handleChange(e,"entity-name")}}
                                 placeholder = "Entity name"
-                                maxRows="3"
-                                minRows="1"
+                                multiline
+                                rowsMax="3"
+                                rowsMin="1"
                                 style={{
                                     background: 'white',
-                                    borderRadius:'5px',
-                                    borderWidth:'2px', 
-                                    borderStyle:'solid', 
-                                    borderColor:'black',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
                                     minWidth:'40%',
@@ -204,20 +203,22 @@ class SingleEntityView extends React.Component {
                 </div>
                 <div className="entityOptionsContainer">
                     {this.isEntityNameChanged()?
-                        <button 
+                        <Button
+                            variant="contained" 
                             className="renameEntityButton" 
                             onClick={() => {this.toggleDialog(true,'rename')}}>
                                 <div>Rename</div>
-                        </button>
+                        </Button>
                         :
                         null
                     }
 
-                    <button 
+                    <Button
+                        variant="contained" 
                         className="deleteEntityButton" 
                         onClick={() => {this.toggleDialog(true,'delete')}}>
                             <div>Delete</div>
-                    </button>
+                    </Button>
                         
                 </div>
 

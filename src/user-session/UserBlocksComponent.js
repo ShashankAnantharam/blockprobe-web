@@ -11,6 +11,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import IconButton from '@material-ui/core/IconButton';
 import './UserBlocksComponent.css';
 import { isNullOrUndefined } from 'util';
 import EntityPaneView from "../view/EntityPane/EntityPane";
@@ -875,24 +876,30 @@ class UserBlocksComponent extends React.Component {
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
                     />             
-                    <button 
+                    <Button
+                    color="primary"
+                    variant="contained" 
                     className="addBulkBlockButton" 
                     onClick={this.createBulkBlock}>
                         <div>Contribute</div>
-                    </button>
+                    </Button>
                     
-                    <button 
+                    <Button 
+                    color="primary"
+                    variant="contained"
                     className="editEntitiesButton entityPaneButtonTooltip" 
                     onClick={this.openEntityPane}>
                         <div>Manage story entities</div>
-                    </button>
+                    </Button>
 
                     {Object.keys(this.props.investigationGraph).length > 0?
-                        <button 
+                        <Button 
+                        color="primary"
+                        variant="contained"
                         className="editEntitiesButton entityPaneButtonTooltip" 
                         onClick={this.openImagePane}>
                             <div>Manage story images</div>
-                        </button>
+                        </Button>
                             :
                         null}
                 </div>
@@ -1171,37 +1178,41 @@ class UserBlocksComponent extends React.Component {
                                 />                                 
                                 <div className="multiselect-button-container">
                                     {this.state.multiSelectDraftBlockStatus?
-                                        <button 
+                                        <Button
+                                            variant="contained" 
                                             className="multiSelectBlockButton" 
                                             onClick={this.toggleMultiSelect}>
                                                 <div>Close multiselect</div>
-                                        </button>
+                                        </Button>
                                         :
-                                        <button 
+                                        <Button 
+                                            variant="contained"
                                             className="multiSelectBlockButton" 
                                             onClick={this.toggleMultiSelect}>
                                                 <div>Multiselect</div>
-                                        </button>
+                                        </Button>
                                     }
 
                                     {Object.keys(this.state.multiSelectedBlocks).length > 0 &&
                                         this.state.multiSelectDraftBlockStatus?
-                                        <button 
+                                        <Button
+                                            variant="contained" 
                                             className="multiSelectDeleteBlockButton" 
                                             onClick={() => {this.toggleDialog(true,'delete')}}>
                                                 <div>Delete</div>
-                                        </button>
+                                        </Button>
                                         :
                                         null
                                     }
 
                                     {Object.keys(this.state.multiSelectedBlocks).length > 0 &&
                                         this.state.multiSelectDraftBlockStatus?
-                                        <button 
+                                        <Button
+                                            variant="contained" 
                                             className="multiSelectCommitBlockButton" 
                                             onClick={() => {this.toggleDialog(true,'commit')}}>
                                                 <div>Add to story</div>
-                                        </button>
+                                        </Button>
                                         :
                                         null
                                     }
