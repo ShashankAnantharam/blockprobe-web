@@ -11,6 +11,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Loader from 'react-loader-spinner';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import  * as Utils from '../common/utilSvc';
 import './UserBlockprobes.css';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -264,18 +266,17 @@ class UserBlockprobesComponent extends React.Component {
                     />
                     <form className="newBlockprobeForm">
                         <label>
-                            <Textarea 
+                            <TextField 
                                 type="text"
                                 placeholder = "Enter title of your story."
+                                variant="outlined"
                                 value={this.state.draftBlockprobe.title}
                                 onChange={(e) => { this.handleChange(e,"title")}}
-                                maxRows="2"
-                                minRows="1"
+                                multiline
+                                rowsMax="2"
+                                rowsMin="1"
                                 style={{
                                     background: 'white',
-                                    borderWidth:'2px', 
-                                    borderStyle:'solid', 
-                                    borderColor:'black',
                                     paddingTop:'6px',
                                     paddingBottom:'6px',
                                     textColor: 'black',
@@ -286,11 +287,13 @@ class UserBlockprobesComponent extends React.Component {
                         </label>
                     </form>
                     {this.isValidBlockprobe()?
-                        <button
+                        <Button
                         className="submitBlockprobeButton"
+                        color="primary"
+                        variant="contained"
                         onClick={this.createBlockprobe}>
-                            <div>Confirm</div>
-                        </button>                    
+                            Confirm
+                        </Button>                    
                     :
                         null
                     }
@@ -474,20 +477,24 @@ class UserBlockprobesComponent extends React.Component {
                     <div>
                         <div>
                             <div>
-                                <button 
+                                <Button 
                                         className="addBlockprobeButton" 
+                                        color="primary"
+                                        variant="contained"
                                         onClick={() => this.addCancelBlockprobe(false)}>
                                         {!this.state.addBlockprobe?
                                         <div>Create new story</div>
                                         :
                                         <div>Cancel</div>
                                         }
-                                </button>
-                                <button
+                                </Button>
+                                <Button
                                     className="startTooltipsButton" 
+                                    color="primary"
+                                    variant="contained"
                                     onClick={() => this.startTooltipTour()}>
                                     Guided tutorial
-                                </button>
+                                </Button>
                             </div>
                             {this.state.addBlockprobe?
                                 this.renderDraftBlockprobe()
