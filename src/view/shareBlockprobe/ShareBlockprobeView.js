@@ -3,6 +3,7 @@ import './ShareBlockprobe.css';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import Loader from 'react-loader-spinner';
+import Button from '@material-ui/core/Button';
 import * as Utils from '../../common/utilSvc';
 import * as DbUtils from "../../common/dbSvc";
 import {
@@ -175,40 +176,44 @@ class ShareBlockprobeComponent extends React.Component {
                     </div>
                     :
                     <div style={{display:'flex'}}>                            
-                            <button
+                            <Button
+                            variant="contained" 
                             className="publishBlockprobeButton"
                             onClick={this.publishStory}>
                                 <div>Publish latest story</div>
-                            </button>
+                            </Button>
 
                             {this.state.isBlockprobeAlreadyPublished?
-                                <button
+                                <Button
+                                variant="contained" 
                                 className="unpublishBlockprobeButton"
                                 onClick={this.unpublishStory}>
                                     <div>Unpublish story</div>
-                                </button>
+                                </Button>
                                 :
                                 null
                             }
 
                             {this.state.isBlockprobeAlreadyPublished && 
                                 !this.isStoryAlreadyAdded()?
-                                <button
+                                <Button
+                                variant="contained" 
                                 className="addToWallButton"
                                 onClick={this.addStoryToWall}>
                                     <div>Add story to my wall</div>
-                                </button>
+                                </Button>
                                 :
                                 null
                             }
 
                             {this.state.isBlockprobeAlreadyPublished && 
                                 this.isStoryAlreadyAdded()?
-                                <button
+                                <Button
+                                variant="contained" 
                                 className="addToWallButton"
                                 onClick={this.removeStoryFromWall}>
                                     <div>Remove story from my wall</div>
-                                </button>
+                                </Button>
                                 :
                                 null
                             }

@@ -33,11 +33,11 @@
 }
 
 .unpublishBlockprobeButton{
-    background:rgb(252, 31, 31);
-    color:rgb(219, 243, 242);
-    margin-left:1em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(252, 31, 31) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -46,11 +46,11 @@
 }
 
 .publishBlockprobeButton{
-    background:rgb(4, 59, 2);
-    color:rgb(219, 243, 242);
-    margin-left:1em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(4, 59, 2) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -59,11 +59,11 @@
 }
 
 .addToWallButton{
-    background:rgb(2, 46, 59);
-    color:rgb(219, 243, 242);
-    margin-left:1em;
-    margin-top:0;
-    size:2.6em;
+    background:rgb(2, 46, 59) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em !important;
     border:none;
 }
 

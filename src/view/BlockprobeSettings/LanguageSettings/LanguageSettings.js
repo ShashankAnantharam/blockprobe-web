@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import  MultiSelectReact  from 'multi-select-react';
+import Button from '@material-ui/core/Button';
 import * as DbUtils from '../../../common/dbSvc';
 import * as Const from '../../../common/constants';
 
@@ -139,7 +140,12 @@ class LanguageSettingsComponent extends React.Component {
                         </div>     
 
                         {this.canSubmit()?
-                            <button className="langPaneButton" onClick={this.submitLanguage}>Save</button>
+                            <Button
+                            variant="contained" 
+                            color="primary" 
+                            className="langPaneButton" onClick={this.submitLanguage}>
+                                Save
+                            </Button>
                             :
                             null
                         }

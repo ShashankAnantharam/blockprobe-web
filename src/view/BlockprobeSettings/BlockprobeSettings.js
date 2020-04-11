@@ -18,6 +18,7 @@ import * as Utils from '../../common/utilSvc';
 import * as Constants from '../../common/constants';
 import * as DbUtils from '../../common/dbSvc';
 import Loader from 'react-loader-spinner';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -407,16 +408,18 @@ class BlockprobeSettingsComponent extends React.Component {
                     </div>
                     {this.state.newCriterion!=this.props.details.criterion?
                         <div className="blockprobe-settings-criterion-options-container">
-                            <button 
+                            <Button 
+                            variant="contained"
                             className="saveBlockProbeSettingsButton" 
                             onClick={(e) => this.modifyBlockProbeSettings("criterion",true)}>
                                 <div>Confirm settings</div>
-                            </button>
-                            <button 
+                            </Button>
+                            <Button 
+                            variant="contained"
                             className="cancelBlockProbeSettingsButton" 
                             onClick={(e) => this.modifyBlockProbeSettings("criterion",false)}>
                                 <div>Cancel</div>
-                            </button>
+                            </Button>
                         </div>
                         :
                         null
@@ -463,38 +466,39 @@ class BlockprobeSettingsComponent extends React.Component {
                     <h3>Add Contributors</h3>
                     <form>
                     <label>
-                        <Textarea 
+                        <TextField 
                             type="text"
+                            variant="outlined"
+                            multiline
                             placeholder = "Phone number"
                             value={this.state.contributorId}
                             onChange={(e) => { this.handleChange(e,"contributor")}}
-                            maxRows="1"
-                            minRows="1"
+                            rowsMax="1"
+                            rows="1"
                             style={{
                                 background: 'white',
-                                borderWidth:'2px', 
-                                borderStyle:'solid', 
-                                borderColor:'darkgrey',
-                                paddingTop:'6px',
-                                paddingBottom:'6px',
+                                marginTop:'6px',
+                                marginBottom:'6px',
                                 width:'30%'
                                 }}/>
                     </label>
                     </form>
                     {this.state.contributorId!=''?
                             <div className="blockprobe-settings-criterion-options-container">
-                                <button 
+                                <Button 
+                                variant="contained"
                                 className="saveBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("contributor",true)}>
                                     <div>Confirm contributor</div>
-                                </button>
-                                <button 
+                                </Button>
+                                <Button 
+                                variant="contained"
                                 className="cancelBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("contributor",false)}>
                                     <div>Cancel</div>
-                                </button>
+                                </Button>
                             </div>
                             :
                             null
@@ -512,38 +516,39 @@ class BlockprobeSettingsComponent extends React.Component {
                 <h3>Add Viewers</h3>
                 <form>
                 <label>
-                    <Textarea 
+                    <TextField 
                         type="text"
+                        variant="outlined"
+                        multiline
                         placeholder = "Phone number"
                         value={this.state.viewerId}
                         onChange={(e) => { this.handleChange(e,"viewer")}}
-                        maxRows="1"
-                        minRows="1"
+                        rowsMax="1"
+                        rows="1"
                         style={{
                             background: 'white',
-                            borderWidth:'2px', 
-                            borderStyle:'solid', 
-                            borderColor:'darkgrey',
-                            paddingTop:'6px',
-                            paddingBottom:'6px',
+                            marginTop:'6px',
+                            marginBottom:'6px',
                             width:'30%'
                             }}/>
                  </label>
                  </form>
                  {this.state.viewerId!=''?
                         <div className="blockprobe-settings-criterion-options-container">
-                            <button 
+                            <Button 
+                            variant="contained"
                             className="saveBlockProbeSettingsButton" 
                             style={{marginTop:'1em'}}
                             onClick={(e) => this.modifyBlockProbeSettings("viewer",true)}>
                                 <div>Confirm viewer</div>
-                            </button>
-                            <button 
+                            </Button>
+                            <Button 
+                            variant="contained"
                             className="cancelBlockProbeSettingsButton" 
                             style={{marginTop:'1em'}}
                             onClick={(e) => this.modifyBlockProbeSettings("viewer",false)}>
                                 <div>Cancel</div>
-                            </button>
+                            </Button>
                         </div>
                         :
                         null
@@ -559,20 +564,19 @@ class BlockprobeSettingsComponent extends React.Component {
                     <h3>Add Users</h3>
                     <form>
                     <label>
-                        <Textarea 
+                        <TextField 
                             type="text"
+                            variant="outlined"
+                            multiline
                             placeholder = "Email or phonenumber"
                             value={this.state.creatorId}
                             onChange={(e) => { this.handleChange(e,"creator")}}
-                            maxRows="1"
-                            minRows="1"
+                            rowsMax="1"
+                            rows="1"
                             style={{
                                 background: 'white',
-                                borderWidth:'2px', 
-                                borderStyle:'solid', 
-                                borderColor:'darkgrey',
-                                paddingTop:'6px',
-                                paddingBottom:'6px',
+                                marginTop:'6px',
+                                marginBottom:'6px',
                                 width:'30%'
                                 }}/>
                     </label>
@@ -580,18 +584,20 @@ class BlockprobeSettingsComponent extends React.Component {
                     {this.getMessage(this.state.creatorMessageId)}
                     {this.state.creatorId!='' && !this.state.addingUser?
                             <div className="blockprobe-settings-criterion-options-container">
-                                <button 
+                                <Button 
+                                variant="contained"
                                 className="saveBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("creator",true)}>
                                     <div>Confirm</div>
-                                </button>
-                                <button 
+                                </Button>
+                                <Button
+                                variant="contained" 
                                 className="cancelBlockProbeSettingsButton" 
                                 style={{marginTop:'1em'}}
                                 onClick={(e) => this.modifyBlockProbeSettings("creator",false)}>
                                     <div>Cancel</div>
-                                </button>
+                                </Button>
                             </div>
                             :
                             null
@@ -682,12 +688,13 @@ class BlockprobeSettingsComponent extends React.Component {
                 <div style={{marginLeft:'10px', marginTop:'1em'}}>
                     <h3>Account settings</h3>
                     <div className="blockprobe-settings-criterion-options-container">
-                        <button 
+                        <Button
+                            variant="contained"  
                             className="saveBlockProbeSettingsButton" 
                             style={{marginTop:'1em'}}
                             onClick={(e) => this.toggleDialog(true,"exitBlockprobe")}>
                             <div>Exit story</div>
-                        </button>                                
+                        </Button>                                
                     </div>
                 </div>
             </div>

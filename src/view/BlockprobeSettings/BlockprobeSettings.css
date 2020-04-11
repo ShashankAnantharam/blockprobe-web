@@ -1,9 +1,9 @@
 .saveBlockProbeSettingsButton{
-    background:rgb(12, 52, 231);
-    color:rgb(219, 243, 242);
-    margin-left:0em;
-    margin-top:1em;
-    size:2em;
+    background:rgb(12, 52, 231) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:0em !important;
+    margin-top:1em !important;
+    size:2.6em !important;
     border:none;
 }
 
@@ -12,11 +12,11 @@
 }
 
 .cancelBlockProbeSettingsButton{
-    background:rgb(12, 52, 231);
-    color:rgb(219, 243, 242);
-    margin-left:1.5em;
-    margin-top:1em;
-    size:2em;
+    background:rgb(12, 52, 231) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left:1.5em !important;
+    margin-top:1em !important;
+    size:2.6em !important;
     border:none;
 }
 
