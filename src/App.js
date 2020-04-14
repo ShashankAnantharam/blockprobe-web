@@ -13,17 +13,13 @@ class App extends Component {
       <div className="App">
         <Router>
           <Switch>
-            <Route path="/view/:bId/:viewType"  
-                        component={ViewBlockprobePublicWrapper}
-              />
-
-            <Route path="/view/:bId"  
-                        component={ViewBlockprobePublicWrapper}
-              />
-
-            <Route path="/wall/:userId"  
+          <Route path="/wall/:userId"  
                         component={PublicWallComponent}
-              /> 
+              />
+
+            <Route path="/:viewType/:bId"  
+                        component={ViewBlockprobePublicWrapper}
+              />           
 
             <Route exact path="/"  
                         component={UserSession}

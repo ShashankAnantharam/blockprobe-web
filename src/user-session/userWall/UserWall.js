@@ -96,7 +96,7 @@ class UserWall extends React.Component {
         const transitions = ["height", "opacity", "background"];
         let link = '';
         if(post && post.bp){
-            link = "https://blprobe.com/view/" + post.bp + "/tabs";
+            link = "https://blprobe.com/tabs/" + post.bp;
         }
         return (
             <div className="wallPostContainer">

@@ -6,6 +6,7 @@ import './ViewBlockprobePublic.css';
 import ReactGA from 'react-ga';
 import DashboardViewComponent from "../viso/dashboard/DashboardView";
 import MiniDashboardViewComponent from "../viso/dashboard/MiniDashboardView";
+import GamifiedDashboardViewComponent from "../viso/dashboard/GamifiedDashboardView";
 import TimelineComponent from '../viso/TimelineComponent';
 import GraphComponent from '../viso/GraphComponent';
 import FindConnectionsComponent from '../viso/FindConnectionsComponent';
@@ -74,6 +75,9 @@ class ViewBlockprobePublicComponent extends React.Component {
         }
         else if(this.props.visulationType == 'tabs_all'){
             this.state.selectedVisualisation = 'tabs_all';
+        }
+        else if(this.props.visulationType == 'game'){
+            this.state.selectedVisualisation = 'game';
         }
 
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
@@ -604,6 +608,24 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 setScrollToGraphList ={this.setScrollToGraphList}  
                                 isPublic = {true}
                                 lang = {this.state.lang}               
+                            />
+                </div>
+            );
+        }
+        else if(this.state.selectedVisualisation == "game"){
+            return(
+                <div>
+                    <GamifiedDashboardViewComponent
+                                summaryBlocks = {this.state.summaryList}
+                                blockTree={this.state.blockTree} 
+                                investigationGraph={this.state.investigationGraph}
+                                selectBlock={this.changeSelectedBlock}
+                                multiSelectEntityList = {this.state.multiSelectEntityList}
+                                timeline={this.state.timeline}    
+                                imageMapping={this.state.imageMapping}
+                                lang = {this.state.lang}
+                                setScrollToGraphList ={this.setScrollToGraphList}     
+                                isPublic = {true}            
                             />
                 </div>
             );
