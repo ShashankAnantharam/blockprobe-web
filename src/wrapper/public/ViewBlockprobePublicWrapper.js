@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import ViewBlockprobePublicComponent from '../../view/ViewBlockprobePublic';
+import  { Redirect } from 'react-router-dom'
 import { isNullOrUndefined } from 'util';
 
 class ViewBlockprobePublicWrapper extends React.Component {
@@ -37,7 +38,7 @@ class ViewBlockprobePublicWrapper extends React.Component {
               visulationType = {this.state.selectedVisualisation}
               bId = {this.props.match.params.bId}/>
               :
-              null
+              <Redirect to="/" ></Redirect>
           }          
         </ErrorBoundary>
       );

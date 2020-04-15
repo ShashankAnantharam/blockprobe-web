@@ -61,7 +61,6 @@ class DashboardViewComponent extends React.Component {
        else if(type=='mindmap'){
            adhocTooltip.mindmap.flag = true;
        }
-       console.log(adhocTooltip);
        this.setState({adhocTooltip: adhocTooltip});
     }
 

@@ -17,6 +17,7 @@ class GamifiedGraph extends React.Component {
       this.generateAmForceDirectedGraph = this.generateAmForceDirectedGraph.bind(this);
       this.prepareData = this.prepareData.bind(this);
       this.chart = {};
+      this.selectedEdges={};
       this.selectedLink = null;
       this.prevNode = null;
       this.prevLinksWith = null;
@@ -24,6 +25,7 @@ class GamifiedGraph extends React.Component {
       this.previousChart = JSON.parse(JSON.stringify(props.graph));
 
       this.getDesiredLink = this.getDesiredLink.bind(this);
+      this.hasEdgeBeenSelected = this.hasEdgeBeenSelected.bind(this);
     }
 
     prepareData(data){
@@ -72,6 +74,16 @@ class GamifiedGraph extends React.Component {
             }
         }
         return null;
+    }
+
+    hasEdgeBeenSelected(nodeA, nodeB){
+        if((String(nodeA + '_CCC_' + nodeB) in this.selectedEdges) || (String(nodeB + '_CCC_' + nodeA) in this.selectedEdges))
+            return true;
+        return false;
+    }
+
+    addSelectedEdgeToMap(nodeA, nodeB){
+        this.selectedEdges[String(nodeA + '_CCC_' + nodeB)] = true;
     }
 
     generateAmForceDirectedGraph(){
@@ -169,7 +181,10 @@ class GamifiedGraph extends React.Component {
             var node = event.target;      
             if(scope.selectedLink)
                 scope.selectedLink.strokeWidth = 5;
-            if(!isNullOrUndefined(scope.prevNode)){
+            let isEdgeSelected = false;
+            if(!isNullOrUndefined(scope.prevNode) && !isNullOrUndefined(scope.prevNode.label))
+                isEdgeSelected = scope.hasEdgeBeenSelected(node.label.currentText, scope.prevNode.label.currentText);
+            if(!isNullOrUndefined(scope.prevNode) && !isEdgeSelected && scope.prevNode != node){
                 let linksWith = node.linksWith;
                 if(!isNullOrUndefined(linksWith))
                     linksWith = linksWith._dictionary;
@@ -183,12 +198,20 @@ class GamifiedGraph extends React.Component {
                 // console.log(link);
                 if(!isNullOrUndefined(link)){
                     link.strokeWidth = 5;
+                    if(!isNullOrUndefined(scope.prevNode) && !isNullOrUndefined(scope.prevNode.label))
+                        scope.addSelectedEdgeToMap(node.label.currentText, scope.prevNode.label.currentText);
                     scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
                 }
                 scope.prevNode = null;
                 scope.prevLinksWith = null;
             }
             else{
+                if(scope.prevNode == node){
+                    //Tell user to pick another node!
+                }
+                else if(isEdgeSelected){
+                    //Tell user that edge has already been made!
+                }
                 scope.prevNode = node;
                 if(!isNullOrUndefined(node.linksWith))
                     scope.prevLinksWith = node.linksWith._dictionary;

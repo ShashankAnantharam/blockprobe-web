@@ -21,24 +21,13 @@ class GamifiedDashboardViewComponent extends React.Component {
       this.state={
           key: 'graph',
           adhocTooltip:{
-            timeline:{
-                flag: false,
-                text: [
-                    {
-                        title: Locale.timelineTooltips.title[props.lang],
-                        target: '.tooltipTimeline',
-                        content: Locale.timelineTooltips.desc[props.lang],
-                        disableBeacon: true
-                    }
-                ]
-            },
             mindmap:{
                 flag: false,
                 text: [
                     {
-                        title: Locale.mindMapTooltips.title[props.lang],
+                        title: Locale.gameifiedMindMapTooltips.title[props.lang],
                         target: '.tooltipMindmap',
-                        content: Locale.mindMapTooltips.desc[props.lang],
+                        content: Locale.gameifiedMindMapTooltips.desc[props.lang],
                         disableBeacon: true
                     }
                 ]
@@ -56,22 +45,15 @@ class GamifiedDashboardViewComponent extends React.Component {
 
     showLocalTooltip(type){
         var adhocTooltip = this.state.adhocTooltip;
-       if(type=='timeline'){
-           adhocTooltip.timeline.flag = true;
-       }
-       else if(type=='mindmap'){
+       if(type=='mindmap'){
            adhocTooltip.mindmap.flag = true;
        }
-       console.log(adhocTooltip);
        this.setState({adhocTooltip: adhocTooltip});
     }
 
     hideLocalTooltip(type){
         var adhocTooltip = this.state.adhocTooltip;
-        if(type=='timeline'){
-           adhocTooltip.timeline.flag = false;
-       }
-        else if(type=='mindmap'){
+       if(type=='mindmap'){
            adhocTooltip.mindmap.flag = false;
        }
         this.setState({adhocTooltip: adhocTooltip});
