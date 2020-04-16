@@ -75,6 +75,10 @@ class GamifiedGraphComponent extends React.Component {
         languageSupportedPlay: true,
         copiedText: false,
         testVar: -1,
+        gameNodeSelections: {
+            f: null,
+            s: null   
+        }
         }
 
         this.graphHelperMap= {
@@ -87,6 +91,7 @@ class GamifiedGraphComponent extends React.Component {
           };
 
         this.speech = null;
+        this.prevNode = null;
 
         this.handleAllAndNoneOptions = this.handleAllAndNoneOptions.bind(this);
         this.initializeGraphEvents = this.initializeGraphEvents.bind(this);
@@ -113,10 +118,22 @@ class GamifiedGraphComponent extends React.Component {
         this.stopExistingSelection = this.stopExistingSelection.bind(this);
         this.timeoutFn = this.timeoutFn.bind(this);
         this.timeInFn = this.timeInFn.bind(this);
+
+        this.setNodeVal = this.setNodeVal.bind(this);
  
         this.graphRef = React.createRef();
 
         ReactGA.initialize('UA-143383035-1');  
+    }
+
+    setNodeVal(type,node){
+        //type: f,s
+        let gameNodeSelections = this.state.gameNodeSelections;
+        gameNodeSelections[type] = node;
+
+        this.setState({
+            gameNodeSelections:gameNodeSelections
+        });
     }
 
     resetScroll(){
@@ -509,7 +526,9 @@ class GamifiedGraphComponent extends React.Component {
                 <GamifiedGraph 
                         graph={newGraph}  
                         selectEdge = {this.selectEdge}    
-                        selectNode = {this.selectNode}                    
+                        selectNode = {this.selectNode}
+                        selectedNodes = {this.state.gameNodeSelections}
+                        setNodeVal = {this.setNodeVal}                
                         />
             </div>
         );
@@ -1033,6 +1052,18 @@ class GamifiedGraphComponent extends React.Component {
         
         let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
         let aggrNums = this.AgregateNumberDisplay(numbers,selectedNodesString);
+
+        let firstNode = this.state.gameNodeSelections['f'];
+        if(!isNullOrUndefined(firstNode) && !isNullOrUndefined(firstNode.label)){
+            firstNode = firstNode.label.currentText;
+        }
+        //console.log(firstNode);
+
+        let secondNode = this.state.gameNodeSelections['s'];
+        if(!isNullOrUndefined(secondNode) && !isNullOrUndefined(secondNode.label)){
+            secondNode = secondNode.label.currentText;
+        }
+        //console.log(secondNode);
         //console.log(numbers);
 
         /*
@@ -1055,6 +1086,18 @@ class GamifiedGraphComponent extends React.Component {
        
         return (
             <div>                      
+
+                        {!isNullOrUndefined(firstNode)?
+                            <div className="specialViewMargin">
+                              <div className="gamifiedNodeSelectionsTitle">Selections</div>
+                                <div className="gamifiedNodeDisplay">
+                                    <div>{firstNode}</div>
+                                    <div>{secondNode}</div>
+                                </div>     
+                            </div>
+                            :
+                            null                        
+                        }
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list" ref={this.graphRef}>
                             {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech) && this.state.languageSupportedPlay?
@@ -1113,7 +1156,7 @@ class GamifiedGraphComponent extends React.Component {
                             </Expand>
                         </div>                      
                         :
-                        null}
+                        null}                          
                         {this.generateAmGraph()/*this.generateGraph()*/}                        
                                         
             </div>

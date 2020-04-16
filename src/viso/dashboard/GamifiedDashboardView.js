@@ -100,7 +100,7 @@ class GamifiedDashboardViewComponent extends React.Component {
             <div style={{paddingBottom:'15px'}}> 
                 {this.isGraphAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">{Locale.mindMap[lang]}
+                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedMindMapTooltips.title[lang]}
                         <a className='tooltipMindmap tooltips-dashboard' 
                             onMouseEnter={() => this.showLocalTooltip('mindmap')}
                             onClick={(e)=>{this.showLocalTooltip('mindmap')}} >

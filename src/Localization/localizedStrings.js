@@ -49,7 +49,7 @@ export const mindMapTooltips = {
 
 export const gameifiedMindMapTooltips = {
     title:{
-        'en': 'Mindmap',
+        'en': 'Match the topics',
         'hi': 'मन नक्शा',
         'ml': 'മൈൻഡ്മാപ്പ് കാഴ്ച',
         'mr': 'मनाचा नकाशा',

@@ -12,7 +12,7 @@ class GamifiedGraph extends React.Component {
 
     constructor(props){
       super(props);
-      //graph
+      //graph, selectedNodes
       
       this.generateAmForceDirectedGraph = this.generateAmForceDirectedGraph.bind(this);
       this.prepareData = this.prepareData.bind(this);
@@ -177,14 +177,25 @@ class GamifiedGraph extends React.Component {
             scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
         });
 
-        series.nodes.template.events.on("hit", function (event) {                
-            var node = event.target;      
+        
+
+        series.nodes.template.events.on("hit", function (event) {
             if(scope.selectedLink)
                 scope.selectedLink.strokeWidth = 5;
+            let prevNode = scope.props.selectedNodes['f'];
+            let currNode = scope.props.selectedNodes['s'];
+            var node = event.target;
+            if(currNode != null){
+                //Something already  was selected. Clear the whole thing
+                scope.props.setNodeVal('s',null);
+                scope.props.setNodeVal('f',null);
+                prevNode = null;
+                currNode = null;
+            }                
             let isEdgeSelected = false;
-            if(!isNullOrUndefined(scope.prevNode) && !isNullOrUndefined(scope.prevNode.label))
-                isEdgeSelected = scope.hasEdgeBeenSelected(node.label.currentText, scope.prevNode.label.currentText);
-            if(!isNullOrUndefined(scope.prevNode) && !isEdgeSelected && scope.prevNode != node){
+            if(!isNullOrUndefined(prevNode) && !isNullOrUndefined(prevNode.label))
+                isEdgeSelected = scope.hasEdgeBeenSelected(node.label.currentText, prevNode.label.currentText);
+            if(!isNullOrUndefined(prevNode) && !isEdgeSelected && prevNode != node){
                 let linksWith = node.linksWith;
                 if(!isNullOrUndefined(linksWith))
                     linksWith = linksWith._dictionary;
@@ -194,25 +205,26 @@ class GamifiedGraph extends React.Component {
                 // console.log(linksWith); 
                 // console.log(scope.prevLinksWith);  
                 
-                let link = scope.getDesiredLink([linksWith,scope.prevLinksWith], node.label.currentText, scope.prevNode.label.currentText);
+                let link = scope.getDesiredLink([linksWith,scope.prevLinksWith], node.label.currentText, prevNode.label.currentText);
                 // console.log(link);
                 if(!isNullOrUndefined(link)){
                     link.strokeWidth = 5;
-                    if(!isNullOrUndefined(scope.prevNode) && !isNullOrUndefined(scope.prevNode.label))
-                        scope.addSelectedEdgeToMap(node.label.currentText, scope.prevNode.label.currentText);
+                    if(!isNullOrUndefined(prevNode) && !isNullOrUndefined(prevNode.label))
+                        scope.addSelectedEdgeToMap(node.label.currentText, prevNode.label.currentText);
                     scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
                 }
-                scope.prevNode = null;
+                scope.props.setNodeVal('s',node);
+                //prevNode = null;
                 scope.prevLinksWith = null;
             }
             else{
-                if(scope.prevNode == node){
+                if(prevNode == node){
                     //Tell user to pick another node!
                 }
                 else if(isEdgeSelected){
                     //Tell user that edge has already been made!
                 }
-                scope.prevNode = node;
+                scope.props.setNodeVal('f',node);
                 if(!isNullOrUndefined(node.linksWith))
                     scope.prevLinksWith = node.linksWith._dictionary;
                 else

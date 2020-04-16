@@ -155,7 +155,21 @@
     font-size:12px;
 }
 
+.gamifiedNodeDisplay{
+    display: flex;
+    word-wrap: break-word;
+}
+
+.gamifiedNodeSelectionsTitle{
+    font-size: 16px;
+    margin: 10px 0 10px 0;
+}
+
 @media only screen and (min-width: 601px) {
+
+    .specialViewMargin{
+        margin: 0 1% 1% 1%;
+    }
 
     .graph-main{
         margin: 0 1% 1% 1%;
@@ -212,6 +226,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+
+    .specialViewMargin{
+        margin: 0 20px 20px 20px;
+    }
 
     .graph-main{
         margin: 0 20px 20px 20px;
