@@ -213,6 +213,10 @@ class GamifiedGraph extends React.Component {
                         scope.addSelectedEdgeToMap(node.label.currentText, prevNode.label.currentText);
                     scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
                 }
+                else{
+                    //Wrong link
+                    scope.props.setGameMessage('failLink');
+                }
                 scope.props.setNodeVal('s',node);
                 //prevNode = null;
                 scope.prevLinksWith = null;
@@ -221,10 +225,16 @@ class GamifiedGraph extends React.Component {
                 if(prevNode == node){
                     //Tell user to pick another node!
                 }
-                else if(isEdgeSelected){
+                
+                if(isEdgeSelected){
                     //Tell user that edge has already been made!
+                    scope.props.setGameMessage('alreadySelected');
+                    scope.props.setNodeVal('s',node);
                 }
-                scope.props.setNodeVal('f',node);
+                else{
+                    scope.props.setNodeVal('f',node);
+                }
+                
                 if(!isNullOrUndefined(node.linksWith))
                     scope.prevLinksWith = node.linksWith._dictionary;
                 else

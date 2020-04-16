@@ -78,7 +78,8 @@ class GamifiedGraphComponent extends React.Component {
         gameNodeSelections: {
             f: null,
             s: null   
-        }
+        },
+        gameMessage: null  //Edge selected or already selected or wrong
         }
 
         this.graphHelperMap= {
@@ -122,16 +123,39 @@ class GamifiedGraphComponent extends React.Component {
         this.setNodeVal = this.setNodeVal.bind(this);
         this.clearGamifiedEntity = this.clearGamifiedEntity.bind(this);
         this.BlockEntity = this.BlockEntity.bind(this);
+        this.setGameMessage = this.setGameMessage.bind(this);
         
         this.graphRef = React.createRef();
 
         ReactGA.initialize('UA-143383035-1');  
     }
 
+    setGameMessage(type){
+        let message = null;
+        if(type == 'alreadySelected')
+        {
+            message = "This connection has already been made. Try another one!";
+        }
+        else if(type == 'successLink'){
+            message = "Yes! You got it right!";
+        }
+        else if(type == 'failLink'){
+            message = "No! You got it wrong! These topics are not connected";
+        }
+        this.setState({
+            gameMessage: message
+        });
+    }
+
     setNodeVal(type,node){
         //type: f,s
         let gameNodeSelections = this.state.gameNodeSelections;
         gameNodeSelections[type] = node;
+        if(node==null && this.state.gameMessage!=null){
+            this.setState({
+                gameMessage: null
+            });
+        }
 
         this.setState({
             gameNodeSelections:gameNodeSelections
@@ -143,11 +167,14 @@ class GamifiedGraphComponent extends React.Component {
         let gameNodeSelections = this.state.gameNodeSelections;
         gameNodeSelections[type] = null;
 
-        if(type=='f')
+        if(type=='f'){
+            gameNodeSelections['f'] = gameNodeSelections['s'];
             gameNodeSelections['s'] = null;
+        }
 
         this.setState({
-            gameNodeSelections:gameNodeSelections
+            gameNodeSelections:gameNodeSelections,
+            gameMessage: null
         });
     }
 
@@ -183,6 +210,8 @@ class GamifiedGraphComponent extends React.Component {
         };
         this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
+
+        this.setGameMessage('successLink');
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
@@ -543,7 +572,8 @@ class GamifiedGraphComponent extends React.Component {
                         selectEdge = {this.selectEdge}    
                         selectNode = {this.selectNode}
                         selectedNodes = {this.state.gameNodeSelections}
-                        setNodeVal = {this.setNodeVal}                
+                        setNodeVal = {this.setNodeVal}  
+                        setGameMessage = {this.setGameMessage}              
                         />
             </div>
         );
@@ -1111,10 +1141,11 @@ class GamifiedGraphComponent extends React.Component {
        
         return (
             <div>                      
+                        <div ref={this.graphRef}></div>
 
                         {!isNullOrUndefined(firstNode)?
                             <div className="specialViewMargin">
-                              <div className="gamifiedNodeSelectionsTitle">Selections</div>
+                              <div className="gamifiedNodeSelectionsTitle">Topics</div>
                                 <div className="gamifiedNodeDisplay">
                                     <div>{this.BlockEntity(firstNode,'f')}</div>
                                     {!isNullOrUndefined(secondNode)?
@@ -1127,8 +1158,11 @@ class GamifiedGraphComponent extends React.Component {
                             :
                             null                        
                         }
+                        <div className="specialViewMargin">
+                            <div className="gameMessage">{this.state.gameMessage}</div>
+                        </div>
                         {this.state.currentSelectedBlocks.length >= 0? 
-                        <div className="graph-block-list" ref={this.graphRef}>
+                        <div className="graph-block-list">
                             {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech) && this.state.languageSupportedPlay?
                                 <div className='graph-block-list-sound'>
                                         {this.state.playStatus == 'end'?
