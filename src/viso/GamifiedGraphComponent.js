@@ -120,7 +120,9 @@ class GamifiedGraphComponent extends React.Component {
         this.timeInFn = this.timeInFn.bind(this);
 
         this.setNodeVal = this.setNodeVal.bind(this);
- 
+        this.clearGamifiedEntity = this.clearGamifiedEntity.bind(this);
+        this.BlockEntity = this.BlockEntity.bind(this);
+        
         this.graphRef = React.createRef();
 
         ReactGA.initialize('UA-143383035-1');  
@@ -130,6 +132,19 @@ class GamifiedGraphComponent extends React.Component {
         //type: f,s
         let gameNodeSelections = this.state.gameNodeSelections;
         gameNodeSelections[type] = node;
+
+        this.setState({
+            gameNodeSelections:gameNodeSelections
+        });
+    }
+
+    clearGamifiedEntity(type){
+        //type: f,s
+        let gameNodeSelections = this.state.gameNodeSelections;
+        gameNodeSelections[type] = null;
+
+        if(type=='f')
+            gameNodeSelections['s'] = null;
 
         this.setState({
             gameNodeSelections:gameNodeSelections
@@ -814,7 +829,7 @@ class GamifiedGraphComponent extends React.Component {
     }
 
     clickBlockFromList(block){
-        this.props.selectBlock(block);
+        //this.props.selectBlock(block);
     }
 
     async initSpeech(){
@@ -1015,6 +1030,16 @@ class GamifiedGraphComponent extends React.Component {
         }
     }
 
+    BlockEntity(entity, type){
+        return(
+        <span className="gamified-block-entity">
+            {entity}
+            <a style={{marginLeft:'5px', color: 'black', cursor: 'pointer'}} 
+            onClick={() => { this.clearGamifiedEntity(type)}}>X</a>
+        </span>
+        );   
+    }
+
     render(){
 
         let lang = this.props.lang;
@@ -1091,8 +1116,12 @@ class GamifiedGraphComponent extends React.Component {
                             <div className="specialViewMargin">
                               <div className="gamifiedNodeSelectionsTitle">Selections</div>
                                 <div className="gamifiedNodeDisplay">
-                                    <div>{firstNode}</div>
-                                    <div>{secondNode}</div>
+                                    <div>{this.BlockEntity(firstNode,'f')}</div>
+                                    {!isNullOrUndefined(secondNode)?
+                                        <div>{this.BlockEntity(secondNode,'s')}</div>
+                                        :
+                                        null
+                                    }                                    
                                 </div>     
                             </div>
                             :
