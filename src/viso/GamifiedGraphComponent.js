@@ -11,6 +11,7 @@ import IsImageUrl from 'is-image-url';
 import ReactGA from 'react-ga';
 import AmGraph from './amGraph/amGraph';
 import GamifiedGraph from './gamifiedAmGraph/gamifiedGraph';
+import Speedometer from './speedoMeter/Speedometer';
 import Expand from 'react-expand-animated';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -1200,6 +1201,14 @@ class GamifiedGraphComponent extends React.Component {
                             null                        
                         }
                         <div className="specialViewMargin">
+                            <div className="scoreAmchartContainer">
+                                <Speedometer 
+                                    id="speedometer1"
+                                    val={this.state.score}
+                                    min={0}
+                                    max={this.state.totalScore}/>
+                            </div>
+
                             <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
                             <span className="totalScoreVal">/{this.state.totalScore}</span></div>
                             {this.state.score == this.state.totalScore?
@@ -1210,30 +1219,7 @@ class GamifiedGraphComponent extends React.Component {
                             
                         </div>
                         {this.state.currentSelectedBlocks.length >= 0? 
-                        <div className="graph-block-list">
-                            {selectedNodesString.length>0 && !isIE && !isNullOrUndefined(this.speech) && this.state.languageSupportedPlay?
-                                <div className='graph-block-list-sound'>
-                                        {this.state.playStatus == 'end'?
-                                            <a onClick={this.playExistingSelection} className="soundIcon">
-                                                <PlayArrow />
-                                            </a>
-                                            :
-                                            null
-                                        }                                       
-
-                                        {(this.state.playStatus == 'start' || this.state.playStatus == 'paused')?
-                                            <a onClick={this.stopExistingSelection} className="soundIcon">
-                                                <Stop />
-                                            </a>
-                                            :
-                                            null
-                                        }
-                                    
-                                </div>
-                                :
-                                null
-                            }
-                            
+                        <div className="graph-block-list">                            
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
                                     <span>{Locale.selections[lang]}</span>

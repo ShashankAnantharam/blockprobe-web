@@ -169,6 +169,7 @@
 .gameMessage{
     color: red;
     font-size: 20px;
+    text-align: center;
 }
 
 .scoreText{
@@ -176,6 +177,7 @@
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .scoreVal{
@@ -203,6 +205,11 @@
     text-align: center;
     max-width: 90%;
     word-wrap: break-word;
+}
+
+.scoreAmchartContainer{
+    width: 100%;
+    height: 80px;
 }
 
 @media only screen and (min-width: 601px) {
@@ -266,6 +273,10 @@
 }
 
 @media only screen and (max-width: 600px) {
+
+    .scoreAmchartContainer{
+        display: none;
+    }
 
     .specialViewMargin{
         margin: 0 20px 20px 20px;
