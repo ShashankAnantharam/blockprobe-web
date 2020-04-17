@@ -74,6 +74,7 @@ class GamifiedGraphComponent extends React.Component {
         playStatus: 'end',
         languageSupportedPlay: true,
         copiedText: false,
+        score: 0,
         testVar: -1,
         gameNodeSelections: {
             f: null,
@@ -124,10 +125,17 @@ class GamifiedGraphComponent extends React.Component {
         this.clearGamifiedEntity = this.clearGamifiedEntity.bind(this);
         this.BlockEntity = this.BlockEntity.bind(this);
         this.setGameMessage = this.setGameMessage.bind(this);
+        this.incrementScore = this.incrementScore.bind(this);
         
         this.graphRef = React.createRef();
 
         ReactGA.initialize('UA-143383035-1');  
+    }
+
+    incrementScore(){
+        this.setState({
+            score: this.state.score + 1
+        });
     }
 
     setGameMessage(type){
@@ -138,6 +146,7 @@ class GamifiedGraphComponent extends React.Component {
         }
         else if(type == 'successLink'){
             message = "Yes! You got it right!";
+            this.incrementScore();
         }
         else if(type == 'failLink'){
             message = "No! You got it wrong! These topics are not connected";
@@ -1159,6 +1168,7 @@ class GamifiedGraphComponent extends React.Component {
                             null                        
                         }
                         <div className="specialViewMargin">
+                            <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span></div>
                             <div className="gameMessage">{this.state.gameMessage}</div>
                         </div>
                         {this.state.currentSelectedBlocks.length >= 0? 
