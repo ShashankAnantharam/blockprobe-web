@@ -76,6 +76,8 @@ class GamifiedGraphComponent extends React.Component {
         languageSupportedPlay: true,
         copiedText: false,
         score: 0,
+        totalScore: Utils.getTotalEdges(props.investigationGraph),
+        gameMessageFinished: 'Congratulations! You did it!',
         testVar: -1,
         gameNodeSelections: {
             f: null,
@@ -1068,6 +1070,13 @@ class GamifiedGraphComponent extends React.Component {
                 });
             }
         }
+        if((isNullOrUndefined(this.props.investigationGraph)) || 
+        (JSON.parse(JSON.stringify(this.props.investigationGraph)) != JSON.parse(JSON.stringify(nextProps.investigationGraph)))){
+            let score = Utils.getTotalEdges(nextProps.investigationGraph);
+            this.setState({
+                totalScore: score
+            });
+        }
     }
 
     BlockEntity(entity, type){
@@ -1148,6 +1157,8 @@ class GamifiedGraphComponent extends React.Component {
                 null
             } 
         */
+
+        
        
         return (
             <div>                      
@@ -1169,8 +1180,14 @@ class GamifiedGraphComponent extends React.Component {
                             null                        
                         }
                         <div className="specialViewMargin">
-                            <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span></div>
-                            <div className="gameMessage">{this.state.gameMessage}</div>
+                            <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
+                            <span className="totalScoreVal">/{this.state.totalScore}</span></div>
+                            {this.state.score == this.state.totalScore?
+                                <div className="gameMessage">{this.state.gameMessageFinished}</div>
+                                :
+                                <div className="gameMessage">{this.state.gameMessage}</div>
+                            }
+                            
                         </div>
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">
@@ -1196,14 +1213,7 @@ class GamifiedGraphComponent extends React.Component {
                                 :
                                 null
                             }
-                            {(this.props.isPublic == undefined || !this.props.isPublic) && selectedNodesString.length>0?
-                                    <CopyToClipboard text={Utils.getBlocksText(this.state.currentSelectedBlocks)}
-                                    onCopy={() => this.setState({copiedText: true})}>
-                                        <div className="copyBlockText">Copy the text as draft</div>
-                                    </CopyToClipboard>
-                                    :
-                                    null
-                                }
+                            
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
                                     <span>{Locale.selections[lang]}</span>

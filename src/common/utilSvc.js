@@ -863,3 +863,16 @@ export const languageCheck = (lang, voice)=>{
     }
     return false;
 }
+
+export const getTotalEdges = (investigationGraph)=>{
+    let totalEdges = 0;
+    if(isNullOrUndefined(investigationGraph))
+        return totalEdges;
+
+    for(let key in investigationGraph){
+        if(!isNullOrUndefined(investigationGraph[key].edges)){
+            totalEdges += Object.keys(investigationGraph[key].edges).length;
+        }
+    }
+    return totalEdges/2;
+}
