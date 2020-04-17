@@ -158,11 +158,12 @@
 .gamifiedNodeDisplay{
     display: flex;
     word-wrap: break-word;
+    flex-wrap: wrap;
 }
 
 .gamifiedNodeSelectionsTitle{
     font-size: 16px;
-    margin: 10px 0 10px 0;
+    margin: 10px 10px 10px 0;
 }
 
 .gameMessage{
@@ -174,6 +175,7 @@
     color: black;
     font-size: 16px;
     font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .scoreVal{

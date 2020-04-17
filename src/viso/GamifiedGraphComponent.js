@@ -1165,9 +1165,9 @@ class GamifiedGraphComponent extends React.Component {
                         <div ref={this.graphRef}></div>
 
                         {!isNullOrUndefined(firstNode)?
-                            <div className="specialViewMargin">
-                              <div className="gamifiedNodeSelectionsTitle">Topics</div>
+                            <div className="specialViewMargin">                             
                                 <div className="gamifiedNodeDisplay">
+                                    <div className="gamifiedNodeSelectionsTitle">Selections: </div>
                                     <div>{this.BlockEntity(firstNode,'f')}</div>
                                     {!isNullOrUndefined(secondNode)?
                                         <div>{this.BlockEntity(secondNode,'s')}</div>
