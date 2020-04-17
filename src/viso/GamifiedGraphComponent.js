@@ -18,6 +18,7 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
+import UIfx from 'uifx';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as firebase from 'firebase';
 import * as Utils from '../common/utilSvc';
