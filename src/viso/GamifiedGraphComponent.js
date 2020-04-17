@@ -19,6 +19,8 @@ import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
 import Speech from 'speak-tts';
 import UIfx from 'uifx';
+import WellDoneMp3 from  '../media/well_done.mp3';
+import TryAgainMp3 from '../media/try_again.mp3';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as firebase from 'firebase';
 import * as Utils from '../common/utilSvc';
@@ -26,6 +28,21 @@ import * as Locale from '../Localization/localizedStrings';
 
 const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
 const isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+const wellDone = new UIfx(
+    WellDoneMp3,
+    {
+      volume: 0.65, // number between 0.0 ~ 1.0
+      throttleMs: 100
+    }
+);
+const tryAgain = new UIfx(
+    TryAgainMp3,
+    {
+      volume: 0.65, // number between 0.0 ~ 1.0
+      throttleMs: 100
+    }
+);
 
 class GamifiedGraphComponent extends React.Component {
 
@@ -135,7 +152,7 @@ class GamifiedGraphComponent extends React.Component {
         ReactGA.initialize('UA-143383035-1');  
     }
 
-    incrementScore(){
+    incrementScore(){        
         this.setState({
             score: this.state.score + 1
         });
@@ -145,13 +162,16 @@ class GamifiedGraphComponent extends React.Component {
         let message = null;
         if(type == 'alreadySelected')
         {
+            tryAgain.play();
             message = "This connection has already been made. Try another one!";
         }
         else if(type == 'successLink'){
+            wellDone.play();
             message = "Yes! You got it right!";
             this.incrementScore();
         }
         else if(type == 'failLink'){
+            tryAgain.play();
             message = "No! You got it wrong! These topics are not connected";
         }
         this.setState({
