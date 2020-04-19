@@ -878,7 +878,7 @@ export const getTotalEdges = (investigationGraph)=>{
 }
 
 export const isAcceptableChar = (charA, acceptableStr)=>{
-    for(let i=0; !isNullOrUndefined(acceptableStr) && i<acceptableStr.length; i++){
+    for(let i=0; !isNullOrUndefined(acceptableStr) && !isNullOrUndefined(charA) && i<acceptableStr.length; i++){
         if(charA == acceptableStr[i])
             return true;
     }
