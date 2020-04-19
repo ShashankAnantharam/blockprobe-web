@@ -615,6 +615,19 @@ class ViewBlockprobePublicComponent extends React.Component {
         else if(this.state.selectedVisualisation == "game"){
             return(
                 <div>
+                    <div className="blockprobe-header"> 
+                        <GoogleFontLoader
+                                fonts={[                             
+                                    {
+                                        font:'Lora',
+                                        weights: [400]
+                                    }
+                                ]}
+                                subsets={['cyrillic-ext', 'greek']}
+                                />   
+                            <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
+                            <h4>{this.state.blockprobeSummary}</h4>
+                    </div>
                     <GamifiedDashboardViewComponent
                                 summaryBlocks = {this.state.summaryList}
                                 blockTree={this.state.blockTree} 

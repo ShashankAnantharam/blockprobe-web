@@ -526,7 +526,7 @@ class BulkDraftBlockComponent extends React.Component {
              }
 
              //If entities are less, use common nouns also
-             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length==0; j++){
+             for(var j=0; j<nlpCommonNounEntities.length && newDraftBlock.entities.length<2; j++){
                 var key = nlpCommonNounEntities[j].name;
                 if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
                     newDraftBlock.entities.push({

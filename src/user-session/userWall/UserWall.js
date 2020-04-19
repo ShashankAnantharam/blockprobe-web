@@ -3,6 +3,8 @@ import './UserWall.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Expand from 'react-expand-animated';
 import Textarea from 'react-textarea-autosize';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { version } from 'punycode';
 import { isNullOrUndefined } from 'util';
 
@@ -105,20 +107,19 @@ class UserWall extends React.Component {
                     <div>
                         <form className="newBlockprobeForm">
                                 <label>
-                                    <Textarea 
+                                    <TextField 
                                         type="text"
+                                        variant="outlined"
+                                        multiline
                                         placeholder = {"Enter details about this story"}
                                         value={this.state.newSummary[post.bp]}
                                         onChange={(e) => { this.handleChange(e,"summary",post)}}
-                                        maxRows="4"
-                                        minRows="2"
+                                        rowsMax="4"
+                                        rows="2"
                                         style={{
                                             background: 'white',
-                                            borderWidth:'2px', 
-                                            borderStyle:'solid', 
-                                            borderColor:'black',
-                                            paddingTop:'6px',
-                                            paddingBottom:'6px',
+                                            marginTop:'6px',
+                                            marginBottom:'6px',
                                             textColor: 'black',
                                             fontWeight: '600',
                                             marginLeft: '1em',
@@ -128,18 +129,20 @@ class UserWall extends React.Component {
                         </form>
                         <div style={{display: 'flex'}}>
                             {this.isValid(this.state.newSummary[post.bp])?
-                                <button
+                                <Button
+                                variant="contained" 
                                 className="summarySaveWallbutton"
                                 onClick={() => { this.clickOnSave('summary', post)}}>
                                     <div>Confirm</div>
-                                </button>                    
+                                </Button>                    
                             :
                                 null
                             }
-                            <button className="summaryCancelWallbutton" 
+                            <Button className="summaryCancelWallbutton" 
+                                variant="contained" 
                                     onClick = {(e) => this.clickOnEdit('summary', false, post)}>
                                 Cancel
-                            </button>
+                            </Button>
                         </div>
                     </div>
                     
@@ -153,10 +156,11 @@ class UserWall extends React.Component {
                             :
                             <p className="wallPostSummaryPrompt">Add a summary!</p> 
                             }
-                            <button className="summaryChangeWallbutton" 
-                                onClick = {(e) => this.clickOnEdit('summary', true, post)}>
+                            <Button className="summaryChangeWallbutton" 
+                                onClick = {(e) => this.clickOnEdit('summary', true, post)}
+                                variant="contained" >
                                     Edit summary
-                            </button>
+                            </Button>
                     </div>
                     :
                     null
@@ -173,18 +177,20 @@ class UserWall extends React.Component {
                         this.state.visualizedBps[post.bp]?
                         <div className="wallShowViso">
                             <div>
-                                <button className="visualizeWallBpButton" 
-                                onClick = {(e) => this.clickOnVisualizeButton(post.bp, false)}>
+                                <Button className="visualizeWallBpButton" 
+                                onClick = {(e) => this.clickOnVisualizeButton(post.bp, false)}
+                                variant="contained" >
                                     Close
-                                </button>
+                                </Button>
                             </div>
                         </div>                  
                         :
                         <div className="wallHideViso">
-                            <button className="visualizeWallBpButton" 
-                            onClick = {(e) => this.clickOnVisualizeButton(post.bp, true)}>
+                            <Button className="visualizeWallBpButton" 
+                            onClick = {(e) => this.clickOnVisualizeButton(post.bp, true)}
+                            variant="contained">
                                 Visualize
-                            </button>
+                            </Button>
                         </div>
                     }
                         <Expand 

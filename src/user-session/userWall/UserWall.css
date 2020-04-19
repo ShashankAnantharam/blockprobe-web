@@ -22,37 +22,37 @@
 }
 
 .visualizeWallBpButton{
-    background:rgb(2, 1, 54);
-    color:rgb(219, 243, 242);
-    margin-bottom: 0.5em;
-    size:2.6em;
+    background:rgb(2, 1, 54) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em !important;
     border:none;
 }
 
 .summaryChangeWallbutton{
-    background:rgb(116, 114, 4);
-    color:rgb(219, 243, 242);
-    margin-left: 1em;
-    margin-bottom: 1em;
-    size:2.6em;
+    background:rgb(116, 114, 4) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left: 1em !important;
+    margin-bottom: 1em !important;
+    size:2.6em !important;
     border:none;
 }
 
 .summarySaveWallbutton{
-    background:rgb(25, 109, 8);
-    color:rgb(219, 243, 242);
-    margin-left: 1em;
-    margin-bottom: 1em;
-    size:2.6em;
+    background:rgb(25, 109, 8) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left: 1em !important;
+    margin-bottom: 1em !important;
+    size:2.6em !important;
     border:none;
 }
 
 .summaryCancelWallbutton{
-    background:rgb(248, 64, 64);
-    color:rgb(219, 243, 242);
-    margin-left: 1em;
-    margin-bottom: 1em;
-    size:2.6em;
+    background:rgb(248, 64, 64) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-left: 1em !important;
+    margin-bottom: 1em !important;
+    size:2.6em !important;
     border:none;
 }
 
