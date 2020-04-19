@@ -876,3 +876,26 @@ export const getTotalEdges = (investigationGraph)=>{
     }
     return totalEdges/2;
 }
+
+export const isAcceptableChar = (charA, acceptableStr)=>{
+    for(let i=0; !isNullOrUndefined(acceptableStr) && i<acceptableStr.length; i++){
+        if(charA == acceptableStr[i])
+            return true;
+    }
+    return false;
+} 
+
+export const isEntityPartOfString = (str,  entity)=>{
+    if(isNullOrUndefined(entity) || isNullOrUndefined(str) || entity.length == 0 || str.length == 0)
+        return false;
+
+    let  pos=0, i=-1;
+    while(pos!=-1){
+        pos = str.indexOf(entity, i + 1);
+        i = pos;      
+        if((i==0 || (isAcceptableChar(str[i-1],' ,.'))) && 
+        (i+entity.length==str.length || (isAcceptableChar(str[i+entity.length],' ,.'))))
+            return true;
+    }
+    return false;
+}

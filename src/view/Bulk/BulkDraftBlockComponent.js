@@ -507,7 +507,7 @@ class BulkDraftBlockComponent extends React.Component {
 
              for(var j =0; j< entityPane.length; j++){
                 var key = entityPane[j].label;
-                if(newDraftBlock.summary.toLowerCase().indexOf(key.toString().toLowerCase()) >= 0){
+                if(Utils.isEntityPartOfString(newDraftBlock.summary.toLowerCase(), key.toString().toLowerCase())){
                     newDraftBlock.entities.push({
                         title:key,
                         type:"None"
