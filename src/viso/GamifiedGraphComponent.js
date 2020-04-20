@@ -18,6 +18,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
 import Stop from '@material-ui/icons/Stop';
+import GamifiedGraphStats from './gamifiedStats/gamifiedGraphStats';
 import Speech from 'speak-tts';
 import UIfx from 'uifx';
 import WellDoneMp3 from  '../media/well_done.mp3';
@@ -1247,24 +1248,33 @@ class GamifiedGraphComponent extends React.Component {
                             :
                             null                        
                         }
-                        <div className="specialViewMargin">                            
-                            <div className="scoreAmchartContainer">
-                                <Speedometer 
-                                    id="speedometer1"
-                                    val={this.state.score}
-                                    min={0}
-                                    max={this.state.totalScore}/>
-                            </div>
+                        {!this.state.stopGame?
+                            <div className="specialViewMargin">                            
+                                <div className="scoreAmchartContainer">
+                                    <Speedometer 
+                                        id="speedometer1"
+                                        val={this.state.score}
+                                        min={0}
+                                        max={this.state.totalScore}/>
+                                </div>
 
-                            <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
-                            <span className="totalScoreVal">/{this.state.totalScore}</span></div>
-                            {this.state.score == this.state.totalScore?
-                                <div className="gameMessage">{this.state.gameMessageFinished}</div>
-                                :
-                                <div className="gameMessage">{this.state.gameMessage}</div>
-                            }
-                            
-                        </div>
+                                <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
+                                <span className="totalScoreVal">/{this.state.totalScore}</span></div>
+                                {this.state.score == this.state.totalScore?
+                                    <div className="gameMessage">{this.state.gameMessageFinished}</div>
+                                    :
+                                    <div className="gameMessage">{this.state.gameMessage}</div>
+                                }
+                                
+                            </div>
+                            :
+                            <div>
+                                <GamifiedGraphStats
+                                    stats = {this.state.stats}
+                                    />
+                            </div>
+                        }
+
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">                            
                             <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
