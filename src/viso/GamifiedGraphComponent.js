@@ -60,7 +60,8 @@ class GamifiedGraphComponent extends React.Component {
         stopGame: false,
         stats: {
             score: 0,
-            entityStats: {}
+            entityStats: {},
+            totalScore: 0
         },
         graphOptions: {
             layout: {
@@ -1121,6 +1122,7 @@ class GamifiedGraphComponent extends React.Component {
         if(val){
             let stats = this.state.stats;
             stats.score = this.state.score;
+            stats.totalScore = this.state.totalScore;
             stats.entityStats = this.entityStatistics;
             this.setState({
                 stats: stats
