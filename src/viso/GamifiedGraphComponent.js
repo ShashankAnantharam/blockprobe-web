@@ -58,6 +58,10 @@ class GamifiedGraphComponent extends React.Component {
               ]
           },
         stopGame: false,
+        stats: {
+            score: 0,
+            entityStats: {}
+        },
         graphOptions: {
             layout: {
                 hierarchical: false
@@ -114,6 +118,7 @@ class GamifiedGraphComponent extends React.Component {
             }
           };
 
+        this.entityStatistics = {};
         this.speech = null;
         this.prevNode = null;
 
@@ -148,6 +153,7 @@ class GamifiedGraphComponent extends React.Component {
         this.BlockEntity = this.BlockEntity.bind(this);
         this.setGameMessage = this.setGameMessage.bind(this);
         this.incrementScore = this.incrementScore.bind(this);
+        this.setEntityStats = this.setEntityStats.bind(this);
         this.stopGame = this.stopGame.bind(this);
         
         this.graphRef = React.createRef();
@@ -159,6 +165,15 @@ class GamifiedGraphComponent extends React.Component {
         this.setState({
             score: this.state.score + 1
         });
+    }
+
+    setEntityStats(entityName, isCorrect){
+        if(!isCorrect){
+            if(!(entityName in this.entityStatistics)){
+                this.entityStatistics[entityName] = 0;
+            }
+            this.entityStatistics[entityName] = this.entityStatistics[entityName] + 1;
+        }
     }
 
     setGameMessage(type){
@@ -607,6 +622,7 @@ class GamifiedGraphComponent extends React.Component {
                         selectedNodes = {this.state.gameNodeSelections}
                         setNodeVal = {this.setNodeVal}  
                         setGameMessage = {this.setGameMessage}  
+                        setEntityStats = {this.setEntityStats}
                         disabled = {this.state.stopGame}            
                         />
             </div>
@@ -1102,6 +1118,15 @@ class GamifiedGraphComponent extends React.Component {
     }
 
     stopGame(val){
+        if(val){
+            let stats = this.state.stats;
+            stats.score = this.state.score;
+            stats.entityStats = this.entityStatistics;
+            this.setState({
+                stats: stats
+            });
+            //console.log(stats);
+        }
         this.setState({
             stopGame: val
         });
