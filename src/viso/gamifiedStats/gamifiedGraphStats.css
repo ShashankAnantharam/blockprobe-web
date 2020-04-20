@@ -47,6 +47,21 @@
     margin: 10px;
 }
 
+.statsSaveButton{
+    background:rgb(3, 70, 8) !important;
+    color:rgb(219, 243, 242) !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em !important;
+    border:none;
+}
+
+.statsMistakesOptions{
+    display: flex;
+    word-wrap: break-word;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
 @media only screen and (min-width: 601px) {
 
     .statsContainer{

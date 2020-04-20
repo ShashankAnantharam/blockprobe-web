@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import Speedometer from '../speedoMeter/Speedometer';
+import { Button } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import './gamifiedGraphStats.css';
 
 class GamifiedGraphStats extends React.Component {
     constructor(props) {
       super(props);
-      //stats
+      //stats, canSave
 
       this.renderSingleEntityMistakes = this.renderSingleEntityMistakes.bind(this);
+      this.saveResults = this.saveResults.bind(this);
     }
 
     renderSingleEntityMistakes(entity, mistakes){
@@ -17,6 +19,10 @@ class GamifiedGraphStats extends React.Component {
                 <span className="statsEntityText">{entity} : </span><span className="statsMistakes">{String(mistakes)}</span> 
             </div>
         )
+    }
+
+    saveResults(){
+
     }
 
     render(){
@@ -34,7 +40,7 @@ class GamifiedGraphStats extends React.Component {
         })
         return (
             <div class="statsContainer">
-                <div className="statsTitle">Game statistics</div>
+                <div className="statsTitle">Game results</div>
                 <div className="statsAmchartContainer">
                                 <Speedometer 
                                     id="speedometer12"
@@ -55,7 +61,21 @@ class GamifiedGraphStats extends React.Component {
                     </div>
                     :
                     null
-                }                
+                }
+
+                <div className="statsMistakesOptions">
+                    {this.props.canSave?
+                        <Button 
+                        variant="contained" 
+                        className="statsSaveButton"
+                        onClick={() => { this.saveResults()}}
+                        >Save results</Button>
+                        :
+                        null
+                    }
+                </div>
+
+                                
             </div>
         );
     }
