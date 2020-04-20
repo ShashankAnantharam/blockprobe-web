@@ -180,6 +180,10 @@ class GamifiedGraph extends React.Component {
         
 
         series.nodes.template.events.on("hit", function (event) {
+            if(scope.props.disabled){
+                return;
+            }
+
             if(scope.selectedLink)
                 scope.selectedLink.strokeWidth = 5;
             let prevNode = scope.props.selectedNodes['f'];
@@ -212,6 +216,7 @@ class GamifiedGraph extends React.Component {
                     if(!isNullOrUndefined(prevNode) && !isNullOrUndefined(prevNode.label))
                         scope.addSelectedEdgeToMap(node.label.currentText, prevNode.label.currentText);
                     scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
+                    scope.props.setGameMessage('successLink');
                 }
                 else{
                     //Wrong link

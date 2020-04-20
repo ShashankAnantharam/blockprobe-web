@@ -57,6 +57,7 @@ class GamifiedGraphComponent extends React.Component {
             edges: [
               ]
           },
+        stopGame: false,
         graphOptions: {
             layout: {
                 hierarchical: false
@@ -147,6 +148,7 @@ class GamifiedGraphComponent extends React.Component {
         this.BlockEntity = this.BlockEntity.bind(this);
         this.setGameMessage = this.setGameMessage.bind(this);
         this.incrementScore = this.incrementScore.bind(this);
+        this.stopGame = this.stopGame.bind(this);
         
         this.graphRef = React.createRef();
 
@@ -243,8 +245,6 @@ class GamifiedGraphComponent extends React.Component {
         };
         this.addBlocksForEdge(edge, blocksToBeSelected, blocksAdded);
         blocksToBeSelected.sort((a, b) => this.sortBlocks(a.title,b.title,a.timestamp,b.timestamp));
-
-        this.setGameMessage('successLink');
 
         this.setState({
             currentSelectedBlocks: blocksToBeSelected,
@@ -606,7 +606,8 @@ class GamifiedGraphComponent extends React.Component {
                         selectNode = {this.selectNode}
                         selectedNodes = {this.state.gameNodeSelections}
                         setNodeVal = {this.setNodeVal}  
-                        setGameMessage = {this.setGameMessage}              
+                        setGameMessage = {this.setGameMessage}  
+                        disabled = {this.state.stopGame}            
                         />
             </div>
         );
@@ -1100,6 +1101,12 @@ class GamifiedGraphComponent extends React.Component {
         }
     }
 
+    stopGame(val){
+        this.setState({
+            stopGame: val
+        });
+    }
+
     BlockEntity(entity, type){
         return(
         <span className="gamified-block-entity">
@@ -1185,7 +1192,20 @@ class GamifiedGraphComponent extends React.Component {
             <div>                      
                         <div ref={this.graphRef}></div>
 
-                        {!isNullOrUndefined(firstNode)?
+                        <div className="specialViewMargin">
+                            <div className="gameButtonContainer">
+                                {this.state.score>0 && !this.state.stopGame?
+                                    <Button
+                                    variant="contained" 
+                                    className="stopGamebutton"
+                                    onClick={() => { this.stopGame(true)}}
+                                    > Stop Game</Button>
+                                    :
+                                    null
+                                }                                
+                            </div>
+                        </div>
+                        {!isNullOrUndefined(firstNode) && !this.state.stopGame?
                             <div className="specialViewMargin">                             
                                 <div className="gamifiedNodeDisplay">
                                     <div className="gamifiedNodeSelectionsTitle">Selections: </div>
@@ -1200,7 +1220,7 @@ class GamifiedGraphComponent extends React.Component {
                             :
                             null                        
                         }
-                        <div className="specialViewMargin">
+                        <div className="specialViewMargin">                            
                             <div className="scoreAmchartContainer">
                                 <Speedometer 
                                     id="speedometer1"
