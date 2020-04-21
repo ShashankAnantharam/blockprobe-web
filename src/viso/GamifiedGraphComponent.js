@@ -1271,6 +1271,7 @@ class GamifiedGraphComponent extends React.Component {
                             <div>
                                 <GamifiedGraphStats
                                     stats = {this.state.stats}
+                                    bpId={this.props.bpId}
                                     canSave = {true}
                                     />
                             </div>

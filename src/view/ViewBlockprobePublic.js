@@ -630,7 +630,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                     </div>
                     <GamifiedDashboardViewComponent
                                 summaryBlocks = {this.state.summaryList}
-                                blockTree={this.state.blockTree} 
+                                blockTree={this.state.blockTree}
+                                bpId={this.props.bId} 
                                 investigationGraph={this.state.investigationGraph}
                                 selectBlock={this.changeSelectedBlock}
                                 multiSelectEntityList = {this.state.multiSelectEntityList}

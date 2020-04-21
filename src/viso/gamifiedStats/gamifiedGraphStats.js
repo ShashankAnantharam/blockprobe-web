@@ -90,10 +90,18 @@ class GamifiedGraphStats extends React.Component {
                         null
                     }
                 </div>
+                <div>
+                    {this.state.finishedSaving?
+                        <p className="statsSavedMessage">Your results have been saved!</p>
+                        :
+                        null
+                    }                    
+                </div>
                 {this.state.saveAuth?
                     <GamifiedAuth 
                         stats={this.props.stats}
                         finishSaving={this.finishSaving}
+                        bpId={this.props.bpId}
                         type={'graphGame'}/>
                         :
                     null

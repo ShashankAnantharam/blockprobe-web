@@ -124,7 +124,9 @@ class GamifiedDashboardViewComponent extends React.Component {
                             />  
                         </div>
                                                 
-                                <GamifiedGraphComponent blockTree={this.props.blockTree} 
+                                <GamifiedGraphComponent 
+                                    bpId={this.props.bpId}
+                                    blockTree={this.props.blockTree} 
                                     investigationGraph={this.props.investigationGraph}
                                     selectBlock={this.props.selectBlock}
                                     imageMapping = {this.props.imageMapping}
