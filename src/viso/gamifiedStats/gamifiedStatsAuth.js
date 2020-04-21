@@ -27,15 +27,16 @@ class GamifiedAuth extends React.Component {
         }
     }
 
-    addUserStatsToDb(userId){
+    async saveUserStats(userId){
         //Add it
-        console.log(userId);
-        console.log(this.props.stats);
+         console.log(userId);
+         console.log(this.props.stats);
+        await firebase.auth().signOut();
         this.props.finishSaving();
     }
 
     componentDidMount(){
-        firebase.auth().onAuthStateChanged(user =>{
+        this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user =>{
             let uId = null, providerId = null;
             if(!isNullOrUndefined(firebase.auth().currentUser) && 
             !isNullOrUndefined(firebase.auth().currentUser.providerData) &&
@@ -55,15 +56,19 @@ class GamifiedAuth extends React.Component {
 
             if(!!user && !isNullOrUndefined(firebase.auth().currentUser)){     
                 if(!isNullOrUndefined(uId))           
-                    this.addUserStatsToDb(uId);
+                    this.saveUserStats(uId); 
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unregisterAuthObserver();
     }
 
     render(){
         return (
             <div>
-                <div className='StatsAuthTitle'>Save results</div>
+                <div className='StatsAuthTitle'>Sign in to save</div>
                 <div className='StatsAuthLoginContainer'>                                       
                     <StyleFirebaseAuth
                     uiConfig={this.uiConfig}

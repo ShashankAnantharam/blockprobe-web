@@ -137,6 +137,11 @@ class GamifiedGraph extends React.Component {
         icon.circle.strokeWidth = 0;        
         icon.background.pointerLength = 0;
         icon.background.disabled = true;
+
+        if(window.innerWidth > 600){
+            icon.background.radius = 40;
+            icon.circle.radius = 40;
+        }
         
         var outlineCircle = icon.createChild(am4core.Circle);
         outlineCircle.adapter.add("radius", function (radius, target) {
