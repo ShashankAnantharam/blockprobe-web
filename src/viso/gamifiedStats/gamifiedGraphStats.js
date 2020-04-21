@@ -11,7 +11,8 @@ class GamifiedGraphStats extends React.Component {
       //stats, canSave
       this.state = {
           saveAuth: false,
-          finishedSaving:  false
+          finishedSaving:  false,
+          uId: null
       }
 
       this.renderSingleEntityMistakes = this.renderSingleEntityMistakes.bind(this);
@@ -30,14 +31,16 @@ class GamifiedGraphStats extends React.Component {
     saveResults(){
         this.setState({
             saveAuth: true,
-            finishedSaving: false
+            finishedSaving: false,
+            uId: null
         });
     }
 
-    finishSaving(){
+    finishSaving(uId){
         this.setState({
             saveAuth: false,
-            finishedSaving: true
+            finishedSaving: true,
+            uId: uId  
         });
     }
 
@@ -92,7 +95,7 @@ class GamifiedGraphStats extends React.Component {
                 </div>
                 <div>
                     {this.state.finishedSaving?
-                        <p className="statsSavedMessage">Your results have been saved!</p>
+                        <p className="statsSavedMessage">Your results have been saved to the account {this.state.uId}!</p>
                         :
                         null
                     }                    

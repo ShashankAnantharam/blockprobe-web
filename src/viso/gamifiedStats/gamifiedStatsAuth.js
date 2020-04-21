@@ -40,7 +40,7 @@ class GamifiedAuth extends React.Component {
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameScores').doc(docStr).set(stats);
         await firebase.auth().signOut();
-        this.props.finishSaving();
+        this.props.finishSaving(userId);
     }
 
     componentDidMount(){
