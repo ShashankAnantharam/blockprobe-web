@@ -36,6 +36,19 @@ class GamifiedAuth extends React.Component {
         stats['ts'] = timestamp;
         stats['bpId'] = this.props.bpId;
         stats['userId'] = userId;
+        stats['bpTitle'] = this.props.title;
+
+        let entityStats = this.props.stats['entityStats'];
+        let newStats = {};
+        for(let entity in entityStats){
+            newStats[entity] = {
+                entity: entity,
+                mistakes: entityStats[entity] 
+            }
+        }
+        stats['entityStats'] = newStats;
+        //console.log(stats);
+
         let docStr = this.props.bpId + '_' + String(timestamp);
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameScores').doc(docStr).set(stats);

@@ -105,6 +105,7 @@ class GamifiedGraphStats extends React.Component {
                         stats={this.props.stats}
                         finishSaving={this.finishSaving}
                         bpId={this.props.bpId}
+                        title={this.props.title}
                         type={'graphGame'}/>
                         :
                     null
