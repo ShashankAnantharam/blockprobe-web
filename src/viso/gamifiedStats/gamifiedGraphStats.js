@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Speedometer from '../speedoMeter/Speedometer';
 import { Button } from '@material-ui/core';
+import GamifiedAuth from './gamifiedStatsAuth';
 import Paper from '@material-ui/core/Paper';
 import './gamifiedGraphStats.css';
 
@@ -8,9 +9,14 @@ class GamifiedGraphStats extends React.Component {
     constructor(props) {
       super(props);
       //stats, canSave
+      this.state = {
+          saveAuth: false,
+          finishedSaving:  false
+      }
 
       this.renderSingleEntityMistakes = this.renderSingleEntityMistakes.bind(this);
       this.saveResults = this.saveResults.bind(this);
+      this.finishSaving = this.finishSaving.bind(this);
     }
 
     renderSingleEntityMistakes(entity, mistakes){
@@ -22,7 +28,17 @@ class GamifiedGraphStats extends React.Component {
     }
 
     saveResults(){
+        this.setState({
+            saveAuth: true,
+            finishedSaving: false
+        });
+    }
 
+    finishSaving(){
+        this.setState({
+            saveAuth: false,
+            finishedSaving: true
+        });
     }
 
     render(){
@@ -64,7 +80,7 @@ class GamifiedGraphStats extends React.Component {
                 }
 
                 <div className="statsMistakesOptions">
-                    {this.props.canSave?
+                    {this.props.canSave && !this.state.finishedSaving?
                         <Button 
                         variant="contained" 
                         className="statsSaveButton"
@@ -74,6 +90,14 @@ class GamifiedGraphStats extends React.Component {
                         null
                     }
                 </div>
+                {this.state.saveAuth?
+                    <GamifiedAuth 
+                        stats={this.props.stats}
+                        finishSaving={this.finishSaving}
+                        type={'graphGame'}/>
+                        :
+                    null
+                }
 
                                 
             </div>
