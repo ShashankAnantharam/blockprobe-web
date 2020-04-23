@@ -18,11 +18,15 @@ class GamifiedResultsComponent extends React.Component {
       }
       this.formatEntityStats = this.formatEntityStats.bind(this);
       this.renderSinglePerformance = this.renderSinglePerformance.bind(this);
+      this.getData = this.getData.bind(this);
+
     }
 
-    componentDidMount(){
+    getData(userId){
+        if(isNullOrUndefined(userId))
+            return;
+
         let bpId = this.props.gameId;
-        let userId = this.props.userId;
 
         let db = firebase.firestore();
         let allScores = db.collection("Users").doc(userId)
@@ -69,14 +73,30 @@ class GamifiedResultsComponent extends React.Component {
                 isLoading: false
             });
         });
+    }
 
+    componentDidMount(){
+        if(!isNullOrUndefined(this.props.userId))
+            this.getData(this.props.userId);
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(this.props.userId != nextProps.userId){
+            this.setState({
+                isLoading: true
+            });
+            this.getData(nextProps.userId);
+        }
     }
 
     formatEntityStats(entityStats){
         //Get rid  of  this function later
         let newEntityStats = {};
+        if(isNullOrUndefined(entityStats))
+            return {};
         for(let entity in entityStats){
-            newEntityStats[entity] = entityStats[entity].mistakes;
+            if(entityStats[entity])
+                newEntityStats[entity] = entityStats[entity].mistakes;
         }
         return newEntityStats;
     }
@@ -120,14 +140,20 @@ class GamifiedResultsComponent extends React.Component {
                     </div>
                     :
                     <div style={{paddingTop:'20px'}}>
-                        <h4 className="gamePerformanceHeader">Top performance</h4>
-                        <div className="gamePerformanceContent">
-                            {topPerformanceRender}
-                        </div>
-                        <h4 className="gamePerformanceHeader">Latest performances</h4>
-                        <div className="gamePerformanceContent">
-                            {latestPerformanceRender}
-                        </div>
+                         {this.state.topPerformance.length==0?
+                                <h4 className="gamePerformanceHeader">User has not played game yet</h4>
+                                :
+                                <div>
+                                    <h4 className="gamePerformanceHeader">Top performance</h4>
+                                    <div className="gamePerformanceContent">
+                                        {topPerformanceRender}                            
+                                    </div>
+                                    <h4 className="gamePerformanceHeader">Latest performances</h4>
+                                    <div className="gamePerformanceContent">
+                                        {latestPerformanceRender}
+                                    </div>
+                                </div>
+                        }
                     </div>
                 }
                 
