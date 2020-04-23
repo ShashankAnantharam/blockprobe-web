@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch, Link,Redirect } from "react-rou
 import ViewBlockprobePublicComponent from "./view/ViewBlockprobePublic";
 import ViewBlockprobePublicWrapper from './wrapper/public/ViewBlockprobePublicWrapper';
 import UserSession from "./user-session/UserSession";
+import GamifiedResultsWrapper from './viso/gamifiedStats/gamifiedResultsWrapper';
 import PublicWallComponent from './view/viewWall/PublicWall';
 
 class App extends Component {
@@ -16,7 +17,9 @@ class App extends Component {
           <Route path="/wall/:userId"  
                         component={PublicWallComponent}
               />
-
+           <Route path='/gameResults/:gameId'   
+              component={GamifiedResultsWrapper}
+              />
             <Route path="/:viewType/:bId"  
                         component={ViewBlockprobePublicWrapper}
               />           
