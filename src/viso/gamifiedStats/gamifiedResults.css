@@ -1,0 +1,21 @@
+.gamePerformanceContent{
+    margin-bottom: 2em;
+}
+
+.gamePerformanceHeader{
+    margin-left:1em;
+}
+
+@media only screen and (min-width: 601px) {
+
+    .gamePerformanceHeader{
+        margin: 0 1% 1% 1%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .gamePerformanceHeader{
+        margin: 0 20px 20px 20px;
+    }
+}

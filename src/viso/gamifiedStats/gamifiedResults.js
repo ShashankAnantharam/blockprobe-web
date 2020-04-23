@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
+import GamifiedGraphStats from './gamifiedGraphStats';
 import './gamifiedResults.css';
 
 class GamifiedResultsComponent extends React.Component {
@@ -10,9 +11,11 @@ class GamifiedResultsComponent extends React.Component {
 
       this.state={
           topPerformance: [],
-          latestPerformances: []
+          latestPerformances: [],
+          title: null
       }
-
+      this.formatEntityStats = this.formatEntityStats.bind(this);
+      this.renderSinglePerformance = this.renderSinglePerformance.bind(this);
     }
 
     componentDidMount(){
@@ -37,13 +40,19 @@ class GamifiedResultsComponent extends React.Component {
             });
 
             let latestPerformances = [];
-            resultTop.forEach((doc) => {
+            resultLatest.forEach((doc) => {
                 let scoreDetails = doc.data();
                 latestPerformances.push(scoreDetails);
             }); 
 
             console.log(topScores);
             console.log(latestPerformances);
+            if(latestPerformances.length > 0){
+                let title = latestPerformances[0].bpTitle;
+                scope.setState({
+                    title: title
+                });
+            }
 
             scope.setState({
                 topPerformance: topScores,
@@ -53,10 +62,51 @@ class GamifiedResultsComponent extends React.Component {
 
     }
 
-    render(){
+    formatEntityStats(entityStats){
+        //Get rid  of  this function later
+        let newEntityStats = {};
+        for(let entity in entityStats){
+            newEntityStats[entity] = entityStats[entity].mistakes;
+        }
+        return newEntityStats;
+    }
+
+    renderSinglePerformance(stats, type){
+        if(stats.entityStats)
+            stats.entityStats = this.formatEntityStats(stats.entityStats);
         return (
             <div>
-                RESULTS
+                <GamifiedGraphStats
+                    stats = {stats}
+                    bpId={this.props.gameId}
+                    title={this.state.title}
+                    id = {String(stats.ts) + "_" + type}
+                    ts = {stats.ts}
+                    canSave = {false}
+                    />
+            </div>
+        )
+    }
+
+
+    render(){
+        let scope = this;
+        let latestPerformanceRender = this.state.latestPerformances.map(performance => {
+            return scope.renderSinglePerformance(performance,'latest');
+        })
+        let topPerformanceRender = this.state.topPerformance.map(performance => {
+            return scope.renderSinglePerformance(performance,'top');
+        })
+        return (
+            <div>
+                <h4 className="gamePerformanceHeader">Top performance</h4>
+                <div className="gamePerformanceContent">
+                    {topPerformanceRender}
+                </div>
+                <h4 className="gamePerformanceHeader">Latest performances</h4>
+                <div className="gamePerformanceContent">
+                    {latestPerformanceRender}
+                </div>
             </div>
         )
     }

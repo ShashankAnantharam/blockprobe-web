@@ -4,11 +4,12 @@ import { Button } from '@material-ui/core';
 import GamifiedAuth from './gamifiedStatsAuth';
 import Paper from '@material-ui/core/Paper';
 import './gamifiedGraphStats.css';
+import { isNull, isNullOrUndefined } from 'util';
 
 class GamifiedGraphStats extends React.Component {
     constructor(props) {
       super(props);
-      //stats, canSave
+      //stats, canSave, id
       this.state = {
           saveAuth: false,
           finishedSaving:  false,
@@ -57,12 +58,16 @@ class GamifiedGraphStats extends React.Component {
         let renderEntityList = entityList.map((entity) => {
             return this.renderSingleEntityMistakes(entity.entity, entity.mistakes);
         })
+
+        let id = 'speedometer_rand';
+        if(!isNullOrUndefined(this.props.id))
+            id = this.props.id;
         return (
             <div class="statsContainer">
                 <div className="statsTitle">Game results</div>
                 <div className="statsAmchartContainer">
                                 <Speedometer 
-                                    id="speedometer12"
+                                    id={id}
                                     val={this.props.stats.score}
                                     min={0}
                                     max={this.props.stats.totalScore}/>
