@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
 import GamifiedGraphStats from './gamifiedGraphStats';
+import Loader from 'react-loader-spinner';
 import './gamifiedResults.css';
 
 class GamifiedResultsComponent extends React.Component {
@@ -12,7 +13,8 @@ class GamifiedResultsComponent extends React.Component {
       this.state={
           topPerformance: [],
           latestPerformances: [],
-          title: null
+          title: null,
+          isLoading: true
       }
       this.formatEntityStats = this.formatEntityStats.bind(this);
       this.renderSinglePerformance = this.renderSinglePerformance.bind(this);
@@ -45,8 +47,8 @@ class GamifiedResultsComponent extends React.Component {
                 latestPerformances.push(scoreDetails);
             }); 
 
-            console.log(topScores);
-            console.log(latestPerformances);
+            // console.log(topScores);
+            // console.log(latestPerformances);
             if(latestPerformances.length > 0){
                 let title = latestPerformances[0].bpTitle;
                 scope.setState({
@@ -56,7 +58,15 @@ class GamifiedResultsComponent extends React.Component {
 
             scope.setState({
                 topPerformance: topScores,
-                latestPerformances: latestPerformances
+                latestPerformances: latestPerformances,
+                isLoading: false
+            });
+        },
+        error => {
+            scope.setState({
+                topPerformance: [],
+                latestPerformances: [],
+                isLoading: false
             });
         });
 
@@ -99,14 +109,28 @@ class GamifiedResultsComponent extends React.Component {
         })
         return (
             <div>
-                <h4 className="gamePerformanceHeader">Top performance</h4>
-                <div className="gamePerformanceContent">
-                    {topPerformanceRender}
-                </div>
-                <h4 className="gamePerformanceHeader">Latest performances</h4>
-                <div className="gamePerformanceContent">
-                    {latestPerformanceRender}
-                </div>
+                {this.state.isLoading?
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"              
+                        /> 
+                    </div>
+                    :
+                    <div style={{paddingTop:'20px'}}>
+                        <h4 className="gamePerformanceHeader">Top performance</h4>
+                        <div className="gamePerformanceContent">
+                            {topPerformanceRender}
+                        </div>
+                        <h4 className="gamePerformanceHeader">Latest performances</h4>
+                        <div className="gamePerformanceContent">
+                            {latestPerformanceRender}
+                        </div>
+                    </div>
+                }
+                
             </div>
         )
     }
