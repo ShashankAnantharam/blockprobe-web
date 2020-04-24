@@ -143,6 +143,7 @@ class GamifiedGraphComponent extends React.Component {
         this.resetScroll = this.resetScroll.bind(this);
 
         this.initSpeech = this.initSpeech.bind(this);
+        this.playNodeSound = this.playNodeSound.bind(this);
         this.playExistingSelection = this.playExistingSelection.bind(this);
         this.pauseExistingSelection = this.pauseExistingSelection.bind(this);
         this.resumeExistingSelection = this.resumeExistingSelection.bind(this);
@@ -625,6 +626,7 @@ class GamifiedGraphComponent extends React.Component {
                         setNodeVal = {this.setNodeVal}  
                         setGameMessage = {this.setGameMessage}  
                         setEntityStats = {this.setEntityStats}
+                        playNodeSound = {this.playNodeSound}
                         disabled = {this.state.stopGame}            
                         />
             </div>
@@ -1005,6 +1007,57 @@ class GamifiedGraphComponent extends React.Component {
         }
     }
     
+    async playNodeSound(node){
+        if(!isNullOrUndefined(this.speech)){
+            if(this.speech.speaking())
+                await this.speech.cancel();
+          
+            let selectedNodesString = node;
+            for(let i=0; !isNullOrUndefined(this.state.selectedNodes) && i<this.state.selectedNodes.length; i++){
+                selectedNodesString += this.state.selectedNodes[i] + ', ';
+            }
+            if(selectedNodesString.length > 0)
+                selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
+            ReactGA.event({
+                category: 'playSound',
+                action: 'PlaySound ' + selectedNodesString,
+                label: 'PlaySound ' + selectedNodesString
+            });
+
+            let toPlayText = node;
+            this.setState({
+                playStatus: 'start'
+            });
+            this.speech.speak({
+                text: toPlayText,
+                queue: false// ,  // current speech will be interrupted,
+                /* listeners: {
+                    onstart: () => {
+                        console.log("Start utterance")
+                    },
+                    onend: () => {
+                        console.log("End utterance")
+                    },
+                    onresume: () => {
+                        console.log("Resume utterance")
+                    },
+                    onboundary: (event) => {
+                        console.log(event.name + ' boundary reached after ' + event.elapsedTime + ' milliseconds.')
+                    }
+                }*/
+            }).then(() => {
+                this.setState({
+                    playStatus: 'end'
+                });
+                //console.log('here');
+            }).catch(e => {
+                console.error("An error occurred :", e)
+            });
+            
+        }
+    }
+
+
     async playExistingSelection(){
         if(!isNullOrUndefined(this.speech)){
             if(this.speech.speaking())

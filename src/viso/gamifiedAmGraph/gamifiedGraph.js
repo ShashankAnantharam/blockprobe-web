@@ -237,7 +237,7 @@ class GamifiedGraph extends React.Component {
                 if(prevNode == node){
                     //Tell user to pick another node!
                 }
-                
+                                
                 if(isEdgeSelected){
                     //Tell user that edge has already been made!
                     scope.props.setGameMessage('alreadySelected');
@@ -245,6 +245,7 @@ class GamifiedGraph extends React.Component {
                 }
                 else{
                     scope.props.setNodeVal('f',node);
+                    scope.props.playNodeSound(node.label.currentText);
                 }
                 
                 if(!isNullOrUndefined(node.linksWith))
