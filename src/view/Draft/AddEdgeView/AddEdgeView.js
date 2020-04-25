@@ -78,8 +78,42 @@ class AddEdgeView extends React.Component {
         return entities;
     }
 
+    getLatestIndex(){
+        let latestIndex = 0 ;
+        if(this.props.lastIndexDraftBlocks.length > 0)
+            latestIndex = Math.max(latestIndex, this.props.lastIndexDraftBlocks[this.props.lastIndexDraftBlocks.length - 1]);
+
+        if(this.props.lastIndex){
+            latestIndex = Math.max(latestIndex, this.props.lastIndex);
+        }
+        return latestIndex;
+    }
+
+    commitBlockToBlockprobe(){
+        let entities = [];
+        for(let i=0; i<this.state.selectedEntities.length; i++){
+            entities.push({
+                title: Utils.makeFirstLetterUppercase(this.state.selectedEntities[i]),
+                type: 'None'
+            });
+        }
+        let index = this.getLatestIndex();
+        index += 0.1;
+        let fullBlock = {
+            title: `#${index} `,
+            summary: this.state.summary,
+            entities: entities,
+            evidences: [],
+            referenceBlock: null,
+            timestamp: Date.now(),
+            actionType: 'ADD'
+        };
+        this.props.commitBlockToBlockprobe(fullBlock);
+    }
+
     confirmEdge(){
         // console.log(this.state.selectedEntities, this.state.summary);
+        this.commitBlockToBlockprobe();
     }
 
     render(){

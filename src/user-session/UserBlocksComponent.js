@@ -1301,9 +1301,11 @@ class UserBlocksComponent extends React.Component {
                     <TabPanel>
                         <div className="graphVisualizationSingleEntity">
                             <AddEdgeView
-                            entityPane = {this.state.entityPaneList}                                        
-                            commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
-                            investigationGraph = {this.props.investigationGraph}
+                                entityPane = {this.state.entityPaneList}                                        
+                                commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                investigationGraph = {this.props.investigationGraph}
+                                lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                lastIndex = {this.props.lastIndex}
                             />
                         </div>
                         {this.isGraphAvailable()?
