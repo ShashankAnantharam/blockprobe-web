@@ -190,11 +190,11 @@ class SingleEntityView extends React.Component {
                                 placeholder = "Entity name"
                                 multiline
                                 rowsMax="3"
-                                rowsMin="1"
+                                rows="1"
                                 style={{
                                     background: 'white',
-                                    paddingTop:'6px',
-                                    paddingBottom:'6px',
+                                    marginTop:'6px',
+                                    marginBottom:'6px',
                                     minWidth:'40%',
                                     maxWidth: '50%',
                                     color: 'darkBlue',

@@ -23,6 +23,7 @@ import  TimelineComponent from "../viso/TimelineComponent";
 import SummaryViewComponent from "../viso/summary/SummaryView";
 import * as Utils from '../common/utilSvc';
 import SingleEntityView from '../view/Draft/SingleEntityView/SingleEntityView';
+import AddEdgeView from  '../view/Draft/AddEdgeView/AddEdgeView';
 
 import Joyride from 'react-joyride';
 
@@ -1298,8 +1299,13 @@ class UserBlocksComponent extends React.Component {
                     </TabList>
 
                     <TabPanel>
+                        <div className="graphVisualizationSingleEntity">
+                            <AddEdgeView                                        
+                            commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                            />
+                        </div>
                         {this.isGraphAvailable()?
-                            <div>
+                            <div>                                
                                 {!isNullOrUndefined(this.state.selectedGraphNode) && this.state.displaySingleEntity?
                                     <div className="graphVisualizationSingleEntity">
                                         <SingleEntityView                                        
