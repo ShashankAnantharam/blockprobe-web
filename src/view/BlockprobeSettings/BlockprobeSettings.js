@@ -13,7 +13,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ClearIcon from '@material-ui/icons/Clear';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Textarea from 'react-textarea-autosize';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import * as Utils from '../../common/utilSvc';
 import * as Constants from '../../common/constants';
 import * as DbUtils from '../../common/dbSvc';

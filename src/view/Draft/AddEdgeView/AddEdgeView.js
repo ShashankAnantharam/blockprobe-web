@@ -7,12 +7,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Chip from '@material-ui/core/Chip';
 import Slide from '@material-ui/core/Slide';
 import  * as Utils from '../../../common/utilSvc';
 import './AddEdgeView.css';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import { isNull, isNullOrUndefined } from 'util';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+
+const filter = createFilterOptions();
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -25,9 +29,12 @@ class AddEdgeView extends React.Component {
 
         this.state ={
             summary: '',
-            entityA: '',
-            entityB: ''
+            selectedEntities: []
         }
+
+        this.confirmEdge = this.confirmEdge.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.getEntities = this.getEntities.bind(this);
     }
 
     handleChange(event, type) {
@@ -38,10 +45,45 @@ class AddEdgeView extends React.Component {
             if(type=="connection-description"){
                 this.setState({summary: event.target.value});
             }
+            else  if(type=="entityA"){
+                this.setState({entityA: event.target.value});
+            }
         }
       }
 
+    getEntities(investigationGraph, entityPane){
+        var entities = [];
+        // console.log(entities);
+        var isEntityPresent = {};
+        if(!isNullOrUndefined(investigationGraph)){
+            Object.keys(investigationGraph).forEach(function(entityLabel) {
+                if(!(entityLabel in isEntityPresent)){
+                    entities.push({                
+                        label: entityLabel, 
+                    });
+                }
+                isEntityPresent[entityLabel] = false;
+            });
+        }
+        if(!isNullOrUndefined(entityPane)){
+            for(let i=0; i<entityPane.length; i++){
+                if(!(entityPane[i].label in isEntityPresent)){
+                    entities.push({
+                        label: entityPane[i].label
+                    });
+                }
+            }
+        }
+        // console.log(entities);
+        return entities;
+    }
+
+    confirmEdge(){
+        // console.log(this.state.selectedEntities, this.state.summary);
+    }
+
     render(){
+        let entityList = this.getEntities(this.props.investigationGraph, this.props.entityPane);
         return (
             <div>
                 <h4 className="addEdgeTitle"> Add connection</h4>
@@ -51,7 +93,7 @@ class AddEdgeView extends React.Component {
                                 variant="outlined"
                                 value={this.state.summary}
                                 onChange={(e) => { this.handleChange(e,"connection-description")}}
-                                placeholder = "Add connection description"
+                                label = "Add connection description"
                                 multiline
                                 rowsMax="3"
                                 rows="2"
@@ -59,12 +101,43 @@ class AddEdgeView extends React.Component {
                                     background: 'white',
                                     marginTop:'6px',
                                     marginBottom:'6px',
-                                    minWidth:'70%',
-                                    maxWidth: '80%',
+                                    width:'70%',
                                     color: 'darkBlue',
                                     fontWeight:'600'
                                     }}/>
                 </div>
+                <div className="addEdgeEntityContainer">
+                    <Autocomplete
+                        multiple
+                        id="tags-filled"
+                        options={entityList.map((option) => option.label)}
+                        freeSolo
+                        renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                        ))
+                        }
+                        value={this.state.selectedEntities}
+                        onChange = {(event, newValue) => {
+                            this.setState({
+                                selectedEntities: newValue
+                            });
+                        }}
+                        renderInput={(params) => (
+                        <TextField {...params} variant="outlined" label="Add topics" />
+                        )}
+                    />
+                </div>
+                {this.state.selectedEntities.length == 2?
+                    <Button
+                        variant="contained" 
+                        onClick={() => this.confirmEdge()}
+                        className="confirmEdgeButton"
+                        >Confirm</Button>
+                        :
+                        <p className="edgeEntityMessage">*Input exactly two topics that you want to create a connection between!</p>
+                }
+                
             </div>
         )
     }

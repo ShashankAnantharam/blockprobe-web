@@ -1111,8 +1111,8 @@ class UserBlocksComponent extends React.Component {
                         
         var inReviewBlocksList = this.convertBlockMapToList(this.state.inReviewBlocks);
         const inReviewBlocksListRender = inReviewBlocksList.map((block) => 
-                                                        (scope.renderSingleBlock(block, scope, false)));                                                       
-                                
+                                                        (scope.renderSingleBlock(block, scope, false)));      
+                                        
         return(
             <div>
                      
@@ -1300,8 +1300,10 @@ class UserBlocksComponent extends React.Component {
 
                     <TabPanel>
                         <div className="graphVisualizationSingleEntity">
-                            <AddEdgeView                                        
+                            <AddEdgeView
+                            entityPane = {this.state.entityPaneList}                                        
                             commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                            investigationGraph = {this.props.investigationGraph}
                             />
                         </div>
                         {this.isGraphAvailable()?
