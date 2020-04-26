@@ -43,7 +43,7 @@ class GamifiedGraph extends React.Component {
                 newEntry.circleDisabled = false;
             }
 
-            newEntry.color = Const.edenColors[(i%(Const.edenColors.length))];
+            newEntry.color = am4core.color(Const.edenColors[(i%(Const.edenColors.length))]);
             if(newEntry.label == 'ALL'){
                 newEntry.isNotAll = false;
                 newEntry.imageDisabled = true;
@@ -108,6 +108,7 @@ class GamifiedGraph extends React.Component {
         series.dataFields.id = "id";
         series.dataFields.children = "children";
         series.dataFields.linkWith = "link";
+        series.dataFields.color = "color";
 
         // Add labels
         series.nodes.template.label.text = "{name}";
@@ -150,6 +151,7 @@ class GamifiedGraph extends React.Component {
         }
         
         var outlineCircle = icon.createChild(am4core.Circle);
+        outlineCircle.propertyFields.fill = "color";
         outlineCircle.adapter.add("radius", function (radius, target) {
             var circleBullet = target.parent;
             return circleBullet.circle.radius + 2;
