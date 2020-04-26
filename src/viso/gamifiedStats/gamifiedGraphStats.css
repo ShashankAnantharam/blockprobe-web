@@ -12,17 +12,17 @@
 }
 
 .statsScoreVal{
-    color: rgb(117, 106, 214);
+    color: #556efd;
     font-size: 24px;
 }
 
 .statsEntityText{
-    color: rgb(117, 106, 214);
+    color: #556efd;
     font-size: 16px;
 }
 
 .statsMistakes{
-    color: rgb(238, 38, 38);
+    color: #e43c84;
     font-size: 20px;
 }
 
@@ -48,8 +48,8 @@
 }
 
 .statsSaveButton{
-    background:rgb(3, 70, 8) !important;
-    color:rgb(219, 243, 242) !important;
+    background:#ed4442 !important;
+    color:rgb(255, 255, 255) !important;
     margin-bottom: 0.5em !important;
     size:2.6em !important;
     border:none;

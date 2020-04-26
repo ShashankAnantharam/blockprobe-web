@@ -167,7 +167,7 @@
 }
 
 .gameMessage{
-    color: red;
+    color: #e43c84;
     font-size: 20px;
     text-align: center;
 }
@@ -181,7 +181,7 @@
 }
 
 .scoreVal{
-    color: rgb(117, 106, 214);
+    color: #556efd;
     font-size: 24px;
 }
 
@@ -194,7 +194,7 @@
 .gamified-block-entity{
     border-radius: 20px; 
     padding: 10px;
-    background-color: rgb(117, 106, 214);
+    background-color: #556efd;
     margin-right: 10px;
     margin-top: 3px;
     margin-bottom: 5px;
@@ -207,13 +207,23 @@
     word-wrap: break-word;
 }
 
+.gamified-graph-block-list-title{
+    font-weight: 600;
+    padding: 2px;
+    text-align: center;
+    background-color: #3ddc97;
+    transition: 0.5s;
+    cursor: pointer;
+    word-wrap: break-word;
+}
+
 .scoreAmchartContainer{
     width: 100%;
     height: 80px;
 }
 
 .stopGamebutton{
-    background:rgb(2, 1, 54) !important;
+    background:#46237a !important;
     color:rgb(219, 243, 242) !important;
     margin-bottom: 0.5em !important;
     size:2.6em !important;

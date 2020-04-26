@@ -4,6 +4,7 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4plugins_forceDirected from "@amcharts/amcharts4/plugins/forceDirected"; 
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import * as am4plugins_bullets from "@amcharts/amcharts4/plugins/bullets";
+import * as Const from '../../common/constants';
 import { isNullOrUndefined } from 'util';
 
 am4core.useTheme(am4themes_animated);
@@ -42,6 +43,7 @@ class GamifiedGraph extends React.Component {
                 newEntry.circleDisabled = false;
             }
 
+            newEntry.color = Const.edenColors[(i%(Const.edenColors.length))];
             if(newEntry.label == 'ALL'){
                 newEntry.isNotAll = false;
                 newEntry.imageDisabled = true;
@@ -79,7 +81,7 @@ class GamifiedGraph extends React.Component {
     hasEdgeBeenSelected(nodeA, nodeB){
         if(isNullOrUndefined(nodeA) || isNullOrUndefined(nodeB))
             return;
-            
+
         if((String(nodeA + '_CCC_' + nodeB) in this.selectedEdges) || (String(nodeB + '_CCC_' + nodeA) in this.selectedEdges))
             return true;
         return false;
@@ -125,6 +127,7 @@ class GamifiedGraph extends React.Component {
         series.fontSize = 13;
         series.minRadius = 10;
         series.maxRadius = 10;
+        series.propertyFields.fill = "color";
         series.nodes.template.label.propertyFields.hidden = 'circleDisabled';
         series.nodes.template.togglable = false;
         

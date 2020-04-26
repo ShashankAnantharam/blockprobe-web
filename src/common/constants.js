@@ -24,3 +24,11 @@ export const langs = [
         label: 'Bengali'
     }
 ];
+
+export const edenColors = [
+    '#556efd',
+    '#e43c84',
+    '#ed4442',
+    '#46237a',
+    '#3ddc97'
+]

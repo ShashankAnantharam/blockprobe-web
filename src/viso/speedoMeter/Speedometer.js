@@ -43,7 +43,7 @@ class Speedometer extends React.Component {
         range0.value = this.props.min;
         range0.endValue = this.props.val;
         range0.axisFill.fillOpacity = 1;
-        range0.axisFill.fill = am4core.color('rgb(117, 106, 214)');
+        range0.axisFill.fill = am4core.color('#556efd');
         range0.axisFill.zIndex = - 1;
 
         var range1 = axis.axisRanges.create();
@@ -56,7 +56,7 @@ class Speedometer extends React.Component {
         var hand = chart.hands.push(new am4charts.ClockHand());
         hand.pin.disabled = false;
         hand.strokeWidth = 0;
-        hand.fill = am4core.color("rgb(117, 106, 214)");
+        hand.fill = am4core.color("#556efd");
         hand.showValue(Math.min(Math.max(this.props.val, this.props.min), this.props.max));
 
         this.chart = chart;

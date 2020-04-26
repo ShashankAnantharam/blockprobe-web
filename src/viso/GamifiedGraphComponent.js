@@ -1333,7 +1333,7 @@ class GamifiedGraphComponent extends React.Component {
 
                         {this.state.currentSelectedBlocks.length >= 0? 
                         <div className="graph-block-list">                            
-                            <div className='graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
+                            <div className='gamified-graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
                                 {selectedNodesString.length>0?
                                     <span>{Locale.selections[lang]}</span>
                                     :
