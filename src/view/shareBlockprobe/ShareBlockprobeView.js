@@ -57,6 +57,7 @@ class ShareBlockprobeComponent extends React.Component {
       super(props);
       this.state = {
           urlPrefix: 'https://blprobe.com/view/',
+          gameUrlPrefix: 'https://blprobe.com/game/',
           blocksUploaded: true,
           imageUploaded: true,
           didPublishBlocksInSession: false,
@@ -163,6 +164,7 @@ class ShareBlockprobeComponent extends React.Component {
 
     renderShareScreen(){
         let url = this.state.urlPrefix + this.props.bpId;
+        let gameUrl = this.state.gameUrlPrefix + this.props.bpId;
         return (
             <div>
                 {this.isAnyOptionClicked()?
@@ -228,7 +230,7 @@ class ShareBlockprobeComponent extends React.Component {
                         null
                     }                    
                     <div className='share-section-heading'>
-                        Public Link
+                        Public link to visualize
                         <a className='share-tooltips' onClick={(e)=>{this.showLocalTooltip('publicLink')}} >
                                 <Info style={{fontSize:'19px'}}/>
                         </a>                    
@@ -250,6 +252,10 @@ class ShareBlockprobeComponent extends React.Component {
                                         />                     
                     </div>
                     <a href={url} target="_blank" className="share-url">{url}</a>
+                    <div className='share-section-heading'>
+                        Public link to play game                     
+                    </div>
+                    <a href={gameUrl} target="_blank" className="share-url">{gameUrl}</a>
                     <div className='share-section-heading'>
                         Share Link on Social Media
                         <a className='share-tooltips tooltipSocialMedia' onClick={(e)=>{this.showLocalTooltip('socialMedia')}} >

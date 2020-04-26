@@ -77,6 +77,9 @@ class GamifiedGraph extends React.Component {
     }
 
     hasEdgeBeenSelected(nodeA, nodeB){
+        if(isNullOrUndefined(nodeA) || isNullOrUndefined(nodeB))
+            return;
+            
         if((String(nodeA + '_CCC_' + nodeB) in this.selectedEdges) || (String(nodeB + '_CCC_' + nodeA) in this.selectedEdges))
             return true;
         return false;
@@ -175,11 +178,13 @@ class GamifiedGraph extends React.Component {
         series.links.template.distance = 8.5;
         series.links.template.events.on("hit", function (event) {                
             var link = event.target;  
+            if(!scope.hasEdgeBeenSelected(link.source.label.currentText, link.target.label.currentText))
+                return;
             link.strokeWidth = 9;        
             if(scope.selectedLink)
                 scope.selectedLink.strokeWidth = 5;          
             scope.selectedLink = link;
-            scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
+            scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);            
         });
 
         
