@@ -1,0 +1,10 @@
+.singleGameListItemContainer{
+    margin-left: 1em;
+}
+
+.gameListTitle{
+    margin-left: 1em;
+    margin: 1em;
+    text-align: center;
+    word-wrap: break-word;
+}

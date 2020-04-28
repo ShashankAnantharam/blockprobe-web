@@ -7,6 +7,7 @@ import ViewBlockprobePublicWrapper from './wrapper/public/ViewBlockprobePublicWr
 import UserSession from "./user-session/UserSession";
 import GamifiedResultsWrapper from './viso/gamifiedStats/gamifiedResultsWrapper';
 import PublicWallComponent from './view/viewWall/PublicWall';
+import GameListComponent from './viso/gameList/GameListComponent';
 
 class App extends Component {
   render() {
@@ -17,6 +18,9 @@ class App extends Component {
           <Route path="/wall/:userId"  
                         component={PublicWallComponent}
               />
+            <Route path="/gameList/:gameListId"  
+                      component={GameListComponent}
+            />
            <Route path='/gameResults/:gameId'   
               component={GamifiedResultsWrapper}
               />
