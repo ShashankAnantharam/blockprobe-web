@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@amcharts/amcharts4": "^4.5.15",
+    "@amcharts/amcharts4": "^4.6.2",
     "@firebase/logger": "^0.1.17",
     "@material-ui/core": "^4.9.10",
     "@material-ui/icons": "^4.9.1",

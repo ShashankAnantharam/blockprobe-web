@@ -44,8 +44,6 @@ class GamifiedGraph extends React.Component {
                 newEntry.imageDisabled = true;
                 newEntry.circleDisabled = false;
             }
-            newEntry.x = am4core.percent(Math.random()*(100));
-            newEntry.y = am4core.percent(Math.random()*(100));
 
             newEntry.color = am4core.color(Const.edenColors[(i%(Const.edenColors.length))]);
             if(newEntry.label == 'ALL'){
@@ -121,8 +119,6 @@ class GamifiedGraph extends React.Component {
         series.nodes.template.label.text = "{name}";
         series.nodes.template.tooltipText = "{name}";
         series.nodes.template.id = "{id}";
-        series.nodes.template.propertyFields.x = "x";
-        series.nodes.template.propertyFields.y = "y";
 
       //  /*
         series.nodes.template.label.valign = "bottom";
@@ -324,10 +320,11 @@ class GamifiedGraph extends React.Component {
             this.data = data;
 
             this.chart.series.values[0].data = this.data;
-            if(!isNullOrUndefined(node1) && !isNullOrUndefined(node2))
-            scope.addSelectedEdgeToMap(node1, node2);
-            scope.props.selectEdge(node1, node2);
-            scope.props.setGameMessage('successLink');
+            if(!isNullOrUndefined(node1) && !isNullOrUndefined(node2)){
+                scope.addSelectedEdgeToMap(node1, node2);
+                scope.props.selectEdge(node1, node2);
+                scope.props.setGameMessage('successLink');
+            }
         }
         else{
             scope.props.setGameMessage('failLink');
