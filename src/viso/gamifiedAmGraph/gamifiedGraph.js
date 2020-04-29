@@ -18,6 +18,8 @@ class GamifiedGraph extends React.Component {
       this.generateAmForceDirectedGraph = this.generateAmForceDirectedGraph.bind(this);
       this.prepareData = this.prepareData.bind(this);
       this.chart = {};
+      this.data = [];
+      this.refData = [];
       this.selectedEdges={};
       this.selectedLink = null;
       this.prevNode = null;
@@ -29,7 +31,7 @@ class GamifiedGraph extends React.Component {
       this.hasEdgeBeenSelected = this.hasEdgeBeenSelected.bind(this);
     }
 
-    prepareData(data){
+    prepareData(data, isRefData){
         var newData = [];
 
         for(var i=0; data && i<data.length; i++){
@@ -42,6 +44,8 @@ class GamifiedGraph extends React.Component {
                 newEntry.imageDisabled = true;
                 newEntry.circleDisabled = false;
             }
+            newEntry.x = am4core.percent(Math.random()*(100));
+            newEntry.y = am4core.percent(Math.random()*(100));
 
             newEntry.color = am4core.color(Const.edenColors[(i%(Const.edenColors.length))]);
             if(newEntry.label == 'ALL'){
@@ -51,12 +55,15 @@ class GamifiedGraph extends React.Component {
             }
             else{
                 newEntry.isNotAll = true;
-            }          
+            }         
+            
+            if(!isRefData)
+                delete newEntry['link'];
 
-            if(!(newEntry.label == 'ALL'))
+            if(!(newEntry.label == 'ALL')){
                 newData.push(newEntry);
+            }
         }
-        // console.log(newData);
 
         return newData;
     }
@@ -91,7 +98,7 @@ class GamifiedGraph extends React.Component {
         this.selectedEdges[String(nodeA + '_CCC_' + nodeB)] = true;
     }
 
-    generateAmForceDirectedGraph(){
+    generateAmForceDirectedGraph(data){
         // Create chart
         var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
 
@@ -100,7 +107,7 @@ class GamifiedGraph extends React.Component {
 
 
        //console.log(graph);
-        series.data = this.prepareData(this.props.graph);
+        series.data = this.data;
  
         // Set up data fields
         series.dataFields.value = "value";
@@ -114,6 +121,8 @@ class GamifiedGraph extends React.Component {
         series.nodes.template.label.text = "{name}";
         series.nodes.template.tooltipText = "{name}";
         series.nodes.template.id = "{id}";
+        series.nodes.template.propertyFields.x = "x";
+        series.nodes.template.propertyFields.y = "y";
 
       //  /*
         series.nodes.template.label.valign = "bottom";
@@ -174,7 +183,7 @@ class GamifiedGraph extends React.Component {
         series.centerStrength = 0.55;
         series.manyBodyStrength = -38;
         series.links.template.strength = 0.5;
-        series.links.template.strokeWidth = 0;
+        series.links.template.strokeWidth = 5;
 
         var scope = this;
 
@@ -228,16 +237,10 @@ class GamifiedGraph extends React.Component {
                 // console.log(link);
                 if(!isNullOrUndefined(link)){
                     link.strokeWidth = 5;
-                    if(!isNullOrUndefined(prevNode) && !isNullOrUndefined(prevNode.label))
-                        scope.addSelectedEdgeToMap(node.label.currentText, prevNode.label.currentText);
-                    scope.props.selectEdge(link.source.label.currentText, link.target.label.currentText);
-                    scope.props.setGameMessage('successLink');
                 }
                 else{
                     //Wrong link
-                    scope.props.setGameMessage('failLink');
-                    scope.props.setEntityStats(node.label.currentText,false);
-                    scope.props.setEntityStats(prevNode.label.currentText,false);
+                    scope.connectEdge(node.label.currentText, prevNode.label.currentText);                  
                 }
                 scope.props.setNodeVal('s',node);
                 //prevNode = null;
@@ -270,13 +273,66 @@ class GamifiedGraph extends React.Component {
 
 
     componentDidMount() {
-      this.generateAmForceDirectedGraph();
+        this.data = this.prepareData(this.props.graph, false);
+        this.refData = this.prepareData(this.props.graph, true);
+        this.generateAmForceDirectedGraph();
     }
 
     componentDidUpdate(){
         if(JSON.stringify(this.previousChart) != JSON.stringify(this.props.graph)){
             this.generateAmForceDirectedGraph();
             this.previousChart = JSON.parse(JSON.stringify(this.props.graph));
+        }
+    }
+
+    connectEdge(node1, node2){       
+        let data = this.chart.series.values[0].data;
+        let index1 =-1, index2 = -1;
+        let canConnect = false;
+
+        for(let i=0; i<data.length; i++){
+            if(data[i].label == node1){
+                index1 = i;
+            }
+            else if(data[i].label == node2){
+                index2 = i;
+            }
+        }
+
+        if(index1!=-1 && index2!=-1){
+            for(let i=0; !isNullOrUndefined(this.refData) && !isNullOrUndefined(this.refData[index1].link) 
+            && i<this.refData[index1].link.length; i++){
+                if(this.refData[index1].link[i] == index2){
+                    canConnect = true;                    
+                }
+            }
+
+            for(let i=0; !isNullOrUndefined(this.refData) && !isNullOrUndefined(this.refData[index2].link) 
+            && i<this.refData[index2].link.length; i++){
+                if(this.refData[index2].link[i] == index1){
+                    canConnect = true;                    
+                }
+            }
+        }
+
+        let scope = this;
+        if(canConnect){
+            if(!('link' in data[index1])){
+                data[index1].link = [];
+            }
+            data[index1].link.push(index2);
+            this.data = data;
+
+            this.chart.series.values[0].data = this.data;
+            if(!isNullOrUndefined(node1) && !isNullOrUndefined(node2))
+            scope.addSelectedEdgeToMap(node1, node2);
+            scope.props.selectEdge(node1, node2);
+            scope.props.setGameMessage('successLink');
+        }
+        else{
+            scope.props.setGameMessage('failLink');
+            scope.props.setEntityStats(node1,false);
+            scope.props.setEntityStats(node2,false);
         }
     }
 
