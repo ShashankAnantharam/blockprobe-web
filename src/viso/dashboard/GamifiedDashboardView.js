@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Button, IconButton } from '@material-ui/core';
+import VolumeUp from '@material-ui/icons/VolumeUp';
+import VolumeOff from '@material-ui/icons/VolumeOff';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Joyride,{ ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Info from '@material-ui/icons/Info';
@@ -31,8 +34,9 @@ class GamifiedDashboardViewComponent extends React.Component {
                         disableBeacon: true
                     }
                 ]
-            }
-        }
+            }            
+        },
+        playSound: true
       }
       this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
       this.isGraphAvailable = this.isGraphAvailable.bind(this);
@@ -98,6 +102,23 @@ class GamifiedDashboardViewComponent extends React.Component {
 
         return (
             <div style={{paddingBottom:'15px'}}> 
+                <div className="gamifiedDashboardOptionsContainer uniformMarginLeft">
+                            {this.state.playSound?
+                                <IconButton
+                                    variant="contained" 
+                                    className="soundSettingsbutton"
+                                    onClick={() => { this.setState({playSound: false})}}> 
+                                    <VolumeOff/>
+                                </IconButton>
+                                :
+                                <IconButton
+                                    variant="contained" 
+                                    className="soundSettingsbutton"
+                                    onClick={() => { this.setState({playSound: true})}}> 
+                                    <VolumeUp/>
+                                </IconButton>
+                            }        
+                </div>
                 {this.isGraphAvailable()?
                     <div>
                         <div className="dashboard-section-heading graph-heading">{Locale.gameifiedMindMapTooltips.title[lang]}
@@ -122,8 +143,7 @@ class GamifiedDashboardViewComponent extends React.Component {
                             run = {this.state.adhocTooltip.mindmap.flag}
                             callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'mindmap')}}                    
                             />  
-                        </div>
-                                                
+                        </div>                                                
                                 <GamifiedGraphComponent 
                                     bpId={this.props.bpId}
                                     title={this.props.title}
@@ -134,6 +154,7 @@ class GamifiedDashboardViewComponent extends React.Component {
                                     setScrollToGraphList ={this.props.setScrollToGraphList}
                                     multiSelectEntityList = {this.props.multiSelectEntityList}
                                     isPublic = {this.props.isPublic}
+                                    playSound = {this.state.playSound}
                                     lang = {this.props.lang}/>
                        
                     </div>

@@ -183,16 +183,19 @@ class GamifiedGraphComponent extends React.Component {
         let message = null;
         if(type == 'alreadySelected')
         {
-            tryAgain.play();
+            if(this.props.playSound)
+                tryAgain.play();
             message = "This connection has already been made. Try another one!";
         }
         else if(type == 'successLink'){
-            wellDone.play();
+            if(this.props.playSound)
+                wellDone.play();
             message = "Yes! You got it right!";
             this.incrementScore();
         }
         else if(type == 'failLink'){
-            tryAgain.play();
+            if(this.props.playSound)
+                tryAgain.play();
             message = "No! You got it wrong! These topics are not connected";
         }
         this.setState({
@@ -1008,7 +1011,7 @@ class GamifiedGraphComponent extends React.Component {
     }
     
     async playNodeSound(node){
-        if(!isNullOrUndefined(this.speech)){
+        if(!isNullOrUndefined(this.speech) && this.props.playSound){
             if(this.speech.speaking())
                 await this.speech.cancel();
           

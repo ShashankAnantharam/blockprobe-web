@@ -19,6 +19,19 @@
     margin-left: 5px;
 }
 
+.soundSettingsbutton{
+    background: #46237a !important;
+    color: white !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em !important;
+    border:none;
+}
+
+
+.gamifiedDashboardOptionsContainer{
+    display: flex;
+}
+
 @media only screen and (max-width: 600px) {
     .graph-heading{
         margin-left: 20px;
@@ -26,6 +39,10 @@
     
     .timeline-heading{
         margin-left: 20px; 
+    }
+
+    .uniformMarginLeft{
+        margin-left: 20px;
     }
 }
 
@@ -36,6 +53,10 @@
     
     .timeline-heading{
         margin-left: 1%; 
+    }
+
+    .uniformMarginLeft{
+        margin-left: 1%;
     }
 }
 
