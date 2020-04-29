@@ -3,7 +3,14 @@
     color:rgb(219, 243, 242) !important;
     margin-bottom: 0.5em !important;
     size:2.6em !important;
-    border:none;
+}
+
+.viewResultGameListItembutton{
+    background:#46237a !important;
+    color:rgb(219, 243, 242) !important;
+    margin-bottom: 0.5em !important;
+    margin-left: 0.5em !important;
+    size:2.6em !important;
 }
 
 .singleGameElementContainer{

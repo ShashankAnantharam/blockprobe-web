@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from '@material-ui/core';
 import ViewBlockprobePublicComponent from '../../../view/ViewBlockprobePublic';
+import * as Const from '../../../common/constants';
 import * as firebase from 'firebase';
 import './SingleGameElement.css';
 import { isNullOrUndefined } from 'util';
@@ -15,6 +16,7 @@ class SingleGameListItemComponent extends React.Component {
           playGame: false
       }
       this.playGame = this.playGame.bind(this);
+      this.viewResults = this.viewResults.bind(this);
     }
 
     playGame(value){
@@ -22,8 +24,13 @@ class SingleGameListItemComponent extends React.Component {
             playGame: value
         });
         */
-       let link = `https://blprobe.com/game/${this.props.id}`;
-       window.open(link, "_blank")       
+        let link = Const.blockprobeUrl + `/game/${this.props.id}`;
+        window.open(link, "_blank");       
+    }
+
+    viewResults(){
+        let link = Const.blockprobeUrl + `/gameResults/${this.props.id}`;
+        window.open(link, "_blank")
     }
 
     render(){
@@ -44,6 +51,12 @@ class SingleGameListItemComponent extends React.Component {
                         onClick={() => { this.playGame(true)}}> 
                         Play Game</Button>
                     }
+
+                    <Button
+                        variant="contained" 
+                        className="viewResultGameListItembutton"
+                        onClick={() => { this.viewResults()}}> 
+                        View Results</Button>
                 
                 </div>
                               
