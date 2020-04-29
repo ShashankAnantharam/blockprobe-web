@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import * as Const from '../../common/constants';
 import SingleGameListItemComponent from './singleGameElement/SingleGameElement';
+import YouTube from 'react-youtube';
+import Paper from '@material-ui/core/Paper';
 import './GameListComponent.css';
 import { isNullOrUndefined } from 'util';
+import Grid from '@material-ui/core/Grid';
+
+const opts = {
+    height: '390',
+    width: '100%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
+    },
+};
 
 class GameListComponent extends React.Component {
-
+    
     constructor(props){
       super(props);
 
@@ -55,8 +68,25 @@ class GameListComponent extends React.Component {
         })
         return (
             <div>
-                <h3 className="gameListTitle">{this.state.title}</h3>
-                {displayList}
+                <h2 className="gameListTitle">{this.state.title}</h2>
+
+                {this.state.list.length > 0?
+                    <div style={{marginBottom:'40px'}}>{displayList}</div>
+                    :
+                    null
+                }
+                                
+                <div className="gameVideoLink">
+                    <h3>Create your own game</h3>
+                    <p>Follow the steps in this video tutorial to create your own visualized game using <a href={Const.blockprobeUrl} target="_blank">Blockprobe</a>.</p>
+                    <div className="gameVideoContainer">
+                        <Grid item xs={12} md={6}>
+                            <Paper elevation={3}>
+                                <YouTube videoId="esZCwWauxV4" opts={opts} onReady={this._onReady} />
+                            </Paper>
+                        </Grid>                        
+                    </div>                    
+                </div>
             </div>
         );
     }

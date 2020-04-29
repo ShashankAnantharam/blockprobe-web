@@ -32,3 +32,5 @@ export const edenColors = [
     '#46237a',
     '#3ddc97'
 ]
+
+export const blockprobeUrl = "https://blprobe.com";
