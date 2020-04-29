@@ -101,8 +101,18 @@ class GamifiedResultsComponent extends React.Component {
         return newEntityStats;
     }
 
+    isEntityStatsNewType(entityStats){
+        if(isNullOrUndefined(entityStats))
+            return false;
+        for(let key in entityStats){
+            if(isNullOrUndefined(entityStats[key].mistakes))
+                return false;
+        }
+        return true;
+    }
+
     renderSinglePerformance(stats, type){
-        if(stats.entityStats)
+        if(this.isEntityStatsNewType(stats.entityStats))
             stats.entityStats = this.formatEntityStats(stats.entityStats);
         return (
             <div>
