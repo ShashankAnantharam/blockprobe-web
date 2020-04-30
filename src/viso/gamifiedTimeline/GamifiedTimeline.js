@@ -4,6 +4,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import * as Utils from '../../common/utilSvc';
+import Alert from '@material-ui/lab/Alert';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -212,9 +213,20 @@ class GamifiedTimelineComponent extends React.Component {
                                 <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
                                 <span className="totalScoreVal">/{this.state.totalScore}</span></div>
                                 {this.state.score == this.state.totalScore?
-                                    <div className="gameMessage">{this.state.gameMessageFinished}</div>
+                                    <Alert severity="success" className="gameTimelineMessage">{this.state.gameMessageFinished}</Alert>
                                     :
-                                    <div className="gameMessage">{this.state.message}</div>
+                                    <div>
+                                        {this.state.message == "Well done"?
+                                            <Alert severity="success" className="gameTimelineMessage">{this.state.message}</Alert>
+                                            :
+                                            null 
+                                        }
+                                        {this.state.message == "Please try again!"?
+                                            <Alert severity="error" className="gameTimelineMessage">{this.state.message}</Alert>
+                                            :
+                                            null
+                                        }
+                                    </div>
                                 }
                                 
                             </div>

@@ -29,6 +29,11 @@
     width: 40px;
 }
 
+.gameTimelineMessage{
+    font-size: 16px !important;
+    text-align: center;
+}
+
 @media only screen and (min-width: 601px) {
 
     .specialViewMargin{

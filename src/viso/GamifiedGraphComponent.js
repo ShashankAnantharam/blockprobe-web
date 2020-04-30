@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import  MultiSelectReact  from 'multi-select-react';
 import { Button } from '@material-ui/core';
 import Graph from "react-graph-vis";
+import Alert from '@material-ui/lab/Alert';
 import './GraphComponent.css';
 import { timingSafeEqual } from 'crypto';
 import { isNullOrUndefined } from 'util';
@@ -1317,9 +1318,25 @@ class GamifiedGraphComponent extends React.Component {
                                 <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
                                 <span className="totalScoreVal">/{this.state.totalScore}</span></div>
                                 {this.state.score == this.state.totalScore?
-                                    <div className="gameMessage">{this.state.gameMessageFinished}</div>
+                                    <Alert severity="success" className="gameMessage">{this.state.gameMessageFinished}</Alert>
                                     :
-                                    <div className="gameMessage">{this.state.gameMessage}</div>
+                                    <div>
+                                        {this.state.gameMessage == "No! You got it wrong! These topics are not connected"?
+                                            <Alert severity="error" className="gameMessage">{this.state.gameMessage}</Alert>
+                                            :
+                                            null
+                                        }
+                                        {this.state.gameMessage == "Yes! You got it right!"?
+                                            <Alert severity="success" className="gameMessage">{this.state.gameMessage}</Alert>
+                                            :
+                                            null
+                                        }
+                                        {this.state.gameMessage == "This connection has already been made. Try another one!"?
+                                            <Alert severity="info" className="gameMessage">{this.state.gameMessage}</Alert>
+                                            :
+                                            null
+                                        }
+                                    </div>
                                 }
                                 
                             </div>
