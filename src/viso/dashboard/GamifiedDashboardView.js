@@ -10,6 +10,7 @@ import './DashboardView.css';
 import SummaryViewComponent from "../summary/SummaryView";
 import GraphComponent from "../GraphComponent";
 import GamifiedGraphComponent from "../GamifiedGraphComponent";
+import GamifiedTimelineComponent from '../gamifiedTimeline/GamifiedTimeline';
 import FindConnectionsComponent from "../FindConnectionsComponent";
 import TimelineComponent from "../TimelineComponent";
 import * as Locale from "../../Localization/localizedStrings";
@@ -161,7 +162,20 @@ class GamifiedDashboardViewComponent extends React.Component {
                     :
                     null
                 } 
-                
+
+                {this.isTimelineAvailable()?
+                    <div>
+                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedMindMapTooltips.title[lang]}</div>
+
+                        <div>
+                            <GamifiedTimelineComponent
+                                timeline={this.props.timeline}
+                                />
+                        </div>
+                    </div>
+                    :
+                    null
+                }                
 
                 {this.isBlockprobeEmpty()?
                     <div className="dashboard-section-heading graph-heading" style={{textAlign: 'center'}}>

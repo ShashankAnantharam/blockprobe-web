@@ -1,0 +1,60 @@
+.timesViewGrid{
+    border: 1px black solid;
+    min-height: 100px;
+    background: #46237a;
+    display: flex;
+    overflow-x: auto;
+}
+
+.timelineTimesContainer{
+    flex-grow: 1;
+}
+
+.singleTimeOption{
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    min-width: 150px;
+    background: #556efd !important;
+    color: white !important;
+    font-weight:  bold;
+    text-align: center;
+}
+
+@media only screen and (min-width: 601px) {
+
+    .specialViewMargin{
+        margin: 0 1% 1% 1%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    .specialViewMargin{
+        margin: 0 20px 20px 20px;
+    }
+}
+
+/*
+ *  SCROLLBAR STYLE for gamifiedTimesViewGrid
+ 
+
+ #gamifiedTimesViewGrid::-webkit-scrollbar-track
+ {
+     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+     border-radius: 10px;
+     background-color: #F5F5F5;
+ }
+ 
+ #gamifiedTimesViewGrid::-webkit-scrollbar
+ {
+     width: 5px;
+     background: transparent;
+ }
+ 
+ #gamifiedTimesViewGrid::-webkit-scrollbar-thumb
+ {
+     border-radius: 10px;
+     background-color: #555;
+ }
+*/
