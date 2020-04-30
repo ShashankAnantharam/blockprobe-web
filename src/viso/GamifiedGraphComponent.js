@@ -1308,7 +1308,7 @@ class GamifiedGraphComponent extends React.Component {
                             <div className="specialViewMargin">                            
                                 <div className="scoreAmchartContainer">
                                     <Speedometer 
-                                        id="speedometer1"
+                                        id="speedometer_mindmap_ingame"
                                         val={this.state.score}
                                         min={0}
                                         max={this.state.totalScore}/>
