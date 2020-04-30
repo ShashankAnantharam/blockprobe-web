@@ -21,10 +21,27 @@
     text-align: center;
 }
 
+.horizontallyCentered{
+    margin: 0 auto !important;
+}
+
+.width-40{
+    width: 40px;
+}
+
 @media only screen and (min-width: 601px) {
 
     .specialViewMargin{
         margin: 0 1% 1% 1%;
+    }
+
+    .gamifiedTimelineBlockNav{
+        font-size: 40px !important;
+        transition: 0.5s !important;
+      }  
+    
+    .gamifiedTimelineBlockNav:hover{
+        font-size: 60px !important;
     }
 }
 
@@ -32,6 +49,22 @@
 
     .specialViewMargin{
         margin: 0 20px 20px 20px;
+    }
+
+    .gamifiedTimelineBlockNav{
+        font-size: 20px !important;
+      }  
+}
+
+@media only screen and (min-width: 801px) {
+    .gamifiedTimelineBlock{
+        width: 40% !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .gamifiedTimelineBlock{
+        width: 80% !important;
     }
 }
 
