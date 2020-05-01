@@ -116,7 +116,7 @@ class GamifiedTimelineComponent extends React.Component {
 
     singleTimelineCard(time, index){
         return (
-                <Paper className="singleTimeOption" onClick={() => this.selectTime(time,index)}>
+                <Paper className="singleTimeOption" elevation={8} onClick={() => this.selectTime(time,index)}>
                     <div style={{margin: 'auto', width:'50%'}}>
                         {time.timeStr}
                     </div>                    
@@ -155,22 +155,25 @@ class GamifiedTimelineComponent extends React.Component {
                         xs={10}
                         md={7}
                         lg={5}>
-                            <Card>
+                            <div className="horizontallyCentered width-40">
+                                <KeyboardArrowUp className='gamifiedTimelineBlockNav' 
+                                onClick={() => { this.clickChevron(true)}}/>
+                            </div>
+                            <Card elevation={6}>
                                 <CardContent>
                                     {!isNullOrUndefined(timelineBlock.title)?
                                         <Typography variant="h5" component="h2">{this.removeHashedIndex(timelineBlock.title)}</Typography>
                                         :
                                         null
                                     }                                        
-                                    <Typography variant="body2" component="p">
+                                    <Typography variant="body2" component="p" gutterBottom>
                                         {timelineBlock.summary}
                                     </Typography>
+                                    <Typography color="textSecondary">
+                                      Select the correct date
+                                    </Typography>
                                 </CardContent>
-                            </Card>
-                            <div className="horizontallyCentered width-40">
-                                <KeyboardArrowDown className='gamifiedTimelineBlockNav' 
-                                onClick={() => { this.clickChevron(true)}}/>
-                            </div>
+                            </Card>                            
                         </Grid>
 
                     </Grid>

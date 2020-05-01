@@ -121,7 +121,7 @@ class GamifiedDashboardViewComponent extends React.Component {
                             }        
                 </div>
                 {this.isGraphAvailable()?
-                    <div>
+                    <div style={{marginBottom: '50px'}}>
                         <div className="dashboard-section-heading graph-heading">{Locale.gameifiedMindMapTooltips.title[lang]}
                         <a className='tooltipMindmap tooltips-dashboard' 
                             onMouseEnter={() => this.showLocalTooltip('mindmap')}
@@ -166,7 +166,6 @@ class GamifiedDashboardViewComponent extends React.Component {
                 {this.isTimelineAvailable()?
                     <div>
                         <div className="dashboard-section-heading graph-heading">{Locale.gameifiedTimelineTooltips.title[lang]}</div>
-
                         <div>
                             <GamifiedTimelineComponent
                                 timeline={this.props.timeline}
