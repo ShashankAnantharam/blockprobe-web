@@ -35,6 +35,17 @@ class GamifiedDashboardViewComponent extends React.Component {
                         disableBeacon: true
                     }
                 ]
+            },
+            timeline:{
+                flag: false,
+                text: [
+                    {
+                        title: Locale.gameifiedTimelineTooltips.title[props.lang],
+                        target: '.tooltipTimeline',
+                        content: Locale.gameifiedTimelineTooltips.desc[props.lang],
+                        disableBeacon: true
+                    }
+                ]
             }            
         },
         playSound: true
@@ -53,14 +64,20 @@ class GamifiedDashboardViewComponent extends React.Component {
        if(type=='mindmap'){
            adhocTooltip.mindmap.flag = true;
        }
+       else if(type=='timeline'){
+        adhocTooltip.timeline.flag = true;
+    }
        this.setState({adhocTooltip: adhocTooltip});
     }
 
     hideLocalTooltip(type){
         var adhocTooltip = this.state.adhocTooltip;
-       if(type=='mindmap'){
-           adhocTooltip.mindmap.flag = false;
-       }
+        if(type=='mindmap'){
+            adhocTooltip.mindmap.flag = false;
+        }
+        else if(type=='timeline'){
+            adhocTooltip.timeline.flag = false;
+        }
         this.setState({adhocTooltip: adhocTooltip});
     }
 
@@ -165,7 +182,29 @@ class GamifiedDashboardViewComponent extends React.Component {
 
                 {this.isTimelineAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedTimelineTooltips.title[lang]}</div>
+                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedTimelineTooltips.title[lang]}
+                        <a className='tooltipTimeline tooltips-dashboard' 
+                            onMouseEnter={() => this.showLocalTooltip('timeline')}
+                            onClick={(e)=>{this.showLocalTooltip('timeline')}} >
+                            <Info style={{fontSize:'19px'}}/>
+                        </a>
+                        <Joyride
+                        styles={{
+                            options: {
+                            arrowColor: '#e3ffeb',
+                            beaconSize: '4em',
+                            primaryColor: '#05878B',
+                            backgroundColor: '#e3ffeb',
+                            overlayColor: 'rgba(10,10,10, 0.4)',
+                            width: 900,
+                            zIndex: 1000,
+                            }
+                            }}
+                            steps={this.state.adhocTooltip.timeline.text}
+                            run = {this.state.adhocTooltip.timeline.flag}
+                            callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'timeline')}}                    
+                            />
+                        </div>
                         <div>
                             <GamifiedTimelineComponent
                                 timeline={this.props.timeline}
