@@ -24,6 +24,7 @@ import SummaryViewComponent from "../viso/summary/SummaryView";
 import * as Utils from '../common/utilSvc';
 import SingleEntityView from '../view/Draft/SingleEntityView/SingleEntityView';
 import AddEdgeView from  '../view/Draft/AddEdgeView/AddEdgeView';
+import AddTimeView from '../view/Draft/AddTimeView/AddTimeView';
 
 import Joyride from 'react-joyride';
 
@@ -1335,6 +1336,13 @@ class UserBlocksComponent extends React.Component {
                     </TabPanel>
 
                     <TabPanel>
+                        <div className="graphVisualizationSingleEntity">
+                            <AddTimeView
+                                commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                lastIndex = {this.props.lastIndex}
+                            />
+                        </div>
                         {this.isTimelineAvailable()?
                             <div class="contributions-timeline-container">
                                 <TimelineComponent 
