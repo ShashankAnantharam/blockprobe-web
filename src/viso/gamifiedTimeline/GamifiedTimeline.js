@@ -145,24 +145,37 @@ class GamifiedTimelineComponent extends React.Component {
     singleBlockCard(timelineBlock){
         return (
                 <div className="gamifiedTimelineBlockContainer">
-                    
-                    <div className="gamifiedTimelineBlock horizontallyCentered">
-                        <div className="horizontallyCentered width-40">
-                            <KeyboardArrowUp className='gamifiedTimelineBlockNav' 
-                            onClick={() => { this.clickChevron(true)}}/>
-                        </div>
-                        <Card>
-                            <CardContent>
-                                {!isNullOrUndefined(timelineBlock.title)?
-                                    <Typography variant="h5" component="h2">{this.removeHashedIndex(timelineBlock.title)}</Typography>
-                                    :
-                                    null
-                                }                                        
-                                <Typography variant="body2" component="p">
-                                    {timelineBlock.summary}
-                                </Typography>
-                            </CardContent>
-                        </Card>
+                    <Grid
+                    container
+                    direction="row-reverse"
+                    justify="center"
+                    alignItems="center">
+                        <Grid
+                        item
+                        xs={10}
+                        md={7}
+                        lg={5}>
+                            <Card>
+                                <CardContent>
+                                    {!isNullOrUndefined(timelineBlock.title)?
+                                        <Typography variant="h5" component="h2">{this.removeHashedIndex(timelineBlock.title)}</Typography>
+                                        :
+                                        null
+                                    }                                        
+                                    <Typography variant="body2" component="p">
+                                        {timelineBlock.summary}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                            <div className="horizontallyCentered width-40">
+                                <KeyboardArrowDown className='gamifiedTimelineBlockNav' 
+                                onClick={() => { this.clickChevron(true)}}/>
+                            </div>
+                        </Grid>
+
+                    </Grid>
+                    <div className="gamifiedTimelineBlock horizontallyCentered">                        
+                        
                     </div>
                 </div>
         );
@@ -199,9 +212,9 @@ class GamifiedTimelineComponent extends React.Component {
         let timeDisplay = times.map((time, index) => (this.singleTimelineCard(time,index)));
 
         return (
-            <div>
+            <div className="specialViewMargin">
                 {!this.state.stopGame?
-                            <div className="specialViewMargin">                            
+                            <div>                            
                                 <div className="scoreAmchartContainer">
                                     <Speedometer 
                                         id="speedometer_timeline_ingame"
@@ -234,6 +247,32 @@ class GamifiedTimelineComponent extends React.Component {
                             null
                         }
                  {(this.props.timeline.length > this.state.score)?
+                        <Grid
+                        container
+                        direction="row"
+                        style={{border:'1px black solid'}}
+                        >
+                            <Grid xs={12} sm={6} item>
+                                {this.singleBlockCard(this.props.timeline[this.state.currentTimelineIndex])}
+                            </Grid>
+                            <Grid xs={12} sm={6} item>
+                                <div className="timelineTimesContainer">
+                                    <Grid xs={12} className="timesViewGrid" id="gamifiedTimesViewGrid">
+                                        {timeDisplay}
+                                    </Grid>
+                                </div>
+                            </Grid>
+                        </Grid>
+                    :
+                    null
+                 }                       
+            </div>
+        )
+    }
+}
+export default GamifiedTimelineComponent;
+
+/*
                     <div>
                         <div className="specialViewMargin">
                             {this.singleBlockCard(this.props.timeline[this.state.currentTimelineIndex])}
@@ -244,11 +283,5 @@ class GamifiedTimelineComponent extends React.Component {
                             </Grid>
                         </div>
                     </div>
-                    :
-                    null
-                 }                       
-            </div>
-        )
-    }
-}
-export default GamifiedTimelineComponent;
+
+                    */

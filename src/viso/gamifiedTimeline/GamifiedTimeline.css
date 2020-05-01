@@ -1,24 +1,27 @@
 .timesViewGrid{
     border: 1px black solid;
-    min-height: 100px;
+    height: 300px;
     background: #46237a;
-    display: flex;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .timelineTimesContainer{
     flex-grow: 1;
+    padding: 20px;
 }
 
 .singleTimeOption{
     padding: 10px;
     margin: 5px;
     cursor: pointer;
-    min-width: 150px;
     background: #556efd !important;
     color: white !important;
     font-weight:  bold;
     text-align: center;
+}
+
+.singleTimeOption:hover{
+    background: #3ddc97 !important
 }
 
 .horizontallyCentered{
@@ -32,6 +35,11 @@
 .gameTimelineMessage{
     font-size: 16px !important;
     text-align: center;
+    margin-bottom: 15px;
+}
+
+.gamifiedTimelineBlockContainer{
+    padding-top: 20px;
 }
 
 @media only screen and (min-width: 601px) {
@@ -75,7 +83,7 @@
 
 /*
  *  SCROLLBAR STYLE for gamifiedTimesViewGrid
- 
+ */
 
  #gamifiedTimesViewGrid::-webkit-scrollbar-track
  {
@@ -95,4 +103,3 @@
      border-radius: 10px;
      background-color: #555;
  }
-*/

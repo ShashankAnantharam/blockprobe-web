@@ -165,7 +165,7 @@ class GamifiedDashboardViewComponent extends React.Component {
 
                 {this.isTimelineAvailable()?
                     <div>
-                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedMindMapTooltips.title[lang]}</div>
+                        <div className="dashboard-section-heading graph-heading">{Locale.gameifiedTimelineTooltips.title[lang]}</div>
 
                         <div>
                             <GamifiedTimelineComponent
