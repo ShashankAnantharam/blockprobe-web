@@ -247,6 +247,7 @@ class GamifiedTimelineComponent extends React.Component {
                             title={this.props.title}
                             canSave = {true}
                             type= {'timeline'}
+                            id={'timeline_result'}
                             />
                     </div>
                     :

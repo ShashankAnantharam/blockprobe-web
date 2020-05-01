@@ -1347,6 +1347,7 @@ class GamifiedGraphComponent extends React.Component {
                                     bpId={this.props.bpId}
                                     title={this.props.title}
                                     canSave = {true}
+                                    id={'mindmap_result'}
                                     />
                             </div>
                         }
