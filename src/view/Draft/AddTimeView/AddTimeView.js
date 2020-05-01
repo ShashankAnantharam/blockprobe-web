@@ -37,12 +37,41 @@ class AddTimeView extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.isDateChecked = this.isDateChecked.bind(this);
         this.toggleDateStyle = this.toggleDateStyle.bind(this);
+        this.getLatestIndex = this.getLatestIndex.bind(this);
+        this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
         this.confirmTime = this.confirmTime.bind(this);
+    }
+
+    getLatestIndex(){
+        let latestIndex = 0 ;
+        if(this.props.lastIndexDraftBlocks.length > 0)
+            latestIndex = Math.max(latestIndex, this.props.lastIndexDraftBlocks[this.props.lastIndexDraftBlocks.length - 1]);
+
+        if(this.props.lastIndex){
+            latestIndex = Math.max(latestIndex, this.props.lastIndex);
+        }
+        return latestIndex;
+    }
+
+    commitBlockToBlockprobe(){
+        let index = this.getLatestIndex();
+        index += 0.1;
+        let fullBlock = {
+            title: `#${index} ${this.state.newBlock.title.trim()}`,
+            summary: this.state.newBlock.summary.trim(),
+            entities: [],
+            evidences: [],
+            blockDate: this.state.newBlock.blockDate,
+            referenceBlock: null,
+            timestamp: Date.now(),
+            actionType: 'ADD'
+        };
+        this.props.commitBlockToBlockprobe(fullBlock);
     }
 
     confirmTime(){
         //Confirm time
-        
+        this.commitBlockToBlockprobe();
     }
 
     toggleDateStyle(type){
