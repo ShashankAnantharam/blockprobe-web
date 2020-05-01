@@ -4,6 +4,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import * as Utils from '../../common/utilSvc';
+import { Button } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,6 +18,7 @@ import WellDoneMp3 from  '../../media/well_done.mp3';
 import TryAgainMp3 from '../../media/try_again.mp3';
 import './GamifiedTimeline.css';
 import Paper from '@material-ui/core/Paper';
+import GamifiedGraphStats from '../gamifiedStats/gamifiedGraphStats';
 import { isNullOrUndefined } from 'util';
 import { time } from '@amcharts/amcharts4/core';
 
@@ -48,7 +50,12 @@ class GamifiedTimelineComponent extends React.Component {
         score: 0,
         totalScore: 0,
         finishedBlocks: {},
-        stopGame: false
+        stopGame: false,
+        stats: {
+            score: 0,
+            entityStats: {},
+            totalScore: 0
+        }
       }
 
       if(props.timeline){
@@ -61,6 +68,7 @@ class GamifiedTimelineComponent extends React.Component {
       this.removeHashedIndex = this.removeHashedIndex.bind(this);
       this.selectTime = this.selectTime.bind(this);
       this.incrementScore = this.incrementScore.bind(this);
+      this.stopGame = this.stopGame.bind(this);
     }
 
     clickChevron(increment){
@@ -210,65 +218,106 @@ class GamifiedTimelineComponent extends React.Component {
         }
     }
 
+    stopGame(value){
+        if(value){
+            let stats = this.state.stats;
+            stats.score = this.state.score;
+            stats.totalScore = this.state.totalScore;
+            this.setState({
+                stats: stats
+            });
+            //console.log(stats);
+        }
+        this.setState({
+            stopGame: value
+        });
+    }
+
     render(){
         let times = this.seperateTimeline(this.props.timeline);
         let timeDisplay = times.map((time, index) => (this.singleTimelineCard(time,index)));
 
         return (
-            <div className="specialViewMargin">
-                {!this.state.stopGame?
-                            <div>                            
-                                <div className="scoreAmchartContainer">
-                                    <Speedometer 
-                                        id="speedometer_timeline_ingame"
-                                        val={this.state.score}
-                                        min={0}
-                                        max={this.state.totalScore}/>
-                                </div>
-
-                                <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
-                                <span className="totalScoreVal">/{this.state.totalScore}</span></div>
-                                {this.state.score == this.state.totalScore?
-                                    <Alert severity="success" className="gameTimelineMessage">{this.state.gameMessageFinished}</Alert>
-                                    :
-                                    <div>
-                                        {this.state.message == "Well done"?
-                                            <Alert severity="success" className="gameTimelineMessage">{this.state.message}</Alert>
-                                            :
-                                            null 
-                                        }
-                                        {this.state.message == "Please try again!"?
-                                            <Alert severity="error" className="gameTimelineMessage">{this.state.message}</Alert>
-                                            :
-                                            null
-                                        }
-                                    </div>
-                                }
-                                
-                            </div>
-                            :
-                            null
-                        }
-                 {(this.props.timeline.length > this.state.score)?
-                        <Grid
-                        container
-                        direction="row"
-                        style={{border:'1px black solid'}}
-                        >
-                            <Grid xs={12} sm={6} item>
-                                {this.singleBlockCard(this.props.timeline[this.state.currentTimelineIndex])}
-                            </Grid>
-                            <Grid xs={12} sm={6} item>
-                                <div className="timelineTimesContainer">
-                                    <Grid xs={12} className="timesViewGrid" id="gamifiedTimesViewGrid">
-                                        {timeDisplay}
-                                    </Grid>
-                                </div>
-                            </Grid>
-                        </Grid>
+            <div>
+                {this.state.stopGame?
+                    <div>
+                        <GamifiedGraphStats
+                            stats = {this.state.stats}
+                            bpId={this.props.bpId}
+                            title={this.props.title}
+                            canSave = {true}
+                            type= {'timeline'}
+                            />
+                    </div>
                     :
                     null
-                 }                       
+                }
+                <div className="specialViewMargin">
+                    {!this.state.stopGame?
+                                <div>              
+                                    <div className="gameButtonContainer">
+                                        {this.state.score>0 && !this.state.stopGame?
+                                            <Button
+                                            variant="contained" 
+                                            className="stopGamebutton"
+                                            onClick={() => { this.stopGame(true)}}
+                                            > Stop Game</Button>
+                                            :
+                                            null
+                                        }                                
+                                    </div>              
+                                    <div className="scoreAmchartContainer">
+                                        <Speedometer 
+                                            id="speedometer_timeline_ingame"
+                                            val={this.state.score}
+                                            min={0}
+                                            max={this.state.totalScore}/>
+                                    </div>
+
+                                    <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
+                                    <span className="totalScoreVal">/{this.state.totalScore}</span></div>
+                                    {this.state.score == this.state.totalScore?
+                                        <Alert severity="success" className="gameTimelineMessage">{this.state.gameMessageFinished}</Alert>
+                                        :
+                                        <div>
+                                            {this.state.message == "Well done"?
+                                                <Alert severity="success" className="gameTimelineMessage">{this.state.message}</Alert>
+                                                :
+                                                null 
+                                            }
+                                            {this.state.message == "Please try again!"?
+                                                <Alert severity="error" className="gameTimelineMessage">{this.state.message}</Alert>
+                                                :
+                                                null
+                                            }
+                                        </div>
+                                    }
+                                    
+                                </div>
+                                :
+                                null
+                            }
+                    {(this.props.timeline.length > this.state.score && !this.state.stopGame)?
+                            <Grid
+                            container
+                            direction="row"
+                            style={{border:'1px black solid'}}
+                            >
+                                <Grid xs={12} sm={6} item>
+                                    {this.singleBlockCard(this.props.timeline[this.state.currentTimelineIndex])}
+                                </Grid>
+                                <Grid xs={12} sm={6} item>
+                                    <div className="timelineTimesContainer">
+                                        <Grid xs={12} className="timesViewGrid" id="gamifiedTimesViewGrid">
+                                            {timeDisplay}
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        :
+                        null
+                    }                       
+                </div>
             </div>
         )
     }

@@ -209,6 +209,10 @@ class GamifiedDashboardViewComponent extends React.Component {
                             <GamifiedTimelineComponent
                                 timeline={this.props.timeline}
                                 playSound = {this.state.playSound}
+                                bpId={this.props.bpId}
+                                title={this.props.title}
+                                isPublic = {this.props.isPublic}
+                                lang = {this.props.lang}
                                 />
                         </div>
                     </div>

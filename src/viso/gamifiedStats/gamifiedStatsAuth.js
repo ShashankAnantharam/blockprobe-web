@@ -31,6 +31,7 @@ class GamifiedAuth extends React.Component {
         //Add it
          // console.log(userId);
          // console.log(this.props.stats);
+        let type = this.props.type;
         let stats = JSON.parse(JSON.stringify(this.props.stats));
         let timestamp = Date.now();
         stats['ts'] = timestamp;
@@ -56,6 +57,10 @@ class GamifiedAuth extends React.Component {
         };
 
         let docStr = this.props.bpId + '_' + String(timestamp);
+        if(type == 'timeline'){
+            docStr = docStr + '_ts';
+            stats.bpId = stats.bpId + "_ts";
+        }
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameScores').doc(docStr).set(stats);
         await firebase.firestore().collection('Users').doc(userId)

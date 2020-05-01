@@ -9,7 +9,7 @@ import { isNull, isNullOrUndefined } from 'util';
 class GamifiedGraphStats extends React.Component {
     constructor(props) {
       super(props);
-      //stats, canSave, id
+      //stats, canSave, id, type
       this.state = {
           saveAuth: false,
           finishedSaving:  false,
@@ -62,6 +62,12 @@ class GamifiedGraphStats extends React.Component {
         let id = 'speedometer_rand';
         if(!isNullOrUndefined(this.props.id))
             id = this.props.id;
+
+        let typeOfGame = 'graphGame';
+        if(!isNullOrUndefined(this.props.type) && this.props.type == "timeline"){
+            typeOfGame = 'timeline';
+        }
+
         return (
             <div class="statsContainer">
                 <div className="statsTitle">Game results</div>
@@ -76,7 +82,7 @@ class GamifiedGraphStats extends React.Component {
                 <div className="statsScoreText">Score: <span className="statsScoreVal">{this.props.stats.score}</span>
                 <span className="statsTotalScoreVal">/{this.props.stats.totalScore}</span></div>
 
-                {entityList.length > 0?
+                {(isNullOrUndefined(this.props.type) || this.props.type=='graph') && entityList.length > 0?
                     <div className="statsMistakesContainer">
                         <div className="statsMistakesTitle">Mistakes</div>
                         <div className="statsMistakesContent">
@@ -111,7 +117,7 @@ class GamifiedGraphStats extends React.Component {
                         finishSaving={this.finishSaving}
                         bpId={this.props.bpId}
                         title={this.props.title}
-                        type={'graphGame'}/>
+                        type={typeOfGame}/>
                         :
                     null
                 }

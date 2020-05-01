@@ -1351,37 +1351,38 @@ class GamifiedGraphComponent extends React.Component {
                             </div>
                         }
 
-                        {this.state.currentSelectedBlocks.length >= 0? 
-                        <div className="graph-block-list">                            
-                            <div className='gamified-graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
-                                {selectedNodesString.length>0?
-                                    <span>{Locale.selections[lang]}</span>
-                                    :
-                                    <span>{Locale.selectEntity[lang]}</span>
-                                }                                                                
-                                <span>{selectedNodesString}</span>                                
-                                <span>
-                                    {this.state.openSelectedBlocks?
-                                        <ExpandLess className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
+                        {this.state.currentSelectedBlocks.length >= 0 && !this.state.stopGame?
+                        <div> 
+                            <div className="graph-block-list">                            
+                                <div className='gamified-graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
+                                    {selectedNodesString.length>0?
+                                        <span>{Locale.selections[lang]}</span>
                                         :
-                                        <ExpandMore className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
-                                    }
-                                </span>
-                            </div> 
-                            <Expand 
-                                open={this.state.openSelectedBlocks}
-                                duration={400}
-                                transitions={transitions}>
-                                <div className='graph-block-list-container' id="graph-selected-block-list">
-                                    {aggrNums}
-                                    {renderBlocks}
-                                </div>
-                            </Expand>
+                                        <span>{Locale.selectEntity[lang]}</span>
+                                    }                                                                
+                                    <span>{selectedNodesString}</span>                                
+                                    <span>
+                                        {this.state.openSelectedBlocks?
+                                            <ExpandLess className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
+                                            :
+                                            <ExpandMore className={selectedNodesString.length>0?"graph-block-list-title-icon":"displayNone"}/>
+                                        }
+                                    </span>
+                                </div> 
+                                <Expand 
+                                    open={this.state.openSelectedBlocks}
+                                    duration={400}
+                                    transitions={transitions}>
+                                    <div className='graph-block-list-container' id="graph-selected-block-list">
+                                        {aggrNums}
+                                        {renderBlocks}
+                                    </div>
+                                </Expand>
+                            </div>
+                            {this.generateAmGraph()/*this.generateGraph()*/}
                         </div>                      
                         :
-                        null}                          
-                        {this.generateAmGraph()/*this.generateGraph()*/}                        
-                                        
+                        null}                                                                                                  
             </div>
         );
     }
