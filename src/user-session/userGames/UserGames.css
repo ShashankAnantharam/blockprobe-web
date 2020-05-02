@@ -12,5 +12,15 @@
     display: flex;
 }
 
-.gameListsViewContainer{
+.submitGameListButton{
+    background:green !important;
+    color:rgb(219, 243, 242);
+    margin-left:1em !important;
+    margin-top:0 !important;
+    size:2.6em;
+    border:none;
+}
+
+.createValidGameOptions{
+    display: flex;
 }

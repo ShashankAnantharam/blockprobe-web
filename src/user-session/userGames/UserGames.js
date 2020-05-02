@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import TextField from '@material-ui/core/TextField';
 import * as firebase from 'firebase';
+import * as Utils from '../../common/utilSvc';
+import * as Const from '../../common/constants';
 import './UserGames.css';
 import { isNullOrUndefined } from 'util';
 import { Button } from '@material-ui/core';
@@ -15,7 +18,10 @@ class UserGames extends React.Component {
       this.state = {
           selectedUserGame: null,
           userGameLists: {},
-          createGameList: false
+          createGameList: false,
+          draftGameList: {
+              title: ''
+          }
       }
 
       this.selectGame = this.selectGame.bind(this);
@@ -23,7 +29,91 @@ class UserGames extends React.Component {
       this.removeGameList = this.removeGameList.bind(this);
       this.getList = this.getList.bind(this);
       this.toggleCreateGameList = this.toggleCreateGameList.bind(this);
+      this.createGameList = this.createGameList.bind(this);
       this.renderGameList = this.renderGameList.bind(this);
+      this.renderNewGameForm = this.renderNewGameForm.bind(this);
+      this.isValidGameList = this.isValidGameList.bind(this);
+      this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event, type) {
+
+        var shouldUpdate = true;
+      
+        let newStr = event.target.value;
+        if(!Utils.shouldUpdateText(newStr, '\n\t'))
+            shouldUpdate=false;
+
+        if(shouldUpdate){
+            var gameList = this.state.draftGameList;
+            if(type=="title"){
+                gameList.title = event.target.value;
+                gameList.title = gameList.title.substring(0, Const.maxGameListChar - 1);
+                this.setState({draftGameList: gameList});
+            }
+        }          
+    }
+
+    createGameList(){
+
+    }
+
+    isValidGameList(){
+        if(this.state.draftGameList.title.trim() == '')
+            return false;
+        return true;
+    }
+
+    renderNewGameForm(){
+
+        return (
+            <div>
+                 <form className="newGameListForm">
+                    <label>
+                        <TextField 
+                            type="text"
+                            label = "Title"
+                            variant="outlined"
+                            value={this.state.draftGameList.title}
+                            onChange={(e) => { this.handleChange(e,"title")}}
+                            multiline
+                            rowsMax="2"
+                            rows="1"
+                            style={{
+                                background: 'white',
+                                marginTop:'6px',
+                                marginBottom:'6px',
+                                textColor: 'black',
+                                fontWeight: '600',
+                                marginLeft: '1em',
+                                width:'95%'
+                                }}/>                            
+                    </label>
+                </form>
+               
+                <div className="createValidGameOptions">
+                    {this.isValidGameList()?
+                        <Button
+                        className="submitGameListButton"
+                        color="primary"
+                        variant="contained"
+                        onClick={this.createGameList}>
+                            Confirm
+                        </Button>
+                        :
+                        null
+                    }
+                        <Button 
+                            className="createGameListButton"
+                            color="primary"
+                            variant="contained"
+                            onClick={this.toggleCreateGameList}>
+                                <div>Close</div>
+                        </Button>
+                        
+                </div>                                                                
+            </div>
+        )
     }
 
     selectGame(id){
@@ -113,19 +203,25 @@ class UserGames extends React.Component {
             <div className="gameListsViewContainer">
             <h2 style={{textAlign:'center'}}>My game lists</h2>
                 <div className="createGameListOptions">
+                {!this.state.createGameList?
                     <Button 
-                    className="createGameListButton"
-                    color="primary"
-                    variant="contained"
-                    onClick={this.toggleCreateGameList}>
-                        {
-                            !this.state.createGameList?
+                        className="createGameListButton"
+                        color="primary"
+                        variant="contained"
+                        onClick={this.toggleCreateGameList}>
                             <div>Create gamelist</div>
-                            :
-                            <div>Close</div>
-                        }
                     </Button>
+                    :
+                    null
+                }                    
                 </div>
+                {this.state.createGameList?
+                    <div>
+                        {this.renderNewGameForm()}
+                    </div>
+                    :
+                    null
+                }
                 <div>
                     <List>
                         {userGamesRender}
