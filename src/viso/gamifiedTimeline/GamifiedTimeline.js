@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -51,6 +52,7 @@ class GamifiedTimelineComponent extends React.Component {
         totalScore: 0,
         finishedBlocks: {},
         stopGame: false,
+        slideCard: true,
         stats: {
             score: 0,
             entityStats: {},
@@ -93,12 +95,13 @@ class GamifiedTimelineComponent extends React.Component {
         let stopGame = this.state.stopGame;
         if(this.state.score + 1 >= this.state.totalScore)
             stopGame = true;
+        else{
+            this.setSlideAnimation(false);
+        }
         this.setState({
             score: this.state.score + 1,
             finishedBlocks: finishedBlocks        
-        });
-        if(!stopGame)
-            this.incrementTimelineIndex();
+        });        
     }
 
     selectTime(time, index){
@@ -150,6 +153,12 @@ class GamifiedTimelineComponent extends React.Component {
         return '';
     }
 
+    setSlideAnimation(value){
+        this.setState({
+            slideCard: value
+        });
+    }
+
     singleBlockCard(timelineBlock){
         return (
                 <div className="gamifiedTimelineBlockContainer">
@@ -167,21 +176,30 @@ class GamifiedTimelineComponent extends React.Component {
                                 <KeyboardArrowUp className='gamifiedTimelineBlockNav' 
                                 onClick={() => { this.clickChevron(true)}}/>
                             </div>
-                            <Card elevation={6}>
-                                <CardContent>
-                                    {!isNullOrUndefined(timelineBlock.title)?
-                                        <Typography variant="h5" component="h2">{this.removeHashedIndex(timelineBlock.title)}</Typography>
-                                        :
-                                        null
-                                    }                                        
-                                    <Typography variant="body2" component="p" gutterBottom>
-                                        {timelineBlock.summary}
-                                    </Typography>
-                                    <Typography color="textSecondary">
-                                      Select the correct date
-                                    </Typography>
-                                </CardContent>
-                            </Card>                            
+                            <Slide direction="up" in={this.state.slideCard} mountOnEnter unmountOnExit
+                            onExited={() => {
+                                this.setSlideAnimation(true);
+                            }}
+                            onEnter={() => {
+                                if(!this.state.stopGame)
+                                    this.incrementTimelineIndex();
+                            }}>
+                                <Card elevation={6}>
+                                    <CardContent>
+                                        {!isNullOrUndefined(timelineBlock.title)?
+                                            <Typography variant="h5" component="h2">{this.removeHashedIndex(timelineBlock.title)}</Typography>
+                                            :
+                                            null
+                                        }                                        
+                                        <Typography variant="body2" component="p" gutterBottom>
+                                            {timelineBlock.summary}
+                                        </Typography>
+                                        <Typography color="textSecondary">
+                                        Select the correct date
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Slide>                            
                         </Grid>
 
                     </Grid>
