@@ -29,7 +29,9 @@ import SchoolIcon from '@material-ui/icons/School';
 import PolicyIcon from '@material-ui/icons/Policy';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import HomeIcon from '@material-ui/icons/Home';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import NotificactionsIcon from '@material-ui/icons/Notifications';
+import UserGames from './userGames/UserGames';
 
 class UserSession extends React.Component {
 
@@ -39,6 +41,7 @@ class UserSession extends React.Component {
             isUserSignedIn: this.getItemWrapper('isUserSignedIn',false), //false,
             showLogin: true,
             isWallOpened: false,
+            isGameListOpened: false,
             isNotificationsOpened: false,
             selectedBlockprobeId: '',
             userId: this.getItemWrapper('userId',''),//'',
@@ -109,6 +112,7 @@ class UserSession extends React.Component {
         this.buildUserWall = this.buildUserWall.bind(this);
         this.viewWall = this.viewWall.bind(this);
         this.viewNotifications = this.viewNotifications.bind(this);
+        this.viewGameList = this.viewGameList.bind(this);
         this.updatePosts = this.updatePosts.bind(this);
         this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -148,7 +152,8 @@ class UserSession extends React.Component {
           this.setState({
               selectedBlockprobeId: '',
               isWallOpened: false,
-              isNotificationsOpened: false
+              isNotificationsOpened: false,
+              isGameListOpened: false
           });
       }
 
@@ -156,7 +161,8 @@ class UserSession extends React.Component {
           this.setState({
               isWallOpened: true,
               isNotificationsOpened: false,
-              selectedBlockprobeId: ''
+              selectedBlockprobeId: '',
+              isGameListOpened: false
           });
       }
 
@@ -164,8 +170,18 @@ class UserSession extends React.Component {
             this.setState({
                 isWallOpened: false,
                 isNotificationsOpened: true,
-                selectedBlockprobeId: ''
+                selectedBlockprobeId: '',
+                isGameListOpened: false
             });
+      }
+
+      viewGameList(){
+        this.setState({
+            isWallOpened: false,
+            isNotificationsOpened: false,
+            selectedBlockprobeId: '',
+            isGameListOpened: true
+        });
       }
 
       addBlockprobeToList(doc){
@@ -376,6 +392,7 @@ class UserSession extends React.Component {
               selectedBlockprobeId: blockprobeId,
               isWallOpened: false,
               isNotificationsOpened: false,
+              isGameListOpened: false,
               tooltip: tooltip
           })
 
@@ -420,7 +437,8 @@ class UserSession extends React.Component {
         await this.setState({
             isUserSignedIn: false,
             isWallOpened: false,
-            isNotificationsOpened: false
+            isNotificationsOpened: false,
+            isGameListOpened: false
         });        
         window.location.href = "/";
       }
@@ -513,6 +531,13 @@ class UserSession extends React.Component {
                     />
               );
           }
+          else if(this.state.isGameListOpened){
+              return (
+                <UserGames 
+                    userId = {this.state.userId}
+                />
+              );
+          }
 
           return(
             <UserBlockprobesComponent 
@@ -558,6 +583,7 @@ class UserSession extends React.Component {
       }
 
 
+      //<Button color="inherit" onClick={() => this.viewWall()}>Wall</Button>
       loggedInView(){
           
         let notificationNumber = null;
@@ -576,13 +602,15 @@ class UserSession extends React.Component {
                         <div style={{flexGrow: '1'}}></div>
                         <IconButton color="inherit" onClick={() => this.returnToViewBlockprobes()}>
                             <HomeIcon/>
-                        </IconButton>                        
+                        </IconButton>  
+                        <IconButton color="inherit" onClick={() => this.viewGameList()}>
+                            <SportsEsportsIcon/>
+                        </IconButton>                      
                         <IconButton color="inherit" onClick={() => this.viewNotifications()}>
                             <Badge badgeContent={notificationNumber} color="secondary">
                                 <NotificactionsIcon />
                             </Badge>                           
-                        </IconButton>
-                        <Button color="inherit" onClick={() => this.viewWall()}>Wall</Button>
+                        </IconButton>                        
                         <Typography className="userName">
                             {this.state.userId}
                         </Typography>
