@@ -17,6 +17,7 @@ class UserGames extends React.Component {
       
       this.state = {
           selectedUserGame: null,
+          shajs:null,
           userGameLists: {},
           createGameList: false,
           draftGameList: {
@@ -24,16 +25,19 @@ class UserGames extends React.Component {
           }
       }
 
-      this.selectGame = this.selectGame.bind(this);
-      this.addGameList = this.addGameList.bind(this);
-      this.removeGameList = this.removeGameList.bind(this);
-      this.getList = this.getList.bind(this);
-      this.toggleCreateGameList = this.toggleCreateGameList.bind(this);
-      this.createGameList = this.createGameList.bind(this);
-      this.renderGameList = this.renderGameList.bind(this);
-      this.renderNewGameForm = this.renderNewGameForm.bind(this);
-      this.isValidGameList = this.isValidGameList.bind(this);
-      this.handleChange = this.handleChange.bind(this);
+        var shajs = require('sha.js');
+        this.state.shajs = shajs;
+
+        this.selectGame = this.selectGame.bind(this);
+        this.addGameList = this.addGameList.bind(this);
+        this.removeGameList = this.removeGameList.bind(this);
+        this.getList = this.getList.bind(this);
+        this.toggleCreateGameList = this.toggleCreateGameList.bind(this);
+        this.createGameList = this.createGameList.bind(this);
+        this.renderGameList = this.renderGameList.bind(this);
+        this.renderNewGameForm = this.renderNewGameForm.bind(this);
+        this.isValidGameList = this.isValidGameList.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event, type) {
@@ -54,8 +58,33 @@ class UserGames extends React.Component {
         }          
     }
 
-    createGameList(){
+    async createGameList(){
+        let timestamp = Date.now();
+        let title = this.state.draftGameList.title;
+        let id = this.state.shajs('sha256').update(this.props.userId + "_" + String(timestamp)).digest('hex');
 
+        let gameListSoft = {
+            title: title,
+            timestamp: timestamp,
+            id: id
+        };
+        let gameListPublic = {
+            title: title,
+            games: [],
+            timestamp: timestamp,
+            id: id
+        };
+        await firebase.firestore().collection('Users').doc(this.props.userId)
+        .collection('gameLists').doc(id).set(gameListSoft);
+
+        await firebase.firestore().collection('publicGameList').doc(id).set(gameListPublic);
+
+        this.setState({
+            draftGameList: {
+                title: ''
+            },
+            createGameList: false
+        });
     }
 
     isValidGameList(){
@@ -108,7 +137,7 @@ class UserGames extends React.Component {
                             color="primary"
                             variant="contained"
                             onClick={this.toggleCreateGameList}>
-                                <div>Close</div>
+                                Close
                         </Button>
                         
                 </div>                                                                
@@ -130,7 +159,7 @@ class UserGames extends React.Component {
                 onClick={() => { scope.selectGame(game.id)}}
                 style={{width:'100%'}}
                 >
-                <ListItemText primary={game.title}/>
+                <ListItemText primary={game.title} secondary={''}/>
             </ListItem>
         );
     }
