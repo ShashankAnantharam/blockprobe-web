@@ -9,6 +9,7 @@ import * as Const from '../../common/constants';
 import './UserGames.css';
 import { isNullOrUndefined } from 'util';
 import { Button } from '@material-ui/core';
+import GameListPrivate from './GameListPrivate/GameListPrivate';
 
 class UserGames extends React.Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class UserGames extends React.Component {
         this.renderNewGameForm = this.renderNewGameForm.bind(this);
         this.isValidGameList = this.isValidGameList.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.returnToGameList = this.returnToGameList.bind(this);
     }
 
     handleChange(event, type) {
@@ -260,18 +262,27 @@ class UserGames extends React.Component {
         )
     }
 
+    returnToGameList(){
+        this.setState({
+            selectedUserGame: null
+        });
+    }
+
     render(){
         
         return (
             <div>
                 {
-                    isNullOrUndefined(this.state.selectedUserGame)?
+                    isNullOrUndefined(this.state.selectedUserGame) || this.state.selectedUserGame==''?
                     <div>
                         {this.renderGameList()}
                     </div>
                     :
                     <div>
-                        SINGLE GAMELIST
+                        <GameListPrivate
+                            gameListId={this.state.selectedUserGame}
+                            return={this.returnToGameList}
+                        />
                     </div>
                 }
             </div>

@@ -48,7 +48,6 @@ class GameListComponent extends React.Component {
                     title: title,
                     isLoading: false
                 });
-                console.log(list, title);
             }
             else{
                 this.setState({

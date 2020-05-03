@@ -1,0 +1,20 @@
+.gameListPrivateOptionsContainer{
+    display:flex;
+    margin-top:20px;
+}
+
+.addGameButton{
+    margin-left:1em !important;
+    margin-top:0 !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em;
+    border:none;
+}
+
+.returnToGameListButton{
+    margin-left:1em !important;
+    margin-top:0 !important;
+    margin-bottom: 0.5em !important;
+    size:2.6em;
+    border:none;
+}
