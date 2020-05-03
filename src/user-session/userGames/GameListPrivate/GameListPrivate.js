@@ -228,7 +228,9 @@ class GameListPrivate extends React.Component {
         let list = this.state.list;
         let displayList = list.map(game => {
             return this.singleGameListItem(game);
-        })
+        });
+        let shareUrl = Const.blockprobeUrl + '/gameList/' + this.props.gameListId;
+        
         return (
             <div>
                 <h2 className="gameListTitle">{this.state.title}</h2>
@@ -259,6 +261,13 @@ class GameListPrivate extends React.Component {
                     :
                     null
                 }
+
+                <div className="shareUrlContainer">
+                    <p>
+                        Public link to view game list: <br />
+                        <a href={shareUrl} target="_blank">{shareUrl}</a>
+                    </p>
+                </div>
 
                 {this.state.list.length > 0?
                     <div style={{marginBottom:'40px'}}>{displayList}</div>
