@@ -12,8 +12,15 @@
 }
 
 .statsScoreVal{
-    color: #556efd;
     font-size: 24px;
+}
+
+.color-graph{
+    color: #556efd;
+}
+
+.color-timeline{
+    color: #46237a;
 }
 
 .statsEntityText{

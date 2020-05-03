@@ -64,8 +64,10 @@ class GamifiedGraphStats extends React.Component {
             id = this.props.id;
 
         let typeOfGame = 'graphGame';
+        let color = '#556efd';
         if(!isNullOrUndefined(this.props.type) && this.props.type == "timeline"){
             typeOfGame = 'timeline';
+            color = '#46237a';
         }
 
         return (
@@ -76,10 +78,12 @@ class GamifiedGraphStats extends React.Component {
                                     id={id}
                                     val={this.props.stats.score}
                                     min={0}
-                                    max={this.props.stats.totalScore}/>
+                                    max={this.props.stats.totalScore}
+                                    color={color}/>
                             </div>
 
-                <div className="statsScoreText">Score: <span className="statsScoreVal">{this.props.stats.score}</span>
+                <div className="statsScoreText">Score: <span className={"statsScoreVal " + (typeOfGame == "graphGame"?"color-graph ":"")
+                        + (typeOfGame == "timeline"?"color-timeline ":"")}>{this.props.stats.score}</span>
                 <span className="statsTotalScoreVal">/{this.props.stats.totalScore}</span></div>
 
                 {(isNullOrUndefined(this.props.type) || this.props.type=='graph') && entityList.length > 0?

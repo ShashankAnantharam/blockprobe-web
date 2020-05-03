@@ -290,10 +290,11 @@ class GamifiedTimelineComponent extends React.Component {
                                             id="speedometer_timeline_ingame"
                                             val={this.state.score}
                                             min={0}
-                                            max={this.state.totalScore}/>
+                                            max={this.state.totalScore}
+                                            color={'#46237a'}/>
                                     </div>
 
-                                    <div className="scoreText">Score: <span className="scoreVal">{this.state.score}</span>
+                                    <div className="scoreText">Score: <span className="timelineScoreVal">{this.state.score}</span>
                                     <span className="totalScoreVal">/{this.state.totalScore}</span></div>
                                     {this.state.score == this.state.totalScore?
                                         <Alert severity="success" className="gameTimelineMessage">{this.state.gameMessageFinished}</Alert>

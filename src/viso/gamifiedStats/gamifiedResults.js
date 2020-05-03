@@ -13,6 +13,7 @@ class GamifiedResultsComponent extends React.Component {
       this.state={
           topPerformance: [],
           latestPerformances: [],
+          topTimelinePerformance: [],
           title: null,
           isLoading: true
       }
@@ -33,16 +34,23 @@ class GamifiedResultsComponent extends React.Component {
         .collection('gameScores');
 
         let queryTop = allScores.where('bpId', '==', bpId).orderBy('score','desc').limit(1).get();
+        let queryTimelineTop = allScores.where('bpId', '==', String(bpId + '_ts')).orderBy('score','desc').limit(1).get();
         let queryLatest = allScores.where('bpId', '==', bpId).orderBy('ts','desc').limit(5).get();
 
-        let promises = [queryTop, queryLatest];
+        let promises = [queryTop, queryLatest, queryTimelineTop];
         let scope = this;
         Promise.all(promises).then(results => {
-            const [resultTop, resultLatest] = results;
+            const [resultTop, resultLatest, resultTimelineTop] = results;
             let topScores = [];
             resultTop.forEach((doc) => {
                 let scoreDetails = doc.data();
                 topScores.push(scoreDetails);
+            });
+
+            let timelineTopScores = [];
+            resultTimelineTop.forEach((doc) => {
+                let scoreDetails = doc.data();
+                timelineTopScores.push(scoreDetails);
             });
 
             let latestPerformances = [];
@@ -62,6 +70,7 @@ class GamifiedResultsComponent extends React.Component {
 
             scope.setState({
                 topPerformance: topScores,
+                topTimelinePerformance: timelineTopScores,
                 latestPerformances: latestPerformances,
                 isLoading: false
             });
@@ -111,7 +120,7 @@ class GamifiedResultsComponent extends React.Component {
         return true;
     }
 
-    renderSinglePerformance(stats, type){
+    renderSinglePerformance(stats, type, gameType){
         if(this.isEntityStatsNewType(stats.entityStats))
             stats.entityStats = this.formatEntityStats(stats.entityStats);
         return (
@@ -120,9 +129,10 @@ class GamifiedResultsComponent extends React.Component {
                     stats = {stats}
                     bpId={this.props.gameId}
                     title={this.state.title}
-                    id = {String(stats.ts) + "_" + type}
+                    id = {String(stats.ts) + "_" + type + "_"+ gameType}
                     ts = {stats.ts}
                     canSave = {false}
+                    type = {gameType}
                     />
             </div>
         )
@@ -132,10 +142,13 @@ class GamifiedResultsComponent extends React.Component {
     render(){
         let scope = this;
         let latestPerformanceRender = this.state.latestPerformances.map(performance => {
-            return scope.renderSinglePerformance(performance,'latest');
+            return scope.renderSinglePerformance(performance,'latest','graphGame');
         })
         let topPerformanceRender = this.state.topPerformance.map(performance => {
-            return scope.renderSinglePerformance(performance,'top');
+            return scope.renderSinglePerformance(performance,'top','graphGame');
+        })
+        let topTimelinePerformanceRender = this.state.topTimelinePerformance.map(performance => {
+            return scope.renderSinglePerformance(performance,'top','timeline');
         })
         return (
             <div>
@@ -154,14 +167,26 @@ class GamifiedResultsComponent extends React.Component {
                                 <h4 className="gamePerformanceHeader">User has not played game yet</h4>
                                 :
                                 <div>
-                                    <h4 className="gamePerformanceHeader">Top performance</h4>
-                                    <div className="gamePerformanceContent">
-                                        {topPerformanceRender}                            
-                                    </div>
-                                    <h4 className="gamePerformanceHeader">Latest performances</h4>
-                                    <div className="gamePerformanceContent">
-                                        {latestPerformanceRender}
-                                    </div>
+                                    {this.state.topPerformance.length > 0?
+                                        <div>
+                                            <h4 className="gamePerformanceHeader">Match the topics</h4>
+                                            <div className="gamePerformanceContent">
+                                                {topPerformanceRender}                            
+                                            </div>
+                                        </div>
+                                        :
+                                        null
+                                    }
+                                    {this.state.topTimelinePerformance.length > 0?
+                                        <div>
+                                            <h4 className="gamePerformanceHeader">Fill the dates</h4>
+                                            <div className="gamePerformanceContent">
+                                                {topTimelinePerformanceRender}                            
+                                            </div>
+                                        </div>
+                                        :
+                                        null
+                                    }
                                 </div>
                         }
                     </div>

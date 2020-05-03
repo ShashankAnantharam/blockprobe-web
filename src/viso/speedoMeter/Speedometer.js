@@ -12,7 +12,7 @@ class Speedometer extends React.Component {
 
     constructor(props){
       super(props);
-      //id, min, max, val
+      //id, min, max, val, color
 
       this.chart = null;
       this.hand = null;
@@ -44,6 +44,9 @@ class Speedometer extends React.Component {
         range0.endValue = this.props.val;
         range0.axisFill.fillOpacity = 1;
         range0.axisFill.fill = am4core.color('#556efd');
+        if(!isNullOrUndefined(this.props.color)){
+            range0.axisFill.fill = am4core.color(this.props.color);
+        }
         range0.axisFill.zIndex = - 1;
 
         var range1 = axis.axisRanges.create();
@@ -57,6 +60,9 @@ class Speedometer extends React.Component {
         hand.pin.disabled = false;
         hand.strokeWidth = 0;
         hand.fill = am4core.color("#556efd");
+        if(!isNullOrUndefined(this.props.color)){
+            hand.fill = am4core.color(this.props.color);
+        }
         hand.showValue(Math.min(Math.max(this.props.val, this.props.min), this.props.max));
 
         this.chart = chart;
