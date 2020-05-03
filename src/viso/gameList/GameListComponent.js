@@ -4,6 +4,7 @@ import * as Const from '../../common/constants';
 import SingleGameListItemComponent from './singleGameElement/SingleGameElement';
 import YouTube from 'react-youtube';
 import Paper from '@material-ui/core/Paper';
+import Loader from 'react-loader-spinner';
 import './GameListComponent.css';
 import { isNullOrUndefined } from 'util';
 import Grid from '@material-ui/core/Grid';
@@ -25,10 +26,12 @@ class GameListComponent extends React.Component {
       this.state = {
           gameListId: this.props.match.params.gameListId,
           list: [],
-          title: null
+          title: null,
+          isLoading: true
       }
 
       this.singleGameListItem = this.singleGameListItem.bind(this);
+      this.renderGameListFull = this.renderGameListFull.bind(this);
     }
 
     async componentDidMount(){
@@ -42,9 +45,15 @@ class GameListComponent extends React.Component {
 
                 this.setState({
                     list: list,
-                    title: title
+                    title: title,
+                    isLoading: false
                 });
                 console.log(list, title);
+            }
+            else{
+                this.setState({
+                    isLoading: false
+                });
             }
         }
     }
@@ -60,7 +69,7 @@ class GameListComponent extends React.Component {
         )
     }
 
-    render(){
+    renderGameListFull(){
         let list = this.state.list;
 
         let displayList = list.map(game => {
@@ -89,6 +98,25 @@ class GameListComponent extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    render(){
+        return (
+            <div>
+                {this.state.isLoading?
+                    <div style={{width:'50px',margin:'auto'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"              
+                        /> 
+                    </div>
+                    :
+                    this.renderGameListFull()
+                }
+            </div>
+        )
     }
 }
 export default GameListComponent;

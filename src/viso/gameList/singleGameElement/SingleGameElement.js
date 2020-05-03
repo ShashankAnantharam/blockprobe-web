@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from '@material-ui/core';
+import { Button, Card, Grid } from '@material-ui/core';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import ViewBlockprobePublicComponent from '../../../view/ViewBlockprobePublic';
 import * as Const from '../../../common/constants';
 import * as firebase from 'firebase';
@@ -34,7 +37,28 @@ class SingleGameListItemComponent extends React.Component {
     }
 
     render(){
+
         return (
+            <Grid item xs={12} spacing={4}>
+                <Card elevation={6}>
+                    <CardContent>
+                        <Typography variant="h6">{this.props.title}</Typography>
+                        {!isNullOrUndefined(this.props.summary)?
+                            <Typography variant="body2" component="p" gutterBottom>
+                                {this.props.summary}
+                            </Typography>    
+                            :
+                            null
+                        }                                                            
+                    </CardContent>
+                    <CardActions>
+                        <Button size="small" onClick={() => { this.playGame(true)}}>Play game</Button>
+                        <Button size="small" onClick={() => { this.viewResults()}}>View results</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+        );
+       /* return (
             <div className="singleGameElementContainer">
                 <h4 style={{textAlign:'center'}}>{this.props.title}</h4>
                 <div>
@@ -62,6 +86,7 @@ class SingleGameListItemComponent extends React.Component {
                               
             </div>
         )
+        */
     }
 }
 export default SingleGameListItemComponent;
