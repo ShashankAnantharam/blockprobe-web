@@ -12,3 +12,12 @@
 .gameVideoLink{
     margin: 1em;
 }
+
+.gameVideoContainer{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.videoPadding{
+    padding:10px;
+}
