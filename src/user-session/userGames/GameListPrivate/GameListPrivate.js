@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import * as Utils from '../../../common/utilSvc';
+import * as Const from '../../../common/constants';
 import Loader from 'react-loader-spinner';
 import SingleGameListItemComponent from '../../../viso/gameList/singleGameElement/SingleGameElement';
 import './GameListPrivate.css';
@@ -46,14 +47,15 @@ class GameListPrivate extends React.Component {
                 ans.push(list[i]);
             }
         }
-        this.writeToDb(list,this.state.title);
+        this.writeToDb(ans,this.state.title);
     }
 
     addGame(game){
         let list = this.state.list;
-        list.push(game);
-
-        this.writeToDb(list,this.state.title);
+        if(list.length < Const.maxLengthOfGamelist){
+            list.push(game);
+            this.writeToDb(list,this.state.title);
+        }
     }
 
     async writeToDb(list, title){
@@ -175,7 +177,7 @@ class GameListPrivate extends React.Component {
                                 type="text"
                                 variant="outlined"
                                 multiline
-                                label = "Game if"
+                                label = "Game ID"
                                 value={this.state.newGame.id}
                                 onChange={(e) => { this.handleChange(e,"id")}}
                                 rowsMax="2"

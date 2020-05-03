@@ -36,3 +36,5 @@ export const edenColors = [
 export const blockprobeUrl = "https://blprobe.com";
 
 export const maxGameListChar = 100;
+
+export const maxLengthOfGamelist = 20;

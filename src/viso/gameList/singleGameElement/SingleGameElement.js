@@ -52,8 +52,13 @@ class SingleGameListItemComponent extends React.Component {
                         }                                                            
                     </CardContent>
                     <CardActions>
-                        <Button size="small" onClick={() => { this.playGame(true)}}>Play game</Button>
+                        <Button size="small" onClick={() => { this.playGame(true)}}>Play</Button>
                         <Button size="small" onClick={() => { this.viewResults()}}>View results</Button>
+                        {this.props.isPrivate && this.props.removeGame?
+                            <Button size="small" onClick={() => { this.props.removeGame(this.props.id)}}>Remove</Button>
+                            :
+                            null
+                        }
                     </CardActions>
                 </Card>
             </Grid>
