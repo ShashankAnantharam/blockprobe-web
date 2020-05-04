@@ -31,6 +31,10 @@ class GamifiedGraph extends React.Component {
       this.hasEdgeBeenSelected = this.hasEdgeBeenSelected.bind(this);
     }
 
+    hideNode(list, index, shouldHide){
+        list[index].nodeDisabled = shouldHide;
+    }
+
     prepareData(data, isRefData){
         var newData = [];
 
@@ -136,6 +140,7 @@ class GamifiedGraph extends React.Component {
         series.propertyFields.fill = "color";
         series.nodes.template.label.propertyFields.hidden = 'circleDisabled';
         series.nodes.template.togglable = false;
+        series.nodes.template.propertyFields.disabled = "nodeDisabled";
         
          // Configure circles
          series.nodes.template.circle.propertyFields.disabled = 'circleDisabled';
@@ -330,6 +335,15 @@ class GamifiedGraph extends React.Component {
             scope.props.setGameMessage('failLink');
             scope.props.setEntityStats(node1,false);
             scope.props.setEntityStats(node2,false);
+        }
+    }
+
+    showOnlyNodes(list, nodes){
+        for(let i=0; !isNullOrUndefined(list) && i<list.length; i++){
+            if(list[i].label in nodes)
+                this.hideNode(list,i,false);
+            else
+                this.hideNode(list,i,true);
         }
     }
 
