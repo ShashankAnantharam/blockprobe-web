@@ -38,3 +38,6 @@ export const blockprobeUrl = "https://blprobe.com";
 export const maxGameListChar = 100;
 
 export const maxLengthOfGamelist = 20;
+
+export const nodesToBeDisplayed = 10;
+export const reshuffleCriteria = 4;

@@ -20,10 +20,14 @@ class GamifiedGraph extends React.Component {
       this.chart = {};
       this.data = [];
       this.refData = [];
+      this.edgeList = [];
       this.selectedEdges={};
       this.selectedLink = null;
       this.prevNode = null;
       this.prevLinksWith = null;
+      this.currIndex = 0;
+      this.count = 0;
+      this.totalCnt = 0;
 
       this.previousChart = JSON.parse(JSON.stringify(props.graph));
 
@@ -33,6 +37,66 @@ class GamifiedGraph extends React.Component {
 
     hideNode(list, index, shouldHide){
         list[index].nodeDisabled = shouldHide;
+    }
+
+    showOnlyNodes(list, nodes){
+        for(let i=0; !isNullOrUndefined(list) && i<list.length; i++){
+            if(list[i].label in nodes)
+                this.hideNode(list,i,false);
+            else
+                this.hideNode(list,i,true);
+        }
+    }
+
+    getNodesToBeDisplayed(){
+        let edgeList = this.edgeList;
+        let nodes = {};
+        if(edgeList.length <= 0)
+            return nodes;
+
+        let totalCnt = 0;
+        let i = (this.currIndex + 1)%edgeList.length;
+        while(i!=this.currIndex){
+            if(!this.hasEdgeBeenSelected(edgeList[i].f,edgeList[i].s)){
+                nodes[edgeList[i].f]='';
+                nodes[edgeList[i].s]='';   
+                totalCnt ++;
+            }
+            if(Object.keys(nodes).length == Const.nodesToBeDisplayed)
+                break;
+            
+            i = (i+1)%(edgeList.length);
+        }
+        this.currIndex = i;
+        this.count = 0;
+        this.totalCnt = totalCnt;
+        return nodes;
+    }
+
+    reshuffleGraphNodes(data){
+        let nodeMap = this.getNodesToBeDisplayed();
+        //console.log(nodeMap);
+        this.showOnlyNodes(data,nodeMap);
+    }
+
+    getEdgeList(data){
+        var edgeList = [];
+
+        for(var i=0; data && i<data.length; i++){
+            var newEntry = JSON.parse(JSON.stringify(data[i]));
+            if(!(newEntry.label == 'ALL')){
+                if(newEntry.link){
+                    for(let j=0; j<newEntry.link.length; j++){
+                        edgeList.push({
+                            f: newEntry.label,
+                            s: data[newEntry.link[j]].label,
+                            selected: false
+                        })
+                    }
+                }
+            }
+        }
+        return edgeList;
     }
 
     prepareData(data, isRefData){
@@ -91,13 +155,13 @@ class GamifiedGraph extends React.Component {
         if(isNullOrUndefined(nodeA) || isNullOrUndefined(nodeB))
             return;
 
-        if((String(nodeA + '_CCC_' + nodeB) in this.selectedEdges) || (String(nodeB + '_CCC_' + nodeA) in this.selectedEdges))
+        if((String(nodeA + ',_CCC_,' + nodeB) in this.selectedEdges) || (String(nodeB + ',_CCC_,' + nodeA) in this.selectedEdges))
             return true;
         return false;
     }
 
     addSelectedEdgeToMap(nodeA, nodeB){
-        this.selectedEdges[String(nodeA + '_CCC_' + nodeB)] = true;
+        this.selectedEdges[String(nodeA + ',_CCC_,' + nodeB)] = true;
     }
 
     generateAmForceDirectedGraph(data){
@@ -275,7 +339,9 @@ class GamifiedGraph extends React.Component {
 
     componentDidMount() {
         this.data = this.prepareData(this.props.graph, false);
+        this.edgeList = this.getEdgeList(this.props.graph);
         this.refData = this.prepareData(this.props.graph, true);
+        this.reshuffleGraphNodes(this.data);
         this.generateAmForceDirectedGraph();
     }
 
@@ -322,6 +388,8 @@ class GamifiedGraph extends React.Component {
                 data[index1].link = [];
             }
             data[index1].link.push(index2);
+            // if(this.count > 0.4*this.totalCnt)
+               // this.reshuffleGraphNodes(data);
             this.data = data;
 
             this.chart.series.values[0].data = this.data;
@@ -329,21 +397,13 @@ class GamifiedGraph extends React.Component {
                 scope.addSelectedEdgeToMap(node1, node2);
                 scope.props.selectEdge(node1, node2);
                 scope.props.setGameMessage('successLink');
+                this.count = this.count+1;                
             }
         }
         else{
             scope.props.setGameMessage('failLink');
             scope.props.setEntityStats(node1,false);
             scope.props.setEntityStats(node2,false);
-        }
-    }
-
-    showOnlyNodes(list, nodes){
-        for(let i=0; !isNullOrUndefined(list) && i<list.length; i++){
-            if(list[i].label in nodes)
-                this.hideNode(list,i,false);
-            else
-                this.hideNode(list,i,true);
         }
     }
 
