@@ -164,6 +164,16 @@ class GamifiedGraph extends React.Component {
         this.selectedEdges[String(nodeA + ',_CCC_,' + nodeB)] = true;
     }
 
+    getCenterStrength(numberOfNodes){
+        // Assume linear
+        return (0.2772727 + (0.022727)*numberOfNodes);
+    }
+
+    getBodyStrength(numberOfNodes){
+        //Assume linear
+        return (0.170454*numberOfNodes - 40.04545); 
+    }
+
     generateAmForceDirectedGraph(data){
         // Create chart
         var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
@@ -171,6 +181,7 @@ class GamifiedGraph extends React.Component {
         // Create series
         var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 
+        let numberOfNodes = this.data.length;
 
        //console.log(graph);
         series.data = this.data;
@@ -245,8 +256,8 @@ class GamifiedGraph extends React.Component {
         allNode.fill = am4core.color('rgb(240,240,240)');
         allNode.propertyFields.disabled = 'isNotAll';          
 
-        series.centerStrength = 0.55;
-        series.manyBodyStrength = -38;
+        series.centerStrength = this.getCenterStrength(numberOfNodes);
+        series.manyBodyStrength = this.getBodyStrength(numberOfNodes);
         series.links.template.strength = 0.5;
         series.links.template.strokeWidth = 5;
 
