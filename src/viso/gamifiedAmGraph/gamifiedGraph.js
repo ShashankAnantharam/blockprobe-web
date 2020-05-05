@@ -388,11 +388,11 @@ class GamifiedGraph extends React.Component {
                 data[index1].link = [];
             }
             data[index1].link.push(index2);
-            // if(this.count > 0.4*this.totalCnt)
-               // this.reshuffleGraphNodes(data);
+            if(this.count > Math.floor(0.4*this.totalCnt))
+                this.reshuffleGraphNodes(data);
             this.data = data;
 
-            this.chart.series.values[0].data = this.data;
+            this.chart.series.values[0].invalidateData();
             if(!isNullOrUndefined(node1) && !isNullOrUndefined(node2)){
                 scope.addSelectedEdgeToMap(node1, node2);
                 scope.props.selectEdge(node1, node2);
