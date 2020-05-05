@@ -388,7 +388,7 @@ class GamifiedGraph extends React.Component {
                 data[index1].link = [];
             }
             data[index1].link.push(index2);
-            if(this.count > Math.floor(0.4*this.totalCnt))
+            if(this.count > Math.floor(Const.reshuffleCriteria*this.totalCnt))
                 this.reshuffleGraphNodes(data);
             this.data = data;
 
