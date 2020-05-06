@@ -39,5 +39,6 @@ export const maxGameListChar = 100;
 
 export const maxLengthOfGamelist = 20;
 
+export const nodesMinPossible = 6;
 export const nodesToBeDisplayed = 26;
 export const reshuffleCriteria = 0.4;
