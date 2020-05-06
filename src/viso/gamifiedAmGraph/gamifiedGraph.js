@@ -53,32 +53,35 @@ class GamifiedGraph extends React.Component {
         let nodes = {};
         if(edgeList.length <= 0)
             return nodes;
+        let len = edgeList.length;
 
         let totalCnt = 0;
-        let i = (this.currIndex + 1)%edgeList.length;
-        while(i!=(this.currIndex)%(edgeList.length)){
+        let i = (this.currIndex)%len;
+        while(1){
+            i = (i+1)%len;
             if(!this.hasEdgeBeenSelected(edgeList[i].f,edgeList[i].s)){
                 nodes[edgeList[i].f]='';
                 nodes[edgeList[i].s]='';   
-                totalCnt ++;
+                totalCnt++;
             }
             if(Object.keys(nodes).length == Const.nodesToBeDisplayed)
+                break;            
+
+            if(i==(this.currIndex%len))
                 break;
-            
-            i = (i+1)%(edgeList.length);
         }
         this.currIndex = i;
 
-        i = (i+1)%(edgeList.length);
-        while((Object.keys(nodes).length < Const.nodesMinPossible) && 
-        (i!= (this.currIndex)%(edgeList.length)))
+        while((Object.keys(nodes).length < Const.nodesMinPossible))
         {
+            i = (i+1)%len;
             //Dummy nodes                        
             if(this.hasEdgeBeenSelected(edgeList[i].f,edgeList[i].s)){
                 nodes[edgeList[i].f]='';
                 nodes[edgeList[i].s]='';                   
             }
-            i = (i+1)%(edgeList.length);
+            if(i==(this.currIndex%len))
+                break;
         }
         this.count = 0;
         this.totalCnt = totalCnt;
