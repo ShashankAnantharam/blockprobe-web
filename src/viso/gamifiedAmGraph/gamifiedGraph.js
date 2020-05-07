@@ -367,7 +367,8 @@ class GamifiedGraph extends React.Component {
         this.data = this.prepareData(this.props.graph, false);
         this.edgeList = this.getEdgeList(this.props.graph);
         this.refData = this.prepareData(this.props.graph, true);
-        this.reshuffleGraphNodes(this.data);
+        if(Object.keys(this.data).length > Const.nodesToBeDisplayed)
+            this.reshuffleGraphNodes(this.data);
         this.generateAmForceDirectedGraph();
     }
 
@@ -414,7 +415,7 @@ class GamifiedGraph extends React.Component {
                 data[index1].link = [];
             }
             data[index1].link.push(index2);
-            if(this.count > Math.floor(Const.reshuffleCriteria*this.totalCnt))
+            if(Object.keys(this.data).length > Const.nodesToBeDisplayed && this.count > Math.floor(Const.reshuffleCriteria*this.totalCnt))
                 this.reshuffleGraphNodes(data);
             this.data = data;
 
