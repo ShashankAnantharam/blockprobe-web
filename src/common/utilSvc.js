@@ -37,6 +37,36 @@ export const getShortenedListOfBlockprobes = (blockprobes) => {
     return allBlockprobes;
 }
 
+export const getShortenedListOfGameLists = (gameLists) => {
+    let all = [], currentGameLists = [];
+    let count=0;
+    if(gameLists!=null){
+        Object.keys(gameLists).map((key, index) => {
+            if(count && count%100==0){
+                let page = {
+                    gameLists: currentGameLists
+                };
+                all.push(page);
+                currentGameLists = [];
+            }
+            let gameList = gameLists[key];
+            if(gameList!=null){  
+                currentGameLists.push(gameList);
+                count++;
+            }
+        } 
+        );
+    }
+    if(currentGameLists.length > 0){
+        let page = {
+            gameLists: currentGameLists
+        };
+        all.push(page);
+        currentGameLists = [];
+    }    
+    return all;
+}
+
 export const getShortenedListOfBlockTree = (blockTree) => {
         let bTree = blockTree;
         let count=0;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Loader from 'react-loader-spinner';
 import TextField from '@material-ui/core/TextField';
 import * as firebase from 'firebase';
 import * as Utils from '../../common/utilSvc';
@@ -19,6 +20,7 @@ class UserGames extends React.Component {
       this.state = {
           selectedUserGame: null,
           shajs:null,
+          areGameListsLoading: true,
           userGameLists: {},
           createGameList: false,
           draftGameList: {
@@ -35,11 +37,114 @@ class UserGames extends React.Component {
         this.getList = this.getList.bind(this);
         this.toggleCreateGameList = this.toggleCreateGameList.bind(this);
         this.createGameList = this.createGameList.bind(this);
-        this.renderGameList = this.renderGameList.bind(this);
+        this.renderGameLists = this.renderGameLists.bind(this);
         this.renderNewGameForm = this.renderNewGameForm.bind(this);
         this.isValidGameList = this.isValidGameList.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.returnToGameList = this.returnToGameList.bind(this);
+        this.returnToGameLists = this.returnToGameLists.bind(this);
+
+        this.getLatestTimestamp = this.getLatestTimestamp.bind(this);
+        this.getGameLists = this.getGameLists.bind(this);
+        this.getGameListsShort = this.getGameListsShort.bind(this);
+        this.updateShortenedGameListsToDb = this.updateShortenedGameListsToDb.bind(this);
+        this.getNewGameListsTillThisSession = this.getNewGameListsTillThisSession.bind(this);
+        this.listenToGameListsDuringSession = this.listenToGameListsDuringSession.bind(this);
+    }
+
+    getLatestTimestamp(snapshot){
+        let timestampLatest = 0;
+        snapshot.forEach((doc) => { 
+            let data = doc.data().gameLists;
+            for(let i=0; data && i<data.length; i++){
+                if(data[i].timestamp)
+                    timestampLatest = Math.max(timestampLatest, data[i].timestamp);
+            }
+        }); 
+        return timestampLatest;
+    }
+
+    getGameListsShort(){
+        firebase.firestore().collection('Users').doc(this.props.userId)
+            .collection('shortGameLists').get().then((snapshot) => {
+        let latestTs = this.getLatestTimestamp(snapshot);                                 
+        let allGameLists = [];
+        snapshot.forEach((doc) => {
+                let data = doc.data();
+                if(data.gameLists){
+                    for(let i=0; i<data.gameLists.length; i++){
+                        allGameLists.push(data.gameLists[i]);
+                        this.addGameList(data.gameLists[i]);
+                    }
+                }
+            });
+        this.getNewGameListsTillThisSession(latestTs);                                
+        });  
+    }
+
+    updateShortenedGameListsToDb(){
+        let allGameLists = Utils.getShortenedListOfGameLists(this.state.userGameLists);
+        if(allGameLists &&  allGameLists.length>0){
+            firebase.firestore().collection('Users').doc(this.props.userId)
+            .collection('shortGameLists').get().then((snapshot) => {
+                    
+                snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("Users").doc(this.props.userId)
+                        .collection("shortGameLists").doc(doc.id).delete();
+                    });
+                    
+                for(var i=0; i<allGameLists.length; i++){
+                    firebase.firestore().collection("Users").doc(this.props.userId)
+                    .collection("shortGameLists").doc(String(i)).set(allGameLists[i]);        
+                }       
+                });
+        }
+      }
+
+    getNewGameListsTillThisSession(latestTimestamp){
+
+        let currTime = Date.now();
+
+        //Get short gamelists
+        firebase.firestore().collection('Users').doc(this.props.userId)
+        .collection('gameLists').where("timestamp", ">", latestTimestamp).where("timestamp", "<=", currTime)
+        .orderBy("timestamp").get().then((snapshot) => {
+                                
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                if(data){
+                    this.addGameList(data);
+                }
+            });
+
+            this.updateShortenedGameListsToDb();
+            this.setState({
+                areGameListsLoading: false
+            });
+            this.listenToGameListsDuringSession(currTime);
+        });          
+    }
+
+    listenToGameListsDuringSession(latestTimestamp){
+
+        firebase.firestore().collection('Users').doc(this.props.userId)
+        .collection('gameLists').where("timestamp", ">", latestTimestamp).orderBy("timestamp").onSnapshot(
+            querySnapshot => {
+                querySnapshot.docChanges().forEach(change => {
+                    if (change.type === 'added') {
+                        let data = change.doc.data();
+                        if(data){
+                            this.addGameList(data,true);
+                        }
+                        //console.log('New block: ', change.doc.data().timestamp);
+                    }
+                    else if (change.type == 'removed'){
+                        let data = change.doc.data();
+                        if(data){
+                            this.removeGameList(data,false);
+                        }
+                    }
+                }); 
+            });
     }
 
     handleChange(event, type) {
@@ -186,26 +291,16 @@ class UserGames extends React.Component {
         }
     }
 
+    getGameLists(){
+        this.setState({
+            areGameListsLoading: false
+        });
+
+        this.getGameListsShort();
+    }
+
     componentDidMount(){
-        firebase.firestore().collection('Users').doc(this.props.userId)
-        .collection('gameLists').orderBy("timestamp").onSnapshot(
-            querySnapshot => {
-                querySnapshot.docChanges().forEach(change => {
-                    if (change.type === 'added') {
-                        let data = change.doc.data();
-                        if(data){
-                            this.addGameList(data,true);
-                        }
-                        //console.log('New block: ', change.doc.data().timestamp);
-                    }
-                    else if (change.type == 'removed'){
-                        let data = change.doc.data();
-                        if(data){
-                            this.removeGameList(data,false);
-                        }
-                    }
-                }); 
-            });
+        this.getGameLists();
     }
 
     getList(gameMap){
@@ -222,7 +317,7 @@ class UserGames extends React.Component {
         });
     }
 
-    renderGameList(){
+    renderGameLists(){
         let scope = this;
         let userGamesTempList = this.getList(this.state.userGameLists);
         userGamesTempList.sort(function(a, b){if(a.title.toLowerCase()>b.title.toLowerCase()){return 1} return -1;});
@@ -262,7 +357,7 @@ class UserGames extends React.Component {
         )
     }
 
-    returnToGameList(){
+    returnToGameLists(){
         this.setState({
             selectedUserGame: null
         });
@@ -275,7 +370,20 @@ class UserGames extends React.Component {
                 {
                     isNullOrUndefined(this.state.selectedUserGame) || this.state.selectedUserGame==''?
                     <div>
-                        {this.renderGameList()}
+                        {this.state.areGameListsLoading?
+                                <div style={{margin:'auto',width:'50px'}}>
+                                    <Loader 
+                                    type="TailSpin"
+                                    color="#00BFFF"
+                                    height="50"	
+                                    width="50"
+                                    /> 
+                                </div>
+                                :
+                                <div>
+                                    {this.renderGameLists()}
+                                </div>
+                        }
                     </div>
                     :
                     <div>
