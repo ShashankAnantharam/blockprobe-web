@@ -80,18 +80,21 @@ class GamifiedTimelineComponent extends React.Component {
     seperateTimeline(timeline){
         let times = [];
         for(let i=0; i<timeline.length; i++){
-            times.push({
+            let newTime = {
                 date: timeline[i].blockDate,
                 time: timeline[i].blockTime,
                 timeStr: Utils.getDateTimeString(timeline[i])
-            });
+            };
+            if(times.length==0 || (times[times.length-1].timeStr != newTime.timeStr)){
+                times.push(newTime);
+            }
         }
         return times;
     }
 
     incrementScore(timelineBlockIndex){
         let finishedBlocks = this.state.finishedBlocks;
-        finishedBlocks[timelineBlockIndex] = '';
+        finishedBlocks[timelineBlockIndex] = true;
         let stopGame = this.state.stopGame;
         if(this.state.score + 1 >= this.state.totalScore)
             stopGame = true;
@@ -119,7 +122,7 @@ class GamifiedTimelineComponent extends React.Component {
             this.setState({
                 message: 'Well done'
             });
-            this.incrementScore(index);
+            this.incrementScore(this.state.currentTimelineIndex);
             if(this.props.playSound)
                 wellDone.play();
         }
@@ -172,10 +175,15 @@ class GamifiedTimelineComponent extends React.Component {
                         xs={10}
                         md={7}
                         lg={5}>
-                            <div className="horizontallyCentered width-40">
-                                <KeyboardArrowUp className='gamifiedTimelineBlockNav' 
-                                onClick={() => { this.clickChevron(true)}}/>
-                            </div>
+                            {!isNullOrUndefined(this.props.timeline) && this.props.timeline.length>1?
+                                <div className="horizontallyCentered width-40">
+                                    <KeyboardArrowUp className='gamifiedTimelineBlockNav' 
+                                    onClick={() => { this.clickChevron(true)}}/>
+                                </div>
+                                :
+                                null
+                            }
+                            
                             <Slide direction="up" in={this.state.slideCard} mountOnEnter unmountOnExit
                             onExited={() => {
                                 this.setSlideAnimation(true);
@@ -211,8 +219,11 @@ class GamifiedTimelineComponent extends React.Component {
     }
 
     incrementTimelineIndex(){
-        if(!isNullOrUndefined(this.props.timeline)){
+        if(!isNullOrUndefined(this.props.timeline) && this.props.timeline.length>1){
             let increment= Math.floor(Math.random()*(this.props.timeline.length-1));
+            if(increment == 0){
+                increment ++;
+            }
             let index = this.state.currentTimelineIndex;
             index = (index + increment)%(this.props.timeline.length);
 
