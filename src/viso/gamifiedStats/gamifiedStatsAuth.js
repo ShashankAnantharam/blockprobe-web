@@ -65,8 +65,17 @@ class GamifiedAuth extends React.Component {
         .collection('gameScores').doc(docStr).set(stats);
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameBlockprobes').doc(this.props.bpId).set(softBlockprobe);
-        await firebase.auth().signOut();
+
+        if(!(this.getItemWrapper('isUserSignedIn', false)))
+            await firebase.auth().signOut();
         this.props.finishSaving(userId);
+    }
+
+    getItemWrapper(key, defaultVal){
+        if(!isNullOrUndefined(localStorage.getItem(key))){
+            return localStorage.getItem(key);
+        }
+        return defaultVal;
     }
 
     componentDidMount(){
