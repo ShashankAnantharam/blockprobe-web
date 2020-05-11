@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import Speedometer from '../speedoMeter/Speedometer';
 import { Button } from '@material-ui/core';
 import GamifiedAuth from './gamifiedStatsAuth';
@@ -19,6 +20,8 @@ class GamifiedGraphStats extends React.Component {
       this.renderSingleEntityMistakes = this.renderSingleEntityMistakes.bind(this);
       this.saveResults = this.saveResults.bind(this);
       this.finishSaving = this.finishSaving.bind(this);
+
+      ReactGA.initialize('UA-143383035-1');
     }
 
     renderSingleEntityMistakes(entity, mistakes){
@@ -30,6 +33,12 @@ class GamifiedGraphStats extends React.Component {
     }
 
     saveResults(){
+        ReactGA.event({
+            category: 'saveResult',
+            action: this.props.id + ' ' + this.props.bpId,
+            label: this.props.id + ' ' + this.props.bpId
+          }); 
+
         this.setState({
             saveAuth: true,
             finishedSaving: false,
@@ -43,6 +52,16 @@ class GamifiedGraphStats extends React.Component {
             finishedSaving: true,
             uId: uId  
         });
+    }
+
+    componentDidMount(){
+        if(this.props.stats){
+            ReactGA.event({
+                category: 'finishedGame',
+                action: this.props.id + ' ' + this.props.bpId,
+                label: 'Score:' + String(this.props.stats.score)
+              }); 
+        }
     }
 
     render(){

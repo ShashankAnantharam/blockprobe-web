@@ -67,17 +67,18 @@ class ViewBlockprobePublicComponent extends React.Component {
             isPageLoading: true        
         }
 
-        ReactGA.initialize('UA-143383035-1');   
-        ReactGA.pageview('/viewBlockprobePublic');
+        ReactGA.initialize('UA-143383035-1');           
 
         if(this.props.visulationType == 'graph'){
             this.state.selectedVisualisation = 'graph';
+            ReactGA.pageview('/viewBlockprobePublic');
         }
         else if(this.props.visulationType == 'tabs_all'){
             this.state.selectedVisualisation = 'tabs_all';
         }
         else if(this.props.visulationType == 'game'){
             this.state.selectedVisualisation = 'game';
+            ReactGA.pageview('/openedGame');
         }
 
         this.changeSelectedBlock = this.changeSelectedBlock.bind(this);
@@ -514,12 +515,20 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.createInvestigationGraph(finalBlockList);
         this.createSummaryList(finalBlockList);
 
-        ReactGA.event({
-            category: 'public_view',
-            action: 'View blockprobe publicly',
-            label: this.props.bId
-          });
-
+        if(this.props.visulationType == 'game'){
+            ReactGA.event({
+                category: 'game',
+                action: 'Play game',
+                label: this.props.bId
+              });    
+        }
+        else{
+            ReactGA.event({
+                category: 'public_view',
+                action: 'View blockprobe publicly',
+                label: this.props.bId
+              });    
+        }
     }
 
     changeSelectedBlock = (block) =>{

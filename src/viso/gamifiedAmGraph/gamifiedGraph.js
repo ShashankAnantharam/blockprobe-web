@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import * as am4plugins_forceDirected from "@amcharts/amcharts4/plugins/forceDirected"; 
@@ -33,6 +34,8 @@ class GamifiedGraph extends React.Component {
 
       this.getDesiredLink = this.getDesiredLink.bind(this);
       this.hasEdgeBeenSelected = this.hasEdgeBeenSelected.bind(this);
+
+      ReactGA.initialize('UA-143383035-1');  
     }
 
     hideNode(list, index, shouldHide){
@@ -424,7 +427,12 @@ class GamifiedGraph extends React.Component {
                 scope.addSelectedEdgeToMap(node1, node2);
                 scope.props.selectEdge(node1, node2);
                 scope.props.setGameMessage('successLink');
-                this.count = this.count+1;                
+                this.count = this.count+1; 
+                ReactGA.event({
+                    category: 'connect_edge',
+                    action: 'Connect ' + String(node1) +  ", " + String(node2),
+                    label: String(node1) + ", " + String(node2)
+                  });               
             }
         }
         else{

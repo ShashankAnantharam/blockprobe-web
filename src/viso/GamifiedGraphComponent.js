@@ -275,12 +275,6 @@ class GamifiedGraphComponent extends React.Component {
             copiedText: false
         });
 
-        ReactGA.event({
-            category: 'select_edge',
-            action: 'Select Edge from ' + String(from) +  " to " + String(to),
-            label: String(from) + " to " + String(to)
-          });
-
         this.resetScroll();
     }
 
@@ -368,12 +362,6 @@ class GamifiedGraphComponent extends React.Component {
             selectedNodes: [node],
             copiedText: false
         });
-
-        ReactGA.event({
-            category: 'select_node',
-            action: 'Select Node '+ String(node),
-            label: String(node)
-          });
 
         this.resetScroll();
 
@@ -1022,11 +1010,6 @@ class GamifiedGraphComponent extends React.Component {
             }
             if(selectedNodesString.length > 0)
                 selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
-            ReactGA.event({
-                category: 'playSound',
-                action: 'PlaySound ' + selectedNodesString,
-                label: 'PlaySound ' + selectedNodesString
-            });
 
             let toPlayText = node;
             this.setState({
@@ -1073,11 +1056,6 @@ class GamifiedGraphComponent extends React.Component {
             }
             if(selectedNodesString.length > 0)
                 selectedNodesString = selectedNodesString.substring(0,selectedNodesString.length - 2);
-            ReactGA.event({
-                category: 'playSound',
-                action: 'PlaySound ' + selectedNodesString,
-                label: 'PlaySound ' + selectedNodesString
-            });
 
             let toPlayText = '';
             let numbers = Utils.coalesceBlockNumbers(this.state.currentSelectedBlocks);
