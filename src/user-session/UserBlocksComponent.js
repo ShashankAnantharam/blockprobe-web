@@ -1321,8 +1321,8 @@ class UserBlocksComponent extends React.Component {
                                 </div>
                                 <div>
                                     <Checkbox 
-                                        value={'multi_connections'}
-                                        isChecked={this.state.graphViewAddType == 'multi_connections'}
+                                        value={'star_connections'}
+                                        isChecked={this.state.graphViewAddType == 'star_connections'}
                                         label={'Multiple connections'}
                                         toggleChange = {this.toggleGraphOptionStyle}
                                         />
@@ -1339,13 +1339,14 @@ class UserBlocksComponent extends React.Component {
                                 :
                                 null
                             }
-                            {this.state.graphViewAddType == 'multi_connections'?
+                            {this.state.graphViewAddType == 'star_connections'?
                                 <AddStarEdgesView
                                     entityPane = {this.state.entityPaneList}                                        
                                     commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
                                     investigationGraph = {this.props.investigationGraph}
                                     lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
                                     lastIndex = {this.props.lastIndex}
+                                    commitMultipleBlocksToBlockprobe = {this.props.commitMultipleBlocksToBlockprobe}
                                 />
                                 :
                                 null

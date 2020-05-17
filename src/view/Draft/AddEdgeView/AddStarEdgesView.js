@@ -92,10 +92,13 @@ class AddStarEdgesView extends React.Component {
 
     commitBlocksToBlockprobe(){
         let index = this.getLatestIndex();
+        let blocks = [];
+        let timeCurr = Date.now();
         for(let i=0; i<this.state.selectedEntities.length; i++){
             if(Utils.makeFirstLetterUppercase(this.state.baseEntity[0]) 
                 != Utils.makeFirstLetterUppercase(this.state.selectedEntities[i])){
                 index += 0.1;
+                timeCurr += 10;
                 let entities = [];
                 entities.push({
                     title: Utils.makeFirstLetterUppercase(this.state.baseEntity[0]),
@@ -104,20 +107,20 @@ class AddStarEdgesView extends React.Component {
                 entities.push({
                     title: Utils.makeFirstLetterUppercase(this.state.selectedEntities[i]),
                     type: 'None'
-                });
+                });                
                 let fullBlock = {
                     title: `#${index} `,
                     summary: this.state.summary,
                     entities: entities,
                     evidences: [],
                     referenceBlock: null,
-                    timestamp: Date.now(),
+                    timestamp: timeCurr,
                     actionType: 'ADD'
                 };
-            //  this.props.commitBlockToBlockprobe(fullBlock);
-                console.log(fullBlock); 
+                blocks.push(fullBlock);
             }
-        }        
+        }
+        this.props.commitMultipleBlocksToBlockprobe(blocks);        
     }
 
     confirmEdge(){
