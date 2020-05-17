@@ -10,6 +10,10 @@
     width:70%;
 }
 
+.primaryEntityContainer{
+    margin-bottom: 20px;
+}
+
 .confirmEdgeButton{
     background:rgb(2, 1, 46) !important;
     color:rgb(219, 243, 242) !important;

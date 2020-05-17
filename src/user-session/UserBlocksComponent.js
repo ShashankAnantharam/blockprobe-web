@@ -24,6 +24,7 @@ import SummaryViewComponent from "../viso/summary/SummaryView";
 import * as Utils from '../common/utilSvc';
 import SingleEntityView from '../view/Draft/SingleEntityView/SingleEntityView';
 import AddEdgeView from  '../view/Draft/AddEdgeView/AddEdgeView';
+import AddStarEdgesView from  '../view/Draft/AddEdgeView/AddStarEdgesView';
 import AddTimeView from '../view/Draft/AddTimeView/AddTimeView';
 
 import Joyride from 'react-joyride';
@@ -1329,6 +1330,17 @@ class UserBlocksComponent extends React.Component {
                             </div>
                             {this.state.graphViewAddType == 'single_connection'?
                                 <AddEdgeView
+                                    entityPane = {this.state.entityPaneList}                                        
+                                    commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                    investigationGraph = {this.props.investigationGraph}
+                                    lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                    lastIndex = {this.props.lastIndex}
+                                />
+                                :
+                                null
+                            }
+                            {this.state.graphViewAddType == 'multi_connections'?
+                                <AddStarEdgesView
                                     entityPane = {this.state.entityPaneList}                                        
                                     commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
                                     investigationGraph = {this.props.investigationGraph}
