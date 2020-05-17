@@ -27,6 +27,7 @@ import AddEdgeView from  '../view/Draft/AddEdgeView/AddEdgeView';
 import AddTimeView from '../view/Draft/AddTimeView/AddTimeView';
 
 import Joyride from 'react-joyride';
+import Checkbox from '../view/Draft/Checkbox';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -58,6 +59,7 @@ class UserBlocksComponent extends React.Component {
                 blockState:'DRAFT',
                 entities:[]
             },
+            graphViewAddType: 'single_connection',
             multiSelectedBlocks: {},
             dialogType: null,
             dialogText:{
@@ -171,7 +173,7 @@ class UserBlocksComponent extends React.Component {
         this.multiSelectBlocks = this.multiSelectBlocks.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
         this.performAction = this.performAction.bind(this);
-
+        this.toggleGraphOptionStyle = this.toggleGraphOptionStyle.bind(this);
         this.selectGraphNode = this.selectGraphNode.bind(this);
     }
 
@@ -1084,6 +1086,12 @@ class UserBlocksComponent extends React.Component {
         // console.log(graphNode);
     }
 
+    toggleGraphOptionStyle(type){
+        this.setState({
+            graphViewAddType: type
+        });
+    }
+
     render(){
 
         const scope = this;
@@ -1301,13 +1309,35 @@ class UserBlocksComponent extends React.Component {
 
                     <TabPanel>
                         <div className="graphVisualizationSingleEntity">
-                            <AddEdgeView
-                                entityPane = {this.state.entityPaneList}                                        
-                                commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
-                                investigationGraph = {this.props.investigationGraph}
-                                lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
-                                lastIndex = {this.props.lastIndex}
-                            />
+                            <div style={{flexWrap: 'wrap',  display:'flex'}}>
+                                <div>
+                                    <Checkbox 
+                                        value={'single_connection'}
+                                        isChecked={this.state.graphViewAddType == 'single_connection'}
+                                        label={'Single connection'}  
+                                        toggleChange = {this.toggleGraphOptionStyle}                              
+                                        />
+                                </div>
+                                <div>
+                                    <Checkbox 
+                                        value={'multi_connections'}
+                                        isChecked={this.state.graphViewAddType == 'multi_connections'}
+                                        label={'Multiple connections'}
+                                        toggleChange = {this.toggleGraphOptionStyle}
+                                        />
+                                </div>    
+                            </div>
+                            {this.state.graphViewAddType == 'single_connection'?
+                                <AddEdgeView
+                                    entityPane = {this.state.entityPaneList}                                        
+                                    commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                    investigationGraph = {this.props.investigationGraph}
+                                    lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                    lastIndex = {this.props.lastIndex}
+                                />
+                                :
+                                null
+                            }                            
                         </div>
                         {this.isGraphAvailable()?
                             <div>                                
