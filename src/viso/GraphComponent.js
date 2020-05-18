@@ -913,8 +913,8 @@ class GraphComponent extends React.Component {
             for(let i=0; !isNullOrUndefined(numbers) && i<numbers.length;i++){
                 toPlayText += ('Total ' + numbers[i].key + ": " + String(numbers[i].value)+ ". ");
             }
-
-            this.state.currentSelectedBlocks.map((selectedBlock) => 
+            let currBlocks = Utils.deduplicateBlocks(this.state.currentSelectedBlocks);
+            currBlocks.map((selectedBlock) => 
                 {
                     let title = this.removeHashedIndex(selectedBlock.title);
                     let summary = selectedBlock.summary;
@@ -1017,7 +1017,9 @@ class GraphComponent extends React.Component {
         };
         const transitions = ["height", "opacity", "background"];
 
-        var renderBlocks = this.state.currentSelectedBlocks.map((selectedBlock) => 
+        let currBlocks = Utils.deduplicateBlocks(this.state.currentSelectedBlocks);
+
+        var renderBlocks = currBlocks.map((selectedBlock) => 
                this.SingleBlock(selectedBlock)
            );  
            

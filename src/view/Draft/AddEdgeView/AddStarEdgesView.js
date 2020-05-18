@@ -94,10 +94,10 @@ class AddStarEdgesView extends React.Component {
         let index = this.getLatestIndex();
         let blocks = [];
         let timeCurr = Date.now();
+        index += 0.1;
         for(let i=0; i<this.state.selectedEntities.length; i++){
             if(Utils.makeFirstLetterUppercase(this.state.baseEntity[0]) 
-                != Utils.makeFirstLetterUppercase(this.state.selectedEntities[i])){
-                index += 0.1;
+                != Utils.makeFirstLetterUppercase(this.state.selectedEntities[i])){                
                 timeCurr += 10;
                 let entities = [];
                 entities.push({

@@ -767,6 +767,15 @@ export const getEntityChange = (entity, ts, entityChanges)=>{
     return changes[l];
 }
 
+export const deduplicateBlocks = (blockList)=>{
+    let ans = [];
+    for(let i=0; !isNullOrUndefined(blockList) && i<blockList.length; i++){
+        if(i==0 || (blockList[i].title != blockList[i-1].title) || (blockList[i].summary != blockList[i-1].summary))
+                ans.push(blockList[i]);
+    }
+    return ans;
+}
+
 export const modifyBlockEntities = (blockList, blockTree, entityChanges)=>{
     if(isNullOrUndefined(blockList) || isNullOrUndefined(blockTree)  || isNullOrUndefined(entityChanges))
         return blockTree;
