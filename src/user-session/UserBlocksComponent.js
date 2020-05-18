@@ -25,6 +25,7 @@ import * as Utils from '../common/utilSvc';
 import SingleEntityView from '../view/Draft/SingleEntityView/SingleEntityView';
 import AddEdgeView from  '../view/Draft/AddEdgeView/AddEdgeView';
 import AddStarEdgesView from  '../view/Draft/AddEdgeView/AddStarEdgesView';
+import AddSingleTopicView from  '../view/Draft/AddEdgeView/AddSingleTopic';
 import AddTimeView from '../view/Draft/AddTimeView/AddTimeView';
 
 import Joyride from 'react-joyride';
@@ -1326,7 +1327,15 @@ class UserBlocksComponent extends React.Component {
                                         label={'Multiple connections'}
                                         toggleChange = {this.toggleGraphOptionStyle}
                                         />
-                                </div>    
+                                </div>
+                                <div>
+                                    <Checkbox 
+                                        value={'single_topic'}
+                                        isChecked={this.state.graphViewAddType == 'single_topic'}
+                                        label={'Single topic'}
+                                        toggleChange = {this.toggleGraphOptionStyle}
+                                        />
+                                </div>     
                             </div>
                             {this.state.graphViewAddType == 'single_connection'?
                                 <AddEdgeView
@@ -1347,6 +1356,17 @@ class UserBlocksComponent extends React.Component {
                                     lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
                                     lastIndex = {this.props.lastIndex}
                                     commitMultipleBlocksToBlockprobe = {this.props.commitMultipleBlocksToBlockprobe}
+                                />
+                                :
+                                null
+                            }
+                            {this.state.graphViewAddType == 'single_topic'?
+                                <AddSingleTopicView
+                                    entityPane = {this.state.entityPaneList}                                        
+                                    commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                    investigationGraph = {this.props.investigationGraph}
+                                    lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                    lastIndex = {this.props.lastIndex}
                                 />
                                 :
                                 null
