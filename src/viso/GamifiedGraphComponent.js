@@ -1337,7 +1337,7 @@ class GamifiedGraphComponent extends React.Component {
                                     {selectedNodesString.length>0?
                                         <span>{Locale.selections[lang]}</span>
                                         :
-                                        <span>{Locale.selectEntity[lang]}</span>
+                                        <span>{Locale.selectTwoEntities[lang]}</span>
                                     }                                                                
                                     <span>{selectedNodesString}</span>                                
                                     <span>

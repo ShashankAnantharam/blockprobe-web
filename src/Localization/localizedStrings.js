@@ -14,6 +14,14 @@ export const selectEntity = {
     'bn': 'যে কোনও সত্তা / বিষয় নির্বাচন করুন'
 };
 
+export const selectTwoEntities = {
+    'en': 'Select two topics to connect',
+    'hi': 'दो विषयों का चयन करे',
+    'ml': 'രണ്ട് വിഷയങ്ങൾ തിരഞ്ഞെടുക്കുക',
+    'mr': 'दोन विषय निवडा',
+    'bn': 'দুটি বিষয় নির্বাচন করুন'
+};
+
 export const selections = {
     'en': 'Selections',
     'hi': 'विषय',
