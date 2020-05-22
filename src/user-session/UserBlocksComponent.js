@@ -881,33 +881,39 @@ class UserBlocksComponent extends React.Component {
                   }}
                     steps={this.state.tooltipText.addBlocks}
                     run = {this.state.showTooltip.addBlocks}                    
-                    />             
-                    <Button
-                    color="primary"
-                    variant="contained" 
-                    className="addBulkBlockButton" 
-                    onClick={this.createBulkBlock}>
-                        <div>Contribute</div>
-                    </Button>
+                    />    
+                    <div>
+                        <Button
+                        color="primary"
+                        variant="contained" 
+                        className="addBulkBlockButton" 
+                        onClick={this.createBulkBlock}>
+                            <div>Contribute</div>
+                        </Button>                    
+                    </div>         
                     
-                    <Button 
-                    color="primary"
-                    variant="contained"
-                    className="editEntitiesButton entityPaneButtonTooltip" 
-                    onClick={this.openEntityPane}>
-                        <div>Manage story entities</div>
-                    </Button>
-
-                    {Object.keys(this.props.investigationGraph).length > 0?
+                    <div>
                         <Button 
                         color="primary"
                         variant="contained"
                         className="editEntitiesButton entityPaneButtonTooltip" 
-                        onClick={this.openImagePane}>
-                            <div>Manage story images</div>
+                        onClick={this.openEntityPane}>
+                            <div>Manage story entities</div>
                         </Button>
-                            :
-                        null}
+                    </div>                    
+                    
+                    <div>
+                        {Object.keys(this.props.investigationGraph).length > 0?
+                            <Button 
+                            color="primary"
+                            variant="contained"
+                            className="editEntitiesButton entityPaneButtonTooltip" 
+                            onClick={this.openImagePane}>
+                                <div>Manage story images</div>
+                            </Button>
+                                :
+                            null}
+                    </div>
                 </div>
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?

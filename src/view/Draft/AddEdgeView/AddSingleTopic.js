@@ -135,7 +135,7 @@ class AddSingleTopicView extends React.Component {
                                     background: 'white',
                                     marginTop:'6px',
                                     marginBottom:'6px',
-                                    width:'70%',
+                                    width:'100%',
                                     color: 'darkBlue',
                                     fontWeight:'600'
                                     }}/>

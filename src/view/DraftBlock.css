@@ -69,7 +69,6 @@
 .addDateTimeButton{
     background:rgb(2, 1, 54) !important;
     color:rgb(219, 243, 242) !important;
-    margin-left:3em !important;
     margin-top:0 !important;
     size:0.6em !important;
     border:none;
@@ -130,6 +129,7 @@
 
 .draft-options-container{
     display:flex; 
+    flex-wrap: wrap;
     flex-direction:row;
     margin-top:1em;
     margin-bottom:1em;

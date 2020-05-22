@@ -476,25 +476,29 @@ class UserBlockprobesComponent extends React.Component {
                     :
                     <div>
                         <div>
-                            <div>
-                                <Button 
-                                        className="addBlockprobeButton" 
+                            <div style={{flexWrap: 'wrap',  display:'flex'}}>
+                                <div>
+                                    <Button 
+                                            className="addBlockprobeButton" 
+                                            color="primary"
+                                            variant="contained"
+                                            onClick={() => this.addCancelBlockprobe(false)}>
+                                            {!this.state.addBlockprobe?
+                                            <div>Create new story</div>
+                                            :
+                                            <div>Cancel</div>
+                                            }
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button
+                                        className="startTooltipsButton" 
                                         color="primary"
                                         variant="contained"
-                                        onClick={() => this.addCancelBlockprobe(false)}>
-                                        {!this.state.addBlockprobe?
-                                        <div>Create new story</div>
-                                        :
-                                        <div>Cancel</div>
-                                        }
-                                </Button>
-                                <Button
-                                    className="startTooltipsButton" 
-                                    color="primary"
-                                    variant="contained"
-                                    onClick={() => this.startTooltipTour()}>
-                                    Guided tutorial
-                                </Button>
+                                        onClick={() => this.startTooltipTour()}>
+                                        Guided tutorial
+                                    </Button>
+                                </div>
                             </div>
                             {this.state.addBlockprobe?
                                 this.renderDraftBlockprobe()

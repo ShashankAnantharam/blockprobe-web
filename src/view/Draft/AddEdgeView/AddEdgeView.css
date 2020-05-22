@@ -4,10 +4,11 @@
 
 .addEdgeBlockTextContainer{
     margin-bottom:1em;
+    margin-right:1em;
 }
 
 .addEdgeEntityContainer{
-    width:70%;
+    margin-right:1em;
 }
 
 .primaryEntityContainer{

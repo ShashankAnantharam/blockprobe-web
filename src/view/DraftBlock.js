@@ -691,7 +691,7 @@ class DraftBlockComponent extends React.Component {
     renderTimeOption(){
         return (
                     <div style={{marginTop:'5px', marginBottom:'5px'}}>
-                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Time: </span>
+                        <span style={{fontSize:'0.8em', fontWeight:'bold', marginRight: '1em'}}> Time: </span>
                         <Button
                             variant="contained"  
                             className="addDateTimeButton" 
@@ -788,43 +788,53 @@ class DraftBlockComponent extends React.Component {
                 }       
                 <div className="draft-options-container" style={{marginTop:'0.1em'}}>
                 {this.props.bpDetails.criterion == 0?
-                                    <Button 
-                                        variant="contained"
-                                        className="commitBlockButton commitBlockTooltip" 
-                                        onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>
-                                            <div className="buttonDraftGeneral">Add to story</div>
-                                    </Button>
+                                    <div>
+                                        <Button 
+                                            variant="contained"
+                                            className="commitBlockButton commitBlockTooltip" 
+                                            onClick={() => this.toggleDeleteBlockDialog(true,'commit')}>
+                                                <div className="buttonDraftGeneral">Add to story</div>
+                                        </Button>
+                                    </div>
                                     :
                                     null
                     }
-                    <Button 
-                        variant="contained"
-                        className="saveBlockButton" 
-                        onClick={this.saveDraftBlock}>
-                            <div className="buttonDraftGeneral">Save as Draft</div>
-                    </Button>
-                    {this.state.canSubmit?
-                        <Button
-                            variant="contained" 
-                            className="submitBlockButton" 
-                            onClick={this.submitDraftBlock}>
-                                <div className="buttonDraftGeneral">Submit</div>
+                    <div>
+                        <Button 
+                            variant="contained"
+                            className="saveBlockButton" 
+                            onClick={this.saveDraftBlock}>
+                                <div className="buttonDraftGeneral">Save as Draft</div>
                         </Button>
+                    </div>
+                    {this.state.canSubmit?
+                        <div>
+                            <Button
+                                variant="contained" 
+                                className="submitBlockButton" 
+                                onClick={this.submitDraftBlock}>
+                                    <div className="buttonDraftGeneral">Submit</div>
+                            </Button>
+                        </div>
                         :
                         null
                     }
-                    <Button
-                        variant="contained" 
-                        className="cancelBlockBackButton" 
-                        onClick={this.cancelDraftBlock}>
-                            <div className="buttonDraftGeneral">Cancel</div>
-                    </Button>
-                    <Button 
-                        variant="contained"
-                        className="deleteBlockButton" 
-                        onClick={() => this.toggleDeleteBlockDialog(true,'delete')}>
-                            <div className="buttonDraftGeneral">Delete</div>
-                    </Button>    
+                    <div>
+                        <Button
+                            variant="contained" 
+                            className="cancelBlockBackButton" 
+                            onClick={this.cancelDraftBlock}>
+                                <div className="buttonDraftGeneral">Cancel</div>
+                        </Button>
+                    </div>
+                    <div>
+                        <Button 
+                            variant="contained"
+                            className="deleteBlockButton" 
+                            onClick={() => this.toggleDeleteBlockDialog(true,'delete')}>
+                                <div className="buttonDraftGeneral">Delete</div>
+                        </Button>
+                    </div>    
                 </div>                    
                 <form>
                 <label>
@@ -886,7 +896,7 @@ class DraftBlockComponent extends React.Component {
                                     />
                     </h6>
                     <div style={{marginTop:'5px', marginBottom:'5px'}}>
-                        <span style={{fontSize:'0.8em', fontWeight:'bold'}}> Date: </span>
+                        <span style={{fontSize:'0.8em', fontWeight:'bold', marginRight: '1em'}}> Date: </span>
                         <Button
                             variant="contained" 
                             className="addDateTimeButton" 

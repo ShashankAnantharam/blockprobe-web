@@ -180,7 +180,7 @@ class AddTimeView extends React.Component {
                 <h4 className="addTimeTitle"> Add timeline event</h4>
                 <div style={{marginBottom:'15px'}}>
                     <div>
-                        <div>
+                        <div className="addTimelineBlockTextContainer">
                             <form>
                                 <label>
                                     <TextField 
@@ -196,7 +196,7 @@ class AddTimeView extends React.Component {
                                             background: 'white',
                                             marginTop:'6px',
                                             marginBottom:'6px',
-                                            width:'95%'
+                                            width:'100%'
                                             }}/>
                                     <TextField 
                                     type="text"
@@ -211,7 +211,7 @@ class AddTimeView extends React.Component {
                                         background: 'white',
                                         marginTop:'6px',
                                         marginBottom:'6px',
-                                        width:'95%'
+                                        width:'100%'
                                         }}/>
                                 </label>
                             </form>
