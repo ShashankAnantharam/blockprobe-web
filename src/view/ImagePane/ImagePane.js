@@ -372,10 +372,11 @@ class ImagePaneView extends React.Component {
                             <div>
                                 <ImageUploader
                                     withIcon={true}
+                                    label={'Max-size: 5MB, Accepted formats: jpg|png|jpeg|gif|svg'}
                                     buttonText='Choose image'
                                     onChange={this.onDrop}
                                     singleImage={true}
-                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    imgExtension={['.jpg', '.gif', '.png', '.svg','.jpeg']}
                                     maxFileSize={5242880}
                                 />
                                 <div>
