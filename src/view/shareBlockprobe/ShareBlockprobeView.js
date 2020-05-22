@@ -177,45 +177,52 @@ class ShareBlockprobeComponent extends React.Component {
                         />   
                     </div>
                     :
-                    <div style={{display:'flex'}}>                            
+                    <div style={{display:'flex', flexWrap:'wrap'}}> 
+                        <div style={{marginBottom: '10px'}}>                           
                             <Button
                             variant="contained" 
                             className="publishBlockprobeButton"
                             onClick={this.publishStory}>
                                 <div>Publish latest story</div>
                             </Button>
-
+                        </div>
                             {this.state.isBlockprobeAlreadyPublished?
-                                <Button
-                                variant="contained" 
-                                className="unpublishBlockprobeButton"
-                                onClick={this.unpublishStory}>
-                                    <div>Unpublish story</div>
-                                </Button>
+                                <div style={{marginBottom: '10px'}}>
+                                    <Button
+                                    variant="contained" 
+                                    className="unpublishBlockprobeButton"
+                                    onClick={this.unpublishStory}>
+                                        <div>Unpublish story</div>
+                                    </Button>
+                                </div>
                                 :
                                 null
                             }
 
                             {this.state.isBlockprobeAlreadyPublished && 
                                 !this.isStoryAlreadyAdded()?
-                                <Button
-                                variant="contained" 
-                                className="addToWallButton"
-                                onClick={this.addStoryToWall}>
-                                    <div>Add story to my wall</div>
-                                </Button>
+                                <div style={{marginBottom: '10px'}}>
+                                    <Button
+                                    variant="contained" 
+                                    className="addToWallButton"
+                                    onClick={this.addStoryToWall}>
+                                        <div>Add story to my wall</div>
+                                    </Button>
+                                </div>
                                 :
                                 null
                             }
 
                             {this.state.isBlockprobeAlreadyPublished && 
                                 this.isStoryAlreadyAdded()?
-                                <Button
-                                variant="contained" 
-                                className="addToWallButton"
-                                onClick={this.removeStoryFromWall}>
-                                    <div>Remove story from my wall</div>
-                                </Button>
+                                <div style={{marginBottom: '10px'}}>
+                                    <Button
+                                    variant="contained" 
+                                    className="addToWallButton"
+                                    onClick={this.removeStoryFromWall}>
+                                        <div>Remove story from my wall</div>
+                                    </Button>
+                                </div>
                                 :
                                 null
                             }
