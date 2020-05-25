@@ -115,6 +115,15 @@ class DashboardViewComponent extends React.Component {
         return (
             <div style={{paddingBottom:'15px'}}>
 
+                {this.props.setNewVisualisation?
+                    <div className="shareTooltipTextContainer">
+                        <p className='contributeOptionText'>Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={() => this.props.setNewVisualisation('contributions')}>Contribute</a> to resume working.</p>
+                        <p className='contributeOptionText'>Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={() => this.props.setNewVisualisation('publish_blockprobe')}>Share</a> to share.</p>
+                    </div>
+                    :
+                    null
+                }
+
                 {this.isSummaryBlocksAvailable()?
                     <div>
                         <SummaryViewComponent

@@ -920,7 +920,7 @@ class UserBlocksComponent extends React.Component {
                 {Object.keys(this.state.successBlocks).length>0?
                         <p className="contributeOpenTooltipText">
                             Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setDashboardVisualisation}>Dashboard</a> to visualise your contributions. <br/><br/>
-                            Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setShareVisualization}>Share</a> to share your contributions.<br/><br/>
+                            Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setShareVisualization}>Share</a> to share.<br/><br/>
                         </p>                        
                         :
                         <div>

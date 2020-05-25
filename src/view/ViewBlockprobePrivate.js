@@ -1032,7 +1032,8 @@ class ViewBlockprobePrivateComponent extends React.Component {
                         selectBlock={this.changeSelectedBlock}
                         multiSelectEntityList = {this.state.multiSelectEntityList}
                         lang = {this.state.lang}
-                        timeline={this.state.timeline}                     
+                        timeline={this.state.timeline}  
+                        setNewVisualisation = {this.setNewVisualisation}                   
                     />
                 </div>
             );
@@ -1117,7 +1118,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     posts = {this.props.posts}
                     title = {this.state.blockprobeTitle}
                     updatePosts = {this.props.updatePosts}
-                    setNewVisualisation = {this.props.setNewVisualisation}
+                    setNewVisualisation = {this.setNewVisualisation}
                     />
                 </div>
             )
