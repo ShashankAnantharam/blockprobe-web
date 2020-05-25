@@ -165,6 +165,7 @@ class UserBlocksComponent extends React.Component {
         this.finishTooltip = this.finishTooltip.bind(this);
         this.commitBlockToBlockprobe = this.commitBlockToBlockprobe.bind(this);
         this.setDashboardVisualisation = this.setDashboardVisualisation.bind(this);
+        this.setShareVisualization = this.setShareVisualization.bind(this);
         this.convertBlockMapToList = this.convertBlockMapToList.bind(this);
         this.sortBlocks = this.sortBlocks.bind(this);
         this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
@@ -919,9 +920,8 @@ class UserBlocksComponent extends React.Component {
                 {Object.keys(this.state.successBlocks).length>0?
                         <p className="contributeOpenTooltipText">
                             Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setDashboardVisualisation}>Dashboard</a> to visualise your contributions. <br/><br/>
-                            Click on <a className='tooltip-selection' onClick={this.createBulkBlock}>Contribute</a> to add content to your story.
-                        </p>
-                        
+                            Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={this.setShareVisualization}>Share</a> to share your contributions.<br/><br/>
+                        </p>                        
                         :
                         <div>
                             {Object.keys(this.state.draftBlocks).length>0?
@@ -942,6 +942,10 @@ class UserBlocksComponent extends React.Component {
 
     setDashboardVisualisation(){
         this.props.setNewVisualisation('dashboard');
+    }
+
+    setShareVisualization(){
+        this.props.setNewVisualisation('publish_blockprobe');
     }
 
     sortBlocks(a, b, a_ts = 0, b_ts = 0){

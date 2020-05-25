@@ -166,7 +166,15 @@ class ShareBlockprobeComponent extends React.Component {
         let url = this.state.urlPrefix + this.props.bpId;
         let gameUrl = this.state.gameUrlPrefix + this.props.bpId;
         return (
-            <div>
+            <div>                
+                {this.state.didPublishBlocksInSession && this.state.didPublishImagesInSession?
+                    <div className="shareTooltipTextContainer">
+                        <p className='contributeOptionText'>Click on the menu (top-left) and choose <a className='tooltip-selection' onClick={() => this.props.setNewVisualisation('contributions')}>Contribute</a> to resume working.</p>
+                    </div>
+                    :
+                    null
+                }
+
                 {this.isAnyOptionClicked()?
                     <div style={{width:'50px',margin:'auto'}}>
                         <Loader 
@@ -227,12 +235,14 @@ class ShareBlockprobeComponent extends React.Component {
                                 null
                             }
                     </div>
-                }        
+                }   
 
                 {this.state.isBlockprobeAlreadyPublished?
                 <div>
                     {this.state.didPublishBlocksInSession && this.state.didPublishImagesInSession?
-                        <p className='publish-story-message'>Your latest story has been succesfully published</p>
+                        <div>
+                            <p className='publish-story-message'>Your latest story has been succesfully published!</p>
+                        </div>
                         :
                         null
                     }                    

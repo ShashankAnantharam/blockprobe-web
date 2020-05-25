@@ -1117,6 +1117,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     posts = {this.props.posts}
                     title = {this.state.blockprobeTitle}
                     updatePosts = {this.props.updatePosts}
+                    setNewVisualisation = {this.props.setNewVisualisation}
                     />
                 </div>
             )
