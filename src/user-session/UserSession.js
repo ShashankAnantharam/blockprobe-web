@@ -131,7 +131,10 @@ class UserSession extends React.Component {
         signInOptions: [
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.PhoneAuthProvider.PROVIDER_ID
+            {
+                provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                defaultCountry: 'IN'                
+            }            
         ],
         callbacks:{
           signInSuccess: () => false,
