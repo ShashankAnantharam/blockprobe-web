@@ -217,7 +217,7 @@ class BlockprobeSettingsComponent extends React.Component {
                 permit = "REVIEWER";
             }
             else if(change == 'creator'){
-                val = this.state.creatorId;
+                val = this.state.creatorId.trim();
                 permit = "CREATOR";
                 this.setState({
                     prevCreatorId: val,
@@ -584,7 +584,7 @@ class BlockprobeSettingsComponent extends React.Component {
                     </label>
                     </form>
                     {this.getMessage(this.state.creatorMessageId)}
-                    {this.state.creatorId!='' && !this.state.addingUser?
+                    {this.state.creatorId.trim()!='' && !this.state.addingUser?
                             <div className="blockprobe-settings-criterion-options-container">
                                 <Button 
                                 variant="contained"
