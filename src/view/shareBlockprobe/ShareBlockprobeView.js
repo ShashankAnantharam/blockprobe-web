@@ -268,11 +268,15 @@ class ShareBlockprobeComponent extends React.Component {
                                         callback={(data)=>{this.handleAdhocTooltipJoyrideCallback(data,'publicLink')}}                    
                                         />                     
                     </div>
-                    <a href={url} target="_blank" className="share-url">{url}</a>
+                    <div className="share-url-div">
+                        <a href={url} target="_blank" className="share-url">{url}</a>
+                    </div>
                     <div className='share-section-heading'>
                         Public link to play game                     
                     </div>
-                    <a href={gameUrl} target="_blank" className="share-url">{gameUrl}</a>
+                    <div className="share-url-div">
+                        <a href={gameUrl} target="_blank" className="share-url">{gameUrl}</a>
+                    </div>                
                     <div className='share-section-heading'>
                         Share Link on Social Media
                         <a className='share-tooltips tooltipSocialMedia' onClick={(e)=>{this.showLocalTooltip('socialMedia')}} >

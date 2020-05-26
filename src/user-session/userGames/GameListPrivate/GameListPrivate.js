@@ -264,9 +264,11 @@ class GameListPrivate extends React.Component {
 
                 <div className="shareUrlContainer">
                     <p>
-                        Public link to view game list: <br />
-                        <a href={shareUrl} target="_blank">{shareUrl}</a>
+                        Public link to view game list: <br />                        
                     </p>
+                    <div className="shareUrlDiv">
+                        <a href={shareUrl} target="_blank">{shareUrl}</a>
+                    </div>
                 </div>
 
                 {this.state.list.length > 0?

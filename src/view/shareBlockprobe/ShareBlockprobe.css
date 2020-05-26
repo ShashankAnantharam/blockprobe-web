@@ -21,9 +21,16 @@
     margin-bottom:10px; 
 }
 
+.share-url-div{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 90vw;
+}
+
 .share-url{
     margin-left:10px; 
-    font-size:0.85em;
+    font-size:0.85em;    
 }
 
 .share-tooltips{

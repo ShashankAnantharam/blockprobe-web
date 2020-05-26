@@ -33,3 +33,10 @@
     margin-left: 1em;
     margin-bottom: 20px;
 }
+
+.shareUrlDiv{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 80vw;
+}
