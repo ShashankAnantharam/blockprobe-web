@@ -490,7 +490,7 @@ class UserBlockprobesComponent extends React.Component {
                                             }
                                     </Button>
                                 </div>
-                                <div>
+                                <div style={{display:'none'}}>
                                     <Button
                                         className="startTooltipsButton" 
                                         color="primary"
