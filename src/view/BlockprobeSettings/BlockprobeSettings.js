@@ -563,8 +563,9 @@ class BlockprobeSettingsComponent extends React.Component {
                 <div style={{marginLeft:'10px', marginTop:'1em'}}>
                     <h3>Add Users</h3>
                     <form>
-                    <label>
-                        <TextField 
+                    <label >
+                        <div className="settings-textfield-container">
+                            <TextField 
                             type="text"
                             variant="outlined"
                             multiline
@@ -577,8 +578,9 @@ class BlockprobeSettingsComponent extends React.Component {
                                 background: 'white',
                                 marginTop:'6px',
                                 marginBottom:'6px',
-                                width:'30%'
+                                width: '100%'
                                 }}/>
+                        </div>                        
                     </label>
                     </form>
                     {this.getMessage(this.state.creatorMessageId)}
@@ -686,12 +688,11 @@ class BlockprobeSettingsComponent extends React.Component {
         return (
             <div>
                 <div style={{marginLeft:'10px', marginTop:'1em'}}>
-                    <h3>Account settings</h3>
+                    <h3 style={{marginBotton:'0.5em !important'}}>Account settings</h3>
                     <div className="blockprobe-settings-criterion-options-container">
                         <Button
                             variant="contained"  
                             className="saveBlockProbeSettingsButton" 
-                            style={{marginTop:'1em'}}
                             onClick={(e) => this.toggleDialog(true,"exitBlockprobe")}>
                             <div>Exit story</div>
                         </Button>                                
