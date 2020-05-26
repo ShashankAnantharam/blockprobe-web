@@ -87,6 +87,7 @@ class UserSession extends React.Component {
             this.state.isUserSignedIn = false;
         }
         
+        this.getUiConfig = this.getUiConfig.bind(this);
         this.getItemWrapper = this.getItemWrapper.bind(this);
         this.getAndSetUser = this.getAndSetUser.bind(this);
         this.loggedInView = this.loggedInView.bind(this);
@@ -126,24 +127,30 @@ class UserSession extends React.Component {
         return defaultVal;
     }
 
-    uiConfig = {
-        signInFlow: "popup",
-        signInOptions: [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            {
-                provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-                defaultCountry: 'IN'                
-            }            
-        ],
-        callbacks:{
-          signInSuccess: () => false,
-          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-            
-            //...
-          }      
+    getUiConfig(){
+        let uiConfig = {
+            signInFlow: "popup",
+            signInOptions: [
+                {
+                    provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+                    defaultCountry: 'IN'                
+                }            
+            ],
+            callbacks:{
+              signInSuccess: () => false,
+              signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                
+                //...
+              }      
+            }
+          }
+
+        if(window.innerWidth > 768){
+            uiConfig.signInOptions.push(firebase.auth.GoogleAuthProvider.PROVIDER_ID);
+            uiConfig.signInOptions.push(firebase.auth.EmailAuthProvider.PROVIDER_ID);
         }
-      }
+        return uiConfig;
+    }
 
       clickLoginOption(){
           this.setState({
@@ -760,7 +767,7 @@ class UserSession extends React.Component {
                                             <span className="userSessionLoginHeader">Login</span>
                                         </div>                                        
                                         <StyleFirebaseAuth
-                                        uiConfig={this.uiConfig}
+                                        uiConfig={this.getUiConfig()}
                                         firebaseAuth={firebase.auth()}                            
                                         />
                                     </div>
