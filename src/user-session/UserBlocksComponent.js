@@ -79,6 +79,9 @@ class UserBlocksComponent extends React.Component {
                 }
             },
             dialog: false,
+            imageUploading: false,
+            blocksUploading: false,
+            viewPublishLink: false,
             multiSelectDraftBlockStatus: false,
             isCreateBlockClicked:false,
             isCreateBulkBlockClicked: false,
@@ -178,6 +181,7 @@ class UserBlocksComponent extends React.Component {
         this.performAction = this.performAction.bind(this);
         this.toggleGraphOptionStyle = this.toggleGraphOptionStyle.bind(this);
         this.selectGraphNode = this.selectGraphNode.bind(this);
+        this.publishStory = this.publishStory.bind(this);
     }
 
     toggleDialog(value, type){
@@ -471,6 +475,72 @@ class UserBlocksComponent extends React.Component {
             action: 'Add blocks in bulk',
             label: JSON.stringify(args)
           });
+    }
+
+    publishStory(){
+        this.setState({
+            blocksUploading: true,
+            imageUploading: true
+        });
+        var bTree = this.props.blockTree;
+        let allBlocks = Utils.getShortenedListOfBlockTree(bTree);
+        if(allBlocks.length>0){
+
+            firebase.firestore().collection("public").doc(this.props.bId)
+                .collection("aggBlocks").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bId)
+                            .collection("aggBlocks").doc(doc.id).delete();
+                    });
+                    for(var i=0; i<allBlocks.length; i++){
+                        firebase.firestore().collection('public').doc(this.props.bId)
+                        .collection('aggBlocks').doc(String(i)).set(allBlocks[i]);        
+                    }
+        
+                }).then(
+                    this.setState({
+                        blocksUploading: false
+                    })
+                );
+        }
+        else{
+            this.setState({
+                blocksUploading: false
+            });
+        }
+
+        //Add images
+        var imageMap = this.props.imageMapping;
+        let allImages = Utils.getShortenedListOfImages(imageMap);         
+        if(allImages.length>0){
+
+            //console.log(allImages);
+
+            firebase.firestore().collection("public").doc(this.props.bId)
+                .collection("images").get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        var ref = firebase.firestore().collection("public").doc(this.props.bId)
+                            .collection("images").doc(doc.id).delete();
+                    });
+                    for(var i=0; i<allImages.length; i++){
+                        firebase.firestore().collection('public').doc(this.props.bId)
+                        .collection('images').doc(String(i)).set(allImages[i]);        
+                    }
+        
+                }).then(
+                    this.setState({
+                        imageUploading: false
+                    })
+                );
+
+        }
+        else{
+            this.setState({
+                imageUploading: false
+            });
+        }
+
+        this.setState({viewPublishLink: true});
     }
 
     updateStoryEntities(block){
@@ -908,13 +978,27 @@ class UserBlocksComponent extends React.Component {
                             <Button 
                             color="primary"
                             variant="contained"
-                            className="editEntitiesButton entityPaneButtonTooltip" 
+                            className="editEntitiesButton" 
                             onClick={this.openImagePane}>
                                 <div>Manage story images</div>
                             </Button>
                                 :
                             null}
                     </div>
+                    
+                    {this.props.blockTree && Object.keys(this.props.blockTree).length>0?
+                        <div>
+                            <Button
+                            color="primary"
+                            variant="contained"
+                            className="editEntitiesButton" 
+                            onClick={this.publishStory}>
+                                <div>Publish</div>
+                            </Button>
+                        </div>
+                        :
+                        null
+                    }
                 </div>
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
