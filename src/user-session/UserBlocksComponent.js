@@ -1215,7 +1215,18 @@ class UserBlocksComponent extends React.Component {
                     </div>
                     <div className="userblocks-share-url-div">
                         <a href={gameUrl} target="_blank" className="userblocks-share-url">{gameUrl}</a>
-                    </div>    
+                    </div>  
+                    <Button 
+                        color="primary"
+                        variant="contained"
+                        className="userblocks-share-close"
+                        onClick={() =>{
+                            this.setState({
+                                viewPublishLink: false
+                            })
+                    }}>
+                        <div>Close</div>
+                    </Button>  
                 </div>
             </Paper>
         )

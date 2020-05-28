@@ -176,7 +176,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    width: 90vw;
+    width: 80vw;
     margin-bottom:20px;
 }
 
@@ -188,4 +188,10 @@
 .userblocks-share-container{
     padding-top:20px;
     padding-bottom: 10px;
+}
+
+.userblocks-share-close{
+    margin-left:10px !important;
+    margin-top:-10px !important;
+    background: rgb(1,1,1) !important;
 }
