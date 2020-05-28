@@ -158,3 +158,34 @@
     margin-bottom: 1em;
     margin-left: 1em;
 }
+
+.userBlocks-renderShare{
+    margin-bottom: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.userblocks-share-section-heading{
+    font-weight:500;
+    margin-left:10px; 
+    font-size:0.9em;
+    margin-bottom:5px; 
+}
+
+.userblocks-share-url-div{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 90vw;
+    margin-bottom:20px;
+}
+
+.userblocks-share-url{
+    margin-left:10px; 
+    font-size:0.85em;    
+}
+
+.userblocks-share-container{
+    padding-top:20px;
+    padding-bottom: 10px;
+}

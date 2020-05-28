@@ -43,7 +43,7 @@ class UserBlocksComponent extends React.Component {
         super(props);
         //props: finishBuildingStoryTooltip, bpDetails, finishAddingBlockToStoryTooltip, blockStatus, lastIndex
 
-        this.state={
+        this.state={            
             uIdHash:'',
             shajs:null,
             selectedDraftBlockId: null,
@@ -87,6 +87,8 @@ class UserBlocksComponent extends React.Component {
             isCreateBulkBlockClicked: false,
             isEntityPaneOpen: false,
             isImagePaneOpen: false,
+            urlPrefix: 'https://blprobe.com/view/',
+            gameUrlPrefix: 'https://blprobe.com/game/',
             tooltipText:{
                 entityPane:[                    
                     {                    
@@ -916,9 +918,7 @@ class UserBlocksComponent extends React.Component {
                     refreshBlockprobe = {this.props.refreshBlockprobe}
                     />
             );
-        }
-
-        
+        }        
 
         return (
         <div className="userblocks-header-container">
@@ -1000,6 +1000,15 @@ class UserBlocksComponent extends React.Component {
                         null
                     }
                 </div>
+
+                {this.state.viewPublishLink?
+                    <div className="userBlocks-renderShare">
+                        {this.renderShareScreen()}
+                    </div>
+                    :
+                    null
+                }
+
                 <div className="contributeOpenTooltipTextContainer">
                 {Object.keys(this.state.successBlocks).length>0?
                         <p className="contributeOpenTooltipText">
@@ -1186,6 +1195,30 @@ class UserBlocksComponent extends React.Component {
         this.setState({
             graphViewAddType: type
         });
+    }
+
+
+    renderShareScreen(){
+        let url = this.state.urlPrefix + this.props.bId;
+        let gameUrl = this.state.gameUrlPrefix + this.props.bId;
+        return (
+            <Paper elevation={6}>
+                <div className='userblocks-share-container'>
+                    <div className='userblocks-share-section-heading'>
+                        Public link to visualize                                             
+                    </div>
+                    <div className="userblocks-share-url-div">
+                        <a href={url} target="_blank" className="userblocks-share-url">{url}</a>
+                    </div>
+                    <div className='userblocks-share-section-heading'>
+                        Public link to play game                     
+                    </div>
+                    <div className="userblocks-share-url-div">
+                        <a href={gameUrl} target="_blank" className="userblocks-share-url">{gameUrl}</a>
+                    </div>    
+                </div>
+            </Paper>
+        )
     }
 
     render(){
