@@ -1023,7 +1023,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
         }
         else if(this.state.selectedVisualisation == "dashboard"){
             return(
-                <div>
+                <div style={{marginBottom: '40px'}}>
                     <DashboardViewComponent
                         summaryBlocks = {this.state.summaryList}
                         blockTree={this.state.blockTree} 

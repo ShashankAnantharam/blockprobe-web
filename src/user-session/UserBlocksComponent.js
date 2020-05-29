@@ -1263,7 +1263,7 @@ class UserBlocksComponent extends React.Component {
                                                         (scope.renderSingleBlock(block, scope, false)));      
                                         
         return(
-            <div>
+            <div className="userBlocksDivContainer">
                      
                 {this.renderBlockOptions()}                              
 
