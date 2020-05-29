@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Textarea from 'react-textarea-autosize';
 import  MultiSelectReact  from 'multi-select-react';
+import TextField from '@material-ui/core/TextField';
 import  * as Utils from '../../../common/utilSvc'; 
 import './MonthPicker.css';
 import { isNull, isNullOrUndefined } from 'util';
@@ -120,7 +121,7 @@ class MonthPicker extends React.Component {
 
     render() {
       return (
-        <div style={{display: 'flex'}}>
+        <div style={{display: 'flex', flexWrap: 'wrap'}}>
             <div style={{marginRight:'20px', width:'150px'}}>
                 <div className="monthPickerHeader">Month</div>
                 <div style={{width:'80%'}}>
@@ -136,25 +137,20 @@ class MonthPicker extends React.Component {
                 </div>
             </div>
             <div>
-                <div className="monthPickerHeader">Year</div>
+            <div className="monthPickerHeader">Year</div>
                 <div>
                     <form>
                         <label>
-                            <Textarea 
+                            <TextField 
                                 type="number"
-                                placeholder = "Year"
+                                multiline
                                 value={String(this.state.newDate.year)}
                                 onChange={(e) => { this.handleChange(e,"year")}}
-                                maxRows="12"
-                                minRows="1"
+                                rowsMax="12"
+                                rows="1"
                                 style={{
-                                    background: 'white',
-                                    borderWidth:'2px', 
-                                    borderStyle:'solid', 
-                                    borderColor:'darkgrey',
-                                    borderBottomWidth:'0px',
-                                    paddingTop:'6px',
-                                    paddingBottom:'6px',
+                                    background: 'transparent',
+                                    textColor: 'black',
                                     width:'200px'
                                     }}/>
                         </label>
