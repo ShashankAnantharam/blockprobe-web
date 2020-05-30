@@ -29,6 +29,7 @@ import SchoolIcon from '@material-ui/icons/School';
 import PolicyIcon from '@material-ui/icons/Policy';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import HomeIcon from '@material-ui/icons/Home';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import NotificactionsIcon from '@material-ui/icons/Notifications';
 import UserGames from './userGames/UserGames';
@@ -44,6 +45,7 @@ class UserSession extends React.Component {
             isGameListOpened: false,
             isNotificationsOpened: false,
             selectedBlockprobeId: '',
+            selectedGameListId: null,
             userId: this.getItemWrapper('userId',''),//'',
             providerId: this.getItemWrapper('providerId',''),//'',
             blockprobes: {},
@@ -118,6 +120,32 @@ class UserSession extends React.Component {
         this.renderGeneralLoggedInView = this.renderGeneralLoggedInView.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.changeOpacity = this.changeOpacity.bind(this);
+        this.selectGameList = this.selectGameList.bind(this);
+        this.onBackButtonPressed = this.onBackButtonPressed.bind(this);
+    }
+
+    onBackButtonPressed(){
+        if(this.state.selectedBlockprobeId != '' || this.state.isNotificationsOpened){
+            this.returnToViewBlockprobes();
+        }
+
+        if(this.state.isGameListOpened){
+            if(this.state.selectedGameListId == null){
+                this.returnToViewBlockprobes();
+            }
+            else{
+                //Go to all game lists only
+                this.setState({
+                    selectedGameListId: null
+                })
+            }
+        }
+    }
+
+    selectGameList(listId){
+        this.setState({
+            selectedGameListId: listId
+        });
     }
 
     getItemWrapper(key, defaultVal){
@@ -545,6 +573,8 @@ class UserSession extends React.Component {
               return (
                 <UserGames 
                     userId = {this.state.userId}
+                    selectedUserGame = {this.state.selectedGameListId}
+                    selectGameList = {this.selectGameList}
                 />
               );
           }
@@ -605,7 +635,14 @@ class UserSession extends React.Component {
                 <div style={{display: 'block'}}>
                 <header className="toolbar">
                     <AppBar position="static">
-                        <Toolbar>  
+                        <Toolbar> 
+                            {this.state.selectedBlockprobeId != '' || this.state.isGameListOpened || this.state.isNotificationsOpened?
+                                <IconButton color="inherit" onClick={() => this.onBackButtonPressed()}>
+                                    <ArrowBackIcon/>
+                                </IconButton> 
+                                :
+                                null 
+                            } 
                         <Typography className="toolbar__logo">
                             Blockprobe
                         </Typography>                      

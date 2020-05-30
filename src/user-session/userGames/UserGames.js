@@ -18,7 +18,6 @@ class UserGames extends React.Component {
       //userId (has to be there)
       
       this.state = {
-          selectedUserGame: null,
           shajs:null,
           areGameListsLoading: true,
           userGameLists: {},
@@ -253,16 +252,14 @@ class UserGames extends React.Component {
     }
 
     selectGame(id){
-        this.setState({
-            selectedUserGame: id
-        });
+        this.props.selectGameList(id);
     }
 
     renderSingleUserGame(game){
         let scope = this;
         return (
             <ListItem button 
-                selected={scope.state.selectedUserGame == game.id}
+                selected={scope.props.selectedUserGame == game.id}
                 onClick={() => { scope.selectGame(game.id)}}
                 style={{width:'100%'}}
                 >
@@ -358,9 +355,7 @@ class UserGames extends React.Component {
     }
 
     returnToGameLists(){
-        this.setState({
-            selectedUserGame: null
-        });
+        this.props.selectGameList(null);
     }
 
     render(){
@@ -368,7 +363,7 @@ class UserGames extends React.Component {
         return (
             <div>
                 {
-                    isNullOrUndefined(this.state.selectedUserGame) || this.state.selectedUserGame==''?
+                    isNullOrUndefined(this.props.selectedUserGame) || this.props.selectedUserGame==''?
                     <div>
                         {this.state.areGameListsLoading?
                                 <div style={{margin:'auto',width:'50px'}}>
@@ -388,7 +383,7 @@ class UserGames extends React.Component {
                     :
                     <div>
                         <GameListPrivate
-                            gameListId={this.state.selectedUserGame}
+                            gameListId={this.props.selectedUserGame}
                             return={this.returnToGameList}
                         />
                     </div>
