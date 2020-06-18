@@ -45,10 +45,7 @@ class GameTable extends React.Component{
     }
       
     componentDidMount(){
-        let rows = [
-            this.createData('shashank95.a@gmail.com', 8, 12),
-            this.createData('blockprobe2018@gmail.com', 11, 10)         
-          ];
+        let rows = this.props.data;
           rows.sort(function compare(a,b){
             if(!('id' in a) || !('id' in b))
                 return 0;
