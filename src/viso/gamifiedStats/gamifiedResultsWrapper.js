@@ -44,7 +44,6 @@ class GamifiedResultsWrapper extends React.Component {
             /* Convert array of arrays */
             const data = XLSX.utils.sheet_to_csv(ws, {header:1});
             /* Update state */
-            console.log(data);
           };
         reader.readAsBinaryString(file);
 
