@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import GamifiedResultsComponent from './gamifiedResults';
+import GameTable from './gamifiedResultTable/gamifiedResultTable';
 import * as XLSX from 'xlsx';
 import * as Utils from '../../common/utilSvc';
 import './gamifiedResults.css';
@@ -141,21 +142,12 @@ class GamifiedResultsWrapper extends React.Component {
                                 width:'30%'
                                 }}/>
                     </label>
-                    </form>
-                    <div className="viewGameResultsOptionsContainer">
-                        {this.isValidUserId(this.state.userId)?                        
-                            <Button 
-                                variant="contained"
-                                className="displayUserGameScoreButton" 
-                                style={{marginTop:'1em'}}
-                                onClick={(e) => this.displayUserScore("creator",true)}>
-                                    <div>Confirm</div>
-                            </Button>
-                            :
-                            null
-                        }
-                    </div>
-                 </div>          
+                    </form>                    
+                 </div>    
+                 <div className="input-userId-getScore-container">
+                    <GameTable
+                    />
+                </div>      
             </div>
         )
     }
