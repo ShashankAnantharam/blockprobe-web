@@ -199,7 +199,8 @@ class GamifiedResultsWrapper extends React.Component {
                 }      
 
                 <div className="input-userId-getScore-container">
-                     <h3>Upload excel file with userIds</h3>
+                     <h3 style={{marginBottom: '10px'}}>Upload excel file</h3>
+                     <h5 style={{marginTop: '0px'}}>User id must be the first column</h5>
                     <form>
                     <label>
                         <Input 
