@@ -14,6 +14,14 @@
     border:none;
 }
 
+.downloadButton{
+    background:#0a0116 !important;
+    color:rgb(219, 243, 242) !important;
+    margin-top:1em !important;
+    size:2.6em !important;
+    border:none;
+}
+
 .viewGameResultsOptionsContainer{
     display:flex; 
     flex-direction:row;

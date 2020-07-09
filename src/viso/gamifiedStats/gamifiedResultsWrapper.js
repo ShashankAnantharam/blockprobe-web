@@ -8,7 +8,12 @@ import GameTable from './gamifiedResultTable/gamifiedResultTable';
 import * as firebase from 'firebase';
 import * as XLSX from 'xlsx';
 import * as Utils from '../../common/utilSvc';
+import ReactExport from "react-export-excel";
 import './gamifiedResults.css';
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 class GamifiedResultsWrapper extends React.Component {
     constructor(props) {
@@ -220,9 +225,28 @@ class GamifiedResultsWrapper extends React.Component {
                  </div>    
                  {this.state.fileResults.length>0?
                     <div className="input-userId-getScore-container">
-                        <GameTable
-                            data={this.state.fileResults}
-                        />
+                        <div>
+                            <GameTable
+                                data={this.state.fileResults}
+                            />
+                        </div>
+                        <div>                  
+                            <ExcelFile element={
+                                <Button 
+                                    variant="contained"
+                                    className="downloadButton" 
+                                    onClick={(e) => {}}>
+                                        <div>Download</div>
+                                </Button>
+                            }
+                            filename="Results">
+                                <ExcelSheet data={this.state.fileResults} name="Results">
+                                    <ExcelColumn label="UserId" value="id"/>
+                                    <ExcelColumn label="Match the topics" value="mtt"/>
+                                    <ExcelColumn label="Fill the dates" value="ftd"/>
+                                </ExcelSheet>
+                            </ExcelFile>
+                        </div>
                     </div>
                     :
                     null
