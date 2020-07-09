@@ -58,6 +58,22 @@ class GameTable extends React.Component{
           });
     }
 
+    componentWillReceiveProps(newProps){
+      if(JSON.stringify(newProps.data) != JSON.stringify(this.props.data)){
+        let rows = newProps.data;
+        rows.sort(function compare(a,b){
+          if(!('id' in a) || !('id' in b))
+              return 0;
+          if(a['id']>b['id'])
+              return 1;
+          return -1;
+        })
+        this.setState({
+            rows: rows
+        });
+      }
+    }
+
     displayIcon(key){
         return (
             <span>
