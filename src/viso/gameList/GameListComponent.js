@@ -90,12 +90,12 @@ class GameListComponent extends React.Component {
                     <div className="gameVideoContainer">
                         <Grid item xs={12} md={6} className="videoPadding">
                             <Paper elevation={3}>
-                                <YouTube videoId="esZCwWauxV4" opts={opts} onReady={this._onReady} />
+                                <YouTube videoId="vIPEGW9SKIQ" opts={opts} onReady={this._onReady} />
                             </Paper>
                         </Grid> 
                         <Grid item xs={12} md={6} className="videoPadding">
                             <Paper elevation={3}>
-                                <YouTube videoId="AY74YJ697Ec" opts={opts} onReady={this._onReady} />
+                                <YouTube videoId="roHGExArW-o" opts={opts} onReady={this._onReady} />
                             </Paper>
                         </Grid>                        
                     </div>                    
