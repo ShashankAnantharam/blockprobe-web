@@ -66,8 +66,9 @@ class GamifiedAuth extends React.Component {
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameBlockprobes').doc(this.props.bpId).set(softBlockprobe);
 
-        if(!(this.getItemWrapper('isUserSignedIn', false)))
-            await firebase.auth().signOut();
+        //TODO Temp fix for logging out
+        //if(!(this.getItemWrapper('isUserSignedIn', false)))
+        await firebase.auth().signOut();
         this.props.finishSaving(userId);
     }
 
