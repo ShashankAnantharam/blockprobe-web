@@ -48,6 +48,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             entityChanges: {},
             timeline: [],
             summaryList: [],
+            viewerList: [],
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
             selectedVisualisation: "dashboard",
@@ -562,8 +563,30 @@ class ViewBlockprobePublicComponent extends React.Component {
         });
     }
 
-    componentDidMount(){         
-        this.getDataWrapper();
+    componentDidMount(){
+        let scope = this;
+        firebase.firestore().collection('publicStatus').doc(this.props.bId).get().then(
+            snapshot => {
+                let isFullyPublic = true;
+                if(snapshot.exists && snapshot.data().isUserLimited){
+                    isFullyPublic = false;
+                }
+
+                if(isFullyPublic){
+                    scope.getDataWrapper();
+                }
+                else{
+                    //LOGIN here
+                    let viewerList = [];
+                    if(snapshot.data().userList)
+                        viewerList = snapshot.data().userList;
+                    scope.setState({
+                        viewerList: viewerList,
+                        isPageLoading: false
+                    });
+                }
+            }
+        )        
     }
 
     renderVisualisation(){
