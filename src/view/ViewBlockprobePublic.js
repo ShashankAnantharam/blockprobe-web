@@ -13,6 +13,7 @@ import FindConnectionsComponent from '../viso/FindConnectionsComponent';
 import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import GoogleFontLoader from 'react-google-font-loader';
+import PublicViewLogin from './publicViewLogin/publicViewLogin';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
@@ -592,7 +593,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         )        
     }
 
-    postLoginSuccess(userId){
+    async postLoginSuccess(userId){
         let isUserIdThere = false;
         let viewerList = this.state.viewerList;  
 
@@ -602,11 +603,19 @@ class ViewBlockprobePublicComponent extends React.Component {
                 break;
             }
         }
-        this.setState({
-            shouldShowLogin: false
-        });
-        if(isUserIdThere)
+        
+        if(isUserIdThere){
+            await this.setState({
+                shouldShowLogin: false,
+                isPageLoading: true
+            });
             this.getDataWrapper();
+        }
+        else{
+            await this.setState({
+                shouldShowLogin: false
+            });
+        }
     }
 
     renderVisualisation(){
@@ -719,23 +728,33 @@ class ViewBlockprobePublicComponent extends React.Component {
                 </div>
                 :    
                 <div>
-                <Sidebar
-                    sidebar={<div className="right-sidebar">
-                    <ViewBlockComponent 
-                        selectedBlock={this.state.selectedBlock}
-                        isPublicView={true}/>
-                    </div>}
-                    open={this.state.selectedBlockSidebarOpen}
-                    onSetOpen={this.onSetSelectedBlockSidebarOpen}
-                    pullRight={true}
-                    defaultSidebarWidth='200px'
-                    styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
-                >
-                    <div id="main_body">
-                        {this.renderVisualisation()}
-                    </div>
-
-                </Sidebar>
+                    {this.state.shouldShowLogin?
+                        <div>
+                            <PublicViewLogin
+                                postLoginSuccess = {this.postLoginSuccess}
+                            />
+                        </div>
+                        :
+                        <div>
+                            <Sidebar
+                                sidebar={<div className="right-sidebar">
+                                <ViewBlockComponent 
+                                    selectedBlock={this.state.selectedBlock}
+                                    isPublicView={true}/>
+                                </div>}
+                                open={this.state.selectedBlockSidebarOpen}
+                                onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                                pullRight={true}
+                                defaultSidebarWidth='200px'
+                                styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
+                                >
+                                <div id="main_body">
+                                    {this.renderVisualisation()}
+                                </div>
+                            </Sidebar>
+                        </div>
+                    }
+               
                 </div>      
                 }
             </div>
@@ -763,48 +782,58 @@ class ViewBlockprobePublicComponent extends React.Component {
             </div>
             :
             <div>
-                <Sidebar
-                    sidebar={<div className="right-sidebar">
-                    <ViewBlockComponent selectedBlock={this.state.selectedBlock}
-                                        isPublicView={true}/>
-                    </div>}
-                    open={this.state.selectedBlockSidebarOpen}
-                    onSetOpen={this.onSetSelectedBlockSidebarOpen}
-                    pullRight={true}
-                    defaultSidebarWidth='200px'
-                    styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
-                >
-                   
-
-                    <div id="main_body">
-                        <div className="blockprobe-header"> 
-                        <GoogleFontLoader
-                                fonts={[                             
-                                    {
-                                        font:'Lora',
-                                        weights: [400]
-                                    }
-                                ]}
-                                subsets={['cyrillic-ext', 'greek']}
-                                />   
-                            <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
-                            <h4>{this.state.blockprobeSummary}</h4>
-                        </div>
-                        
-                        <DashboardViewComponent
-                                summaryBlocks = {this.state.summaryList}
-                                blockTree={this.state.blockTree} 
-                                investigationGraph={this.state.investigationGraph}
-                                selectBlock={this.changeSelectedBlock}
-                                multiSelectEntityList = {this.state.multiSelectEntityList}
-                                timeline={this.state.timeline}    
-                                imageMapping={this.state.imageMapping}
-                                lang = {this.state.lang}
-                                setScrollToGraphList ={this.setScrollToGraphList}     
-                                isPublic = {true}            
-                            />
+                {this.state.shouldShowLogin?
+                    <div>
+                        <PublicViewLogin
+                            postLoginSuccess = {this.postLoginSuccess}
+                        />
                     </div>
-                </Sidebar>
+                    :
+                    <div>
+                        <Sidebar
+                            sidebar={<div className="right-sidebar">
+                            <ViewBlockComponent selectedBlock={this.state.selectedBlock}
+                                                isPublicView={true}/>
+                            </div>}
+                            open={this.state.selectedBlockSidebarOpen}
+                            onSetOpen={this.onSetSelectedBlockSidebarOpen}
+                            pullRight={true}
+                            defaultSidebarWidth='200px'
+                            styles={{ sidebar: { background: "#fefefe", position:'fixed' } }}
+                        >
+                        
+
+                            <div id="main_body">
+                                <div className="blockprobe-header"> 
+                                <GoogleFontLoader
+                                        fonts={[                             
+                                            {
+                                                font:'Lora',
+                                                weights: [400]
+                                            }
+                                        ]}
+                                        subsets={['cyrillic-ext', 'greek']}
+                                        />   
+                                    <h2 style={{fontFamily: 'Lora, bold-italic', textAlign:'center', fontSize: '26px', fontWeight:'bold'}}>{this.state.blockprobeTitle}</h2>
+                                    <h4>{this.state.blockprobeSummary}</h4>
+                                </div>
+                                
+                                <DashboardViewComponent
+                                        summaryBlocks = {this.state.summaryList}
+                                        blockTree={this.state.blockTree} 
+                                        investigationGraph={this.state.investigationGraph}
+                                        selectBlock={this.changeSelectedBlock}
+                                        multiSelectEntityList = {this.state.multiSelectEntityList}
+                                        timeline={this.state.timeline}    
+                                        imageMapping={this.state.imageMapping}
+                                        lang = {this.state.lang}
+                                        setScrollToGraphList ={this.setScrollToGraphList}     
+                                        isPublic = {true}            
+                                    />
+                            </div>
+                        </Sidebar>
+                    </div>
+                }
                 </div>            
             }
             </div>

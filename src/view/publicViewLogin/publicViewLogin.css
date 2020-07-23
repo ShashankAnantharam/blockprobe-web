@@ -1,0 +1,15 @@
+.ShareAuthLoginContainer{
+    padding: 10px;
+    display: inline-block;
+}
+
+.ShareAuthBodyContainer{
+    text-align: center;
+}
+
+.ShareAuthTitle{
+    margin:10px;
+    text-align:center;
+    font-size: 16px;
+    font-weight: 600;
+}
