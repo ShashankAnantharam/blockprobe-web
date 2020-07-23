@@ -592,11 +592,21 @@ class ViewBlockprobePublicComponent extends React.Component {
         )        
     }
 
-    postLoginSuccess(){
+    postLoginSuccess(userId){
+        let isUserIdThere = false;
+        let viewerList = this.state.viewerList;  
+
+        for(let i=0;i<viewerList.length;i++){
+            if(viewerList[i].id == userId){
+                isUserIdThere = true;
+                break;
+            }
+        }
         this.setState({
             shouldShowLogin: false
         });
-        this.getDataWrapper();
+        if(isUserIdThere)
+            this.getDataWrapper();
     }
 
     renderVisualisation(){
