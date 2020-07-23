@@ -50,6 +50,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             summaryList: [],
             viewerList: [],
             selectedBlockSidebarOpen: false,
+            shouldShowLogin: false,
             menuBarOpen: false,
             selectedVisualisation: "dashboard",
             multiSelectEntityList: [
@@ -95,6 +96,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.generateMultiSelectEntityList = this.generateMultiSelectEntityList.bind(this);
         this.setScrollToGraphList = this.setScrollToGraphList.bind(this);
         this.getDataWrapper = this.getDataWrapper.bind(this);
+        this.postLoginSuccess = this.postLoginSuccess.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -582,11 +584,19 @@ class ViewBlockprobePublicComponent extends React.Component {
                         viewerList = snapshot.data().userList;
                     scope.setState({
                         viewerList: viewerList,
-                        isPageLoading: false
+                        isPageLoading: false,
+                        shouldShowLogin: true
                     });
                 }
             }
         )        
+    }
+
+    postLoginSuccess(){
+        this.setState({
+            shouldShowLogin: false
+        });
+        this.getDataWrapper();
     }
 
     renderVisualisation(){
