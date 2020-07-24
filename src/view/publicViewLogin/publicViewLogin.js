@@ -32,7 +32,6 @@ class PublicViewLogin extends React.Component {
     }
 
     async componentDidMount(){
-        console.log('Here');
         await firebase.auth().signOut();
         this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(user =>{
             let uId = null, providerId = null;
