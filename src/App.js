@@ -8,6 +8,7 @@ import UserSession from "./user-session/UserSession";
 import GamifiedResultsWrapper from './viso/gamifiedStats/gamifiedResultsWrapper';
 import PublicWallComponent from './view/viewWall/PublicWall';
 import GameListComponent from './viso/gameList/GameListComponent';
+import LeaderboardView from './viso/gamifiedStats/leaderboard';
 
 class App extends Component {
   render() {
@@ -23,6 +24,9 @@ class App extends Component {
             />
            <Route path='/gameResults/:gameId'   
               component={GamifiedResultsWrapper}
+              />
+            <Route path='/leaderboard/:gameId'   
+              component={LeaderboardView}
               />
             <Route path="/:viewType/:bId"  
                         component={ViewBlockprobePublicWrapper}
