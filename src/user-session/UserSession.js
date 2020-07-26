@@ -10,9 +10,7 @@ import ViewBlockprobePrivateComponent from '../view/ViewBlockprobePrivate';
 import Loader from 'react-loader-spinner';
 import GoogleFontLoader from 'react-google-font-loader';
 import Img from 'react-image';
-import JournalistBackground from "./backgrounds/Journalist.jpg";
-import TeacherBackground from "./backgrounds/Teacher.jpg";
-import LawmakerBackground from "./backgrounds/lawmaker.jpg";
+import BlueGenericBackground from "./backgrounds/BlueGeneric.jpg";
 import MainLogo from "./icons/BlockprobeLogo.png";
 import UserWall from "./userWall/UserWall";
 import UserNotifications from "./userNotif/UserNotifications";
@@ -59,7 +57,7 @@ class UserSession extends React.Component {
                 journalist:{
                     logo: '',
                     text: 'As a journalist, you can build your story using blockprobe, visualise your story and better engage your audience with your story.',
-                    background: JournalistBackground
+                    background: BlueGenericBackground
                 },
                 police:{
                     logo: '',
@@ -68,12 +66,12 @@ class UserSession extends React.Component {
                 politician:{
                     logo: '',
                     text: 'As a lawmaker, you can visualise your proposals and laws using blockprobe, and better engage your constituents with your proposals.',
-                    background: LawmakerBackground
+                    background: BlueGenericBackground
                 },
                 teacher:{
                     logo: '',
                     text: 'As a teacher, you can visualise your chapters in history, science and english using blockprobe, and better engage your students with these subjects.',
-                    background: TeacherBackground
+                    background: BlueGenericBackground
                 }
             },
             currBackgroundIndex: 0,
@@ -747,9 +745,9 @@ class UserSession extends React.Component {
                 <main style={{height:'100vh',overflow:'hidden'}}>
                 
                     <div style={{height:'100vh',overflow:'auto'}}>
-                        <img class="background-image teacherImage" src={TeacherBackground}></img>
-                        <img class="background-image journalistImage" src={JournalistBackground}></img>
-                        <img class="background-image politicianImage" src={LawmakerBackground}></img>
+                        <img class="background-image teacherImage" src={BlueGenericBackground}></img>
+                        <img class="background-image journalistImage" src={BlueGenericBackground}></img>
+                        <img class="background-image politicianImage" src={BlueGenericBackground}></img>
                         <GoogleFontLoader
                             fonts={[
                                 {
