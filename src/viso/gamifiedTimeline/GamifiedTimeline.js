@@ -51,6 +51,7 @@ class GamifiedTimelineComponent extends React.Component {
         score: 0,
         totalScore: 0,
         finishedBlocks: {},
+        rawStats:{},
         stopGame: false,
         slideCard: true,
         stats: {
@@ -71,6 +72,7 @@ class GamifiedTimelineComponent extends React.Component {
       this.selectTime = this.selectTime.bind(this);
       this.incrementScore = this.incrementScore.bind(this);
       this.stopGame = this.stopGame.bind(this);
+      this.setTimelineStats = this.setTimelineStats.bind(this);
     }
 
     clickChevron(increment){
@@ -107,14 +109,46 @@ class GamifiedTimelineComponent extends React.Component {
         });        
     }
 
+    setTimelineStats(isCorrect, dateTime, block){
+        let rawStats = this.state.rawStats;
+        if(!(block.key in rawStats))
+            rawStats[block.key] = {
+                correct: isCorrect,
+                dateTime: {},
+                summary: block.summary,
+                title: block.title,
+                count: 0
+            };
+        rawStats[block.key].count++;
+        
+        if(!isCorrect){
+            if(!(dateTime in rawStats[block.key].dateTime)){
+                rawStats[block.key].dateTime[dateTime] = 0;
+            }
+            rawStats[block.key].dateTime[dateTime]++;    
+        }
+
+        this.setState({
+            rawStats: rawStats
+        });
+    }
+
     selectTime(time, index){
         let currBlock = this.props.timeline[this.state.currentTimelineIndex];
+        let timeStr = Utils.getDateTimeString({
+            blockDate: time.date,
+            blockTime: time.time
+        });
+        let ans = true;
+
         if((JSON.stringify(currBlock.blockDate) != JSON.stringify(time.date)) || 
         (JSON.stringify(currBlock.blockTime) != JSON.stringify(time.time))){
             // Is false
+            ans = false;
             this.setState({
                 message: 'Please try again!'
             });
+            
             if(this.props.playSound)
                 tryAgain.play();
         }
@@ -125,6 +159,9 @@ class GamifiedTimelineComponent extends React.Component {
             this.incrementScore(this.state.currentTimelineIndex);
             if(this.props.playSound)
                 wellDone.play();
+        }
+        if(!isNullOrUndefined(currBlock)){
+            this.setTimelineStats(ans, timeStr, currBlock);
         }
     }
 
@@ -252,6 +289,7 @@ class GamifiedTimelineComponent extends React.Component {
             let stats = this.state.stats;
             stats.score = this.state.score;
             stats.totalScore = this.state.totalScore;
+            stats.rawStats = this.state.rawStats;
             this.setState({
                 stats: stats
             });
