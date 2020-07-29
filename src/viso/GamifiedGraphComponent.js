@@ -121,6 +121,7 @@ class GamifiedGraphComponent extends React.Component {
             }
           };
 
+        this.rawStats = {};
         this.entityStatistics = {};
         this.speech = null;
         this.prevNode = null;
@@ -158,6 +159,7 @@ class GamifiedGraphComponent extends React.Component {
         this.setGameMessage = this.setGameMessage.bind(this);
         this.incrementScore = this.incrementScore.bind(this);
         this.setEntityStats = this.setEntityStats.bind(this);
+        this.setRawStats = this.setRawStats.bind(this);
         this.stopGame = this.stopGame.bind(this);
         
         this.graphRef = React.createRef();
@@ -169,6 +171,24 @@ class GamifiedGraphComponent extends React.Component {
         this.setState({
             score: this.state.score + 1
         });
+    }
+
+    setRawStats(entity1, entity2, isCorrect){
+        let rawStats = this.rawStats;
+        let entityStr = entity1+"||||"+entity2;
+        if(entity1 < entity2){
+            entityStr = entity2+"||||"+entity1;
+        }
+        if(!isCorrect){
+            if(!(entityStr in this.rawStats)){
+                this.rawStats[entityStr] = {
+                    count:0,
+                    e1: entity1,
+                    e2: entity2
+                };
+            }
+            rawStats[entityStr].count++;
+        }
     }
 
     setEntityStats(entityName, isCorrect){
@@ -618,6 +638,7 @@ class GamifiedGraphComponent extends React.Component {
                         setNodeVal = {this.setNodeVal}  
                         setGameMessage = {this.setGameMessage}  
                         setEntityStats = {this.setEntityStats}
+                        setRawStats = {this.setRawStats}
                         playNodeSound = {this.playNodeSound}
                         disabled = {this.state.stopGame}            
                         />
@@ -1160,6 +1181,7 @@ class GamifiedGraphComponent extends React.Component {
             stats.score = this.state.score;
             stats.totalScore = this.state.totalScore;
             stats.entityStats = this.entityStatistics;
+            stats.rawStats = this.rawStats;
             this.setState({
                 stats: stats
             });

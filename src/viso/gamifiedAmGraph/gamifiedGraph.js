@@ -439,6 +439,7 @@ class GamifiedGraph extends React.Component {
             scope.props.setGameMessage('failLink');
             scope.props.setEntityStats(node1,false);
             scope.props.setEntityStats(node2,false);
+            scope.props.setRawStats(node1,node2,false);
         }
     }
 
