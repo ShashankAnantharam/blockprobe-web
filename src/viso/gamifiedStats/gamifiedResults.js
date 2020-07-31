@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import GamifiedGraphStats from './gamifiedGraphStats';
 import Loader from 'react-loader-spinner';
 import './gamifiedResults.css';
+import AmPieChart from '../charts/amPieChart';
 
 class GamifiedResultsComponent extends React.Component {
     constructor(props) {
@@ -125,15 +126,24 @@ class GamifiedResultsComponent extends React.Component {
             stats.entityStats = this.formatEntityStats(stats.entityStats);
         return (
             <div>
-                <GamifiedGraphStats
-                    stats = {stats}
-                    bpId={this.props.gameId}
-                    title={this.state.title}
-                    id = {String(stats.ts) + "_" + type + "_"+ gameType}
-                    ts = {stats.ts}
-                    canSave = {false}
-                    type = {gameType}
+                <div>
+                    <GamifiedGraphStats
+                        stats = {stats}
+                        bpId={this.props.gameId}
+                        title={this.state.title}
+                        id = {String(stats.ts) + "_" + type + "_"+ gameType}
+                        ts = {stats.ts}
+                        canSave = {false}
+                        type = {gameType}
+                        />
+                </div>
+                <div style={{height:'300px', margin:'1em'}}>
+                    <AmPieChart 
+                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie"}
+                        category = {"country"}
+                        value = {"litres"}                      
                     />
+                </div> 
             </div>
         )
     }
@@ -188,7 +198,7 @@ class GamifiedResultsComponent extends React.Component {
                                         null
                                     }
                                 </div>
-                        }
+                        }                       
                     </div>
                 }
                 
