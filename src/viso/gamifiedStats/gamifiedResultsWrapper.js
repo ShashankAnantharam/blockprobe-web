@@ -37,6 +37,7 @@ class GamifiedResultsWrapper extends React.Component {
       this.isValidUserId = this.isValidUserId.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.displayUserScore = this.displayUserScore.bind(this);
+      this.getRemainingEdges = this.getRemainingEdges.bind(this);
     }
 
 
@@ -44,6 +45,15 @@ class GamifiedResultsWrapper extends React.Component {
         if(!isNullOrUndefined(userId) && userId.length>0)
             return true;
         return false;
+    }
+
+    getRemainingEdges(remainingEdges, correctEdges){
+        for(let key in correctEdges){
+            if(key in remainingEdges){
+                delete remainingEdges[key];
+            }
+        }
+        return remainingEdges;
     }
 
     async getData(userId){
@@ -87,11 +97,10 @@ class GamifiedResultsWrapper extends React.Component {
                 mtt = topScores[0].score;                
                 mtt_stats = topScores[0].entityStats;
                 mtt_rawStats = topScores[0].rawStats;
-                console.log(topScores[0]);
                 if(topScores[0].correctEdges)
                     mtt_correctStats = topScores[0].correctEdges;
                 if(topScores[0].remainingEdges)
-                    mtt_missedStats = topScores[0].remainingEdges;
+                    mtt_missedStats = scope.getRemainingEdges(topScores[0].remainingEdges,mtt_correctStats);
             }
             return {
                 id: userId, mtt: mtt, ftd: ftd,

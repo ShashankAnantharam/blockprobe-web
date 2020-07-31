@@ -547,7 +547,8 @@ class GamifiedGraphComponent extends React.Component {
         })
     }
 
-    updateEdgeMap(type, entity1, entity2){
+    async updateEdgeMap(type, entity1, entity2){
+        //remainingEdges is total edges
         let key = entity1+"---"+entity2;
         if(entity1>entity2){
             key = entity2+"---"+entity1;
@@ -557,7 +558,6 @@ class GamifiedGraphComponent extends React.Component {
         }
         else if(type=='select_correct'){
             if(key in this.remainingEdges){
-                delete this.remainingEdges[key];
                 this.correctEdges[key]='';
             }            
         }
