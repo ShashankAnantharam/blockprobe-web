@@ -103,10 +103,13 @@ class AmPieChart extends React.Component {
             finalNum = finalNum.toFixed(1);
             return String(finalNum)+" K";
         }
+        return String(number.toFixed(1));
     }
 
     generatePieChart(){
-        let data = dataT;
+        let data = this.props.data;
+        if(isNullOrUndefined(data))
+            data=[];
         let total = this.getTotal(data, this.props.value);
         let totalStr = this.getShortenedNumber(total);
 

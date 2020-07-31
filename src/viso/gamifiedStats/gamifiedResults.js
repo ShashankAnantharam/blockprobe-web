@@ -121,9 +121,22 @@ class GamifiedResultsComponent extends React.Component {
         return true;
     }
 
+    convertMapToArr(map){
+        let  ans = [];
+        for(let key in map){
+            ans.push({
+                key: key,
+                value: map[key]
+            });
+        }
+        return ans;
+    }
+
     renderSinglePerformance(stats, type, gameType){
         if(this.isEntityStatsNewType(stats.entityStats))
             stats.entityStats = this.formatEntityStats(stats.entityStats);
+        
+        let entityMistakesArr = this.convertMapToArr(stats.entityStats);
         return (
             <div>
                 <div>
@@ -137,13 +150,22 @@ class GamifiedResultsComponent extends React.Component {
                         type = {gameType}
                         />
                 </div>
-                <div style={{height:'300px', margin:'1em'}}>
-                    <AmPieChart 
-                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie"}
-                        category = {"country"}
-                        value = {"litres"}                      
-                    />
-                </div> 
+                {gameType == 'graphGame'?
+                    <div style={{margin:'1em', border:'1px black solid'}}>
+                        <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                        <div style={{height:'300px'}}>
+                            <AmPieChart 
+                                id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie"}
+                                category = {"key"}
+                                value = {"value"}                      
+                                data = {entityMistakesArr}
+                                title = {"Mistakes (topic-wise)"}
+                            />
+                        </div>
+                    </div> 
+                    :
+                    null
+                }                
             </div>
         )
     }
