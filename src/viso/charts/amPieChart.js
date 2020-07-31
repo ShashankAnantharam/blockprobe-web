@@ -10,26 +10,6 @@ let LIMIT = 4;
 
 am4core.useTheme(am4themes_animated);
 
-let dataT = [ {
-    "country": "Lithuania",
-    "litres": 501.9
-    }, {
-    "country": "Czech Republic",
-    "litres": 301.9
-    }, {
-    "country": "Ireland",
-    "litres": 201.1
-    }, {
-    "country": "Germany",
-    "litres": 165.8
-    }, {
-    "country": "Australia",
-    "litres": 139.9
-    }, {
-    "country": "US",
-    "litres": 650.9
-    }];
-
 class AmPieChart extends React.Component {
 
     constructor(props){
