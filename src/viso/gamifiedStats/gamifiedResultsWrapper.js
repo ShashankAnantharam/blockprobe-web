@@ -297,28 +297,36 @@ class GamifiedResultsWrapper extends React.Component {
                             </ExcelFile>
                         </div>
                         <div>
-                           <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
-                                <div style={{height:'300px'}}>
-                                    <AmPieChart
-                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
-                                        id = {"pie_mtt_aggEntityStats"}
-                                        category = {"key"}
-                                        value = {"value"}  
-                                    />
+                            {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
+                                <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                    <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                    <div style={{height:'300px'}}>
+                                        <AmPieChart
+                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
+                                            id = {"pie_mtt_aggEntityStats"}
+                                            category = {"key"}
+                                            value = {"value"}  
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
-                                <div style={{height:'300px'}}>
-                                    <AmPieChart
-                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
-                                        id = {"pie_mtt_aggRawStats"}
-                                        category = {"key"}
-                                        value = {"value"}  
-                                    />
-                                </div>
-                            </div>    
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
+                                <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                    <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                    <div style={{height:'300px'}}>
+                                        <AmPieChart
+                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
+                                            id = {"pie_mtt_aggRawStats"}
+                                            category = {"key"}
+                                            value = {"value"}  
+                                        />
+                                    </div>
+                                </div>    
+                                :
+                                null
+                            }
                         </div>
                     </div>
                     :
