@@ -121,6 +121,8 @@ class GamifiedGraphComponent extends React.Component {
             }
           };
 
+        this.remainingEdges={};
+        this.correctEdges={};
         this.rawStats = {};
         this.entityStatistics = {};
         this.speech = null;
@@ -161,6 +163,7 @@ class GamifiedGraphComponent extends React.Component {
         this.setEntityStats = this.setEntityStats.bind(this);
         this.setRawStats = this.setRawStats.bind(this);
         this.stopGame = this.stopGame.bind(this);
+        this.updateEdgeMap = this.updateEdgeMap.bind(this);
         
         this.graphRef = React.createRef();
 
@@ -544,6 +547,22 @@ class GamifiedGraphComponent extends React.Component {
         })
     }
 
+    updateEdgeMap(type, entity1, entity2){
+        let key = entity1+"---"+entity2;
+        if(entity1>entity2){
+            key = entity2+"---"+entity1;
+        }
+        if(type=='init'){
+            this.remainingEdges[key]='';
+        }
+        else if(type=='select_correct'){
+            if(key in this.remainingEdges){
+                delete this.remainingEdges[key];
+                this.correctEdges[key]='';
+            }            
+        }
+    }
+
     generateAmGraph(){
         var isAllSelected = this.props.multiSelectEntityList[0].value;
         var newGraph = [];
@@ -582,7 +601,7 @@ class GamifiedGraphComponent extends React.Component {
 
                         //Add edge
                         var currEntityKey = currEntity.label;
-
+                        let scope = this;
                         if(!isNullOrUndefined(this.props.investigationGraph)
                         && !isNullOrUndefined(this.props.investigationGraph[currEntityKey])){
                             var edgeMap = this.props.investigationGraph[currEntityKey].edges;
@@ -592,6 +611,7 @@ class GamifiedGraphComponent extends React.Component {
                                     //console.log(nodesMap[selectedEntityLabels[edgeKey]]);
                                     newGraph[selectedEntityLabels[edgeKey]].link.push(count);
                                 }
+                                scope.updateEdgeMap('init',currEntityKey,edgeKey);
                             });
                         }
                         count++;
@@ -637,6 +657,7 @@ class GamifiedGraphComponent extends React.Component {
                         selectedNodes = {this.state.gameNodeSelections}
                         setNodeVal = {this.setNodeVal}  
                         setGameMessage = {this.setGameMessage}  
+                        updateEdgeMap = {this.updateEdgeMap}
                         setEntityStats = {this.setEntityStats}
                         setRawStats = {this.setRawStats}
                         playNodeSound = {this.playNodeSound}
@@ -1182,6 +1203,8 @@ class GamifiedGraphComponent extends React.Component {
             stats.totalScore = this.state.totalScore;
             stats.entityStats = this.entityStatistics;
             stats.rawStats = this.rawStats;
+            stats.correctEdges = this.correctEdges;
+            stats.remainingEdges = this.remainingEdges;
             this.setState({
                 stats: stats
             });

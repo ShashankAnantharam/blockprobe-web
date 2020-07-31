@@ -426,6 +426,7 @@ class GamifiedGraph extends React.Component {
             if(!isNullOrUndefined(node1) && !isNullOrUndefined(node2)){
                 scope.addSelectedEdgeToMap(node1, node2);
                 scope.props.selectEdge(node1, node2);
+                scope.props.updateEdgeMap('select_correct',node1,node2);
                 scope.props.setGameMessage('successLink');
                 this.count = this.count+1; 
                 ReactGA.event({
