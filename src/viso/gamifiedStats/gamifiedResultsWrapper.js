@@ -28,7 +28,9 @@ class GamifiedResultsWrapper extends React.Component {
           fileResults: [],
           fileStats: {
             agg_mttEntityStats: {},
-            agg_mttRawStats: {}
+            agg_mttRawStats: {},
+            agg_mttCorrectStats: {},
+            agg_mttWrongStats: {}
           }
       }
 
@@ -74,7 +76,7 @@ class GamifiedResultsWrapper extends React.Component {
             });
 
             let mtt = 0, ftd = 0, mtt_stats={}, ftd_stats={};
-            let mtt_rawStats={};
+            let mtt_rawStats={}, mtt_missedStats={}, mtt_correctStats={};
             if(timelineTopScores && timelineTopScores.length > 0 && 
                 !isNullOrUndefined(timelineTopScores[0].score)){
                 ftd = timelineTopScores[0].score;
@@ -85,16 +87,22 @@ class GamifiedResultsWrapper extends React.Component {
                 mtt = topScores[0].score;                
                 mtt_stats = topScores[0].entityStats;
                 mtt_rawStats = topScores[0].rawStats;
+                console.log(topScores[0]);
+                if(topScores[0].correctEdges)
+                    mtt_correctStats = topScores[0].correctEdges;
+                if(topScores[0].remainingEdges)
+                    mtt_missedStats = topScores[0].remainingEdges;
             }
             return {
                 id: userId, mtt: mtt, ftd: ftd,
                 mtt_stats: mtt_stats, ftd_stats: ftd_stats,
-                mtt_rawStats: mtt_rawStats
+                mtt_rawStats: mtt_rawStats, mtt_correctStats: mtt_correctStats,
+                mtt_missedStats: mtt_missedStats
             };
         },
         error => {
             return {id: userId, mtt: 0, ftd: 0, ftd_stats:{}, mtt_stats:{},
-        mtt_rawStats: {}};
+        mtt_rawStats: {}, mtt_missedStats:{}, mtt_correctStats:{}};
         });
     }
 
@@ -120,6 +128,13 @@ class GamifiedResultsWrapper extends React.Component {
                         }
                         aggStats[newKey] += currMap[key][value];
                     }
+                    else if(type=='mtt_correctStats' || type=='mtt_missedStats'){
+                        let newKey = key;
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey]++;
+                    }
                 }
             }
         }
@@ -133,13 +148,19 @@ class GamifiedResultsWrapper extends React.Component {
                 allPromises.push(this.getData(userIdData[i]));
             }
         }
-        Promise.all(allPromises).then(results => {            
+        Promise.all(allPromises).then(results => {  
+            //console.log(results);          
             let agg_entityStats = scope.aggregateMttStats(results,'mtt_stats');
             let agg_rawMttStats = scope.aggregateMttStats(results,'mtt_rawStats');
+            let agg_correctMttStats = scope.aggregateMttStats(results,'mtt_correctStats');
+            let agg_wrongMttStats = scope.aggregateMttStats(results,'mtt_missedStats');
 
             let fileStats= scope.state.fileStats;
             fileStats.agg_mttRawStats = agg_rawMttStats;
             fileStats.agg_mttEntityStats = agg_entityStats;
+            fileStats.agg_mttCorrectStats = agg_correctMttStats;
+            fileStats.agg_mttWrongStats = agg_wrongMttStats;
+            
             scope.setState({
                 fileResults: results,
                 fileStats: fileStats
@@ -319,6 +340,36 @@ class GamifiedResultsWrapper extends React.Component {
                                         <AmPieChart
                                             data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
                                             id = {"pie_mtt_aggRawStats"}
+                                            category = {"key"}
+                                            value = {"value"}  
+                                        />
+                                    </div>
+                                </div>    
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
+                                <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                    <h4 style={{textAlign:'center'}}>Correct connections</h4>
+                                    <div style={{height:'300px'}}>
+                                        <AmPieChart
+                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
+                                            id = {"pie_mtt_aggCorrectMttStats"}
+                                            category = {"key"}
+                                            value = {"value"}  
+                                        />
+                                    </div>
+                                </div>    
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
+                                <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                    <h4 style={{textAlign:'center'}}>Missed connections</h4>
+                                    <div style={{height:'300px'}}>
+                                        <AmPieChart
+                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
+                                            id = {"pie_mtt_aggWrongMttStats"}
                                             category = {"key"}
                                             value = {"value"}  
                                         />
