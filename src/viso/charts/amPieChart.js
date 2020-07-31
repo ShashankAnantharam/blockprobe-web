@@ -134,6 +134,12 @@ class AmPieChart extends React.Component {
         label.tooltipText = "[font-size:28px black]" + String(total.toFixed(2)) + "[/]";
     }
 
+    componentDidUpdate(newProps){
+        if(JSON.stringify(this.props.data) != JSON.stringify(newProps.data)){
+            this.generatePieChart();
+        }
+    }
+
     render(){
         return (
             <div id={String(this.props.id)} style={{ width: "100%", height: "100%" }}>

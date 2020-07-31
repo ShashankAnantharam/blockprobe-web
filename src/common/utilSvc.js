@@ -790,6 +790,20 @@ export const convertMapToList = (map,fieldList)=>{
     return ans;
 }
 
+export const convertMapToSimpleArr = (map)=>{
+    //Simple {key: value} to [{key, value}...]
+    let  ans = [];
+    if(isNullOrUndefined(map))
+        return ans;
+    for(let key in map){
+        ans.push({
+            key: key,
+            value: map[key]
+        });
+    }
+    return ans;
+}
+
 export const modifyBlockEntities = (blockList, blockTree, entityChanges)=>{
     if(isNullOrUndefined(blockList) || isNullOrUndefined(blockTree)  || isNullOrUndefined(entityChanges))
         return blockTree;

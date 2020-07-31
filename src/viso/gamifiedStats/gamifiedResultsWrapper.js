@@ -10,6 +10,7 @@ import * as XLSX from 'xlsx';
 import * as Utils from '../../common/utilSvc';
 import ReactExport from "react-export-excel";
 import './gamifiedResults.css';
+import AmPieChart from '../charts/amPieChart';
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -24,7 +25,11 @@ class GamifiedResultsWrapper extends React.Component {
           userId: '',
           displayedUserId: '',
           file: null,
-          fileResults: []
+          fileResults: [],
+          fileStats: {
+            agg_mttEntityStats: {},
+            agg_mttRawStats: {}
+          }
       }
 
       this.isValidUserId = this.isValidUserId.bind(this);
@@ -68,20 +73,57 @@ class GamifiedResultsWrapper extends React.Component {
                 timelineTopScores.push(scoreDetails);
             });
 
-            let mtt = 0, ftd = 0;
+            let mtt = 0, ftd = 0, mtt_stats={}, ftd_stats={};
+            let mtt_rawStats={};
             if(timelineTopScores && timelineTopScores.length > 0 && 
                 !isNullOrUndefined(timelineTopScores[0].score)){
-                ftd = timelineTopScores[0].score;                
+                ftd = timelineTopScores[0].score;
+                ftd_stats = timelineTopScores[0].entityStats;               
             }
             if(topScores && topScores.length > 0 && 
                 !isNullOrUndefined(topScores[0].score)){
                 mtt = topScores[0].score;                
+                mtt_stats = topScores[0].entityStats;
+                mtt_rawStats = topScores[0].rawStats;
             }
-            return {id: userId, mtt: mtt, ftd: ftd};
+            return {
+                id: userId, mtt: mtt, ftd: ftd,
+                mtt_stats: mtt_stats, ftd_stats: ftd_stats,
+                mtt_rawStats: mtt_rawStats
+            };
         },
         error => {
-            return {id: userId, mtt: 0, ftd: 0};
+            return {id: userId, mtt: 0, ftd: 0, ftd_stats:{}, mtt_stats:{},
+        mtt_rawStats: {}};
         });
+    }
+
+    aggregateMttStats(listMap, type){
+        let aggStats = {};
+        for(let i=0; listMap && i<listMap.length; i++){
+            let currMap = listMap[i][type];
+            if(currMap){
+                for(let key in currMap){
+                    if(type=='mtt_rawStats'){
+                        let newKey = currMap[key].e1 + "---" + currMap[key].e2;
+                        let value = 'count';
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey] += currMap[key][value];
+                    }
+                    else if(type=='mtt_stats'){
+                        let newKey = currMap[key]['entity'];
+                        let value = 'mistakes';
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey] += currMap[key][value];
+                    }
+                }
+            }
+        }
+        return aggStats;
     }
 
     async getFullTable(userIdData){
@@ -91,9 +133,16 @@ class GamifiedResultsWrapper extends React.Component {
                 allPromises.push(this.getData(userIdData[i]));
             }
         }
-        Promise.all(allPromises).then(results => {
+        Promise.all(allPromises).then(results => {            
+            let agg_entityStats = scope.aggregateMttStats(results,'mtt_stats');
+            let agg_rawMttStats = scope.aggregateMttStats(results,'mtt_rawStats');
+
+            let fileStats= scope.state.fileStats;
+            fileStats.agg_mttRawStats = agg_rawMttStats;
+            fileStats.agg_mttEntityStats = agg_entityStats;
             scope.setState({
-                fileResults: results
+                fileResults: results,
+                fileStats: fileStats
             });
         });
     }
@@ -246,6 +295,30 @@ class GamifiedResultsWrapper extends React.Component {
                                     <ExcelColumn label="Fill the dates" value="ftd"/>
                                 </ExcelSheet>
                             </ExcelFile>
+                        </div>
+                        <div>
+                           <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                <div style={{height:'300px'}}>
+                                    <AmPieChart
+                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
+                                        id = {"pie_mtt_aggEntityStats"}
+                                        category = {"key"}
+                                        value = {"value"}  
+                                    />
+                                </div>
+                            </div>
+                            <div style={{marginTop:'1em', border:'1px black solid'}}>
+                                <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                <div style={{height:'300px'}}>
+                                    <AmPieChart
+                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
+                                        id = {"pie_mtt_aggRawStats"}
+                                        category = {"key"}
+                                        value = {"value"}  
+                                    />
+                                </div>
+                            </div>    
                         </div>
                     </div>
                     :
