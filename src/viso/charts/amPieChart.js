@@ -131,7 +131,7 @@ class AmPieChart extends React.Component {
         label.fontSize = 32;
         label.tooltip.getFillFromObject =  false;
         label.tooltip.background.fill = am4core.color("white");
-        label.tooltipText = "[font-size:28px black] " + String(total.toFixed(2)) + "[/]";
+        label.tooltipText = "[font-size:28px black]" + String(total.toFixed(2)) + "[/]";
     }
 
     render(){

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
+import * as Utils from '../../common/utilSvc'; 
 import GamifiedGraphStats from './gamifiedGraphStats';
 import Loader from 'react-loader-spinner';
 import './gamifiedResults.css';
@@ -123,6 +124,8 @@ class GamifiedResultsComponent extends React.Component {
 
     convertMapToArr(map){
         let  ans = [];
+        if(isNullOrUndefined(map))
+            return ans;
         for(let key in map){
             ans.push({
                 key: key,
@@ -132,11 +135,25 @@ class GamifiedResultsComponent extends React.Component {
         return ans;
     }
 
+    
+
     renderSinglePerformance(stats, type, gameType){
         if(this.isEntityStatsNewType(stats.entityStats))
             stats.entityStats = this.formatEntityStats(stats.entityStats);
         
         let entityMistakesArr = this.convertMapToArr(stats.entityStats);
+
+        let rawEntityStats = [];
+        if(gameType=='graphGame'){
+            if(stats.rawStats){
+                rawEntityStats = Utils.convertMapToList(stats.rawStats, ['count','e1','e2'])
+                for(let i=0; i<rawEntityStats.length; i++){
+                    rawEntityStats[i]['entityLink'] = String(rawEntityStats[i].e1 + "---" + rawEntityStats[i].e2);
+                }
+            }
+        }
+        
+
         return (
             <div>
                 <div>
@@ -151,17 +168,37 @@ class GamifiedResultsComponent extends React.Component {
                         />
                 </div>
                 {gameType == 'graphGame'?
-                    <div style={{margin:'1em', border:'1px black solid'}}>
-                        <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
-                        <div style={{height:'300px'}}>
-                            <AmPieChart 
-                                id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie"}
-                                category = {"key"}
-                                value = {"value"}                      
-                                data = {entityMistakesArr}
-                                title = {"Mistakes (topic-wise)"}
-                            />
-                        </div>
+                    <div>
+                        {entityMistakesArr.length>0?
+                            <div style={{margin:'1em', border:'1px black solid'}}>
+                                <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                <div style={{height:'300px'}}>
+                                    <AmPieChart 
+                                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_topic"}
+                                        category = {"key"}
+                                        value = {"value"}                      
+                                        data = {entityMistakesArr}
+                                    />
+                                </div>
+                            </div>
+                            :
+                            null
+                        }
+                        {rawEntityStats.length>0?
+                            <div style={{margin:'1em', border:'1px black solid'}}>
+                                <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                <div style={{height:'300px'}}>
+                                    <AmPieChart 
+                                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_connection"}
+                                        category = {"entityLink"}
+                                        value = {"count"}                      
+                                        data = {rawEntityStats}
+                                    />
+                                </div>
+                            </div>
+                            :
+                            null
+                        }                         
                     </div> 
                     :
                     null

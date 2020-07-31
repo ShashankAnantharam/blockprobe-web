@@ -776,6 +776,20 @@ export const deduplicateBlocks = (blockList)=>{
     return ans;
 }
 
+export const convertMapToList = (map,fieldList)=>{
+    let ans = [];
+    for(let key in map){
+        let dataPoint = {};
+        for(let i=0; fieldList && i<fieldList.length; i++){
+            if(fieldList[i] in map[key]){
+                dataPoint[fieldList[i]] = map[key][fieldList[i]];
+            }
+        }
+        ans.push(dataPoint);
+    }
+    return ans;
+}
+
 export const modifyBlockEntities = (blockList, blockTree, entityChanges)=>{
     if(isNullOrUndefined(blockList) || isNullOrUndefined(blockTree)  || isNullOrUndefined(entityChanges))
         return blockTree;
