@@ -11,6 +11,7 @@ import * as Utils from '../../common/utilSvc';
 import ReactExport from "react-export-excel";
 import './gamifiedResults.css';
 import AmPieChart from '../charts/amPieChart';
+import * as AmConst from '../../common/amConst';
 import { Grid } from '@material-ui/core';
 
 const ExcelFile = ReactExport.ExcelFile;
@@ -338,7 +339,8 @@ class GamifiedResultsWrapper extends React.Component {
                                                     data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
                                                     id = {"pie_mtt_aggEntityStats"}
                                                     category = {"key"}
-                                                    value = {"value"}  
+                                                    value = {"value"}
+                                                    colorSet = {AmConst.redShade}  
                                                 />
                                             </div>
                                         </div>
@@ -358,6 +360,7 @@ class GamifiedResultsWrapper extends React.Component {
                                                     id = {"pie_mtt_aggRawStats"}
                                                     category = {"key"}
                                                     value = {"value"}  
+                                                    colorSet = {AmConst.redShade}
                                                 />
                                             </div>
                                         </div>

@@ -6,6 +6,7 @@ import GamifiedGraphStats from './gamifiedGraphStats';
 import Loader from 'react-loader-spinner';
 import './gamifiedResults.css';
 import AmPieChart from '../charts/amPieChart';
+import * as AmConst from '../../common/amConst';
 import { Grid } from '@material-ui/core';
 
 class GamifiedResultsComponent extends React.Component {
@@ -181,6 +182,7 @@ class GamifiedResultsComponent extends React.Component {
                                                 category = {"key"}
                                                 value = {"value"}                      
                                                 data = {entityMistakesArr}
+                                                colorSet = {AmConst.redShade}  
                                             />
                                         </div>
                                     </div>
@@ -200,6 +202,7 @@ class GamifiedResultsComponent extends React.Component {
                                                 category = {"entityLink"}
                                                 value = {"count"}                      
                                                 data = {rawEntityStats}
+                                                colorSet = {AmConst.redShade}  
                                             />
                                         </div>
                                     </div>

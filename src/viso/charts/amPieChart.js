@@ -119,6 +119,10 @@ class AmPieChart extends React.Component {
         pieSeries.slices.template.tooltipText = "[black font-size:16px]{category}:[/] [black font-size:16px bold]{value}[/]";
         chart.legend.valueLabels.template.disabled = true;
 
+        if(this.props.colorSet){
+            pieSeries.colors.list = this.props.colorSet;
+        }
+
         // This creates initial animation
         pieSeries.hiddenState.properties.opacity = 1;
         pieSeries.hiddenState.properties.endAngle = -90;
