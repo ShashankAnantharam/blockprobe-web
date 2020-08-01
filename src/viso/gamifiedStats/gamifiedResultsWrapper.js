@@ -330,7 +330,7 @@ class GamifiedResultsWrapper extends React.Component {
                         <div style={{display:'flex', flexWrap:'wrap'}}>
                             {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
                                 <Grid md={6} xs={12}>
-                                    <div style={{padding:'10px'}}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
                                         <div style={{border:'1px black solid'}}>
                                             <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
                                             <div style={{height:'300px'}}>
@@ -349,7 +349,7 @@ class GamifiedResultsWrapper extends React.Component {
                             }
                             {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
                                 <Grid md={6} xs={12}>
-                                    <div style={{padding:'10px'}}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
                                         <div style={{border:'1px black solid'}}>
                                             <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
                                             <div style={{height:'300px'}}>
@@ -368,7 +368,7 @@ class GamifiedResultsWrapper extends React.Component {
                             }
                             {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
                                 <Grid md={6} xs={12}>
-                                    <div style={{padding:'10px'}}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
                                         <div style={{border:'1px black solid'}}>
                                             <h4 style={{textAlign:'center'}}>Correct connections</h4>
                                             <div style={{height:'300px'}}>
@@ -387,7 +387,7 @@ class GamifiedResultsWrapper extends React.Component {
                             }
                             {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
                                 <Grid md={6} xs={12}>
-                                    <div style={{padding:'10px'}}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
                                         <div style={{border:'1px black solid'}}>
                                             <h4 style={{textAlign:'center'}}>Missed connections</h4>
                                             <div style={{height:'300px'}}>

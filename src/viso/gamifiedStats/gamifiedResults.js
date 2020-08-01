@@ -172,7 +172,7 @@ class GamifiedResultsComponent extends React.Component {
                     <div style={{display:'flex', flexWrap:'wrap', margin:'1em'}}>
                         {entityMistakesArr.length>0?
                             <Grid md={6} xs={12}>
-                                <div style={{padding:'10px'}}>
+                                <div style={{paddingRight:'10px'}}>
                                     <div style={{border:'1px black solid'}}>
                                         <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
                                         <div style={{height:'300px'}}>
@@ -191,7 +191,7 @@ class GamifiedResultsComponent extends React.Component {
                         }
                         {rawEntityStats.length>0?
                             <Grid md={6} xs={12}>
-                                <div style={{padding:'10px'}}>
+                                <div style={{paddingLeft:'10px'}}>
                                     <div style={{border:'1px black solid'}}>                                
                                         <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
                                         <div style={{height:'300px'}}>
