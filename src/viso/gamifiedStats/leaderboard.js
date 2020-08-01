@@ -8,6 +8,9 @@ import GameTable from './gamifiedResultTable/gamifiedResultTable';
 import * as firebase from 'firebase';
 import * as XLSX from 'xlsx';
 import * as Utils from '../../common/utilSvc';
+import AmPieChart from '../charts/amPieChart';
+import * as AmConst from '../../common/amConst';
+import { Grid } from '@material-ui/core';
 import ReactExport from "react-export-excel";
 import './gamifiedResults.css';
 
@@ -22,12 +25,29 @@ class LeaderboardView extends React.Component {
 
       this.state = {          
           playerIds: [],
-          fileResults: []
+          fileResults: [],
+          fileStats: {
+            agg_mttEntityStats: {},
+            agg_mttRawStats: {},
+            agg_mttCorrectStats: {},
+            agg_mttWrongStats: {}
+          }
       }
 
       this.getPlayers = this.getPlayers.bind(this);
       this.getFullTable = this.getFullTable.bind(this);
       this.getData = this.getData.bind(this);
+      this.aggregateMttStats = this.aggregateMttStats.bind(this);
+      this.getRemainingEdges = this.getRemainingEdges.bind(this);
+    }
+
+    getRemainingEdges(remainingEdges, correctEdges){
+        for(let key in correctEdges){
+            if(key in remainingEdges){
+                delete remainingEdges[key];
+            }
+        }
+        return remainingEdges;
     }
 
     componentDidMount(){
@@ -79,20 +99,69 @@ class LeaderboardView extends React.Component {
                 timelineTopScores.push(scoreDetails);
             });
 
-            let mtt = 0, ftd = 0;
+            let mtt = 0, ftd = 0, mtt_stats={}, ftd_stats={};
+            let mtt_rawStats={}, mtt_missedStats={}, mtt_correctStats={};
             if(timelineTopScores && timelineTopScores.length > 0 && 
                 !isNullOrUndefined(timelineTopScores[0].score)){
-                ftd = timelineTopScores[0].score;                
+                ftd = timelineTopScores[0].score;
+                ftd_stats = timelineTopScores[0].entityStats;               
             }
             if(topScores && topScores.length > 0 && 
                 !isNullOrUndefined(topScores[0].score)){
                 mtt = topScores[0].score;                
+                mtt_stats = topScores[0].entityStats;
+                mtt_rawStats = topScores[0].rawStats;
+                if(topScores[0].correctEdges)
+                    mtt_correctStats = topScores[0].correctEdges;
+                if(topScores[0].remainingEdges)
+                    mtt_missedStats = scope.getRemainingEdges(topScores[0].remainingEdges,mtt_correctStats);
             }
-            return {id: userId, mtt: mtt, ftd: ftd};
+            return {
+                id: userId, mtt: mtt, ftd: ftd,
+                mtt_stats: mtt_stats, ftd_stats: ftd_stats,
+                mtt_rawStats: mtt_rawStats, mtt_correctStats: mtt_correctStats,
+                mtt_missedStats: mtt_missedStats
+            };
         },
         error => {
-            return {id: userId, mtt: 0, ftd: 0};
+            return {id: userId, mtt: 0, ftd: 0, ftd_stats:{}, mtt_stats:{},
+        mtt_rawStats: {}, mtt_missedStats:{}, mtt_correctStats:{}};
         });
+    }
+
+    aggregateMttStats(listMap, type){
+        let aggStats = {};
+        for(let i=0; listMap && i<listMap.length; i++){
+            let currMap = listMap[i][type];
+            if(currMap){
+                for(let key in currMap){
+                    if(type=='mtt_rawStats'){
+                        let newKey = currMap[key].e1 + "---" + currMap[key].e2;
+                        let value = 'count';
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey] += currMap[key][value];
+                    }
+                    else if(type=='mtt_stats'){
+                        let newKey = currMap[key]['entity'];
+                        let value = 'mistakes';
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey] += currMap[key][value];
+                    }
+                    else if(type=='mtt_correctStats' || type=='mtt_missedStats'){
+                        let newKey = key;
+                        if(!(newKey in aggStats)){
+                            aggStats[newKey] = 0;
+                        }
+                        aggStats[newKey]++;
+                    }
+                }
+            }
+        }
+        return aggStats;
     }
 
     async getFullTable(userIdData){
@@ -103,8 +172,20 @@ class LeaderboardView extends React.Component {
             }
         }
         Promise.all(allPromises).then(results => {
+            let agg_entityStats = scope.aggregateMttStats(results,'mtt_stats');
+            let agg_rawMttStats = scope.aggregateMttStats(results,'mtt_rawStats');
+            let agg_correctMttStats = scope.aggregateMttStats(results,'mtt_correctStats');
+            let agg_wrongMttStats = scope.aggregateMttStats(results,'mtt_missedStats');
+
+            let fileStats= scope.state.fileStats;
+            fileStats.agg_mttRawStats = agg_rawMttStats;
+            fileStats.agg_mttEntityStats = agg_entityStats;
+            fileStats.agg_mttCorrectStats = agg_correctMttStats;
+            fileStats.agg_mttWrongStats = agg_wrongMttStats;
+
             scope.setState({
-                fileResults: results
+                fileResults: results,
+                fileStats: fileStats
             });
         });
     }
@@ -136,6 +217,88 @@ class LeaderboardView extends React.Component {
                                     <ExcelColumn label="Fill the dates" value="ftd"/>
                                 </ExcelSheet>
                             </ExcelFile>
+                        </div>
+                        <div style={{display:'flex', flexWrap:'wrap'}}>
+                            {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
+                                                    id = {"pie_mtt_aggEntityStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}
+                                                    colorSet = {AmConst.redShade}  
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Grid>
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
+                                                    id = {"pie_mtt_aggRawStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.redShade}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Grid>  
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Correct connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
+                                                    id = {"pie_mtt_aggCorrectMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.greenShade}  
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Grid>  
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Missed connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
+                                                    id = {"pie_mtt_aggWrongMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.blueShade}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Grid>  
+                                :
+                                null
+                            }
                         </div>
                     </div>
                     :

@@ -40,6 +40,7 @@ class GamifiedResultsWrapper extends React.Component {
       this.handleChange = this.handleChange.bind(this);
       this.displayUserScore = this.displayUserScore.bind(this);
       this.getRemainingEdges = this.getRemainingEdges.bind(this);
+      this.aggregateMttStats = this.aggregateMttStats.bind(this);
     }
 
 
