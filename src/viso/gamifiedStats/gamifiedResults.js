@@ -6,6 +6,7 @@ import GamifiedGraphStats from './gamifiedGraphStats';
 import Loader from 'react-loader-spinner';
 import './gamifiedResults.css';
 import AmPieChart from '../charts/amPieChart';
+import { Grid } from '@material-ui/core';
 
 class GamifiedResultsComponent extends React.Component {
     constructor(props) {
@@ -168,34 +169,42 @@ class GamifiedResultsComponent extends React.Component {
                         />
                 </div>
                 {gameType == 'graphGame'?
-                    <div>
+                    <div style={{display:'flex', flexWrap:'wrap', margin:'1em'}}>
                         {entityMistakesArr.length>0?
-                            <div style={{margin:'1em', border:'1px black solid'}}>
-                                <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
-                                <div style={{height:'300px'}}>
-                                    <AmPieChart 
-                                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_topic"}
-                                        category = {"key"}
-                                        value = {"value"}                      
-                                        data = {entityMistakesArr}
-                                    />
+                            <Grid md={6} xs={12}>
+                                <div style={{padding:'10px'}}>
+                                    <div style={{border:'1px black solid'}}>
+                                        <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                        <div style={{height:'300px'}}>
+                                            <AmPieChart 
+                                                id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_topic"}
+                                                category = {"key"}
+                                                value = {"value"}                      
+                                                data = {entityMistakesArr}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </Grid>
                             :
                             null
                         }
                         {rawEntityStats.length>0?
-                            <div style={{margin:'1em', border:'1px black solid'}}>
-                                <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
-                                <div style={{height:'300px'}}>
-                                    <AmPieChart 
-                                        id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_connection"}
-                                        category = {"entityLink"}
-                                        value = {"count"}                      
-                                        data = {rawEntityStats}
-                                    />
+                            <Grid md={6} xs={12}>
+                                <div style={{padding:'10px'}}>
+                                    <div style={{border:'1px black solid'}}>                                
+                                        <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                        <div style={{height:'300px'}}>
+                                            <AmPieChart 
+                                                id = {String(stats.ts) + "_" + type + "_"+ gameType +"_pie_connection"}
+                                                category = {"entityLink"}
+                                                value = {"count"}                      
+                                                data = {rawEntityStats}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </Grid>
                             :
                             null
                         }                         

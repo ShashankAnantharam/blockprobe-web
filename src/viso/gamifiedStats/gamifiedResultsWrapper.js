@@ -11,6 +11,7 @@ import * as Utils from '../../common/utilSvc';
 import ReactExport from "react-export-excel";
 import './gamifiedResults.css';
 import AmPieChart from '../charts/amPieChart';
+import { Grid } from '@material-ui/core';
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -326,64 +327,80 @@ class GamifiedResultsWrapper extends React.Component {
                                 </ExcelSheet>
                             </ExcelFile>
                         </div>
-                        <div>
+                        <div style={{display:'flex', flexWrap:'wrap'}}>
                             {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
-                                <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                    <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
-                                    <div style={{height:'300px'}}>
-                                        <AmPieChart
-                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
-                                            id = {"pie_mtt_aggEntityStats"}
-                                            category = {"key"}
-                                            value = {"value"}  
-                                        />
+                                <Grid md={6} xs={12}>
+                                    <div style={{padding:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
+                                                    id = {"pie_mtt_aggEntityStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </Grid>
                                 :
                                 null
                             }
                             {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
-                                <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                    <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
-                                    <div style={{height:'300px'}}>
-                                        <AmPieChart
-                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
-                                            id = {"pie_mtt_aggRawStats"}
-                                            category = {"key"}
-                                            value = {"value"}  
-                                        />
+                                <Grid md={6} xs={12}>
+                                    <div style={{padding:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
+                                                    id = {"pie_mtt_aggRawStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>    
+                                </Grid>  
                                 :
                                 null
                             }
                             {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
-                                <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                    <h4 style={{textAlign:'center'}}>Correct connections</h4>
-                                    <div style={{height:'300px'}}>
-                                        <AmPieChart
-                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
-                                            id = {"pie_mtt_aggCorrectMttStats"}
-                                            category = {"key"}
-                                            value = {"value"}  
-                                        />
+                                <Grid md={6} xs={12}>
+                                    <div style={{padding:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Correct connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
+                                                    id = {"pie_mtt_aggCorrectMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>    
+                                </Grid>  
                                 :
                                 null
                             }
                             {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
-                                <div style={{marginTop:'1em', border:'1px black solid'}}>
-                                    <h4 style={{textAlign:'center'}}>Missed connections</h4>
-                                    <div style={{height:'300px'}}>
-                                        <AmPieChart
-                                            data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
-                                            id = {"pie_mtt_aggWrongMttStats"}
-                                            category = {"key"}
-                                            value = {"value"}  
-                                        />
+                                <Grid md={6} xs={12}>
+                                    <div style={{padding:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Missed connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
+                                                    id = {"pie_mtt_aggWrongMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>    
+                                </Grid>  
                                 :
                                 null
                             }
