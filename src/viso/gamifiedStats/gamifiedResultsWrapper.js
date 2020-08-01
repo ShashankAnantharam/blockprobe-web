@@ -380,6 +380,7 @@ class GamifiedResultsWrapper extends React.Component {
                                                     id = {"pie_mtt_aggCorrectMttStats"}
                                                     category = {"key"}
                                                     value = {"value"}  
+                                                    colorSet = {AmConst.greenShade}  
                                                 />
                                             </div>
                                         </div>
@@ -399,6 +400,7 @@ class GamifiedResultsWrapper extends React.Component {
                                                     id = {"pie_mtt_aggWrongMttStats"}
                                                     category = {"key"}
                                                     value = {"value"}  
+                                                    colorSet = {AmConst.blueShade}
                                                 />
                                             </div>
                                         </div>
