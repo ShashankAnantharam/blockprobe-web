@@ -40,6 +40,8 @@ class LeaderboardView extends React.Component {
       this.aggregateMttStats = this.aggregateMttStats.bind(this);
       this.getRemainingEdges = this.getRemainingEdges.bind(this);
       this.shouldShowStats = this.shouldShowStats.bind(this);
+      this.formatEntityStats = this.formatEntityStats.bind(this);
+      this.isEntityStatsNewType = this.isEntityStatsNewType.bind(this);
     }
 
     getRemainingEdges(remainingEdges, correctEdges){
@@ -130,6 +132,31 @@ class LeaderboardView extends React.Component {
         });
     }
 
+    formatEntityStats(entityStats){
+        //Get rid  of  this function later
+        let newEntityStats = {};
+        if(isNullOrUndefined(entityStats))
+            return {};
+        for(let entity in entityStats){
+            if(entityStats[entity])
+                newEntityStats[entity] = {
+                    entity: entity,
+                    mistakes: entityStats[entity]
+                };
+        }
+        return newEntityStats;
+    }
+
+    isEntityStatsNewType(entityStats){
+        if(isNullOrUndefined(entityStats))
+            return false;
+        for(let key in entityStats){
+            if(isNullOrUndefined(entityStats[key].mistakes))
+                return false;
+        }
+        return true;
+    }
+
     aggregateMttStats(listMap, type){
         let aggStats = {};
         for(let i=0; listMap && i<listMap.length; i++){
@@ -145,6 +172,8 @@ class LeaderboardView extends React.Component {
                         aggStats[newKey] += currMap[key][value];
                     }
                     else if(type=='mtt_stats'){
+                        if(!this.isEntityStatsNewType(currMap))
+                            currMap = this.formatEntityStats(currMap);
                         let newKey = currMap[key]['entity'];
                         let value = 'mistakes';
                         if(!(newKey in aggStats)){
