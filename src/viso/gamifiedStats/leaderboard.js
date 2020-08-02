@@ -12,6 +12,7 @@ import AmPieChart from '../charts/amPieChart';
 import * as AmConst from '../../common/amConst';
 import { Grid } from '@material-ui/core';
 import ReactExport from "react-export-excel";
+import ReactGA from 'react-ga';
 import './gamifiedResults.css';
 
 const ExcelFile = ReactExport.ExcelFile;
@@ -34,6 +35,8 @@ class LeaderboardView extends React.Component {
           }
       }
 
+      ReactGA.initialize('UA-143383035-1');
+
       this.getPlayers = this.getPlayers.bind(this);
       this.getFullTable = this.getFullTable.bind(this);
       this.getData = this.getData.bind(this);
@@ -55,6 +58,11 @@ class LeaderboardView extends React.Component {
 
     componentDidMount(){
         this.getPlayers();
+        ReactGA.event({
+            category: 'view_leaderboard',
+            action: 'View leaderboard ' + this.props.match.params.gameId,
+            label: this.props.match.params.gameId
+          });
     }
 
     getPlayers(){
@@ -243,7 +251,13 @@ class LeaderboardView extends React.Component {
                                 <Button 
                                     variant="contained"
                                     className="downloadButton" 
-                                    onClick={(e) => {}}>
+                                    onClick={(e) => {
+                                        ReactGA.event({
+                                            category: 'Download leaderboard table',
+                                            action: 'Download leaderboard table ' + this.props.match.params.gameId,
+                                            label: this.props.match.params.gameId
+                                          });
+                                    }}>
                                         <div>Download</div>
                                 </Button>
                             }
@@ -343,7 +357,13 @@ class LeaderboardView extends React.Component {
                                     <Button 
                                         variant="contained"
                                         className="downloadButton" 
-                                        onClick={(e) => {}}>
+                                        onClick={(e) => {
+                                            ReactGA.event({
+                                                category: 'Download leaderboard stats',
+                                                action: 'Download leaderboard stats ' + this.props.match.params.gameId,
+                                                label: this.props.match.params.gameId
+                                              });
+                                        }}>
                                             <div>Download statistics</div>
                                     </Button>
                                 }

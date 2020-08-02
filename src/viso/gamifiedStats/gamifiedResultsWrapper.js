@@ -9,6 +9,7 @@ import * as firebase from 'firebase';
 import * as XLSX from 'xlsx';
 import * as Utils from '../../common/utilSvc';
 import ReactExport from "react-export-excel";
+import ReactGA from 'react-ga';
 import './gamifiedResults.css';
 import AmPieChart from '../charts/amPieChart';
 import * as AmConst from '../../common/amConst';
@@ -35,6 +36,8 @@ class GamifiedResultsWrapper extends React.Component {
             agg_mttWrongStats: {}
           }
       }
+
+      ReactGA.initialize('UA-143383035-1');
 
       this.isValidUserId = this.isValidUserId.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -262,6 +265,11 @@ class GamifiedResultsWrapper extends React.Component {
       }
 
     displayUserScore(){
+        ReactGA.event({
+            category: 'View gameResults user',
+            action: 'View gameResults user ' + this.props.match.params.gameId,
+            label: this.props.match.params.gameId
+          });
         this.setState({
             displayedUserId: this.state.userId.trim()
         });
@@ -272,6 +280,14 @@ class GamifiedResultsWrapper extends React.Component {
         Object.keys(this.state.fileStats.agg_mttCorrectStats).length + 
         Object.keys(this.state.fileStats.agg_mttWrongStats).length + 
         Object.keys(this.state.fileStats.agg_mttRawStats).length > 0)
+    }
+
+    componentDidMount(){
+        ReactGA.event({
+            category: 'Open gameResults page',
+            action: 'Open gameResults ' + this.props.match.params.gameId,
+            label: this.props.match.params.gameId
+          });
     }
 
     render(){
@@ -354,7 +370,13 @@ class GamifiedResultsWrapper extends React.Component {
                                 <Button 
                                     variant="contained"
                                     className="downloadButton" 
-                                    onClick={(e) => {}}>
+                                    onClick={(e) => {
+                                        ReactGA.event({
+                                            category: 'Download gameResults table',
+                                            action: 'Download gameResults table ' + this.props.match.params.gameId,
+                                            label: this.props.match.params.gameId
+                                          });
+                                    }}>
                                         <div>Download</div>
                                 </Button>
                             }
@@ -454,7 +476,13 @@ class GamifiedResultsWrapper extends React.Component {
                                     <Button 
                                         variant="contained"
                                         className="downloadButton" 
-                                        onClick={(e) => {}}>
+                                        onClick={(e) => {
+                                            ReactGA.event({
+                                                category: 'Download gameResults stats',
+                                                action: 'Download gameResults stats ' + this.props.match.params.gameId,
+                                                label: this.props.match.params.gameId
+                                              });
+                                        }}>
                                             <div>Download statistics</div>
                                     </Button>
                                 }
