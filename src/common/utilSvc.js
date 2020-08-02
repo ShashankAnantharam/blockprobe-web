@@ -804,6 +804,17 @@ export const convertMapToSimpleArr = (map)=>{
     return ans;
 }
 
+export const convertMapToSimpleArrSortAsc = (map)=>{
+    //Simple {key: value} to [{key, value}...]
+    let ans = convertMapToSimpleArr(map);
+    ans.sort(function (a,b){
+        if(a.value < b.value)
+            return 1;
+        return -1;
+    })
+    return ans;
+}
+
 export const modifyBlockEntities = (blockList, blockTree, entityChanges)=>{
     if(isNullOrUndefined(blockList) || isNullOrUndefined(blockTree)  || isNullOrUndefined(entityChanges))
         return blockTree;
