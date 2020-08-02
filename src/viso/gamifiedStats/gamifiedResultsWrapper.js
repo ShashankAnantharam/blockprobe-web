@@ -41,6 +41,7 @@ class GamifiedResultsWrapper extends React.Component {
       this.displayUserScore = this.displayUserScore.bind(this);
       this.getRemainingEdges = this.getRemainingEdges.bind(this);
       this.aggregateMttStats = this.aggregateMttStats.bind(this);
+      this.shouldShowStats = this.shouldShowStats.bind(this);
     }
 
 
@@ -237,6 +238,13 @@ class GamifiedResultsWrapper extends React.Component {
         });
     }
 
+    shouldShowStats(){
+        return (Object.keys(this.state.fileStats.agg_mttEntityStats).length + 
+        Object.keys(this.state.fileStats.agg_mttCorrectStats).length + 
+        Object.keys(this.state.fileStats.agg_mttWrongStats).length + 
+        Object.keys(this.state.fileStats.agg_mttRawStats).length > 0)
+    }
+
     render(){
         return (
             <div>
@@ -411,6 +419,38 @@ class GamifiedResultsWrapper extends React.Component {
                                 null
                             }
                         </div>
+                        {this.shouldShowStats()?                        
+                            <div>                  
+                                <ExcelFile element={
+                                    <Button 
+                                        variant="contained"
+                                        className="downloadButton" 
+                                        onClick={(e) => {}}>
+                                            <div>Download statistics</div>
+                                    </Button>
+                                }
+                                filename="Statistics">
+                                    <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttRawStats)} name="Mistakes (connections)">
+                                        <ExcelColumn label="Connection" value="key"/>
+                                        <ExcelColumn label="Count" value="value"/>
+                                    </ExcelSheet>
+                                    <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttEntityStats)} name="Mistakes (Topic)">
+                                        <ExcelColumn label="Topic" value="key"/>
+                                        <ExcelColumn label="Count" value="value"/>
+                                    </ExcelSheet>
+                                    <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttCorrectStats)} name="Correct connections">
+                                        <ExcelColumn label="Connection" value="key"/>
+                                        <ExcelColumn label="Count" value="value"/>
+                                    </ExcelSheet>
+                                    <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttWrongStats)} name="Missed connections">
+                                        <ExcelColumn label="Connection" value="key"/>
+                                        <ExcelColumn label="Count" value="value"/>
+                                    </ExcelSheet>
+                                </ExcelFile>
+                            </div>
+                            :
+                            null
+                        }
                     </div>
                     :
                     null
