@@ -34,7 +34,7 @@ class GamifiedGraphStats extends React.Component {
 
     saveResults(){
         ReactGA.event({
-            category: 'saveResult',
+            category: 'click on saveResult',
             action: this.props.id + ' ' + this.props.bpId,
             label: this.props.id + ' ' + this.props.bpId
           }); 
@@ -47,6 +47,11 @@ class GamifiedGraphStats extends React.Component {
     }
 
     finishSaving(uId){
+        ReactGA.event({
+            category: 'success saveResult',
+            action: this.props.id + ' ' + this.props.bpId,
+            label: this.props.id + ' ' + this.props.bpId
+          }); 
         this.setState({
             saveAuth: false,
             finishedSaving: true,
