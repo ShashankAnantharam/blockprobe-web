@@ -607,6 +607,12 @@ class ViewBlockprobePublicComponent extends React.Component {
     }
 
     async postLoginSuccess(userId){
+        ReactGA.event({
+            category: 'login_public',
+            action: 'Logged in publicly',
+            label: this.props.bId
+          }); 
+
         let isUserIdThere = false;
         let viewerList = this.state.viewerList;  
 
