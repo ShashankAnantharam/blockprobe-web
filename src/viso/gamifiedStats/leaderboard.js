@@ -14,6 +14,7 @@ import { Grid } from '@material-ui/core';
 import ReactExport from "react-export-excel";
 import ReactGA from 'react-ga';
 import './gamifiedResults.css';
+import SimpleScoreTable from './gamifiedResultTable/simpleScoreTable';
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -32,7 +33,12 @@ class LeaderboardView extends React.Component {
             agg_mttRawStats: {},
             agg_mttCorrectStats: {},
             agg_mttWrongStats: {}
-          }
+          },
+          newScores: {
+              'ftd': [],
+              'mtt': []
+          },
+          renderNewScores: false
       }
 
       ReactGA.initialize('UA-143383035-1');
@@ -45,6 +51,10 @@ class LeaderboardView extends React.Component {
       this.shouldShowStats = this.shouldShowStats.bind(this);
       this.formatEntityStats = this.formatEntityStats.bind(this);
       this.isEntityStatsNewType = this.isEntityStatsNewType.bind(this);
+      this.getLeadersForGame = this.getLeadersForGame.bind(this);
+      this.getLeaders = this.getLeaders.bind(this);
+      this.renderSingleLeaderboard = this.renderSingleLeaderboard.bind(this);
+      this.renderAllLeaderboards = this.renderAllLeaderboards.bind(this);
     }
 
     getRemainingEdges(remainingEdges, correctEdges){
@@ -80,10 +90,43 @@ class LeaderboardView extends React.Component {
                     scope.getFullTable(viewerList);
                 }
                 else{
-
+                    scope.getLeaders(bpId);
                 }
             }
         );
+    }
+
+    async getLeaders(bpId){
+        let types = ['mtt','ftd'];
+        let leaderScores = {};
+        for(let i=0; i<types.length; i++){
+            let scores = await this.getLeadersForGame(types[i], bpId);
+            leaderScores[types[i]] = scores;
+        }
+        this.setState({
+            newScores: leaderScores,
+            renderNewScores: true
+        });
+    }
+
+    async getLeadersForGame(type, bpId){
+        //type = ftd,mtt
+        let db = firebase.firestore();
+        let allScores = db.collection('gameLeaderboards').doc(bpId).collection(type);
+        let queryTop = allScores.orderBy('score','desc').limit(100).get();
+        let topScores = await queryTop;
+
+        let scores = [];
+        if(topScores){
+            topScores.forEach((doc) => {
+                if(doc.exists){
+                    let score = doc.data();
+                    score['id'] = score['userId'];
+                    scores.push(score);
+                }
+            });    
+        }
+        return scores;
     }
 
     async getData(userId){
@@ -240,6 +283,37 @@ class LeaderboardView extends React.Component {
         Object.keys(this.state.fileStats.agg_mttRawStats).length > 0)
     }
 
+    renderAllLeaderboards(){
+        let types = ['mtt','ftd'];
+        let renderArr = types.map((type) => {
+            return this.renderSingleLeaderboard(type);
+        })
+        return (
+            <div>
+                {renderArr}
+            </div>
+        );
+    }
+
+    renderSingleLeaderboard(type){
+        let table = this.state.newScores[type];
+        let title = 'Match the topics';
+        if(type == 'ftd')
+            title = 'Fill the dates';
+        return (
+            <div>
+                <h4 style={{textAlign: 'center'}}>{title}</h4>
+                <div className="input-userId-getScore-container">
+                    <div>
+                        <SimpleScoreTable
+                            data = {table}
+                            />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     render(){
         return (
             <div>
@@ -394,6 +468,14 @@ class LeaderboardView extends React.Component {
                             :
                             null
                         }
+                    </div>
+                    :
+                    null
+                }
+
+                {this.state.renderNewScores?
+                    <div>
+                        {this.renderAllLeaderboards()}
                     </div>
                     :
                     null
