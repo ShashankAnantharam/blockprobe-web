@@ -340,88 +340,148 @@ class LeaderboardView extends React.Component {
                             data = {table}
                             />
                     </div>
+                    <div>                  
+                        <ExcelFile element={
+                            <Button 
+                                variant="contained"
+                                className="downloadButton" 
+                                onClick={(e) => {
+                                    ReactGA.event({
+                                        category: 'Download leaderboard table',
+                                        action: 'Download leaderboard table ' + this.props.match.params.gameId + ' ' + type,
+                                        label: this.props.match.params.gameId
+                                        });
+                                }}>
+                                    <div>Download</div>
+                            </Button>
+                        }
+                        filename={title + ' Results'}>
+                            <ExcelSheet data={table} name="Results">
+                                <ExcelColumn label="UserId" value="id"/>
+                                <ExcelColumn label="score" value="score"/>
+                            </ExcelSheet>
+                        </ExcelFile>
+                    </div>
                     {type=='mtt'?
+                    <div>
                         <div style={{display:'flex', flexWrap:'wrap'}}>
-                        {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
-                            <Grid md={6} xs={12}>
-                                <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
-                                    <div style={{border:'1px black solid'}}>
-                                        <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
-                                        <div style={{height:'300px'}}>
-                                            <AmPieChart
-                                                data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
-                                                id = {"pie_mtt_aggEntityStats"}
-                                                category = {"key"}
-                                                value = {"value"}
-                                                colorSet = {AmConst.redShade}  
-                                            />
+                            {Object.keys(this.state.fileStats.agg_mttEntityStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (topic-wise)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttEntityStats)}
+                                                    id = {"pie_mtt_aggEntityStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}
+                                                    colorSet = {AmConst.redShade}  
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Grid>
-                            :
-                            null
-                        }
-                        {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
-                            <Grid md={6} xs={12}>
-                                <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
-                                    <div style={{border:'1px black solid'}}>
-                                        <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
-                                        <div style={{height:'300px'}}>
-                                            <AmPieChart
-                                                data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
-                                                id = {"pie_mtt_aggRawStats"}
-                                                category = {"key"}
-                                                value = {"value"}  
-                                                colorSet = {AmConst.redShade}
-                                            />
+                                </Grid>
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttRawStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Mistakes (connections)</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttRawStats)}
+                                                    id = {"pie_mtt_aggRawStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.redShade}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Grid>  
-                            :
-                            null
-                        }
-                        {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
-                            <Grid md={6} xs={12}>
-                                <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
-                                    <div style={{border:'1px black solid'}}>
-                                        <h4 style={{textAlign:'center'}}>Correct connections</h4>
-                                        <div style={{height:'300px'}}>
-                                            <AmPieChart
-                                                data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
-                                                id = {"pie_mtt_aggCorrectMttStats"}
-                                                category = {"key"}
-                                                value = {"value"}  
-                                                colorSet = {AmConst.greenShade}  
-                                            />
+                                </Grid>  
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttCorrectStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Correct connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttCorrectStats)}
+                                                    id = {"pie_mtt_aggCorrectMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.greenShade}  
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Grid>  
-                            :
-                            null
-                        }
-                        {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
-                            <Grid md={6} xs={12}>
-                                <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
-                                    <div style={{border:'1px black solid'}}>
-                                        <h4 style={{textAlign:'center'}}>Missed connections</h4>
-                                        <div style={{height:'300px'}}>
-                                            <AmPieChart
-                                                data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
-                                                id = {"pie_mtt_aggWrongMttStats"}
-                                                category = {"key"}
-                                                value = {"value"}  
-                                                colorSet = {AmConst.blueShade}
-                                            />
+                                </Grid>  
+                                :
+                                null
+                            }
+                            {Object.keys(this.state.fileStats.agg_mttWrongStats).length>0?
+                                <Grid md={6} xs={12}>
+                                    <div style={{paddingLeft:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                        <div style={{border:'1px black solid'}}>
+                                            <h4 style={{textAlign:'center'}}>Missed connections</h4>
+                                            <div style={{height:'300px'}}>
+                                                <AmPieChart
+                                                    data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_mttWrongStats)}
+                                                    id = {"pie_mtt_aggWrongMttStats"}
+                                                    category = {"key"}
+                                                    value = {"value"}  
+                                                    colorSet = {AmConst.blueShade}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Grid>  
-                            :
-                            null
-                        }
+                                </Grid>  
+                                :
+                                null
+                            }
+                        </div>
+                        <div>
+                                <div>                  
+                                    <ExcelFile element={
+                                        <Button 
+                                            variant="contained"
+                                            className="downloadButton" 
+                                            onClick={(e) => {
+                                                ReactGA.event({
+                                                    category: 'Download leaderboard stats',
+                                                    action: 'Download leaderboard stats ' + this.props.match.params.gameId +' '+ type,
+                                                    label: this.props.match.params.gameId
+                                                });
+                                            }}>
+                                                <div>Download statistics</div>
+                                        </Button>
+                                    }
+                                    filename={title + " Statistics"}>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttRawStats)} name="Mistakes (connections)">
+                                            <ExcelColumn label="Connection" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttEntityStats)} name="Mistakes (Topic)">
+                                            <ExcelColumn label="Topic" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttCorrectStats)} name="Correct connections">
+                                            <ExcelColumn label="Connection" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_mttWrongStats)} name="Missed connections">
+                                            <ExcelColumn label="Connection" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                    </ExcelFile>
+                                </div>               
+                        </div>
                     </div>
                     :
                     null
