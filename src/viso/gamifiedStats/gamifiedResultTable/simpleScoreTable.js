@@ -36,7 +36,7 @@ class SimpleScoreTable extends React.Component{
         this.state = {
             rows: [],
             sortedKey: 'id',
-            sortedType: 'asc'
+            sortedType: 'desc'
         }
     }
       
