@@ -136,7 +136,7 @@ class GamifiedAuth extends React.Component {
     render(){
         return (
             <div>
-                <div className='StatsAuthTitle'>Sign in to save</div>
+                <div className='StatsAuthTitle'>Sign in to save results</div>
                 <div className='StatsAuthLoginContainer'>                                       
                     <StyleFirebaseAuth
                     uiConfig={this.uiConfig}

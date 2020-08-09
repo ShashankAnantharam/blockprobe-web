@@ -1307,7 +1307,7 @@ class GamifiedGraphComponent extends React.Component {
                                     variant="contained" 
                                     className="stopGamebutton"
                                     onClick={() => { this.stopGame(true)}}
-                                    > Stop Game</Button>
+                                    > Save Results</Button>
                                     :
                                     null
                                 }                                
@@ -1370,6 +1370,7 @@ class GamifiedGraphComponent extends React.Component {
                                     bpId={this.props.bpId}
                                     title={this.props.title}
                                     canSave = {true}
+                                    saveImmediately = {true}
                                     id={'mindmap_result'}
                                     />
                             </div>

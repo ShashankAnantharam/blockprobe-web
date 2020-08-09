@@ -10,7 +10,7 @@ import { isNull, isNullOrUndefined } from 'util';
 class GamifiedGraphStats extends React.Component {
     constructor(props) {
       super(props);
-      //stats, canSave, id, type
+      //stats, canSave, id, type, saveImmediately
       this.state = {
           saveAuth: false,
           finishedSaving:  false,
@@ -66,6 +66,14 @@ class GamifiedGraphStats extends React.Component {
                 action: this.props.id + ' ' + this.props.bpId,
                 label: 'Score:' + String(this.props.stats.score)
               }); 
+
+            if(this.props.saveImmediately){
+                this.setState({
+                    saveAuth: true,
+                    finishedSaving: false,
+                    uId: null
+                });
+            }
         }
     }
 
@@ -122,7 +130,7 @@ class GamifiedGraphStats extends React.Component {
                 }
 
                 <div className="statsMistakesOptions">
-                    {this.props.canSave && !this.state.finishedSaving?
+                    {this.props.canSave && !this.state.finishedSaving && !(!(!(this.props.saveImmediately)))?
                         <Button 
                         variant="contained" 
                         className="statsSaveButton"

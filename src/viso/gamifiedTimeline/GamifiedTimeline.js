@@ -313,6 +313,7 @@ class GamifiedTimelineComponent extends React.Component {
                             bpId={this.props.bpId}
                             title={this.props.title}
                             canSave = {true}
+                            saveImmediately = {true}
                             type= {'timeline'}
                             id={'timeline_result'}
                             />
@@ -329,7 +330,7 @@ class GamifiedTimelineComponent extends React.Component {
                                             variant="contained" 
                                             className="stopGamebutton"
                                             onClick={() => { this.stopGame(true)}}
-                                            > Stop Game</Button>
+                                            >Save Results</Button>
                                             :
                                             null
                                         }                                
