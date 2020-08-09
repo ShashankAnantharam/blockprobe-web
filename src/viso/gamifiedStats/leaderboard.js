@@ -80,7 +80,7 @@ class LeaderboardView extends React.Component {
         let bpId = this.props.match.params.gameId;
         firebase.firestore().collection('publicStatus').doc(bpId).get().then(
             snapshot => {                
-                if(snapshot.exists){
+                if(snapshot.exists && snapshot.data().isUserLimited){
                     let viewerList = [];
                     if(snapshot.data().userList)
                     viewerList = snapshot.data().userList;
