@@ -35,7 +35,7 @@ class SimpleScoreTable extends React.Component{
         super(props);
         this.state = {
             rows: [],
-            sortedKey: 'id',
+            sortedKey: 'score',
             sortedType: 'desc'
         }
     }
@@ -45,7 +45,7 @@ class SimpleScoreTable extends React.Component{
           rows.sort(function compare(a,b){
             if(!('score' in a) || !('score' in b))
                 return 0;
-            if(a['score']>b['score'])
+            if(a['score']<b['score'])
                 return 1;
             return -1;
         })
@@ -60,7 +60,7 @@ class SimpleScoreTable extends React.Component{
         rows.sort(function compare(a,b){
           if(!('score' in a) || !('score' in b))
               return 0;
-          if(a['score']>b['score'])
+          if(a['score']<b['score'])
               return 1;
           return -1;
         })
@@ -121,7 +121,7 @@ class SimpleScoreTable extends React.Component{
                 <TableHead>
                   <TableRow>
                     <StyledTableCell onClick={() => {this.sortData('id')}} align="left">Id {this.displayIcon('id')}</StyledTableCell>
-                    <StyledTableCell onClick={() => {this.sortData('score')}} align="right">Score {this.displayIcon('mtt')}</StyledTableCell>
+                    <StyledTableCell onClick={() => {this.sortData('score')}} align="right">Score {this.displayIcon('score')}</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
