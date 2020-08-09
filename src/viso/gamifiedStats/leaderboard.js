@@ -69,14 +69,19 @@ class LeaderboardView extends React.Component {
         let scope = this;
         let bpId = this.props.match.params.gameId;
         firebase.firestore().collection('publicStatus').doc(bpId).get().then(
-            snapshot => {
-                let viewerList = [];
-                if(snapshot.data().userList)
+            snapshot => {                
+                if(snapshot.exists){
+                    let viewerList = [];
+                    if(snapshot.data().userList)
                     viewerList = snapshot.data().userList;
-                scope.setState({
-                    playerIds: viewerList
-                });
-                scope.getFullTable(viewerList);
+                    scope.setState({
+                        playerIds: viewerList
+                    });
+                    scope.getFullTable(viewerList);
+                }
+                else{
+
+                }
             }
         );
     }
