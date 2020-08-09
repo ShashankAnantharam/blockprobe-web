@@ -1,0 +1,10 @@
+.imageContainer{
+    width: 50vw; 
+    height: 50vw;
+    border: 1px solid black;
+}
+
+.imageToDissect{
+    height: 100%;
+    width: 100%;
+  }

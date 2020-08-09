@@ -10,6 +10,7 @@ import FindConnectionsComponent from "../FindConnectionsComponent";
 import TimelineComponent from "../TimelineComponent";
 import * as Locale from "../../Localization/localizedStrings";
 import { isNullOrUndefined } from 'util';
+import DissectPictureView from '../dissectPicture/dissectPicture';
 
 class DashboardViewComponent extends React.Component {
 
@@ -133,6 +134,9 @@ class DashboardViewComponent extends React.Component {
                             :
                     null
                 }
+
+                <DissectPictureView
+                    />
                 
                 {this.isGraphAvailable()?
                     <div>
