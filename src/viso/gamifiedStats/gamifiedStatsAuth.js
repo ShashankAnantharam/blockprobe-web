@@ -9,6 +9,7 @@ class GamifiedAuth extends React.Component {
       super(props);
       //stats, type (graphGame), 
 
+      this.writeToLeaderboard = this.writeToLeaderboard.bind(this);
     }
 
     uiConfig = {
@@ -56,20 +57,43 @@ class GamifiedAuth extends React.Component {
             title: this.props.title
         };
 
+        let leaderboardBlockprobe = JSON.parse(JSON.stringify(stats));
+        leaderboardBlockprobe['type'] = 'mtt';
+
         let docStr = this.props.bpId + '_' + String(timestamp);
         if(type == 'timeline'){
             docStr = docStr + '_ts';
             stats.bpId = stats.bpId + "_ts";
+            leaderboardBlockprobe['type'] = 'ftd';
         }
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameScores').doc(docStr).set(stats);
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameBlockprobes').doc(this.props.bpId).set(softBlockprobe);
 
+        await this.writeToLeaderboard(this.props.bpId, leaderboardBlockprobe['type'],
+            leaderboardBlockprobe, userId);
+
         //TODO Temp fix for logging out
         //if(!(this.getItemWrapper('isUserSignedIn', false)))
         await firebase.auth().signOut();
         this.props.finishSaving(userId);
+    }
+
+    async writeToLeaderboard(bpId,type,leaderboardBlockprobe, userId){
+        let docStr = userId;
+        let ref = firebase.firestore().collection('gameLeaderboards').doc(bpId)
+        .collection(type).doc(docStr);
+        let doc  = await ref.get();
+        if(doc.exists){
+            if(doc.data()['score'] < leaderboardBlockprobe['score']){
+                //Higher score now
+                await ref.set(leaderboardBlockprobe);    
+            }
+        }
+        else{
+            await ref.set(leaderboardBlockprobe);
+        }
     }
 
     getItemWrapper(key, defaultVal){
