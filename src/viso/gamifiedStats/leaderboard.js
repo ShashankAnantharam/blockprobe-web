@@ -286,7 +286,9 @@ class LeaderboardView extends React.Component {
     renderAllLeaderboards(){
         let types = ['mtt','ftd'];
         let renderArr = types.map((type) => {
-            return this.renderSingleLeaderboard(type);
+            if(this.state.newScores[type].length>0)
+                return this.renderSingleLeaderboard(type);
+            return null;
         })
         return (
             <div>
