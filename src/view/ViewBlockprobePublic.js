@@ -14,6 +14,7 @@ import ViewBlockComponent from '../viso/ViewBlock';
 import Sidebar from "react-sidebar";
 import GoogleFontLoader from 'react-google-font-loader';
 import PublicViewLogin from './publicViewLogin/publicViewLogin';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreIcon from '@material-ui/icons/More';
 import VisualizeOptionsList from '../viso/VisoList';
@@ -52,6 +53,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             viewerList: [],
             selectedBlockSidebarOpen: false,
             shouldShowLogin: false,
+            isLimited: false,
             menuBarOpen: false,
             selectedVisualisation: "dashboard",
             multiSelectEntityList: [
@@ -98,6 +100,7 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setScrollToGraphList = this.setScrollToGraphList.bind(this);
         this.getDataWrapper = this.getDataWrapper.bind(this);
         this.postLoginSuccess = this.postLoginSuccess.bind(this);
+        this.getDataWithoutLogin = this.getDataWithoutLogin.bind(this);
     }
 
     setNewVisualisation(newVisualisation){
@@ -576,7 +579,16 @@ class ViewBlockprobePublicComponent extends React.Component {
                 }
 
                 if(isFullyPublic){
-                    scope.getDataWrapper();
+                    if(this.props.visulationType == 'game')
+                    {
+                        scope.setState({
+                            isPageLoading: false,
+                            shouldShowLogin: true,
+                            isLimited: false
+                        });
+                    }    
+                    else
+                       scope.getDataWrapper();
                 }
                 else{
                     //LOGIN here
@@ -586,7 +598,8 @@ class ViewBlockprobePublicComponent extends React.Component {
                     scope.setState({
                         viewerList: viewerList,
                         isPageLoading: false,
-                        shouldShowLogin: true
+                        shouldShowLogin: true,
+                        isLimited: true
                     });
                 }
             }
@@ -604,7 +617,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             }
         }
         
-        if(isUserIdThere){
+        if(isUserIdThere || !this.state.isLimited){
             await this.setState({
                 shouldShowLogin: false,
                 isPageLoading: true
@@ -616,6 +629,14 @@ class ViewBlockprobePublicComponent extends React.Component {
                 shouldShowLogin: false
             });
         }
+    }
+
+    async getDataWithoutLogin(){
+        await this.setState({
+            shouldShowLogin: false,
+            isPageLoading: true
+        });
+        this.getDataWrapper();
     }
 
     renderVisualisation(){
@@ -733,6 +754,17 @@ class ViewBlockprobePublicComponent extends React.Component {
                             <PublicViewLogin
                                 postLoginSuccess = {this.postLoginSuccess}
                             />
+                            {!this.state.isLimited?
+                                <div style={{textAlign:'center'}}>
+                                    <Button
+                                        color="primary"
+                                        onClick={(e) => {
+                                            this.getDataWithoutLogin();
+                                        }}>Continue without login</Button>
+                                </div>
+                                :
+                                null
+                            }                            
                         </div>
                         :
                         <div>
