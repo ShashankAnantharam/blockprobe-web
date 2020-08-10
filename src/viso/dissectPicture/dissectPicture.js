@@ -3,6 +3,8 @@ import Img from 'react-image';
 import { Line } from 'react-lineto';
 import './dissectPicture.css';
 import { isNullOrUndefined } from 'util';
+import { black } from 'color-name';
+import SimpleCircleView from './circleSimple';
 
 class DissectPictureView extends React.Component {
 
@@ -59,20 +61,36 @@ class DissectPictureView extends React.Component {
                 document.getElementById("testing").getBoundingClientRect().y + 
                 document.getElementById("testing").getBoundingClientRect().height*line.y1
             ]
-            return this.renderLine(f0[0],f0[1],f1[0],f1[1]);
+            return (
+                <Fragment>
+                    {this.renderLine(f0[0],f0[1],f1[0],f1[1])}
+                    {this.renderCircle(f1[0],f1[1],'trial')}
+                </Fragment>
+            )
         });
         return lineRender;
     }
 
     renderLine(x0,y0,x1,y1){
         return (
-            <Line x0={x0} y0={y0} x1={x1} y1={y1} borderWidth="8px" 
+            <Line x0={x0} y0={y0} x1={x1} y1={y1} borderWidth="4px" 
             within="imageDissectContainer"
             borderColor="black"
             className="lineS"
             zIndex={1}
             onClick={() =>{console.log('here')}}
             />
+        );
+    }
+
+    renderCircle(x,y,type){
+        return (
+            <SimpleCircleView
+                id="circle1"
+                type={type}
+                x={x}
+                y={y}
+                />
         );
     }
 

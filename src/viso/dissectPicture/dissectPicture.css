@@ -11,11 +11,19 @@
 
 .lineS{
     border-radius: 30px;
-    cursor: pointer;
     transition: 0.2s opacity;
-    opacity: 0.6;
+    opacity: 0.75;
 }
 
-.lineS:hover{
-    opacity: 1;
+
+.circle_dissectPicture{
+    width: 17px;
+    height: 17px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.circle_dissectPicture:hover{
+    width: 30px;
+    height: 30px;
 }
