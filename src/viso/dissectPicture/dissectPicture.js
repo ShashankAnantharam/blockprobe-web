@@ -45,6 +45,12 @@ class DissectPictureView extends React.Component {
                 y0:321/652,
                 x1:0.2,
                 y1:0.1
+            },
+            {
+                x0:443/570,
+                y0:447/570,
+                x1:0.8,
+                y1:0.95
             }
         ];
 
