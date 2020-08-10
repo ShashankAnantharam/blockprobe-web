@@ -20,7 +20,6 @@
     width: 17px;
     height: 17px;
     transition: 0.2s;
-    cursor: pointer;
     background: white;
 }
 
@@ -28,6 +27,10 @@
     width: 30px;
     height: 30px;
     background: rgb(3, 168, 245)
+}
+
+.circle_dissectPicture_clickable{
+    cursor: pointer;
 }
 
 .imageToDissect_addBlock{

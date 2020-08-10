@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Img from 'react-image';
 import { Line } from 'react-lineto';
 import './dissectPicture.css';
+import { isNullOrUndefined } from 'util';
 
 class SimpleCircleView extends React.Component {
 
@@ -33,7 +34,11 @@ class SimpleCircleView extends React.Component {
                     top: String(this.props.y) + 'px', /*[wherever you want it]*/
                     left: String(this.props.x) + 'px' /*[wherever you want it]*/
                 }}
-                className="circle_dissectPicture"
+                className=
+                {
+                    "circle_dissectPicture " +                 
+                    (!isNullOrUndefined(this.props.onClick)?"circle_dissectPicture_clickable":null)
+                }
                 onClick={this.onClick}
             ></div>
         );

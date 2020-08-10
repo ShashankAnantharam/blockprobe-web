@@ -32,7 +32,7 @@ class DissectPictureView extends React.Component {
                 first:null,
                 second: null
             },
-            addBlock: true
+            addBlock: false
         }
 
         this.imgUrl = 'https://i.pinimg.com/564x/3d/22/ef/3d22ef2dc19d25469b0c4f75ce868118.jpg';
@@ -44,27 +44,30 @@ class DissectPictureView extends React.Component {
     }
 
     mouseClick(event) {
-        let coord = {x:event.clientX, y:event.clientY};
+        let addBlock = this.state.addBlock;
+        if(addBlock){
+            let coord = {x:event.clientX, y:event.clientY};
 
-        coord.x = coord.x - document.getElementById("testing").getBoundingClientRect().x
-        + document.getElementById("testing").offsetLeft;
-        coord.y = coord.y - document.getElementById("testing").getBoundingClientRect().y
-        + document.getElementById("testing").offsetTop;
-        let pos = this.state.pos;
-        if(isNullOrUndefined(pos.first)){
-            pos.first = coord;
+            coord.x = coord.x - document.getElementById("testing").getBoundingClientRect().x
+            + document.getElementById("testing").offsetLeft;
+            coord.y = coord.y - document.getElementById("testing").getBoundingClientRect().y
+            + document.getElementById("testing").offsetTop;
+            let pos = this.state.pos;
+            if(isNullOrUndefined(pos.first)){
+                pos.first = coord;
+            }
+            else if(!isNullOrUndefined(pos.first) && isNullOrUndefined(pos.second)){
+                pos.second = coord;
+            }
+            else{
+                //Function to return value here
+                pos.first = coord;
+                pos.second = null;
+            }
+            this.setState({
+                pos:pos
+            });
         }
-        else if(!isNullOrUndefined(pos.first) && isNullOrUndefined(pos.second)){
-            pos.second = coord;
-        }
-        else{
-            //Function to return value here
-            pos.first = coord;
-            pos.second = null;
-        }
-        this.setState({
-            pos:pos
-        });
     }
 
     displayPositions(pos){
@@ -100,6 +103,10 @@ class DissectPictureView extends React.Component {
     renderLines(){
         let lines = this.state.lines;
 
+        function onClick(){
+            console.log("Here");
+        }
+
         let lineRender = lines.map((line) => {
             let f0 = [
                 document.getElementById("testing").getBoundingClientRect().x + 
@@ -116,7 +123,7 @@ class DissectPictureView extends React.Component {
             return (
                 <Fragment>
                     {this.renderLine(f0[0],f0[1],f1[0],f1[1])}
-                    {this.renderCircle(f1[0],f1[1],'trial')}
+                    {this.renderCircle(f1[0],f1[1],'trial',onClick)}
                 </Fragment>
             )
         });
@@ -135,13 +142,14 @@ class DissectPictureView extends React.Component {
         );
     }
 
-    renderCircle(x,y,type){
+    renderCircle(x,y,type, onClick){
         return (
             <SimpleCircleView
                 id="circle1"
                 type={type}
                 x={x}
                 y={y}
+                onClick={onClick}
                 />
         );
     }
