@@ -21,9 +21,11 @@
     height: 17px;
     transition: 0.2s;
     cursor: pointer;
+    background: white;
 }
 
 .circle_dissectPicture:hover{
     width: 30px;
     height: 30px;
+    background: rgb(3, 168, 245)
 }
