@@ -29,3 +29,7 @@
     height: 30px;
     background: rgb(3, 168, 245)
 }
+
+.imageToDissect_addBlock{
+    opacity: 0.5;
+}
