@@ -39,10 +39,10 @@ class DissectPictureView extends React.Component {
     renderLines(){
         let lines = [
             {
-                x0:0.2,
-                y0:0.2,
-                x1:0.5,
-                y1:0.5
+                x0:1/7,
+                y0:321/652,
+                x1:0.2,
+                y1:0.1
             }
         ];
 
@@ -66,7 +66,7 @@ class DissectPictureView extends React.Component {
 
     renderLine(x0,y0,x1,y1){
         return (
-            <Line x0={x0} y0={y0} x1={x1} y1={y1} borderWidth="10px" 
+            <Line x0={x0} y0={y0} x1={x1} y1={y1} borderWidth="8px" 
             within="imageDissectContainer"
             borderColor="black"
             className="lineS"
