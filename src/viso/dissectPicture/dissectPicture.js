@@ -109,15 +109,15 @@ class DissectPictureView extends React.Component {
 
         let lineRender = lines.map((line) => {
             let f0 = [
-                document.getElementById("testing").getBoundingClientRect().x + 
+                document.getElementById("testing").offsetLeft + 
                 document.getElementById("testing").getBoundingClientRect().width*line.x0,
-                document.getElementById("testing").getBoundingClientRect().y + 
+                document.getElementById("testing").offsetTop + 
                 document.getElementById("testing").getBoundingClientRect().height*line.y0
             ];
             let f1 = [
-                document.getElementById("testing").getBoundingClientRect().x + 
+                document.getElementById("testing").offsetLeft + 
                 document.getElementById("testing").getBoundingClientRect().width*line.x1,
-                document.getElementById("testing").getBoundingClientRect().y + 
+                document.getElementById("testing").offsetTop + 
                 document.getElementById("testing").getBoundingClientRect().height*line.y1
             ]
             return (

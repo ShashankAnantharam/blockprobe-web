@@ -30,6 +30,7 @@ import AddTimeView from '../view/Draft/AddTimeView/AddTimeView';
 
 import Joyride from 'react-joyride';
 import Checkbox from '../view/Draft/Checkbox';
+import AddDissectPictureView from '../view/Draft/AddDissectPictureView/AddDissectPictureView';
 
 ////var uIdHash = crypto.createHash('sha256').update(`${userId}`).digest('hex');
 
@@ -1445,6 +1446,7 @@ class UserBlocksComponent extends React.Component {
                         <Tab>Graph</Tab>
                         <Tab>Timeline</Tab>
                         <Tab>Summary</Tab>
+                        <Tab>Dissect</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -1566,6 +1568,14 @@ class UserBlocksComponent extends React.Component {
                             <div className="blocklist-message">No content available for summary.</div>
                             }
                     </TabPanel>
+
+                    <TabPanel>
+                        <div>
+                            <AddDissectPictureView
+                            />
+                        </div>
+                    </TabPanel>
+
                 </Tabs>
                 </div>
             </div>
