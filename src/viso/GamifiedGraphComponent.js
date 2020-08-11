@@ -1300,19 +1300,7 @@ class GamifiedGraphComponent extends React.Component {
             <div>                      
                         <div ref={this.graphRef}></div>
 
-                        <div className="specialViewMargin">
-                            <div className="gameButtonContainer">
-                                {this.state.score>0 && !this.state.stopGame?
-                                    <Button
-                                    variant="contained" 
-                                    className="stopGamebutton"
-                                    onClick={() => { this.stopGame(true)}}
-                                    > Save Results</Button>
-                                    :
-                                    null
-                                }                                
-                            </div>
-                        </div>
+                        
                         {!isNullOrUndefined(firstNode) && !this.state.stopGame?
                             <div className="specialViewMargin">                             
                                 <div className="gamifiedNodeDisplay">
@@ -1375,8 +1363,21 @@ class GamifiedGraphComponent extends React.Component {
                                     />
                             </div>
                         }
-
-                        {this.state.currentSelectedBlocks.length >= 0 && !this.state.stopGame?
+                        <div className="specialViewMargin">
+                            <div className="gameButtonContainer">
+                                {this.state.score>0 && !this.state.stopGame?
+                                    <Button
+                                    variant="contained" 
+                                    className="stopGamebutton"
+                                    onClick={() => { this.stopGame(true)}}
+                                    > Save Results</Button>
+                                    :
+                                    null
+                                }                                
+                            </div>
+                        </div>
+                        {this.state.currentSelectedBlocks.length >= 0 && !this.state.stopGame 
+                        && !(this.state.score == this.state.totalScore)?
                         <div> 
                             <div className="graph-block-list">                            
                                 <div className='gamified-graph-block-list-title' onClick={this.toggleSelectedBlocksPane}>                                
