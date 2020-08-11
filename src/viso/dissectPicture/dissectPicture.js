@@ -31,8 +31,7 @@ class DissectPictureView extends React.Component {
             pos:{
                 first:null,
                 second: null
-            },
-            addBlock: false
+            }
         }
 
         this.imgUrl = 'https://i.pinimg.com/564x/3d/22/ef/3d22ef2dc19d25469b0c4f75ce868118.jpg';
@@ -44,7 +43,7 @@ class DissectPictureView extends React.Component {
     }
 
     mouseClick(event) {
-        let addBlock = this.state.addBlock;
+        let addBlock = this.props.addBlock;
         if(addBlock){
             let coord = {x:event.clientX, y:event.clientY};
 
@@ -160,15 +159,15 @@ class DissectPictureView extends React.Component {
             <div style={{margin: '1em'}}>
                 <div id="testing" className="imageDissectContainer">
                    <img className={"imageToDissect " + 
-                   (this.state.addBlock?"imageToDissect_addBlock ":null)} src={this.imgUrl} />        
-                    {this.state.showLines && !this.state.addBlock?
+                   (this.props.addBlock?"imageToDissect_addBlock ":null)} src={this.imgUrl} />        
+                    {this.state.showLines && !this.props.addBlock?
                         <Fragment>
                             {this.renderLines()}
                         </Fragment>
                         :
                         null
                     }
-                    {this.state.showLines && this.state.addBlock?
+                    {this.state.showLines && this.props.addBlock?
                         <Fragment>
                             {this.displayPositions(this.state.pos)}
                         </Fragment>
