@@ -34,8 +34,6 @@ class DissectPictureView extends React.Component {
             }
         }
 
-        this.imgUrl = 'https://i.pinimg.com/564x/3d/22/ef/3d22ef2dc19d25469b0c4f75ce868118.jpg';
-
         this.renderLine = this.renderLine.bind(this);
         this.renderLines = this.renderLines.bind(this);
         this.mouseClick = this.mouseClick.bind(this);
@@ -159,7 +157,7 @@ class DissectPictureView extends React.Component {
             <div style={{margin: '1em'}}>
                 <div id="testing" className="imageDissectContainer">
                    <img className={"imageToDissect " + 
-                   (this.props.addBlock?"imageToDissect_addBlock ":null)} src={this.imgUrl} />        
+                   (this.props.addBlock?"imageToDissect_addBlock ":null)} src={this.props.imageUrl} />        
                     {this.state.showLines && !this.props.addBlock?
                         <Fragment>
                             {this.renderLines()}
