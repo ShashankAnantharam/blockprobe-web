@@ -1572,6 +1572,7 @@ class UserBlocksComponent extends React.Component {
                     <TabPanel>
                         <div>
                             <AddDissectPictureView
+                                bId = {this.props.bId}
                             />
                         </div>
                     </TabPanel>

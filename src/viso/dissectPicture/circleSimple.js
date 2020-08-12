@@ -18,7 +18,7 @@ class SimpleCircleView extends React.Component {
     }
 
     onClick(){
-        console.log(this.props.type);
+        
     }
 
     render(){

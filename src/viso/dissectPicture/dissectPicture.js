@@ -6,16 +6,8 @@ import { isNullOrUndefined } from 'util';
 import { black } from 'color-name';
 import SimpleCircleView from './circleSimple';
 
-class DissectPictureView extends React.Component {
-
-    constructor(props){
-        super(props);
-        //addBlock
-
-        this.state ={
-            showLines: false,
-            lines: [
-                {
+/*
+{
                     x0:1/7,
                     y0:321/652,
                     x1:0.2,
@@ -27,7 +19,17 @@ class DissectPictureView extends React.Component {
                     x1:0.8,
                     y1:0.95
                 }
-            ],
+                */
+
+class DissectPictureView extends React.Component {
+
+    constructor(props){
+        super(props);
+        //addBlock
+
+        this.state ={
+            showLines: false,
+            lines: [],
             pos:{
                 first:null,
                 second: null

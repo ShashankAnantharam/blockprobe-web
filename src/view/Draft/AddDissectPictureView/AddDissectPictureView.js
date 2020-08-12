@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import DissectPictureView from '../../../viso/dissectPicture/dissectPicture';
 import { Button } from '@material-ui/core';
+import Loader from 'react-loader-spinner';
 import TextField from '@material-ui/core/TextField';
-import { th } from 'date-fns/esm/locale';
+import * as firebase from 'firebase';
 import * as Utils from '../../../common/utilSvc';
 import './AddDissectPictureView.css';
 import { isNullOrUndefined } from 'util';
+import AddImageDissectPictureView from './AddImageDissectPictureView';
 
 class AddDissectPictureView extends React.Component {
 
@@ -19,11 +21,15 @@ class AddDissectPictureView extends React.Component {
             isEdit: false,
             oldTitle: "",
             oldSummary: "",
-            imageUrl: null
+            imageUrl: null,
+            editImage: false,
+            loadingImage: false
         }
 
         this.handleChange = this.handleChange.bind(this);
-
+        this.closeImagePane = this.closeImagePane.bind(this);
+        this.openImagePane = this.openImagePane.bind(this);
+        this.getImageFromDb = this.getImageFromDb.bind(this);
     }
 
     handleChange(event, type) {
@@ -40,17 +46,56 @@ class AddDissectPictureView extends React.Component {
         }
     }
 
-    componentDidMount(){
-        this.setState({
-            imageUrl: "https://i.pinimg.com/564x/3d/22/ef/3d22ef2dc19d25469b0c4f75ce868118.jpg"
-        })
+    async getImageFromDb(){
+        let scope = this;
+        scope.setState({
+            loadingImage: true
+        });
+        let path = this.props.bId + '/general/dissect_picture';
+        let pathRef = firebase.storage().ref(path);
+        try{
+        
+            let url = await pathRef.getDownloadURL();
+                         
+            scope.setState({
+                imageUrl: url,
+                loadingImage: false
+            });
+        }
+        catch(error){
+            scope.setState({
+                imageUrl: null,
+                loadingImage: false
+            });
+        }  
     }
 
-    render(){
+    componentDidMount(){
+       // this.setState({
+       //     imageUrl: "https://i.pinimg.com/564x/3d/22/ef/3d22ef2dc19d25469b0c4f75ce868118.jpg"
+       // })
+
+       this.getImageFromDb();
+    }
+
+    closeImagePane(){
+        this.setState({
+            editImage: false
+        });
+        this.getImageFromDb();
+    }
+
+    openImagePane(){
+        this.setState({
+            editImage: true
+        });
+    }
+
+    renderView(){
 
         return (
             <div>
-                {!isNullOrUndefined(this.state.imageUrl)?
+                {!isNullOrUndefined(this.state.imageUrl) && !this.state.editImage?
                     <div className="">
                         <div>
                             <DissectPictureView
@@ -59,6 +104,22 @@ class AddDissectPictureView extends React.Component {
                             />
                         </div>
                         <div className="leftMargin-1em" style={{display:'flex', flexWrap:'wrap'}}>
+                            {this.state.addConnection && this.state.title.length>0 && 
+                            (!this.state.isEdit || (this.state.title !=this.state.oldTitle 
+                                || this.state.summary != this.state.oldSummary))?
+                                <div>
+                                    <Button
+                                        variant="contained" 
+                                        onClick={() => { }}
+                                        className="savePicturePartButton"
+                                        >
+                                        Save
+                                    </Button>
+                                </div>
+                                :
+                                null
+                            }     
+
                             <div>
                                 <Button
                                     variant="contained" 
@@ -74,26 +135,28 @@ class AddDissectPictureView extends React.Component {
                                     {this.state.addConnection?
                                         "Cancel" 
                                         :
-                                        "Add"
+                                        "Add line"
                                     }
                                 </Button>
                             </div> 
 
-                            {this.state.addConnection && this.state.title.length>0 && 
-                            (!this.state.isEdit || (this.state.title !=this.state.oldTitle 
-                                || this.state.summary != this.state.oldSummary))?
+                            {!isNullOrUndefined(this.state.imageUrl)?
                                 <div>
                                     <Button
                                         variant="contained" 
-                                        onClick={() => { }}
-                                        className="savePicturePartButton"
+                                        onClick={() => {
+                                            this.setState({
+                                                editImage: true
+                                            });
+                                         }}
+                                        className="editPicturePartImageButton"
                                         >
-                                        Save
+                                        Change picture
                                     </Button>
                                 </div>
                                 :
                                 null
-                            }                   
+                            }              
                         </div>
                         <div className="leftMargin-1em">
                             {this.state.addConnection?
@@ -145,7 +208,32 @@ class AddDissectPictureView extends React.Component {
                         </div>
                     </div>
                     :
-                    null
+                    <AddImageDissectPictureView
+                            closeImagePane={this.closeImagePane}
+                            bId={this.props.bId}
+                            imageUrl = {this.state.imageUrl}
+                    />
+                }
+            </div>
+        )
+    }
+
+    render(){
+        return (
+            <div>
+                {this.state.loadingImage?
+                     <div style={{margin:'auto',width:'50px'}}>
+                        <Loader 
+                        type="TailSpin"
+                        color="#00BFFF"
+                        height="50"	
+                        width="50"
+                        /> 
+                    </div>
+                 :
+                    <div>
+                        {this.renderView()}
+                    </div>
                 }
             </div>
         )
