@@ -49,7 +49,7 @@ class AddImageDissectPictureView extends React.Component {
                 imageUrl: url,
                 isImageUploading: false
             });
-            scope.closeImagePane();
+            scope.closeImagePane(true);
         }
         catch(error){
             scope.setState({isImageUploading: false});
@@ -96,9 +96,9 @@ class AddImageDissectPictureView extends React.Component {
         }
     }
 
-    closeImagePane(){
+    closeImagePane(shouldUpdatePic){
         if(this.props.closeImagePane){
-            this.props.closeImagePane();
+            this.props.closeImagePane(shouldUpdatePic);
         }
     }
 
@@ -137,12 +137,21 @@ class AddImageDissectPictureView extends React.Component {
                             {this.state.imageUrl?
                                 <div style={{textAlign: 'center', marginBottom: '35px'}}>
                                     <span className="removeImageButton" onClick={this.removeImageFromDb}>
-                                        Remove image
+                                        Delete picture
                                     </span>
                                 </div>
                                 :
                                 null
-                            }                                            
+                            }
+                            {this.state.imageUrl?
+                                <div style={{textAlign: 'center', marginBottom: '35px'}}>
+                                    <span className="removeImageButton" onClick={() => this.closeImagePane(false)}>
+                                        Cancel
+                                    </span>
+                                </div>
+                                :
+                                null
+                            }                                             
                             <div style={{textAlign: 'center'}}>
                                 <Img src={[this.state.imageUrl]}
                                     style={{width:'200px', maxHeight:'200px', marginLeft: '1.1em'}}></Img>

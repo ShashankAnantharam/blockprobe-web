@@ -78,11 +78,12 @@ class AddDissectPictureView extends React.Component {
        this.getImageFromDb();
     }
 
-    closeImagePane(){
+    closeImagePane(shouldUpdate){
         this.setState({
             editImage: false
         });
-        this.getImageFromDb();
+        if(shouldUpdate)
+            this.getImageFromDb();
     }
 
     openImagePane(){
