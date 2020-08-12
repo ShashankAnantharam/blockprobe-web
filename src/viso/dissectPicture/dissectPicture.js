@@ -54,14 +54,20 @@ class DissectPictureView extends React.Component {
             let pos = this.state.pos;
             if(isNullOrUndefined(pos.first)){
                 pos.first = coord;
+                if(!isNullOrUndefined(this.props.coordinatesSelected))
+                    this.props.coordinatesSelected(null);
             }
             else if(!isNullOrUndefined(pos.first) && isNullOrUndefined(pos.second)){
                 pos.second = coord;
+                if(!isNullOrUndefined(this.props.coordinatesSelected))
+                    this.props.coordinatesSelected(pos);
             }
             else{
                 //Function to return value here
                 pos.first = coord;
                 pos.second = null;
+                if(!isNullOrUndefined(this.props.coordinatesSelected))
+                    this.props.coordinatesSelected(null);
             }
             this.setState({
                 pos:pos

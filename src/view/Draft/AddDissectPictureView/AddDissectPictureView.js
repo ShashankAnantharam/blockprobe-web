@@ -18,6 +18,7 @@ class AddDissectPictureView extends React.Component {
             addConnection: false,
             title: "",
             summary: "",
+            coord: null,
             isEdit: false,
             oldTitle: "",
             oldSummary: "",
@@ -30,6 +31,7 @@ class AddDissectPictureView extends React.Component {
         this.closeImagePane = this.closeImagePane.bind(this);
         this.openImagePane = this.openImagePane.bind(this);
         this.getImageFromDb = this.getImageFromDb.bind(this);
+        this.coordinatesSelected = this.coordinatesSelected.bind(this);
     }
 
     handleChange(event, type) {
@@ -92,6 +94,12 @@ class AddDissectPictureView extends React.Component {
         });
     }
 
+    coordinatesSelected(coord){
+        this.setState({
+            coord: coord
+        });
+    }
+
     renderView(){
 
         return (
@@ -102,12 +110,14 @@ class AddDissectPictureView extends React.Component {
                             <DissectPictureView
                                 addBlock={this.state.addConnection}
                                 imageUrl={this.state.imageUrl}
+                                coordinatesSelected={this.coordinatesSelected}
                             />
                         </div>
                         <div className="leftMargin-1em" style={{display:'flex', flexWrap:'wrap'}}>
                             {this.state.addConnection && this.state.title.length>0 && 
                             (!this.state.isEdit || (this.state.title !=this.state.oldTitle 
-                                || this.state.summary != this.state.oldSummary))?
+                                || this.state.summary != this.state.oldSummary))
+                                && !isNullOrUndefined(this.state.coord)?
                                 <div>
                                     <Button
                                         variant="contained" 
@@ -128,7 +138,8 @@ class AddDissectPictureView extends React.Component {
                                         this.setState({
                                             addConnection: !this.state.addConnection,
                                             title:"",
-                                            summary:""
+                                            summary:"",
+                                            coord: null
                                         })
                                     }}
                                     className="addPicturePartButton"
@@ -200,8 +211,7 @@ class AddDissectPictureView extends React.Component {
                                                     color: 'darkBlue',
                                                     fontWeight:'600'
                                                     }}/>
-                                </div>
-                                
+                                </div>    
                             </div>
                             :
                             null
