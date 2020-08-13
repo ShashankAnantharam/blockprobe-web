@@ -142,7 +142,7 @@ class AddDissectPictureView extends React.Component {
     }
 
     selectLine(lineDetails){
-        console.log(lineDetails);
+        // console.log(lineDetails);
         this.setState({
             isEdit: true,
             selectedLine: lineDetails,
@@ -196,18 +196,20 @@ class AddDissectPictureView extends React.Component {
                                     variant="contained" 
                                     onClick={() => { 
                                         this.setState({
-                                            addConnection: !this.state.addConnection,
+                                            addConnection: (this.state.isEdit?false:!this.state.addConnection),
                                             title:"",
                                             oldTitle:"",
                                             summary:"",
                                             oldSummary:"",
                                             coord: null,
-                                            selectedLine: null
+                                            selectedLine: null,
+                                            isEdit: false,
+                                            editReference: null
                                         })
                                     }}
                                     className="addPicturePartButton"
                                     >
-                                    {this.state.addConnection?
+                                    {this.state.addConnection || this.state.isEdit?
                                         "Cancel" 
                                         :
                                         "Add line"

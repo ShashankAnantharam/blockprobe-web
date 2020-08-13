@@ -131,7 +131,7 @@ class DissectPictureView extends React.Component {
 
     componentWillReceiveProps(newProps){
         if(isNullOrUndefined(this.props.lineToEdit) || 
-        JSON.stringify(this.props.lineToEdit.pos)!=JSON.stringify(newProps.lineToEdit.pos)){
+        JSON.stringify(this.props.lineToEdit)!=JSON.stringify(newProps.lineToEdit)){
             if(isNullOrUndefined(newProps.lineToEdit)){
                 let pos =  {
                     first:null,
@@ -228,7 +228,6 @@ class DissectPictureView extends React.Component {
             borderColor="black"
             className="lineS"
             zIndex={1}
-            onClick={() =>{console.log('here')}}
             />
         );
     }
