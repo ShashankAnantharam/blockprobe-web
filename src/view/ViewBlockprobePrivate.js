@@ -1268,6 +1268,9 @@ class ViewBlockprobePrivateComponent extends React.Component {
         if(newBlock.actionType == "ADD" || newBlock.actionType == "BpDetails"){
             newBlock.referenceBlock = null;
         }
+        else if(newBlock.actionType == "MODIFY"){
+            newBlock.previousKey = newBlock.referenceBlock;
+        }
         if(newBlock.actionType == "BpDetails"){
             if(!('title' in newBlock)){
                 newBlock.title = this.state.blockprobeTitle;

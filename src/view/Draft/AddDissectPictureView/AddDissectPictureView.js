@@ -95,9 +95,47 @@ class AddDissectPictureView extends React.Component {
     }
 
     coordinatesSelected(coord){
+        // console.log(coord);
         this.setState({
             coord: coord
         });
+    }
+
+    getLatestIndex(){
+        let latestIndex = 0 ;
+        if(this.props.lastIndexDraftBlocks.length > 0)
+            latestIndex = Math.max(latestIndex, this.props.lastIndexDraftBlocks[this.props.lastIndexDraftBlocks.length - 1]);
+
+        if(this.props.lastIndex){
+            latestIndex = Math.max(latestIndex, this.props.lastIndex);
+        }
+        return latestIndex;
+    }
+
+
+    saveLine(){
+
+        let index = this.getLatestIndex();
+        index += 0.1;
+        let fullBlock = {
+            title: `#${index} ${this.state.title}`,
+            summary: this.state.summary,
+            entities: [],
+            evidences: [],
+            lineCoord: this.state.coord,
+            referenceBlock: null,
+            timestamp: Date.now(),
+            actionType: 'ADD'
+        };
+
+        if(!isNullOrUndefined(this.props.reference)){
+            fullBlock['actionType'] = "MODIFY";
+            fullBlock.referenceBlock = this.props.reference; 
+        }
+
+        // console.log(fullBlock);
+        this.props.commitBlockToBlockprobe(fullBlock);
+
     }
 
     renderView(){
@@ -121,7 +159,7 @@ class AddDissectPictureView extends React.Component {
                                 <div>
                                     <Button
                                         variant="contained" 
-                                        onClick={() => { }}
+                                        onClick={() => { this.saveLine() }}
                                         className="savePicturePartButton"
                                         >
                                         Save

@@ -60,7 +60,7 @@ class DissectPictureView extends React.Component {
             else if(!isNullOrUndefined(pos.first) && isNullOrUndefined(pos.second)){
                 pos.second = coord;
                 if(!isNullOrUndefined(this.props.coordinatesSelected))
-                    this.props.coordinatesSelected(pos);
+                    this.props.coordinatesSelected(this.getRelativeLinePos(pos));
             }
             else{
                 //Function to return value here
@@ -72,6 +72,28 @@ class DissectPictureView extends React.Component {
             this.setState({
                 pos:pos
             });
+        }
+    }
+
+    getRelativeLinePos(pos){
+        let newPos = {};
+        if(pos.first){
+            newPos.first = this.getRelativeCoord(pos.first);
+        }
+        if(pos.second){
+            newPos.second = this.getRelativeCoord(pos.second);
+        }
+        return newPos;
+    }
+
+    getRelativeCoord(coord){
+        let x = 
+        (coord.x - document.getElementById("testing").offsetLeft)/Math.max(1,document.getElementById("testing").getBoundingClientRect().width);                
+        let y = 
+                (coord.y - document.getElementById("testing").offsetTop)/Math.max(1,document.getElementById("testing").getBoundingClientRect().height);
+        return {
+            x: x,
+            y: y
         }
     }
 

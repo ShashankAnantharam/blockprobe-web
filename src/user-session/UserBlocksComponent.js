@@ -1573,6 +1573,9 @@ class UserBlocksComponent extends React.Component {
                         <div>
                             <AddDissectPictureView
                                 bId = {this.props.bId}
+                                commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
+                                lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
+                                lastIndex = {this.props.lastIndex}
                             />
                         </div>
                     </TabPanel>
