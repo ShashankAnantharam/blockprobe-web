@@ -133,36 +133,40 @@ class DissectPictureView extends React.Component {
         if(isNullOrUndefined(this.props.lineToEdit) || 
         JSON.stringify(this.props.lineToEdit)!=JSON.stringify(newProps.lineToEdit)){
             if(isNullOrUndefined(newProps.lineToEdit)){
-                let pos =  {
-                    first:null,
-                    second: null
+                if(!this.props.addBlock){
+                    let pos =  {
+                        first:null,
+                        second: null
+                    }
+                    this.setState({
+                        pos: pos
+                    });
                 }
-                this.setState({
-                    pos: pos
-                });
             }
             else{
-                let lineCoord = newProps.lineToEdit;
-                
-                let pos = this.state.pos;
-                pos.first=  
-                {
-                    x: document.getElementById("testing").offsetLeft + 
-                document.getElementById("testing").getBoundingClientRect().width*lineCoord.first.x,
-                    y: document.getElementById("testing").offsetTop + 
-                document.getElementById("testing").getBoundingClientRect().height*lineCoord.first.y            
-                }
-                pos.second=  
-                {
-                    x: document.getElementById("testing").offsetLeft + 
-                document.getElementById("testing").getBoundingClientRect().width*lineCoord.second.x,
-                    y: document.getElementById("testing").offsetTop + 
-                document.getElementById("testing").getBoundingClientRect().height*lineCoord.second.y            
-                }
+                if(!this.props.addBlock){
+                    let lineCoord = newProps.lineToEdit;
+                    
+                    let pos = this.state.pos;
+                    pos.first=  
+                    {
+                        x: document.getElementById("testing").offsetLeft + 
+                    document.getElementById("testing").getBoundingClientRect().width*lineCoord.first.x,
+                        y: document.getElementById("testing").offsetTop + 
+                    document.getElementById("testing").getBoundingClientRect().height*lineCoord.first.y            
+                    }
+                    pos.second=  
+                    {
+                        x: document.getElementById("testing").offsetLeft + 
+                    document.getElementById("testing").getBoundingClientRect().width*lineCoord.second.x,
+                        y: document.getElementById("testing").offsetTop + 
+                    document.getElementById("testing").getBoundingClientRect().height*lineCoord.second.y            
+                    }
 
-                this.setState({
-                    pos: pos
-                })
+                    this.setState({
+                        pos: pos
+                    })
+                }
             }
         }
     }
