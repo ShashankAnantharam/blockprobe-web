@@ -16,6 +16,8 @@ class GamifiedPartsOfImageView extends React.Component {
       }
 
       ReactGA.initialize('UA-143383035-1');  
+
+      this.getImageFromDb = this.getImageFromDb.bind(this);
     }
 
     componentDidMount(){
@@ -28,6 +30,7 @@ class GamifiedPartsOfImageView extends React.Component {
             loadingImage: true
         });
         let path = this.props.bpId + '/general/dissect_picture';
+        console.log(path);
         let pathRef = firebase.storage().ref(path);
         try{
         
