@@ -29,6 +29,7 @@ class DissectPictureView extends React.Component {
 
         this.state ={
             showLines: false,
+            imageLoaded: false,
             lines: [],
             pos:{
                 first:null,
@@ -122,11 +123,10 @@ class DissectPictureView extends React.Component {
 
     componentDidMount(){ 
         document.getElementById("testing").addEventListener("click", this.mouseClick);
+        
         this.setState({
             showLines: true
         });
-
-        console.log(this.props.partsOfImageLines);
     }
 
     getLines(){
@@ -204,21 +204,28 @@ class DissectPictureView extends React.Component {
         );
     }
 
+    imageLoaded(){
+        this.setState({
+            imageLoaded: true
+        });
+    }
+
     render(){
 
         return (
             <div style={{margin: '1em'}}>
                 <div id="testing" className="imageDissectContainer">
-                   <img className={"imageToDissect " + 
+                   <img onLoad={() => this.imageLoaded()}                    
+                   className={"imageToDissect " + 
                    (this.props.addBlock?"imageToDissect_addBlock ":null)} src={this.props.imageUrl} />        
-                    {this.state.showLines && !this.props.addBlock?
+                    {this.state.showLines && !this.props.addBlock && this.state.imageLoaded?
                         <Fragment>
                             {this.renderLines()}
                         </Fragment>
                         :
                         null
                     }
-                    {this.state.showLines && this.props.addBlock?
+                    {this.state.showLines && this.props.addBlock && this.state.imageLoaded?
                         <Fragment>
                             {this.displayPositions(this.state.pos)}
                         </Fragment>
