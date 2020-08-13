@@ -118,7 +118,7 @@ class AddDissectPictureView extends React.Component {
         let index = this.getLatestIndex();
         index += 0.1;
         let fullBlock = {
-            title: `#${index} ${this.state.title}`,
+            title: `${this.state.title}`,
             summary: this.state.summary,
             entities: [],
             evidences: [],
@@ -146,6 +146,7 @@ class AddDissectPictureView extends React.Component {
                     <div className="">
                         <div>
                             <DissectPictureView
+                                partsOfImageLines={this.props.partsOfImageList}
                                 addBlock={this.state.addConnection}
                                 imageUrl={this.state.imageUrl}
                                 coordinatesSelected={this.coordinatesSelected}

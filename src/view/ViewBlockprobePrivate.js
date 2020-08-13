@@ -54,6 +54,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
             entityChanges: {},
             timeline: [],
             summaryList: [],
+            partsOfImageList: [],
             latestBlock: null,
             selectedBlockSidebarOpen: false,
             menuBarOpen: false,
@@ -594,6 +595,17 @@ class ViewBlockprobePrivateComponent extends React.Component {
         return false;
     }
 
+    createPartsOfImage(blockList){
+        var pIList = [];
+        blockList.forEach((blockKey) => {
+            var block = this.state.blockTree[blockKey];
+            if(!isNullOrUndefined(block.lineCoord)){
+                pIList.push(block);
+            }
+        }); 
+        this.setState({partsOfImageList: pIList});     
+    }
+
     createSummaryList(blockList){
         var sList = [];
 
@@ -800,6 +812,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
 
         this.createInvestigationGraph(finalBlockList);
         this.createSummaryList(finalBlockList);
+        this.createPartsOfImage(finalBlockList);
 
         // console.log(finalBlockList);               
     }
@@ -1084,6 +1097,7 @@ class ViewBlockprobePrivateComponent extends React.Component {
                     multiSelectEntityList = {this.state.multiSelectEntityList}
                     timeline={this.state.timeline}  
                     summaryBlocks = {this.state.summaryList}
+                    partsOfImageList = {this.state.partsOfImageList}
                     lastIndex = {this.state.lastTitleIndex} 
                     lang = {this.state.lang}          
                     />

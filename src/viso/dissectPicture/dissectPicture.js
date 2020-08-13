@@ -124,11 +124,34 @@ class DissectPictureView extends React.Component {
         document.getElementById("testing").addEventListener("click", this.mouseClick);
         this.setState({
             showLines: true
-        })
+        });
+
+        console.log(this.props.partsOfImageLines);
+    }
+
+    getLines(){
+        let blockList = this.props.partsOfImageLines;
+        let lines = [];
+        if(blockList){
+            blockList.map((block)=>{
+                let line = {
+                    title: block.title,
+                    summary: block.summary,
+                    x0: block.lineCoord.first.x,
+                    y0: block.lineCoord.first.y,
+                    x1: block.lineCoord.second.x,
+                    y1: block.lineCoord.second.y,
+                    lineCoord: block.lineCoord,
+                    key: block.key
+                }
+                lines.push(line);
+            });    
+        }
+        return lines;
     }
 
     renderLines(){
-        let lines = this.state.lines;
+        let lines = this.getLines();
 
         function onClick(){
             console.log("Here");

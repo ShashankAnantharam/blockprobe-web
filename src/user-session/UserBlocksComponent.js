@@ -1576,6 +1576,7 @@ class UserBlocksComponent extends React.Component {
                                 commitBlockToBlockprobe = {this.props.commitBlockToBlockprobe}
                                 lastIndexDraftBlocks = {this.state.lastIndexDraftBlocks}
                                 lastIndex = {this.props.lastIndex}
+                                partsOfImageList = {this.props.partsOfImageList}
                             />
                         </div>
                     </TabPanel>
