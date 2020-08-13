@@ -22,9 +22,11 @@ class AddDissectPictureView extends React.Component {
             isEdit: false,
             oldTitle: "",
             oldSummary: "",
+            editReference: null,
             imageUrl: null,
             editImage: false,
-            loadingImage: false
+            loadingImage: false,
+            selectedLine: null
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,6 +34,7 @@ class AddDissectPictureView extends React.Component {
         this.openImagePane = this.openImagePane.bind(this);
         this.getImageFromDb = this.getImageFromDb.bind(this);
         this.coordinatesSelected = this.coordinatesSelected.bind(this);
+        this.selectLine = this.selectLine.bind(this);
     }
 
     handleChange(event, type) {
@@ -128,9 +131,9 @@ class AddDissectPictureView extends React.Component {
             actionType: 'ADD'
         };
 
-        if(!isNullOrUndefined(this.props.reference)){
+        if(!isNullOrUndefined(this.state.editReference)){
             fullBlock['actionType'] = "MODIFY";
-            fullBlock.referenceBlock = this.props.reference; 
+            fullBlock.referenceBlock = this.state.editReference; 
         }
 
         // console.log(fullBlock);
@@ -138,8 +141,24 @@ class AddDissectPictureView extends React.Component {
 
     }
 
+    selectLine(lineDetails){
+        console.log(lineDetails);
+        this.setState({
+            isEdit: true,
+            selectedLine: lineDetails,
+            title: lineDetails.title,
+            summary: lineDetails.summary,
+            oldTitle: lineDetails.title,
+            oldSummary: lineDetails.summary,
+            editReference: lineDetails.key
+        });
+    }
+
     renderView(){
 
+        let lineToEdit = null;
+        if(!isNullOrUndefined(this.state.selectedLine))
+            lineToEdit = this.state.selectedLine.lineCoord;
         return (
             <div>
                 {!isNullOrUndefined(this.state.imageUrl) && !this.state.editImage?
@@ -147,9 +166,11 @@ class AddDissectPictureView extends React.Component {
                         <div>
                             <DissectPictureView
                                 partsOfImageLines={this.props.partsOfImageList}
-                                addBlock={this.state.addConnection}
+                                addBlock={this.state.addConnection | this.state.isEdit}
                                 imageUrl={this.state.imageUrl}
                                 coordinatesSelected={this.coordinatesSelected}
+                                selectLine={this.selectLine}
+                                lineToEdit={lineToEdit}
                             />
                         </div>
                         <div className="leftMargin-1em" style={{display:'flex', flexWrap:'wrap'}}>
@@ -177,8 +198,11 @@ class AddDissectPictureView extends React.Component {
                                         this.setState({
                                             addConnection: !this.state.addConnection,
                                             title:"",
+                                            oldTitle:"",
                                             summary:"",
-                                            coord: null
+                                            oldSummary:"",
+                                            coord: null,
+                                            selectedLine: null
                                         })
                                     }}
                                     className="addPicturePartButton"
@@ -210,7 +234,7 @@ class AddDissectPictureView extends React.Component {
                             }              
                         </div>
                         <div className="leftMargin-1em">
-                            {this.state.addConnection?
+                            {this.state.addConnection || this.state.isEdit?
                             <div>
                                 <h4 className="addEdgeTitle"> Picture part</h4>
                                 <div className="addEdgeBlockTextContainer">

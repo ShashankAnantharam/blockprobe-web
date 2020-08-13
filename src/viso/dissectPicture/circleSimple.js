@@ -8,7 +8,7 @@ class SimpleCircleView extends React.Component {
 
     constructor(props){
         super(props);
-        //id, x, y, type
+        //id, x, y, lineDetails
 
         this.onClick = this.onClick.bind(this);
     }
@@ -18,7 +18,9 @@ class SimpleCircleView extends React.Component {
     }
 
     onClick(){
-        
+        if(this.props.onClick){
+            this.props.onClick(this.props.lineDetails);
+        }
     }
 
     render(){

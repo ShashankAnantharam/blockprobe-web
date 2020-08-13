@@ -25,7 +25,7 @@ class DissectPictureView extends React.Component {
 
     constructor(props){
         super(props);
-        //addBlock
+        //addBlock, selectLine
 
         this.state ={
             showLines: false,
@@ -129,6 +129,44 @@ class DissectPictureView extends React.Component {
         });
     }
 
+    componentWillReceiveProps(newProps){
+        if(isNullOrUndefined(this.props.lineToEdit) || 
+        JSON.stringify(this.props.lineToEdit.pos)!=JSON.stringify(newProps.lineToEdit.pos)){
+            if(isNullOrUndefined(newProps.lineToEdit)){
+                let pos =  {
+                    first:null,
+                    second: null
+                }
+                this.setState({
+                    pos: pos
+                });
+            }
+            else{
+                let lineCoord = newProps.lineToEdit;
+                
+                let pos = this.state.pos;
+                pos.first=  
+                {
+                    x: document.getElementById("testing").offsetLeft + 
+                document.getElementById("testing").getBoundingClientRect().width*lineCoord.first.x,
+                    y: document.getElementById("testing").offsetTop + 
+                document.getElementById("testing").getBoundingClientRect().height*lineCoord.first.y            
+                }
+                pos.second=  
+                {
+                    x: document.getElementById("testing").offsetLeft + 
+                document.getElementById("testing").getBoundingClientRect().width*lineCoord.second.x,
+                    y: document.getElementById("testing").offsetTop + 
+                document.getElementById("testing").getBoundingClientRect().height*lineCoord.second.y            
+                }
+
+                this.setState({
+                    pos: pos
+                })
+            }
+        }
+    }
+
     getLines(){
         let blockList = this.props.partsOfImageLines;
         let lines = [];
@@ -153,8 +191,11 @@ class DissectPictureView extends React.Component {
     renderLines(){
         let lines = this.getLines();
 
-        function onClick(){
-            console.log("Here");
+        let scope = this;
+        function onClick(lineDetails){
+            if(scope.props.selectLine){
+                scope.props.selectLine(lineDetails);
+            }
         }
 
         let lineRender = lines.map((line) => {
@@ -173,7 +214,7 @@ class DissectPictureView extends React.Component {
             return (
                 <Fragment>
                     {this.renderLine(f0[0],f0[1],f1[0],f1[1])}
-                    {this.renderCircle(f1[0],f1[1],'trial',onClick)}
+                    {this.renderCircle(f1[0],f1[1],line,onClick)}
                 </Fragment>
             )
         });
@@ -192,11 +233,11 @@ class DissectPictureView extends React.Component {
         );
     }
 
-    renderCircle(x,y,type, onClick){
+    renderCircle(x,y,lineDetails, onClick){
         return (
             <SimpleCircleView
                 id="circle1"
-                type={type}
+                lineDetails={lineDetails}
                 x={x}
                 y={y}
                 onClick={onClick}
