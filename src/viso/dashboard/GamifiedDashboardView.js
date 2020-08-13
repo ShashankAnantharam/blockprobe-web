@@ -15,12 +15,13 @@ import FindConnectionsComponent from "../FindConnectionsComponent";
 import TimelineComponent from "../TimelineComponent";
 import * as Locale from "../../Localization/localizedStrings";
 import { isNullOrUndefined } from 'util';
+import GamifiedPartsOfImageView from '../gamifiedPartsOfImage/gamifiedPartsOfImage';
 
 class GamifiedDashboardViewComponent extends React.Component {
 
     constructor(props){
       super(props);
-     //lang is necessary
+     //lang is necessary, partsOfImageList
 
       this.state={
           key: 'graph',
@@ -53,6 +54,7 @@ class GamifiedDashboardViewComponent extends React.Component {
       this.isSummaryBlocksAvailable = this.isSummaryBlocksAvailable.bind(this);
       this.isGraphAvailable = this.isGraphAvailable.bind(this);
       this.isTimelineAvailable = this.isTimelineAvailable.bind(this);
+      this.isDissectPictureAvailable = this.isDissectPictureAvailable.bind(this);
       this.showLocalTooltip = this.showLocalTooltip.bind(this);
       this.hideLocalTooltip = this.hideLocalTooltip.bind(this);
       this.handleAdhocTooltipJoyrideCallback = this.handleAdhocTooltipJoyrideCallback.bind(this);
@@ -106,8 +108,16 @@ class GamifiedDashboardViewComponent extends React.Component {
         return false;
     }
 
+    //console.log(props.partsOfImageList);
+    isDissectPictureAvailable(){
+        if(this.props.partsOfImageList && this.props.partsOfImageList.length > 0)
+            return true;
+        return false;
+    }
+
     isBlockprobeEmpty(){
-        if(!this.isTimelineAvailable() && !this.isGraphAvailable() && !this.isSummaryBlocksAvailable()){
+        if(!this.isTimelineAvailable() && !this.isGraphAvailable() && 
+        !this.isSummaryBlocksAvailable() && !this.isDissectPictureAvailable()){
             return true;
         }
         return false;
@@ -179,6 +189,17 @@ class GamifiedDashboardViewComponent extends React.Component {
                     :
                     null
                 } 
+
+                {this.isDissectPictureAvailable()?
+                    <div>
+                        <GamifiedPartsOfImageView
+                            bpId={this.props.bpId}
+                            partsOfImageList={this.props.partsOfImageList}
+                        />
+                    </div>
+                    :
+                    null
+                }
 
                 {this.isTimelineAvailable()?
                     <div>

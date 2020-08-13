@@ -50,6 +50,7 @@ class ViewBlockprobePublicComponent extends React.Component {
             entityChanges: {},
             timeline: [],
             summaryList: [],
+            partsOfImageList: [],
             viewerList: [],
             selectedBlockSidebarOpen: false,
             shouldShowLogin: false,
@@ -461,6 +462,17 @@ class ViewBlockprobePublicComponent extends React.Component {
         this.setState({imageMapping: imageMapping});
     }
 
+    createPartsOfImage(blockList){
+        var pIList = [];
+        blockList.forEach((blockKey) => {
+            var block = this.state.blockTree[blockKey];
+            if(!isNullOrUndefined(block.lineCoord)){
+                pIList.push(block);
+            }
+        }); 
+        this.setState({partsOfImageList: pIList});     
+    }
+
     createBlockprobe(snapshot){
         snapshot.forEach((doc) => ( this.addBlocksToProbe(doc)));        
         var timelineList = [];
@@ -521,6 +533,7 @@ class ViewBlockprobePublicComponent extends React.Component {
 
         this.createInvestigationGraph(finalBlockList);
         this.createSummaryList(finalBlockList);
+        this.createPartsOfImage(finalBlockList);
 
         if(this.props.visulationType == 'game'){
             ReactGA.event({
@@ -725,6 +738,7 @@ class ViewBlockprobePublicComponent extends React.Component {
                                 selectBlock={this.changeSelectedBlock}
                                 multiSelectEntityList = {this.state.multiSelectEntityList}
                                 timeline={this.state.timeline}    
+                                partsOfImageList={this.state.partsOfImageList}
                                 imageMapping={this.state.imageMapping}
                                 lang = {this.state.lang}
                                 setScrollToGraphList ={this.setScrollToGraphList}     
