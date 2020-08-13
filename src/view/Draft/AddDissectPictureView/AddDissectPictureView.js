@@ -22,6 +22,7 @@ class AddDissectPictureView extends React.Component {
             isEdit: false,
             oldTitle: "",
             oldSummary: "",
+            oldCoord: null,
             editReference: null,
             imageUrl: null,
             editImage: false,
@@ -141,6 +142,21 @@ class AddDissectPictureView extends React.Component {
 
     }
 
+    deleteLine(){
+        let fullBlock = {
+            title: `${this.state.oldTitle}`,
+            summary: this.state.oldSummary,
+            entities: [],
+            evidences: [],
+            lineCoord: this.state.oldCoord,
+            referenceBlock: null,
+            timestamp: Date.now()
+        };
+        fullBlock['actionType'] = "REMOVE";
+        fullBlock.referenceBlock = this.state.editReference; 
+        this.props.commitBlockToBlockprobe(fullBlock);
+    }
+
     selectLine(lineDetails){
         // console.log(lineDetails);
         this.setState({
@@ -148,8 +164,10 @@ class AddDissectPictureView extends React.Component {
             selectedLine: lineDetails,
             title: lineDetails.title,
             summary: lineDetails.summary,
+            coord: lineDetails.lineCoord,
             oldTitle: lineDetails.title,
             oldSummary: lineDetails.summary,
+            oldCoord: lineDetails.lineCoord,
             editReference: lineDetails.key
         });
     }
@@ -174,9 +192,15 @@ class AddDissectPictureView extends React.Component {
                             />
                         </div>
                         <div className="leftMargin-1em" style={{display:'flex', flexWrap:'wrap'}}>
-                            {this.state.addConnection && this.state.title.length>0 && 
-                            (!this.state.isEdit || (this.state.title !=this.state.oldTitle 
-                                || this.state.summary != this.state.oldSummary))
+                            {(this.state.addConnection || 
+                            (this.state.isEdit) && 
+                            (
+                                (this.state.title !=this.state.oldTitle 
+                                    || this.state.summary != this.state.oldSummary
+                                || JSON.stringify(this.state.coord)!=JSON.stringify(this.state.oldCoord))
+                            )
+                            ) && 
+                            this.state.title.length>0 
                                 && !isNullOrUndefined(this.state.coord)?
                                 <div>
                                     <Button
@@ -189,7 +213,21 @@ class AddDissectPictureView extends React.Component {
                                 </div>
                                 :
                                 null
-                            }     
+                            }   
+
+                            {this.state.isEdit?
+                                <div>
+                                <Button
+                                    variant="contained" 
+                                    onClick={() => { this.deleteLine() }}
+                                    className="deletePicturePartButton"
+                                    >
+                                    Delete
+                                </Button>
+                            </div>
+                            :
+                            null
+                            }  
 
                             <div>
                                 <Button
@@ -202,6 +240,7 @@ class AddDissectPictureView extends React.Component {
                                             summary:"",
                                             oldSummary:"",
                                             coord: null,
+                                            oldCoord: null,
                                             selectedLine: null,
                                             isEdit: false,
                                             editReference: null
