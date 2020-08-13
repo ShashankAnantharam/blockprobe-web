@@ -33,6 +33,23 @@
     cursor: pointer;
 }
 
+.rectangle_dissectPicture{
+    width: 5px;
+    height: 5px;
+    transition: 0.2s;
+    background: rgb(102, 0, 102);
+}
+
+.rectangle_dissectPicture:hover{
+    width: 7px;
+    height: 7px;
+    background: rgb(163, 20, 20)
+}
+
+.rectangle_dissectPicture_clickable{
+    cursor: pointer;
+}
+
 .imageToDissect_addBlock{
     opacity: 0.5;
 }

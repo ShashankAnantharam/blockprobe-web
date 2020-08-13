@@ -5,6 +5,7 @@ import './dissectPicture.css';
 import { isNullOrUndefined } from 'util';
 import { black } from 'color-name';
 import SimpleCircleView from './circleSimple';
+import SimpleRectangleView from './rectangleSimple';
 
 /*
 {
@@ -104,13 +105,14 @@ class DissectPictureView extends React.Component {
             <Fragment>
                 {!isNullOrUndefined(pos.first)?
                     <Fragment>
-                        {this.renderCircle(pos.first.x,pos.first.y)}
+                        {this.renderRectangle(pos.first.x,pos.first.y)}
                     </Fragment>
                     :
                     null
                 }
                 {!isNullOrUndefined(pos.second)?
                     <Fragment>
+                        {this.renderRectangle(pos.first.x,pos.first.y)}
                         {this.renderCircle(pos.second.x,pos.second.y)}
                         {this.renderLine(pos.first.x,pos.first.y,pos.second.x,pos.second.y)}
                     </Fragment>
@@ -219,6 +221,7 @@ class DissectPictureView extends React.Component {
                 <Fragment>
                     {this.renderLine(f0[0],f0[1],f1[0],f1[1])}
                     {this.renderCircle(f1[0],f1[1],line,onClick)}
+                    {this.renderRectangle(f0[0],f0[1],line,onClick)}
                 </Fragment>
             )
         });
@@ -240,6 +243,18 @@ class DissectPictureView extends React.Component {
         return (
             <SimpleCircleView
                 id="circle1"
+                lineDetails={lineDetails}
+                x={x}
+                y={y}
+                onClick={onClick}
+                />
+        );
+    }
+
+    renderRectangle(x,y,lineDetails, onClick){
+        return (
+            <SimpleRectangleView
+                id="rectangle1"
                 lineDetails={lineDetails}
                 x={x}
                 y={y}
