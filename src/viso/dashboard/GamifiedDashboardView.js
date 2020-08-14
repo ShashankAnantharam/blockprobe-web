@@ -152,7 +152,11 @@ class GamifiedDashboardViewComponent extends React.Component {
                     <div>
                         <div className="dashboard-section-heading graph-heading">{"Parts of the picture"}</div>
                         <GamifiedPartsOfImageView
+                            playSound = {this.state.playSound}
                             bpId={this.props.bpId}
+                            title={this.props.title}
+                            isPublic = {this.props.isPublic}
+                            lang = {this.props.lang}
                             partsOfImageList={this.props.partsOfImageList}
                         />
                     </div>
