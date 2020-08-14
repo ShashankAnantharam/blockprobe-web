@@ -31,7 +31,8 @@ class GamifiedPartsOfImageView extends React.Component {
         answerTitle: null,
         answerSummary: null,
         slideCard: true,
-        correctAns: {}
+        correctAns: {},
+        restrictedLines: {}
       }
 
       ReactGA.initialize('UA-143383035-1');  
@@ -157,6 +158,15 @@ class GamifiedPartsOfImageView extends React.Component {
                 correctAns: correctAns,
                 selectedLine: selectedLine
             });
+
+            if(type=='summary'){
+                let restrictedLines = this.state.restrictedLines;
+                restrictedLines[this.state.selectedLine.key] = true;
+                this.setState({
+                    selectedLine: null,
+                    restrictedLines: restrictedLines
+                });
+            }
         }
         else{
             //Wrong answer
@@ -218,7 +228,10 @@ class GamifiedPartsOfImageView extends React.Component {
     }
 
     render(){
-
+        let lineCoord = null;
+        if(this.state.selectedLine && this.state.selectedLine.lineCoord){
+            lineCoord = this.state.selectedLine.lineCoord;
+        }
         return (
             <div>
                 {!this.state.loadingImage?
@@ -227,6 +240,9 @@ class GamifiedPartsOfImageView extends React.Component {
                             partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList,this.state.correctAns)}
                             imageUrl={this.state.imageUrl}
                             selectLine={this.selectLine}
+                            viewSingleLine={!isNullOrUndefined(lineCoord)}
+                            singleLineCoord={lineCoord}
+                            restrictedLines={this.state.restrictedLines}
                         />
                         {!isNullOrUndefined(this.state.selectedLine)?
                             <div>                                

@@ -26,13 +26,17 @@ class DissectPictureView extends React.Component {
 
     constructor(props){
         super(props);
-        //addBlock, selectLine
+        //addBlock, selectLine, blackListKey
 
         this.state ={
             showLines: false,
             imageLoaded: false,
             lines: [],
             pos:{
+                first:null,
+                second: null
+            },
+            selectedLinePos:{
                 first:null,
                 second: null
             }
@@ -100,7 +104,6 @@ class DissectPictureView extends React.Component {
     }
 
     displayPositions(pos){
-
         return(
             <Fragment>
                 {!isNullOrUndefined(pos.first)?
@@ -171,6 +174,46 @@ class DissectPictureView extends React.Component {
                 }
             }
         }
+
+        if(this.props.viewSingleLine != newProps.viewSingleLine && 
+            JSON.stringify(this.props.singleLineCoord)!=
+            JSON.stringify(newProps.singleLineCoord)){
+                if(isNullOrUndefined(newProps.singleLineCoord)){
+                    if(!this.props.viewSingleLine){
+                        let pos =  {
+                            first:null,
+                            second: null
+                        }
+                        this.setState({
+                            selectedLinePos: pos
+                        });
+                    }
+                }
+                else{
+                    if(!this.props.viewSingleLine){
+                        let lineCoord = newProps.singleLineCoord;
+                        let pos = this.state.selectedLinePos;
+                        pos.first=  
+                                {
+                                    x: document.getElementById("testing").offsetLeft + 
+                                document.getElementById("testing").getBoundingClientRect().width*lineCoord.first.x,
+                                    y: document.getElementById("testing").offsetTop + 
+                                document.getElementById("testing").getBoundingClientRect().height*lineCoord.first.y            
+                                }
+                        pos.second=  
+                                {
+                                    x: document.getElementById("testing").offsetLeft + 
+                                document.getElementById("testing").getBoundingClientRect().width*lineCoord.second.x,
+                                    y: document.getElementById("testing").offsetTop + 
+                                document.getElementById("testing").getBoundingClientRect().height*lineCoord.second.y            
+                                };
+                        this.setState({
+                            selectedLinePos: pos
+                        });
+                    }
+                }
+            
+        }
     }
 
     getLines(){
@@ -211,6 +254,8 @@ class DissectPictureView extends React.Component {
         }
 
         let lineRender = lines.map((line) => {
+            if(scope.props.restrictedLines && scope.props.restrictedLines[line.key])
+                return null;
             let f0 = [
                 document.getElementById("testing").offsetLeft + 
                 document.getElementById("testing").getBoundingClientRect().width*line.x0,
@@ -282,20 +327,29 @@ class DissectPictureView extends React.Component {
                 <div id="testing" className="imageDissectContainer">
                    <img onLoad={() => this.imageLoaded()}                    
                    className={"imageToDissect " + 
-                   (this.props.addBlock?"imageToDissect_addBlock ":null)} src={this.props.imageUrl} />        
-                    {this.state.showLines && !this.props.addBlock && this.state.imageLoaded?
+                   (this.props.addBlock|| this.props.viewSingleLine?"imageToDissect_addBlock ":null)} src={this.props.imageUrl} />        
+                    {this.state.showLines && !this.props.addBlock && this.state.imageLoaded 
+                    && !this.props.viewSingleLine?
                         <Fragment>
                             {this.renderLines()}
                         </Fragment>
                         :
                         null
                     }
-                    {this.state.showLines && this.props.addBlock && this.state.imageLoaded?
+                    {this.state.showLines && this.props.addBlock && this.state.imageLoaded
+                    && !this.props.viewSingleLine?
                         <Fragment>
                             {this.displayPositions(this.state.pos)}
                         </Fragment>
                         :
                         null
+                    }
+                    {this.props.viewSingleLine?
+                        <Fragment>
+                            {this.displayPositions(this.state.selectedLinePos)}
+                        </Fragment>
+                    :
+                    null
                     }                
                 </div>
             </div>
