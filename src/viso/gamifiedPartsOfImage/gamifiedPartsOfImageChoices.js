@@ -38,9 +38,8 @@ class GamifiedPartsOfImageChoicesView extends React.Component {
     }
 
     clickedChoice(choice){
-        console.log(choice);
         if(this.props.onClickChoice){
-            this.props.onClickChoice(choice);
+            this.props.onClickChoice(this.props.type,choice);
         }
     }
 
@@ -98,7 +97,7 @@ class GamifiedPartsOfImageChoicesView extends React.Component {
                 <Grid
                 container
                 direction="row">
-                    {this.renderMultipleCueCards(arr)}
+                    {this.renderMultipleCueCards(this.props.choices)}
                 </Grid>
             </div>
         </div>

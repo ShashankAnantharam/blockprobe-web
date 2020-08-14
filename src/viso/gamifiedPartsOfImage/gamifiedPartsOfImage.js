@@ -39,6 +39,7 @@ class GamifiedPartsOfImageView extends React.Component {
       this.getImageFromDb = this.getImageFromDb.bind(this);
       this.selectLine = this.selectLine.bind(this);
       this.getGamedPartsOfImageList = this.getGamedPartsOfImageList.bind(this);
+      this.onClickChoice = this.onClickChoice.bind(this);
     }
 
     componentDidMount(){
@@ -70,7 +71,6 @@ class GamifiedPartsOfImageView extends React.Component {
     }
 
     selectLine(lineDetails){
-        console.log(lineDetails);
         if(JSON.stringify(this.state.selectedLine)!=JSON.stringify(lineDetails)){
             this.setState({
                 selectedLine: lineDetails,
@@ -142,19 +142,42 @@ class GamifiedPartsOfImageView extends React.Component {
         );
     }
 
+    onClickChoice(type,choice){
+        if(this.state.selectedLine[type] == choice[type]){
+            //Correct answer
+            this.incrementScore();
+            
+            let correctAns = this.state.correctAns;
+            if(!(this.state.selectedLine.key in correctAns))
+                correctAns[this.state.selectedLine.key] = {};
+            correctAns[this.state.selectedLine.key][type] = true;
+            let selectedLine = this.state.selectedLine;
+            selectedLine[type] = choice[type];
+            this.setState({
+                correctAns: correctAns,
+                selectedLine: selectedLine
+            });
+        }
+        else{
+            //Wrong answer
+        }
+    }
+
     renderOptions(type, arr){
         //type is Name or Details
         //arr are choices
         return (
             <div>
                 <GamifiedPartsOfImageChoicesView
+                    choices = {arr}
+                    type={type}
+                    onClickChoice={this.onClickChoice}
                     />
             </div>
         )
     }
 
-    getGamedPartsOfImageList(list){
-        let correctAns = this.state.correctAns;
+    getGamedPartsOfImageList(list,correctAns){
         let  ans = [];
         for(let i=0;list && i<list.length;i++){
             let newElem = JSON.parse(JSON.stringify(list[i]));
@@ -162,17 +185,34 @@ class GamifiedPartsOfImageView extends React.Component {
                 newElem['answeredTitle'] = newElem.title;
             }
             else{
-                newElem['answeredTitle'] = "Name?";
+                newElem['answeredTitle'] = "";
             }
             if(!isNullOrUndefined(newElem.summary) && newElem.summary.trim().length>0){
                 if(correctAns[newElem.key] && correctAns[newElem.key].summary){
                     newElem['answeredSummary'] = newElem.summary;
                 }
                 else{
-                    newElem['answeredSummary'] = "Details?";
+                    newElem['answeredSummary'] = "";
                 }
             }
             ans.push(newElem);
+        }
+        return ans;
+    }
+
+    getOptions(type){
+        let unique = {};
+        let partsOfImageList = this.props.partsOfImageList; 
+        for(let i=0; partsOfImageList && i<partsOfImageList.length; i++){
+            if(type in partsOfImageList[i] && String(partsOfImageList[i][type]).trim().length>0){
+                unique[String(partsOfImageList[i][type]).trim()] = "";
+            }            
+        }
+        let ans = [];
+        for(let key in unique){
+            let newEntry = {};
+            newEntry[type]=key;
+            ans.push(newEntry);
         }
         return ans;
     }
@@ -184,24 +224,37 @@ class GamifiedPartsOfImageView extends React.Component {
                 {!this.state.loadingImage?
                     <div>
                         <DissectPictureView
-                            partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList)}
+                            partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList,this.state.correctAns)}
                             imageUrl={this.state.imageUrl}
                             selectLine={this.selectLine}
                         />
                         {!isNullOrUndefined(this.state.selectedLine)?
-                            <div>
-                                {this.singleBlockCard(this.state.selectedLine)}
-                                {this.state.selectedLine.answeredTitle != this.state.selectedLine.title?
+                            <div>                                
+                                {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
+                                 (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
+                                   || !this.state.correctAns[this.state.selectedLine.key].title)?
                                     <div>
-                                        {this.renderOptions('Name',null)}
+                                        <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
+                                        {this.renderOptions('title',this.getOptions('title'))}
+                                    </div>
+                                    :
+                                    null
+                                }
+                                {!isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) && 
+                                this.state.correctAns[this.state.selectedLine.key].title &&
+                                isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].summary) &&
+                                !isNullOrUndefined(this.state.selectedLine.summary) && 
+                                this.state.selectedLine.summary.trim().length>0?
+                                    <div>
+                                        <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
+                                        {this.renderOptions('summary',this.getOptions('summary'))}
                                     </div>
                                     :
                                     null
                                 }
                             </div>
                             :
-                            <div>
-                            </div>
+                            null
                         }
                     </div>
                     :
@@ -218,5 +271,30 @@ class GamifiedPartsOfImageView extends React.Component {
             </div>
         )
     }
+    /*
+
+    {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
+                                 (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
+                                   || !this.state.correctAns[this.state.selectedLine.key].title)?
+                                    <div>
+                                        <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
+                                        {this.renderOptions('title',this.getOptions('title'))}
+                                    </div>
+                                    :
+                                    null
+                                }
+{!isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) && 
+    this.state.correctAns[this.state.selectedLine.key].title &&
+                                isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].summary) &&
+                                !isNullOrUndefined(this.state.selectedLine.summary) && 
+                                this.state.selectedLine.summary.trim().length>0?
+                                    <div>
+                                        <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
+                                        {this.renderOptions('summary',this.getOptions('summary'))}
+                                    </div>
+                                    :
+                                    null
+                                }
+    */
 }
 export default GamifiedPartsOfImageView;
