@@ -327,9 +327,9 @@ class GamifiedPartsOfImageView extends React.Component {
                                         val={this.state.score}
                                         min={0}
                                         max={this.state.totalScore}
-                                        color={'#46237a'}/>
+                                        color={'#75248a'}/>
                                 </div>
-                                <div className="scoreText">Score: <span className="timelineScoreVal">{this.state.score}</span>
+                                <div className="scoreText">Score: <span className="dissectImageScoreVal">{this.state.score}</span>
                                 <span className="totalScoreVal">/{this.state.totalScore}</span></div> 
                             </div>
                             :
