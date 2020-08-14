@@ -66,6 +66,11 @@ class GamifiedAuth extends React.Component {
             stats.bpId = stats.bpId + "_ts";
             leaderboardBlockprobe['type'] = 'ftd';
         }
+        else if(type=="dissect_picture"){
+            docStr = docStr + '_potp';
+            stats.bpId = stats.bpId + "_potp";
+            leaderboardBlockprobe['type'] = 'potp';
+        }
         await firebase.firestore().collection('Users').doc(userId)
         .collection('gameScores').doc(docStr).set(stats);
         await firebase.firestore().collection('Users').doc(userId)

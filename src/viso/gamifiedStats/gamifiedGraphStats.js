@@ -101,6 +101,10 @@ class GamifiedGraphStats extends React.Component {
             typeOfGame = 'timeline';
             color = '#46237a';
         }
+        if(!isNullOrUndefined(this.props.type) && this.props.type == "dissect_picture"){
+            typeOfGame = 'dissect_picture';
+            color = '#75248a';
+        }
 
         return (
             <div class="statsContainer">
