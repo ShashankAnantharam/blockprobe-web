@@ -188,6 +188,12 @@ class DissectPictureView extends React.Component {
                     lineCoord: block.lineCoord,
                     key: block.key
                 }
+                if('answeredTitle' in block){
+                    line['answeredTitle'] = block.answeredTitle;
+                }
+                if('answeredSummary' in block){
+                    line['answeredSummary'] = block.answeredSummary;
+                }
                 lines.push(line);
             });    
         }

@@ -29,13 +29,15 @@ class GamifiedPartsOfImageView extends React.Component {
         selectedLine: null,
         answerTitle: null,
         answerSummary: null,
-        slideCard: true
+        slideCard: true,
+        correctAns: {}
       }
 
       ReactGA.initialize('UA-143383035-1');  
 
       this.getImageFromDb = this.getImageFromDb.bind(this);
       this.selectLine = this.selectLine.bind(this);
+      this.getGamedPartsOfImageList = this.getGamedPartsOfImageList.bind(this);
     }
 
     componentDidMount(){
@@ -48,7 +50,6 @@ class GamifiedPartsOfImageView extends React.Component {
             loadingImage: true
         });
         let path = this.props.bpId + '/general/dissect_picture';
-        console.log(path);
         let pathRef = firebase.storage().ref(path);
         try{
         
@@ -99,7 +100,6 @@ class GamifiedPartsOfImageView extends React.Component {
     }
 
     singleBlockCard(block){
-        console.log(block);
         return (
                 <div className="gamifiedDissectBlockContainer">
                     <Grid
@@ -121,21 +121,21 @@ class GamifiedPartsOfImageView extends React.Component {
                                 <Card elevation={6}>
                                     <CardContent>
                                         {!isNullOrUndefined(block.title)?
-                                            <Typography variant="h5" component="h2">{block.title}</Typography>
+                                            <Typography variant="h5" component="h2">{block.answeredTitle}</Typography>
                                             :
                                             null
-                                        }                                        
-                                        <Typography variant="body2" component="p" gutterBottom>
-                                            {block.summary}
-                                        </Typography>
-                                        <Typography color="textSecondary">
-                                        Select the correct Name and function
-                                        </Typography>
+                                        }
+                                        {!isNullOrUndefined(block.summary) && block.summary.trim().length>0?
+                                            <Typography variant="body2" component="p" gutterBottom>
+                                                {block.answeredSummary}
+                                            </Typography>
+                                            :
+                                            null
+                                        }                                                                                                                       
                                     </CardContent>
                                 </Card>
                             </Slide>                            
                         </Grid>
-
                     </Grid>
                     <div className="gamifiedTimelineBlock horizontallyCentered">                        
                         
@@ -144,13 +144,38 @@ class GamifiedPartsOfImageView extends React.Component {
         );
     }
 
+    getGamedPartsOfImageList(list){
+        let correctAns = this.state.correctAns;
+        let  ans = [];
+        for(let i=0;list && i<list.length;i++){
+            let newElem = JSON.parse(JSON.stringify(list[i]));
+            if(correctAns[newElem.key] && correctAns[newElem.key].title){
+                newElem['answeredTitle'] = newElem.title;
+            }
+            else{
+                newElem['answeredTitle'] = "Name?";
+            }
+            if(!isNullOrUndefined(newElem.summary) && newElem.summary.trim().length>0){
+                if(correctAns[newElem.key] && correctAns[newElem.key].summary){
+                    newElem['answeredSummary'] = newElem.summary;
+                }
+                else{
+                    newElem['answeredSummary'] = "Details?";
+                }
+            }
+            ans.push(newElem);
+        }
+        return ans;
+    }
+
     render(){
+
         return (
             <div>
                 {!this.state.loadingImage?
                     <div>
                         <DissectPictureView
-                            partsOfImageLines={this.props.partsOfImageList}
+                            partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList)}
                             imageUrl={this.state.imageUrl}
                             selectLine={this.selectLine}
                         />
