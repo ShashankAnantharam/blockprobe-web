@@ -14,13 +14,14 @@ import { isNullOrUndefined } from 'util';
 
 let arr = [
     {
-        title:'Boy'
+        title:'Boy',
+        summary:"This is a very very veyr very very very  very very good boy."
     },
     {
         title:'Girl'
     },
     {
-        title:'DoOg'
+        title:'Dog'
     },
     {
         title:'Rat'
@@ -76,8 +77,13 @@ class GamifiedPartsOfImageChoicesView extends React.Component {
                     xs={12}
                     md={6}
                     lg={3}
-                    style={{paddingRight:'10px', paddingBottom:'10px'}}>
-                    {scope.renderCard(choice)}                
+                    style={{paddingBottom:'10px'}}>
+                        <Grid
+                        item
+                        xs={9}>
+                            {scope.renderCard(choice)}
+                        </Grid>
+                                    
                 </Grid>
             );
         })
