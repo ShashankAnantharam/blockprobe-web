@@ -11,7 +11,6 @@
 
 .lineS{
     border-radius: 30px;
-    transition: 0.2s opacity;
     opacity: 0.75;
 }
 
@@ -44,6 +43,10 @@
     width: 7px;
     height: 7px;
     background: rgb(163, 20, 20)
+}
+
+.shape_transparent{
+    opacity:0.3;
 }
 
 .rectangle_dissectPicture_clickable{

@@ -175,8 +175,7 @@ class DissectPictureView extends React.Component {
             }
         }
 
-        if(this.props.viewSingleLine != newProps.viewSingleLine && 
-            JSON.stringify(this.props.singleLineCoord)!=
+        if(JSON.stringify(this.props.singleLineCoord)!=
             JSON.stringify(newProps.singleLineCoord)){
                 if(isNullOrUndefined(newProps.singleLineCoord)){
                     if(!this.props.viewSingleLine){
@@ -190,7 +189,6 @@ class DissectPictureView extends React.Component {
                     }
                 }
                 else{
-                    if(!this.props.viewSingleLine){
                         let lineCoord = newProps.singleLineCoord;
                         let pos = this.state.selectedLinePos;
                         pos.first=  
@@ -210,7 +208,7 @@ class DissectPictureView extends React.Component {
                         this.setState({
                             selectedLinePos: pos
                         });
-                    }
+                    
                 }
             
         }
@@ -241,6 +239,42 @@ class DissectPictureView extends React.Component {
             });    
         }
         return lines;
+    }
+
+    renderLinesExcluded(key){
+        let lines = this.getLines();
+
+        let scope = this;
+        function onClick(lineDetails){
+            if(scope.props.selectLine){
+                scope.props.selectLine(lineDetails);
+            }
+        }
+
+        let lineRender = lines.map((line) => {
+            if(scope.props.restrictedLines && scope.props.restrictedLines[line.key] || line.key==key)
+                return null;
+            let f0 = [
+                document.getElementById("testing").offsetLeft + 
+                document.getElementById("testing").getBoundingClientRect().width*line.x0,
+                document.getElementById("testing").offsetTop + 
+                document.getElementById("testing").getBoundingClientRect().height*line.y0
+            ];
+            let f1 = [
+                document.getElementById("testing").offsetLeft + 
+                document.getElementById("testing").getBoundingClientRect().width*line.x1,
+                document.getElementById("testing").offsetTop + 
+                document.getElementById("testing").getBoundingClientRect().height*line.y1
+            ]
+            return (
+                <Fragment>
+                    {this.renderLine(f0[0],f0[1],f1[0],f1[1],true)}
+                    {this.renderCircle(f1[0],f1[1],line,onClick)}
+                    {this.renderRectangle(f0[0],f0[1],line,onClick)}
+                </Fragment>
+            )
+        });
+        return lineRender;
     }
 
     renderLines(){
@@ -279,18 +313,18 @@ class DissectPictureView extends React.Component {
         return lineRender;
     }
 
-    renderLine(x0,y0,x1,y1){
+    renderLine(x0,y0,x1,y1,transparent){
         return (
             <Line x0={x0} y0={y0} x1={x1} y1={y1} borderWidth="4px" 
             within="imageDissectContainer"
             borderColor="black"
-            className="lineS"
+            className={"lineS " + (transparent?" shape_transparent":null)}
             zIndex={1}
             />
         );
     }
 
-    renderCircle(x,y,lineDetails, onClick){
+    renderCircle(x,y,lineDetails, onClick, transparent){
         return (
             <SimpleCircleView
                 id="circle1"
@@ -298,11 +332,12 @@ class DissectPictureView extends React.Component {
                 x={x}
                 y={y}
                 onClick={onClick}
+                transparent={transparent}
                 />
         );
     }
 
-    renderRectangle(x,y,lineDetails, onClick){
+    renderRectangle(x,y,lineDetails, onClick,transparent){
         return (
             <SimpleRectangleView
                 id="rectangle1"
@@ -310,6 +345,7 @@ class DissectPictureView extends React.Component {
                 x={x}
                 y={y}
                 onClick={onClick}
+                transparent={transparent}
                 />
         );
     }
@@ -347,6 +383,7 @@ class DissectPictureView extends React.Component {
                     {this.props.viewSingleLine?
                         <Fragment>
                             {this.displayPositions(this.state.selectedLinePos)}
+                            {this.renderLinesExcluded(this.props.selectedLineKey)}
                         </Fragment>
                     :
                     null

@@ -228,9 +228,10 @@ class GamifiedPartsOfImageView extends React.Component {
     }
 
     render(){
-        let lineCoord = null;
+        let lineCoord = null, lineKey = null;
         if(this.state.selectedLine && this.state.selectedLine.lineCoord){
             lineCoord = this.state.selectedLine.lineCoord;
+            lineKey = this.state.selectedLine.key;
         }
         return (
             <div>
@@ -242,6 +243,7 @@ class GamifiedPartsOfImageView extends React.Component {
                             selectLine={this.selectLine}
                             viewSingleLine={!isNullOrUndefined(lineCoord)}
                             singleLineCoord={lineCoord}
+                            selectedLineKey={lineKey}
                             restrictedLines={this.state.restrictedLines}
                         />
                         {!isNullOrUndefined(this.state.selectedLine)?
