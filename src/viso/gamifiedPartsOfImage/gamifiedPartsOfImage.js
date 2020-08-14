@@ -15,6 +15,7 @@ import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import Typography from '@material-ui/core/Typography';
 import { isNullOrUndefined } from 'util';
 import './gamifiedPartsOfImage.css';
+import GamifiedPartsOfImageChoicesView from './gamifiedPartsOfImageChoices';
 
 
 class GamifiedPartsOfImageView extends React.Component {
@@ -136,12 +137,20 @@ class GamifiedPartsOfImageView extends React.Component {
                                 </Card>
                             </Slide>                            
                         </Grid>
-                    </Grid>
-                    <div className="gamifiedTimelineBlock horizontallyCentered">                        
-                        
-                    </div>
+                    </Grid>                    
                 </div>
         );
+    }
+
+    renderOptions(type, arr){
+        //type is Name or Details
+        //arr are choices
+        return (
+            <div>
+                <GamifiedPartsOfImageChoicesView
+                    />
+            </div>
+        )
     }
 
     getGamedPartsOfImageList(list){
@@ -182,6 +191,13 @@ class GamifiedPartsOfImageView extends React.Component {
                         {!isNullOrUndefined(this.state.selectedLine)?
                             <div>
                                 {this.singleBlockCard(this.state.selectedLine)}
+                                {this.state.selectedLine.answeredTitle != this.state.selectedLine.title?
+                                    <div>
+                                        {this.renderOptions('Name',null)}
+                                    </div>
+                                    :
+                                    null
+                                }
                             </div>
                             :
                             <div>
