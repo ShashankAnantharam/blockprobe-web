@@ -12,21 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import './gamifiedPartsOfImage.css';
 import { isNullOrUndefined } from 'util';
 
-let arr = [
-    {
-        title:'Boy',
-        summary:"This is a very very veyr very very very  very very good boy."
-    },
-    {
-        title:'Girl'
-    },
-    {
-        title:'Dog'
-    },
-    {
-        title:'Rat'
-    }
-]
 class GamifiedPartsOfImageChoicesView extends React.Component {
 
     constructor(props){
