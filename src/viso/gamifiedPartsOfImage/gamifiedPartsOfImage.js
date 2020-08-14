@@ -13,8 +13,10 @@ import CardContent from '@material-ui/core/CardContent';
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import Typography from '@material-ui/core/Typography';
+import Speedometer from '../speedoMeter/Speedometer';
 import { isNullOrUndefined } from 'util';
 import './gamifiedPartsOfImage.css';
+import GamifiedGraphStats from '../gamifiedStats/gamifiedGraphStats';
 import GamifiedPartsOfImageChoicesView from './gamifiedPartsOfImageChoices';
 
 
@@ -32,7 +34,15 @@ class GamifiedPartsOfImageView extends React.Component {
         answerSummary: null,
         slideCard: true,
         correctAns: {},
-        restrictedLines: {}
+        restrictedLines: {},
+        score: 0,
+        totalScore: 0,
+        stats: {
+            score: 0,
+            gameStats: {},
+            totalScore: 0
+        },
+        stopGame: false
       }
 
       ReactGA.initialize('UA-143383035-1');  
@@ -41,9 +51,15 @@ class GamifiedPartsOfImageView extends React.Component {
       this.selectLine = this.selectLine.bind(this);
       this.getGamedPartsOfImageList = this.getGamedPartsOfImageList.bind(this);
       this.onClickChoice = this.onClickChoice.bind(this);
+      this.incrementScore = this.incrementScore.bind(this);
     }
 
     componentDidMount(){
+        let totalScore = this.getTotalScore(this.props.partsOfImageList);
+        this.setState({
+            totalScore: totalScore
+        });
+
         this.getImageFromDb();
     }
 
@@ -90,15 +106,20 @@ class GamifiedPartsOfImageView extends React.Component {
     }
 
     incrementScore(){
-        //TODO
-    }
 
-    selectCorrectName(){
-        //TODO
-    }
-
-    selectCorrectFunction(){
-        //TODO
+        let score = this.state.score;
+        score++;
+        this.setState({
+            score: score
+        });
+        if(score==this.state.totalScore){
+            let stats = this.state.stats;
+            stats.score = score;
+            stats.totalScore = this.state.totalScore;
+            this.setState({
+                stats: stats
+            });
+        }
     }
 
     singleBlockCard(block){
@@ -227,6 +248,43 @@ class GamifiedPartsOfImageView extends React.Component {
         return ans;
     }
 
+    getTotalScore(list){
+        let totalScore = 0;
+        for(let i=0; list && i<list.length; i++){
+            if(!isNullOrUndefined(list[i].title) && list[i].title.trim().length>0){
+                totalScore++;
+            }
+            if(!isNullOrUndefined(list[i].summary) && list[i].summary.trim().length>0){
+                totalScore++;
+            }
+        }
+        return totalScore;
+    }
+
+    componentWillReceiveProps(newProps){
+        if(this.props.partsOfImageList != newProps.partsOfImageList){
+            let totalScore = this.getTotalScore(newProps.partsOfImageList);
+            this.setState({
+                totalScore: totalScore
+            });
+        }
+    }
+
+    stopGame(value){
+        if(value){
+            let stats = this.state.stats;
+            stats.score = this.state.score;
+            stats.totalScore = this.state.totalScore;
+            this.setState({
+                stats: stats
+            });
+            //console.log(stats);
+        }
+        this.setState({
+            stopGame: value
+        });
+    }
+
     render(){
         let lineCoord = null, lineKey = null;
         if(this.state.selectedLine && this.state.selectedLine.lineCoord){
@@ -235,84 +293,105 @@ class GamifiedPartsOfImageView extends React.Component {
         }
         return (
             <div>
-                {!this.state.loadingImage?
+                {this.state.stopGame || this.state.score==this.state.totalScore?
                     <div>
-                        <DissectPictureView
-                            partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList,this.state.correctAns)}
-                            imageUrl={this.state.imageUrl}
-                            selectLine={this.selectLine}
-                            viewSingleLine={!isNullOrUndefined(lineCoord)}
-                            singleLineCoord={lineCoord}
-                            selectedLineKey={lineKey}
-                            restrictedLines={this.state.restrictedLines}
-                        />
-                        {!isNullOrUndefined(this.state.selectedLine)?
-                            <div>                                
-                                {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
-                                 (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
-                                   || !this.state.correctAns[this.state.selectedLine.key].title)?
-                                    <div>
-                                        <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
-                                        {this.renderOptions('title',this.getOptions('title'))}
-                                    </div>
-                                    :
-                                    null
-                                }
-                                {!isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) && 
-                                this.state.correctAns[this.state.selectedLine.key].title &&
-                                isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].summary) &&
-                                !isNullOrUndefined(this.state.selectedLine.summary) && 
-                                this.state.selectedLine.summary.trim().length>0?
-                                    <div>
-                                        <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
-                                        {this.renderOptions('summary',this.getOptions('summary'))}
-                                    </div>
-                                    :
-                                    null
-                                }
+                        <GamifiedGraphStats
+                            stats = {this.state.stats}
+                            bpId={this.props.bpId}
+                            title={this.props.title}
+                            canSave = {true}
+                            saveImmediately = {true}
+                            type= {'dissect_picture'}
+                            id={'dissect_picture_result'}
+                            />
+                    </div>
+                    :
+                <div>   
+                    <div>                         
+                        {this.state.totalScore>0?
+                            <div>
+                                <div className="gameButtonContainer" style={{marginLeft:'1em'}}>
+                                    {!this.state.stopGame?
+                                        <Button
+                                        variant="contained" 
+                                        className="stopGamebutton"
+                                        onClick={() => { this.stopGame(true)}}
+                                        >Save Results</Button>
+                                        :
+                                        null
+                                    }                                
+                                </div>   
+                                <div className="scoreAmchartContainer">
+                                    <Speedometer 
+                                        id="speedometer_dissect_picture_ingame"
+                                        val={this.state.score}
+                                        min={0}
+                                        max={this.state.totalScore}
+                                        color={'#46237a'}/>
+                                </div>
+                                <div className="scoreText">Score: <span className="timelineScoreVal">{this.state.score}</span>
+                                <span className="totalScoreVal">/{this.state.totalScore}</span></div> 
                             </div>
                             :
                             null
                         }
+                                                          
                     </div>
-                    :
-                    <div style={{margin:'auto',width:'50px'}}>
-                        <Loader 
-                        type="TailSpin"
-                        color="#00BFFF"
-                        height="50"	
-                        width="50"
-                        /> 
-                    </div>
-                }                
-                
+                    {!this.state.loadingImage?
+                        <div>
+                            <DissectPictureView
+                                partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList,this.state.correctAns)}
+                                imageUrl={this.state.imageUrl}
+                                selectLine={this.selectLine}
+                                viewSingleLine={!isNullOrUndefined(lineCoord)}
+                                singleLineCoord={lineCoord}
+                                selectedLineKey={lineKey}
+                                restrictedLines={this.state.restrictedLines}
+                            />
+                            {!isNullOrUndefined(this.state.selectedLine)?
+                                <div>                                
+                                    {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
+                                    (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
+                                    || !this.state.correctAns[this.state.selectedLine.key].title)?
+                                        <div>
+                                            <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
+                                            {this.renderOptions('title',this.getOptions('title'))}
+                                        </div>
+                                        :
+                                        null
+                                    }
+                                    {!isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) && 
+                                    this.state.correctAns[this.state.selectedLine.key].title &&
+                                    isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].summary) &&
+                                    !isNullOrUndefined(this.state.selectedLine.summary) && 
+                                    this.state.selectedLine.summary.trim().length>0?
+                                        <div>
+                                            <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
+                                            {this.renderOptions('summary',this.getOptions('summary'))}
+                                        </div>
+                                        :
+                                        null
+                                    }
+                                </div>
+                                :
+                                null
+                            }
+                            
+                        </div>
+                        :
+                        <div style={{margin:'auto',width:'50px'}}>
+                            <Loader 
+                            type="TailSpin"
+                            color="#00BFFF"
+                            height="50"	
+                            width="50"
+                            /> 
+                        </div>
+                    }                
+                </div>
+                }
             </div>
         )
     }
-    /*
-
-    {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
-                                 (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
-                                   || !this.state.correctAns[this.state.selectedLine.key].title)?
-                                    <div>
-                                        <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
-                                        {this.renderOptions('title',this.getOptions('title'))}
-                                    </div>
-                                    :
-                                    null
-                                }
-{!isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) && 
-    this.state.correctAns[this.state.selectedLine.key].title &&
-                                isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].summary) &&
-                                !isNullOrUndefined(this.state.selectedLine.summary) && 
-                                this.state.selectedLine.summary.trim().length>0?
-                                    <div>
-                                        <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
-                                        {this.renderOptions('summary',this.getOptions('summary'))}
-                                    </div>
-                                    :
-                                    null
-                                }
-    */
 }
 export default GamifiedPartsOfImageView;
