@@ -272,7 +272,7 @@ class DissectPictureView extends React.Component {
     render(){
 
         return (
-            <div style={{margin: '1em'}}>
+            <div style={{marginBottom: '1.4em'}}>
                 <div id="testing" className="imageDissectContainer">
                    <img onLoad={() => this.imageLoaded()}                    
                    className={"imageToDissect " + 

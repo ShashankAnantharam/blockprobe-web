@@ -192,6 +192,7 @@ class GamifiedDashboardViewComponent extends React.Component {
 
                 {this.isDissectPictureAvailable()?
                     <div>
+                        <div className="dashboard-section-heading graph-heading">{"Parts of the picture"}</div>
                         <GamifiedPartsOfImageView
                             bpId={this.props.bpId}
                             partsOfImageList={this.props.partsOfImageList}
