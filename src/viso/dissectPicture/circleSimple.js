@@ -30,7 +30,7 @@ class SimpleCircleView extends React.Component {
                 style={{
                     borderRadius:'50%',                   
                     border: '2px black solid',
-                    position: 'absolute',
+                    position: 'sticky',
                     zIndex: '2',
                     transform: 'translate(-50%, -50%)',
                     top: String(this.props.y) + 'px', /*[wherever you want it]*/
