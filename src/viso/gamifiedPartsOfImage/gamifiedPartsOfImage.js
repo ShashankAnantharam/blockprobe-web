@@ -196,7 +196,9 @@ class GamifiedPartsOfImageView extends React.Component {
                 selectedLine: selectedLine
             });
 
-            if(type=='summary'){
+            if(type=='summary' || 
+            (type=='title' && (isNullOrUndefined(this.state.selectedLine.summary) || 
+            this.state.selectedLine.summary.trim().length==0))){
                 let restrictedLines = this.state.restrictedLines;
                 restrictedLines[this.state.selectedLine.key] = true;
                 this.setState({
