@@ -18,7 +18,24 @@ import { isNullOrUndefined } from 'util';
 import './gamifiedPartsOfImage.css';
 import GamifiedGraphStats from '../gamifiedStats/gamifiedGraphStats';
 import GamifiedPartsOfImageChoicesView from './gamifiedPartsOfImageChoices';
+import UIfx from 'uifx';
+import WellDoneMp3 from  '../../media/well_done.mp3';
+import TryAgainMp3 from '../../media/try_again.mp3';
 
+const wellDone = new UIfx(
+    WellDoneMp3,
+    {
+      volume: 0.65, // number between 0.0 ~ 1.0
+      throttleMs: 100
+    }
+);
+const tryAgain = new UIfx(
+    TryAgainMp3,
+    {
+      volume: 0.65, // number between 0.0 ~ 1.0
+      throttleMs: 100
+    }
+);
 
 class GamifiedPartsOfImageView extends React.Component {
 
@@ -206,6 +223,8 @@ class GamifiedPartsOfImageView extends React.Component {
                     restrictedLines: restrictedLines
                 });
             }
+            if(this.props.playSound)
+                wellDone.play();
         }
         else{
             //Wrong answer
@@ -235,6 +254,8 @@ class GamifiedPartsOfImageView extends React.Component {
             this.setState({
                 wrongAns: wrongAns
             });
+            if(this.props.playSound)
+                tryAgain.play();
         }
     }
 
@@ -417,7 +438,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                     (isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key].title)
                                     || !this.state.correctAns[this.state.selectedLine.key].title)?
                                         <div>
-                                            <h5 style={{marginLeft:'1em'}}>What is the name of this part?</h5>
+                                            <h3 style={{marginLeft:'1em', marginBottom:'5px'}}>What is the name of this part?</h3>
                                             {this.renderOptions('title',this.getOptions('title'))}
                                         </div>
                                         :
@@ -429,7 +450,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                     !isNullOrUndefined(this.state.selectedLine.summary) && 
                                     this.state.selectedLine.summary.trim().length>0?
                                         <div>
-                                            <h5 style={{marginLeft:'1em'}}>Details regarding {this.state.selectedLine.title}?</h5>
+                                            <h3 style={{marginLeft:'1em', marginBottom:'5px'}}>What is <span style={{fontWeight:'bold', color:'blue'}}>{this.state.selectedLine.title}</span>?</h3>
                                             {this.renderOptions('summary',this.getOptions('summary'))}
                                         </div>
                                         :
