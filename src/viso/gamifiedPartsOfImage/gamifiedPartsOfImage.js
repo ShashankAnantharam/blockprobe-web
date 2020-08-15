@@ -445,7 +445,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                 singleLineCoord={lineCoord}
                                 selectedLineKey={lineKey}
                                 restrictedLines={this.state.restrictedLines}
-                            />                            
+                            />                                                        
                             {!isNullOrUndefined(this.state.selectedLine)?
                                 <div>                                
                                     {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 
@@ -472,7 +472,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                     }
                                 </div>
                                 :
-                                null
+                                <p style={{marginLeft:'1em',marginBottom:'2.5em'}}>Select any part of the picture!</p>
                             }
                             
                         </div>
