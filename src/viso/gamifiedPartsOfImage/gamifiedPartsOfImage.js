@@ -75,6 +75,18 @@ class GamifiedPartsOfImageView extends React.Component {
       this.onClickChoice = this.onClickChoice.bind(this);
       this.incrementScore = this.incrementScore.bind(this);
       this.getAllAns = this.getAllAns.bind(this);
+      this.resetScroll = this.resetScroll.bind(this);
+
+      this.gameOptionsRef = React.createRef();
+    }
+
+    resetScroll(){
+        let amount = null;
+        if(this.gameOptionsRef){
+            amount = this.gameOptionsRef.current.offsetTop;
+        }
+        if(this.props.setScrollToGraphList)
+            this.props.setScrollToGraphList(amount);  
     }
 
     componentDidMount(){
@@ -112,6 +124,7 @@ class GamifiedPartsOfImageView extends React.Component {
 
     selectLine(lineDetails){
         if(JSON.stringify(this.state.selectedLine)!=JSON.stringify(lineDetails)){
+            this.resetScroll();
             this.setState({
                 selectedLine: lineDetails,
                 answerTitle: null,
@@ -432,6 +445,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                 selectedLineKey={lineKey}
                                 restrictedLines={this.state.restrictedLines}
                             />
+                            <div ref={this.gameOptionsRef}></div>
                             {!isNullOrUndefined(this.state.selectedLine)?
                                 <div>                                
                                     {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 

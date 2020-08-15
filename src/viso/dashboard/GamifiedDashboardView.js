@@ -158,6 +158,7 @@ class GamifiedDashboardViewComponent extends React.Component {
                             isPublic = {this.props.isPublic}
                             lang = {this.props.lang}
                             partsOfImageList={this.props.partsOfImageList}
+                            setScrollToGraphList ={this.props.setScrollToGraphList}
                         />
                     </div>
                     :
