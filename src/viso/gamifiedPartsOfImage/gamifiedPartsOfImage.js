@@ -34,6 +34,11 @@ class GamifiedPartsOfImageView extends React.Component {
         answerSummary: null,
         slideCard: true,
         correctAns: {},
+        totalAns: {},
+        wrongAns: {
+            title: {},
+            summary: {}
+        },
         restrictedLines: {},
         score: 0,
         totalScore: 0,
@@ -52,6 +57,7 @@ class GamifiedPartsOfImageView extends React.Component {
       this.getGamedPartsOfImageList = this.getGamedPartsOfImageList.bind(this);
       this.onClickChoice = this.onClickChoice.bind(this);
       this.incrementScore = this.incrementScore.bind(this);
+      this.getAllAns = this.getAllAns.bind(this);
     }
 
     componentDidMount(){
@@ -116,6 +122,11 @@ class GamifiedPartsOfImageView extends React.Component {
             let stats = this.state.stats;
             stats.score = score;
             stats.totalScore = this.state.totalScore;
+            stats.gameStats = {
+                correctAns: this.state.correctAns,
+                totalAns: this.getAllAns(this.props.partsOfImageList),
+                wrongAns: this.state.wrongAns
+            }
             this.setState({
                 stats: stats
             });
@@ -170,11 +181,16 @@ class GamifiedPartsOfImageView extends React.Component {
             this.incrementScore();
             
             let correctAns = this.state.correctAns;
-            if(!(this.state.selectedLine.key in correctAns))
-                correctAns[this.state.selectedLine.key] = {};
+            if(!(this.state.selectedLine.key in correctAns)){
+                correctAns[this.state.selectedLine.key] = {};                
+            }
             correctAns[this.state.selectedLine.key][type] = true;
             let selectedLine = this.state.selectedLine;
             selectedLine[type] = choice[type];
+            if(type=='title'){
+                correctAns[this.state.selectedLine.key]['name'] = choice[type];
+            }
+
             this.setState({
                 correctAns: correctAns,
                 selectedLine: selectedLine
@@ -191,6 +207,32 @@ class GamifiedPartsOfImageView extends React.Component {
         }
         else{
             //Wrong answer
+            let wrongAns = this.state.wrongAns;
+            if(type=='title'){
+                if(!(this.state.selectedLine.key in wrongAns['title'])){
+                    wrongAns['title'][this.state.selectedLine.key] = {
+                        name: this.state.selectedLine.title,
+                        mistakes: {}
+                    };
+                    let currWrongAns = choice[type];
+                    if(!(currWrongAns in wrongAns['title'][this.state.selectedLine.key].mistakes)){
+                        wrongAns['title'][this.state.selectedLine.key].mistakes[currWrongAns]=0;
+                    }
+                    wrongAns['title'][this.state.selectedLine.key].mistakes[currWrongAns]++;
+                }
+            }
+            else if(type=='summary'){
+                if(!(this.state.selectedLine.key in wrongAns['summary'])){
+                    wrongAns['summary'][this.state.selectedLine.key] = {
+                        name: this.state.selectedLine.title,
+                        mistakes: 0
+                    };
+                }
+                wrongAns['summary'][this.state.selectedLine.key].mistakes++;
+            }
+            this.setState({
+                wrongAns: wrongAns
+            });
         }
     }
 
@@ -206,6 +248,20 @@ class GamifiedPartsOfImageView extends React.Component {
                     />
             </div>
         )
+    }
+
+    getAllAns(list){
+        let totalAns = this.state.totalAns;
+        for(let i=0;list && i<list.length; i++){
+            totalAns[list[i].key] = {
+                name: list[i].title,
+                title: true
+            };
+            if(!isNullOrUndefined(list[i].summary)){
+                totalAns[list[i].key]['summary'] = true;
+            }
+        }
+        return totalAns;
     }
 
     getGamedPartsOfImageList(list,correctAns){
@@ -275,6 +331,11 @@ class GamifiedPartsOfImageView extends React.Component {
             let stats = this.state.stats;
             stats.score = this.state.score;
             stats.totalScore = this.state.totalScore;
+            stats.gameStats = {
+                correctAns: this.state.correctAns,
+                totalAns: this.getAllAns(this.props.partsOfImageList),
+                wrongAns: this.state.wrongAns
+            }
             this.setState({
                 stats: stats
             });
