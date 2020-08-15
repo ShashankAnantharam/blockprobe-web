@@ -14,10 +14,15 @@
     opacity: 0.75;
 }
 
+.colored_circle_dissectPicture{
+    background: rgb(4, 83, 119) !important;
+    width: 25px !important;
+    height: 25px !important;
+}
 
 .circle_dissectPicture{
-    width: 17px;
-    height: 17px;
+    width: 16px;
+    height: 16px;
     transition: 0.2s;
     background: white;
 }

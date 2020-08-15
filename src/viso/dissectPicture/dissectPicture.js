@@ -116,7 +116,7 @@ class DissectPictureView extends React.Component {
                 {!isNullOrUndefined(pos.second)?
                     <Fragment>
                         {this.renderRectangle(pos.first.x,pos.first.y)}
-                        {this.renderCircle(pos.second.x,pos.second.y)}
+                        {this.renderCircle(pos.second.x,pos.second.y,null,null,false,true)}
                         {this.renderLine(pos.first.x,pos.first.y,pos.second.x,pos.second.y)}
                     </Fragment>
                     :
@@ -324,7 +324,7 @@ class DissectPictureView extends React.Component {
         );
     }
 
-    renderCircle(x,y,lineDetails, onClick, transparent){
+    renderCircle(x,y,lineDetails, onClick, transparent, isColored){
         return (
             <SimpleCircleView
                 id="circle1"
@@ -333,6 +333,7 @@ class DissectPictureView extends React.Component {
                 y={y}
                 onClick={onClick}
                 transparent={transparent}
+                isColored={isColored}
                 />
         );
     }

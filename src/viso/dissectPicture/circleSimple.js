@@ -39,8 +39,9 @@ class SimpleCircleView extends React.Component {
                 className=
                 {
                     "circle_dissectPicture " +                 
-                    (!isNullOrUndefined(this.props.onClick)?"circle_dissectPicture_clickable ":null) +
-                    (!isNullOrUndefined(this.props.transparent)?"shape_transparent":null)
+                    (!isNullOrUndefined(this.props.onClick)?"circle_dissectPicture_clickable ":"") +
+                    (!isNullOrUndefined(this.props.transparent) && this.props.transparent?"shape_transparent ":"") +
+                    (!isNullOrUndefined(this.props.isColored) && this.props.isColored?"colored_circle_dissectPicture":"")
                 }
                 onClick={this.onClick}
             ></div>

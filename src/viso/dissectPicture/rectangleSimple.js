@@ -39,7 +39,7 @@ class SimpleRectangleView extends React.Component {
                 {
                     "rectangle_dissectPicture " +                 
                     (!isNullOrUndefined(this.props.onClick)?"rectangle_dissectPicture_clickable ":null) +
-                    (!isNullOrUndefined(this.props.transparent)?"shape_transparent":null)
+                    (!isNullOrUndefined(this.props.transparent) && this.props.transparent?"shape_transparent":null)
                 }
                 onClick={this.onClick}
             ></div>
