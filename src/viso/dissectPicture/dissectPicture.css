@@ -1,12 +1,11 @@
 .imageDissectContainer{
-    max-width: 60vw; 
-    border: 1px solid black;
     margin-left: 1em;
 }
 
 .imageToDissect{
-    height: 100%;
-    width: 100%;
+    max-width: 70vw; 
+    max-height: 75vh; 
+    border: 1px solid black;
   }
 
 .lineS{

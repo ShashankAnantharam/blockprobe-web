@@ -436,6 +436,7 @@ class GamifiedPartsOfImageView extends React.Component {
                     </div>
                     {!this.state.loadingImage?
                         <div>
+                            <div ref={this.gameOptionsRef}></div>
                             <DissectPictureView
                                 partsOfImageLines={this.getGamedPartsOfImageList(this.props.partsOfImageList,this.state.correctAns)}
                                 imageUrl={this.state.imageUrl}
@@ -444,8 +445,7 @@ class GamifiedPartsOfImageView extends React.Component {
                                 singleLineCoord={lineCoord}
                                 selectedLineKey={lineKey}
                                 restrictedLines={this.state.restrictedLines}
-                            />
-                            <div ref={this.gameOptionsRef}></div>
+                            />                            
                             {!isNullOrUndefined(this.state.selectedLine)?
                                 <div>                                
                                     {isNullOrUndefined(this.state.correctAns[this.state.selectedLine.key]) || 

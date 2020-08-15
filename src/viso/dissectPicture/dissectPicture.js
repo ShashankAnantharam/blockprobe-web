@@ -361,8 +361,8 @@ class DissectPictureView extends React.Component {
 
         return (
             <div style={{marginBottom: '1.4em'}}>
-                <div id="testing" className="imageDissectContainer">
-                   <img onLoad={() => this.imageLoaded()}                    
+                <div  className="imageDissectContainer">
+                   <img id="testing" onLoad={() => this.imageLoaded()}                    
                    className={"imageToDissect " + 
                    (this.props.addBlock|| this.props.viewSingleLine?"imageToDissect_addBlock ":null)} src={this.props.imageUrl} />        
                     {this.state.showLines && !this.props.addBlock && this.state.imageLoaded 
