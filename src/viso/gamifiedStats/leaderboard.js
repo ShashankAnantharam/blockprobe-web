@@ -170,11 +170,12 @@ class LeaderboardView extends React.Component {
 
         let queryTop = allScores.where('bpId', '==', bpId).orderBy('score','desc').limit(1).get();
         let queryTimelineTop = allScores.where('bpId', '==', String(bpId + '_ts')).orderBy('score','desc').limit(1).get();
+        let queryPotpTop = allScores.where('bpId', '==', String(bpId + '_potp')).orderBy('score','desc').limit(1).get();
 
-        let promises = [queryTop, queryTimelineTop];
+        let promises = [queryTop, queryTimelineTop, queryPotpTop];
         let scope = this;
         return Promise.all(promises).then(results => {
-            const [resultTop, resultTimelineTop] = results;
+            const [resultTop, resultTimelineTop, resultPotpTop] = results;
             let topScores = [];
             resultTop.forEach((doc) => {
                 let scoreDetails = doc.data();
@@ -187,7 +188,13 @@ class LeaderboardView extends React.Component {
                 timelineTopScores.push(scoreDetails);
             });
 
-            let mtt = 0, ftd = 0, mtt_stats={}, ftd_stats={};
+            let potpTopScores = [];
+            resultPotpTop.forEach((doc) => {
+                let scoreDetails = doc.data();
+                potpTopScores.push(scoreDetails);
+            });
+
+            let mtt = 0, ftd = 0, potp=0, mtt_stats={}, ftd_stats={};
             let mtt_rawStats={}, mtt_missedStats={}, mtt_correctStats={};
             if(timelineTopScores && timelineTopScores.length > 0 && 
                 !isNullOrUndefined(timelineTopScores[0].score)){
@@ -204,15 +211,19 @@ class LeaderboardView extends React.Component {
                 if(topScores[0].remainingEdges)
                     mtt_missedStats = scope.getRemainingEdges(topScores[0].remainingEdges,mtt_correctStats);
             }
+            if(potpTopScores && potpTopScores.length>0 && 
+                !isNullOrUndefined(potpTopScores[0].score)){
+                    potp = potpTopScores[0].score;
+                }
             return {
-                id: userId, mtt: mtt, ftd: ftd,
+                id: userId, mtt: mtt, ftd: ftd, potp:potp,
                 mtt_stats: mtt_stats, ftd_stats: ftd_stats,
                 mtt_rawStats: mtt_rawStats, mtt_correctStats: mtt_correctStats,
                 mtt_missedStats: mtt_missedStats
             };
         },
         error => {
-            return {id: userId, mtt: 0, ftd: 0, ftd_stats:{}, mtt_stats:{},
+            return {id: userId, mtt: 0, ftd: 0, potp:0, ftd_stats:{}, mtt_stats:{},
         mtt_rawStats: {}, mtt_missedStats:{}, mtt_correctStats:{}};
         });
     }
@@ -524,6 +535,7 @@ class LeaderboardView extends React.Component {
                                     <ExcelColumn label="UserId" value="id"/>
                                     <ExcelColumn label="Match the topics" value="mtt"/>
                                     <ExcelColumn label="Fill the dates" value="ftd"/>
+                                    <ExcelColumn label="Parts of the picture" value="potp"/>
                                 </ExcelSheet>
                             </ExcelFile>
                         </div>

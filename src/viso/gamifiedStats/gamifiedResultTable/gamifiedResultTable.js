@@ -127,6 +127,7 @@ class GameTable extends React.Component{
                     <StyledTableCell onClick={() => {this.sortData('id')}} align="left">Id {this.displayIcon('id')}</StyledTableCell>
                     <StyledTableCell onClick={() => {this.sortData('mtt')}} align="right">Match the topics {this.displayIcon('mtt')}</StyledTableCell>
                     <StyledTableCell onClick={() => {this.sortData('ftd')}} align="right">Fill the dates {this.displayIcon('ftd')}</StyledTableCell>
+                    <StyledTableCell onClick={() => {this.sortData('potp')}} align="right">Parts of the picture {this.displayIcon('potp')}</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -135,6 +136,7 @@ class GameTable extends React.Component{
                       <TableCell align="left">{row.id}</TableCell>
                       <TableCell align="right">{row.mtt}</TableCell>
                       <TableCell align="right">{row.ftd}</TableCell>
+                      <TableCell align="right">{row.potp}</TableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>
