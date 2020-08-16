@@ -97,7 +97,7 @@ class LeaderboardView extends React.Component {
     }
 
     async getLeaders(bpId){
-        let types = ['mtt','ftd'];
+        let types = ['mtt','ftd','potp'];
         let leaderScores = {};
         for(let i=0; i<types.length; i++){
             let scores = await this.getLeadersForGame(types[i], bpId);
@@ -313,7 +313,7 @@ class LeaderboardView extends React.Component {
     }
 
     renderAllLeaderboards(){
-        let types = ['mtt','ftd'];
+        let types = ['mtt','ftd','potp'];
         let renderArr = types.map((type) => {
             if(this.state.newScores[type].length>0)
                 return this.renderSingleLeaderboard(type);
@@ -331,6 +331,8 @@ class LeaderboardView extends React.Component {
         let title = 'Match the topics';
         if(type == 'ftd')
             title = 'Fill the dates';
+        if(type == 'potp')
+            title = 'Parts of the picture';
         return (
             <div>
                 <h4 style={{textAlign: 'center'}}>{title}</h4>
