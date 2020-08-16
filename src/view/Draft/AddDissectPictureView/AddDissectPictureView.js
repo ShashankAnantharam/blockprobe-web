@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import DissectPictureView from '../../../viso/dissectPicture/dissectPicture';
 import { Button } from '@material-ui/core';
 import Loader from 'react-loader-spinner';
@@ -29,6 +30,8 @@ class AddDissectPictureView extends React.Component {
             loadingImage: false,
             selectedLine: null
         }
+
+        ReactGA.initialize('UA-143383035-1');  
 
         this.handleChange = this.handleChange.bind(this);
         this.closeImagePane = this.closeImagePane.bind(this);
@@ -122,8 +125,8 @@ class AddDissectPictureView extends React.Component {
         let index = this.getLatestIndex();
         index += 0.1;
         let fullBlock = {
-            title: `${this.state.title}`,
-            summary: this.state.summary,
+            title: `${this.state.title.trim()}`,
+            summary: this.state.summary.trim(),
             entities: [],
             evidences: [],
             lineCoord: this.state.coord,
@@ -131,6 +134,13 @@ class AddDissectPictureView extends React.Component {
             timestamp: Date.now(),
             actionType: 'ADD'
         };
+
+        //this.props.bId
+        ReactGA.event({
+            category: String('partsOfImg_savePart'),
+            action: String(this.props.bId),
+            label: String(this.props.bId)
+            });
 
         if(!isNullOrUndefined(this.state.editReference)){
             fullBlock['actionType'] = "MODIFY";
@@ -200,7 +210,7 @@ class AddDissectPictureView extends React.Component {
                                 || JSON.stringify(this.state.coord)!=JSON.stringify(this.state.oldCoord))
                             )
                             ) && 
-                            this.state.title.length>0 
+                            this.state.title.trim().length>0 
                                 && !isNullOrUndefined(this.state.coord)?
                                 <div>
                                     <Button

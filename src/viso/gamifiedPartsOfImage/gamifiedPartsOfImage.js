@@ -238,6 +238,11 @@ class GamifiedPartsOfImageView extends React.Component {
             }
             if(this.props.playSound)
                 wellDone.play();
+            ReactGA.event({
+                category: String('partsOfImg_correct_'+type),
+                action: String('partsOfImg_correct_'+type + " " + this.state.selectedLine.title),
+                label: String('partsOfImg_correct_'+type + " " + this.state.selectedLine.title)
+                });
         }
         else{
             //Wrong answer
