@@ -1,5 +1,6 @@
 .imageDissectContainer{
     margin-left: 1em;
+    position: relative;
 }
 
 .imageToDissect{
