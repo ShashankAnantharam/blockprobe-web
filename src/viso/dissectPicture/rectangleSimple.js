@@ -29,7 +29,7 @@ class SimpleRectangleView extends React.Component {
                 id={this.props.id}
                 style={{
                     border: '2px black solid',
-                    position: 'sticky',
+                    position: 'absolute',
                     zIndex: '2',
                     transform: 'translate(-50%, -50%)',
                     top: String(this.props.y) + 'px', /*[wherever you want it]*/
