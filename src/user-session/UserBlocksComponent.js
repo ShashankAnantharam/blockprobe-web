@@ -1446,7 +1446,7 @@ class UserBlocksComponent extends React.Component {
                         <Tab>Graph</Tab>
                         <Tab>Timeline</Tab>
                         <Tab>Summary</Tab>
-                        <Tab>Dissect</Tab>
+                        <Tab>Picture Parts</Tab>
                     </TabList>
 
                     <TabPanel>
