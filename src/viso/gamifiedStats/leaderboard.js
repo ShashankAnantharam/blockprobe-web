@@ -32,7 +32,19 @@ class LeaderboardView extends React.Component {
             agg_mttEntityStats: {},
             agg_mttRawStats: {},
             agg_mttCorrectStats: {},
-            agg_mttWrongStats: {}
+            agg_mttWrongStats: {},
+            agg_potpCorrect: {
+                title: {},
+                summary: {}
+            },
+            agg_potpMissed: {
+                title: {},
+                summary: {}
+            },
+            agg_potpMistakes:{
+                title: {},
+                summary: {}
+            }
           },
           newScores: {
               'ftd': [],
@@ -47,6 +59,9 @@ class LeaderboardView extends React.Component {
       this.getFullTable = this.getFullTable.bind(this);
       this.getData = this.getData.bind(this);
       this.aggregateMttStats = this.aggregateMttStats.bind(this);
+      this.aggregatePotpStats = this.aggregatePotpStats.bind(this);
+      this.getMissedPartsAns = this.getMissedPartsAns.bind(this);
+      this.getFormatedCorrectPotpStats = this.getFormatedCorrectPotpStats.bind(this);
       this.getRemainingEdges = this.getRemainingEdges.bind(this);
       this.shouldShowStats = this.shouldShowStats.bind(this);
       this.formatEntityStats = this.formatEntityStats.bind(this);
@@ -108,17 +123,106 @@ class LeaderboardView extends React.Component {
         let agg_correctMttStats = this.aggregateMttStats(leaderScores['mtt'],'mtt_correctStats');
         let agg_wrongMttStats = this.aggregateMttStats(leaderScores['mtt'],'mtt_missedStats');
 
+        let agg_potpMistakes = this.aggregatePotpStats(leaderScores['potp'],'potp_wrongStats');
+        let agg_potpCorrect = this.aggregatePotpStats(leaderScores['potp'],'potp_correctStats');
+        let agg_potpMissed = this.aggregatePotpStats(leaderScores['potp'],'potp_missedStats');
+
         let fileStats= this.state.fileStats;
         fileStats.agg_mttRawStats = agg_rawMttStats;
         fileStats.agg_mttEntityStats = agg_entityStats;
         fileStats.agg_mttCorrectStats = agg_correctMttStats;
         fileStats.agg_mttWrongStats = agg_wrongMttStats;
+        fileStats.agg_potpMistakes = agg_potpMistakes;
+        fileStats.agg_potpCorrect = agg_potpCorrect;
+        fileStats.agg_potpMissed = agg_potpMissed;
+        //console.log(fileStats);
 
         this.setState({
             newScores: leaderScores,
             renderNewScores: true,
             fileStats: fileStats
         });
+    }
+
+    getMissedPartsAns(correct, total){
+        let missed = {
+            title: {},
+            summary: {}
+        };
+        if(isNullOrUndefined(total)){
+            total = {};
+        }
+        if(isNullOrUndefined(correct)){
+            correct = {};
+        }
+        for(let key in total){
+            let name = null;
+            if(total[key].name){
+                name = total[key].name;
+            }
+            if(!isNullOrUndefined(name)){
+                if(!((key in correct) && (correct[key].title))){
+                    if(!(key in missed.title)){
+                        missed.title[key] = {
+                            name: total[key].name,
+                            count: 0
+                        }
+                    }
+                    missed.title[key].count++;
+                }
+                if(!((key in correct) && (correct[key].summary))){
+                    if(!(key in missed.summary)){
+                        missed.summary[key] = {
+                            name: total[key].name,
+                            count: 0
+                        }
+                    }
+                    missed.summary[key].count++;
+                }
+            }
+
+        }
+        return missed;
+    }
+
+    getFormatedCorrectPotpStats(correct){
+        //Correct
+
+        let ans = {
+            title: {},
+            summary: {}
+        }
+
+        if(isNullOrUndefined(correct)){
+           correct = {};
+        }
+        for(let key in correct){
+            let name = null;
+            if(correct[key].name){
+                name = correct[key].name;
+            }
+            if(!isNullOrUndefined(name)){
+                if(correct[key].title){
+                    if(!(key in ans.title)){
+                        ans.title[key] = {
+                            name: name,
+                            count: 0
+                        };
+                    }
+                    ans.title[key].count++;
+                }
+                if(correct[key].summary){
+                    if(!(key in ans.summary)){
+                        ans.summary[key] = {
+                            name: name,
+                            count: 0
+                        };
+                    }
+                    ans.summary[key].count++;
+                }
+            }
+        }
+        return ans;
     }
 
     async getLeadersForGame(type, bpId){
@@ -135,7 +239,7 @@ class LeaderboardView extends React.Component {
                     let score = doc.data();
                     score['id'] = score['userId'];
 
-                    if(type = 'mtt'){
+                    if(type == 'mtt'){
                         score['mtt_stats'] = score.entityStats;
                         delete score['entityStats'];
                         score['mtt_rawStats'] = score.rawStats;
@@ -150,6 +254,22 @@ class LeaderboardView extends React.Component {
                             score['mtt_missedStats'] = this.getRemainingEdges(score.remainingEdges,score['mtt_correctStats']);
                             delete score['remainingEdges'];
                         }                        
+                    }
+                    else if(type == 'potp'){
+                        score['potp_correctStats'] = {title:{},summary:{}};
+                        score['potp_missedStats'] = {title:{},summary:{}};
+                        score['potp_wrongStats'] = {title:{},summary:{}};
+                        if(score.gameStats){
+                            if(score.gameStats.correctAns){
+                                score.potp_correctStats = this.getFormatedCorrectPotpStats(score.gameStats.correctAns);
+                            }
+                            if(score.gameStats.totalAns && score.gameStats.correctAns){
+                                score.potp_missedStats = this.getMissedPartsAns(score.gameStats.correctAns,score.gameStats.totalAns);                                
+                            }
+                            if(score.gameStats.correctAns){
+                                score.potp_wrongStats = score.gameStats.wrongAns;
+                            }
+                        }
                     }
                     scores.push(score);
                 }
@@ -284,6 +404,54 @@ class LeaderboardView extends React.Component {
                         }
                         aggStats[newKey]++;
                     }
+                }
+            }
+        }
+        return aggStats;
+    }
+
+    aggregatePotpStats(listMap, type){
+        //Aggregate here
+        let aggStats = {
+            title: {},
+            summary: {}
+        };
+        for(let i=0; listMap && i<listMap.length; i++){
+            let currMap_main = listMap[i][type];
+            if(currMap_main){
+                for(let answerType in currMap_main){
+                    //answerType is title or summary
+                    let currMap = currMap_main[answerType];
+                    if(currMap){
+                        for(let key in currMap){
+                            let name = currMap[key].name;
+                            if(!isNullOrUndefined(name)){
+                                if(!(name in aggStats[answerType])){
+                                    aggStats[answerType][name] = 0;
+                                }
+                                if(currMap[key].count){
+                                    aggStats[answerType][name] += currMap[key].count;                                
+                                }
+                                if(currMap[key].mistakes){
+                                    if(answerType=='summary')                                
+                                    {
+                                        aggStats[answerType][name] += currMap[key].mistakes;
+                                    }
+                                    else if(answerType=="title"){
+                                        let countMistakes = 0;
+                                        for(let mistakeVal in currMap[key].mistakes){
+                                            countMistakes += currMap[key].mistakes[mistakeVal];
+                                        }
+                                        aggStats[answerType][name] += countMistakes;
+                                    }
+                                }
+                                /*
+                                if(answerType=='title' && type=='potp_wrongStats')
+                                        console.log(key,i,currMap,aggStats,type,answerType);
+                                */                                    
+                            }
+                        }
+                    }                    
                 }
             }
         }
@@ -498,6 +666,178 @@ class LeaderboardView extends React.Component {
                     </div>
                     :
                     null
+                    }
+                    {type=='potp'?
+                        <div>
+                            <div style={{display:'flex', flexWrap:'wrap'}}>
+                                {Object.keys(this.state.fileStats.agg_potpMistakes.title).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Mistakes (Name)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpMistakes.title)}
+                                                        id = {"pie_mtt_aggPotpMistakes_title"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.redShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                {Object.keys(this.state.fileStats.agg_potpMistakes.summary).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Mistakes (Details)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpMistakes.summary)}
+                                                        id = {"pie_mtt_aggPotpMistakes_summary"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.redShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                {Object.keys(this.state.fileStats.agg_potpCorrect.title).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Correct (Name)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpCorrect.title)}
+                                                        id = {"pie_mtt_aggPotpCorrect_title"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.greenShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                {Object.keys(this.state.fileStats.agg_potpCorrect.summary).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Correct (Details)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpCorrect.summary)}
+                                                        id = {"pie_mtt_aggPotpCorrect_summary"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.greenShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                {Object.keys(this.state.fileStats.agg_potpMissed.title).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Missed (Name)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpMissed.title)}
+                                                        id = {"pie_mtt_aggPotpMissed_title"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.blueShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                                {Object.keys(this.state.fileStats.agg_potpMissed.summary).length>0?
+                                    <Grid md={6} xs={12}>
+                                        <div style={{paddingRight:'10px', paddingTop:'10px', paddingBottom:'10px'}}>
+                                            <div style={{border:'1px black solid'}}>
+                                                <h4 style={{textAlign:'center'}}>Missed (Details)</h4>
+                                                <div style={{height:'300px'}}>
+                                                    <AmPieChart
+                                                        data={Utils.convertMapToSimpleArr(this.state.fileStats.agg_potpMissed.summary)}
+                                                        id = {"pie_mtt_aggPotpMissed_summary"}
+                                                        category = {"key"}
+                                                        value = {"value"}
+                                                        colorSet = {AmConst.blueShade}  
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    :
+                                    null
+                                }
+                            </div>
+                            <div>
+                                <div>                  
+                                    <ExcelFile element={
+                                        <Button 
+                                            variant="contained"
+                                            className="downloadButton" 
+                                            onClick={(e) => {
+                                                ReactGA.event({
+                                                    category: 'Download leaderboard stats',
+                                                    action: 'Download leaderboard stats ' + this.props.match.params.gameId +' '+ type,
+                                                    label: this.props.match.params.gameId
+                                                });
+                                            }}>
+                                                <div>Download statistics</div>
+                                        </Button>
+                                    }
+                                    filename={title + " Statistics"}>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpMistakes.title)} name="Mistakes (Name)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Mistakes" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpMistakes.summary)} name="Mistakes (Details)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Mistakes" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpCorrect.title)} name="Correct (Name)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpCorrect.summary)} name="Correct (Details)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpMissed.title)} name="Missed (Name)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                        <ExcelSheet data={Utils.convertMapToSimpleArrSortAsc(this.state.fileStats.agg_potpMissed.summary)} name="Missed (Details)">
+                                            <ExcelColumn label="Part" value="key"/>
+                                            <ExcelColumn label="Count" value="value"/>
+                                        </ExcelSheet>
+                                    </ExcelFile>
+                                </div>               
+                            </div>
+                        </div>
+                        :
+                        null
                     }
                 </div>
             </div>
