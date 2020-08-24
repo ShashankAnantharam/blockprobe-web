@@ -298,7 +298,7 @@ class GamifiedPartsOfImageView extends React.Component {
                 name: list[i].title,
                 title: true
             };
-            if(!isNullOrUndefined(list[i].summary)){
+            if(!isNullOrUndefined(list[i].summary) && list[i].summary.trim().length>0){
                 totalAns[list[i].key]['summary'] = true;
             }
         }

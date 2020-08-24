@@ -161,7 +161,7 @@ class LeaderboardView extends React.Component {
                 name = total[key].name;
             }
             if(!isNullOrUndefined(name)){
-                if(!((key in correct) && (correct[key].title))){
+                if(total[key].title && !((key in correct) && (correct[key].title))){
                     if(!(key in missed.title)){
                         missed.title[key] = {
                             name: total[key].name,
@@ -170,7 +170,7 @@ class LeaderboardView extends React.Component {
                     }
                     missed.title[key].count++;
                 }
-                if(!((key in correct) && (correct[key].summary))){
+                if(total[key].summary && !((key in correct) && (correct[key].summary))){
                     if(!(key in missed.summary)){
                         missed.summary[key] = {
                             name: total[key].name,
