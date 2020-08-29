@@ -14,10 +14,9 @@ class GamifiedAuth extends React.Component {
 
     uiConfig = {
         signInFlow: "popup",
+        credentialHelper: 'none',
         signInOptions: [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.PhoneAuthProvider.PROVIDER_ID
+            firebase.auth.EmailAuthProvider.PROVIDER_ID
         ],
         callbacks:{
           signInSuccess: () => false,

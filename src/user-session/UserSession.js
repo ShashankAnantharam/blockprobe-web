@@ -156,6 +156,7 @@ class UserSession extends React.Component {
     getUiConfig(){
         let uiConfig = {
             signInFlow: "popup",
+            credentialHelper: 'none',
             signInOptions: [
                 {
                     provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
